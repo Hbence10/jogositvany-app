@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 22, 2025 at 08:42 AM
+-- Generation Time: Aug 22, 2025 at 09:24 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -266,7 +266,10 @@ CREATE TABLE `vehicle_types` (
 -- Indexes for table `driving_lessons`
 --
 ALTER TABLE `driving_lessons`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`category_id`),
+  ADD KEY `payment` (`payment_method`),
+  ADD KEY `appointment` (`appointment_id`);
 
 --
 -- Indexes for table `driving_lesson_category`
@@ -278,19 +281,24 @@ ALTER TABLE `driving_lesson_category`
 -- Indexes for table `instructor`
 --
 ALTER TABLE `instructor`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `instructor` (`user_id`),
+  ADD KEY `school` (`school_id`);
 
 --
 -- Indexes for table `message`
 --
 ALTER TABLE `message`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `message_to` (`message_to`),
+  ADD KEY `message_from` (`message_from`);
 
 --
 -- Indexes for table `opening_details`
 --
 ALTER TABLE `opening_details`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `school_2` (`school_id`);
 
 --
 -- Indexes for table `payment_methods`
@@ -302,19 +310,26 @@ ALTER TABLE `payment_methods`
 -- Indexes for table `request`
 --
 ALTER TABLE `request`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sender` (`sender_id`),
+  ADD KEY `picker_2` (`picker_id`),
+  ADD KEY `student_2` (`student_id`);
 
 --
 -- Indexes for table `reserved_appointment`
 --
 ALTER TABLE `reserved_appointment`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student` (`student_id`),
+  ADD KEY `instructor_id` (`instructor_id`);
 
 --
 -- Indexes for table `review`
 --
 ALTER TABLE `review`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author` (`author_id`),
+  ADD KEY `about_2` (`about_id`);
 
 --
 -- Indexes for table `role`
@@ -326,31 +341,39 @@ ALTER TABLE `role`
 -- Indexes for table `saved_cards`
 --
 ALTER TABLE `saved_cards`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sc_user` (`user_id`);
 
 --
 -- Indexes for table `school`
 --
 ALTER TABLE `school`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin` (`administrator_id`);
 
 --
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user` (`user_id`),
+  ADD KEY `instructor_2_id` (`instructor_id`),
+  ADD KEY `school_3` (`school_id`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role` (`role_id`);
 
 --
 -- Indexes for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `type` (`type_id`),
+  ADD KEY `owner` (`owner_id`);
 
 --
 -- Indexes for table `vehicle_types`
@@ -457,6 +480,95 @@ ALTER TABLE `vehicle`
 --
 ALTER TABLE `vehicle_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `driving_lessons`
+--
+ALTER TABLE `driving_lessons`
+  ADD CONSTRAINT `appointment` FOREIGN KEY (`appointment_id`) REFERENCES `reserved_appointment` (`id`),
+  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `driving_lesson_category` (`id`),
+  ADD CONSTRAINT `payment` FOREIGN KEY (`payment_method`) REFERENCES `payment_methods` (`id`);
+
+--
+-- Constraints for table `instructor`
+--
+ALTER TABLE `instructor`
+  ADD CONSTRAINT `instructor` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`);
+
+--
+-- Constraints for table `message`
+--
+ALTER TABLE `message`
+  ADD CONSTRAINT `message_from` FOREIGN KEY (`message_from`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `message_to` FOREIGN KEY (`message_to`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `opening_details`
+--
+ALTER TABLE `opening_details`
+  ADD CONSTRAINT `school_2` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`);
+
+--
+-- Constraints for table `request`
+--
+ALTER TABLE `request`
+  ADD CONSTRAINT `picker` FOREIGN KEY (`picker_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `picker_2` FOREIGN KEY (`picker_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `sender` FOREIGN KEY (`sender_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `student_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
+
+--
+-- Constraints for table `reserved_appointment`
+--
+ALTER TABLE `reserved_appointment`
+  ADD CONSTRAINT `instructor_id` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
+
+--
+-- Constraints for table `review`
+--
+ALTER TABLE `review`
+  ADD CONSTRAINT `about_1` FOREIGN KEY (`about_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `about_2` FOREIGN KEY (`about_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `author` FOREIGN KEY (`author_id`) REFERENCES `students` (`id`);
+
+--
+-- Constraints for table `saved_cards`
+--
+ALTER TABLE `saved_cards`
+  ADD CONSTRAINT `sc_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `school`
+--
+ALTER TABLE `school`
+  ADD CONSTRAINT `admin` FOREIGN KEY (`administrator_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `students`
+--
+ALTER TABLE `students`
+  ADD CONSTRAINT `instructor_2_id` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `school_3` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+
+--
+-- Constraints for table `vehicle`
+--
+ALTER TABLE `vehicle`
+  ADD CONSTRAINT `owner` FOREIGN KEY (`owner_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `type` FOREIGN KEY (`type_id`) REFERENCES `vehicle_types` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
