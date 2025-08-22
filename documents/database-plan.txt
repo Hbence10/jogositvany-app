@@ -1,0 +1,28 @@
+-----
+tablak
+
+felhasznalo
+suli
+role
+autok
+velemenyek
+idopont kerelmek
+vizsga kerelmek
+kategoria
+idopontok
+fizetesi mod
+vezetesi ora
+
+-------
+
+felhasznalo -> keresztnev, vezeteknev, email, tel, bdate, gender, vegzettseg, jelszo, role, id,
+suli -> nev, cim, tulaj, email, tel, nyitvatartas, id, 
+role -> nev, id,
+autok -> rendszam, tulaj, fuel, nev, id, 
+velemenyek -> nev, szoveg, date, ertekeles, felhasznalo id (akire hivatkozik), id,
+idopont kerelmek -> felado, cimzett, mikor adta fel, mikorra adta fel, status, id,
+vizsga kerelmek -> felado, cimzett, status, mikorra, tanulo id, oktato id, kategoria, id,
+kategoria -> nev, korhatar, id,
+idopontok -> oktato, diak, date, id, 
+fizetesi mod -> email, PAN, nev, CVC/CVV, date, id, 
+vezetesi ora -> tanulo, oktato, status, KM, helyszin, felvetel, letetel, fajta, fizetett(igen/nem), id,
