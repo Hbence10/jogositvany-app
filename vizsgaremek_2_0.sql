@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 22, 2025 at 09:24 AM
+-- Generation Time: Aug 27, 2025 at 01:04 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -20,6 +20,80 @@ SET time_zone = "+00:00";
 --
 -- Database: `vizsgaremek_2.0`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddInstructor` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddReview` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddSchool` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddVehicle` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FriendRequest` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetInstructorsBySchoolID` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetReviewByAboutID` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetSchoolByID` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetStudentsByInstructorID` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetStudentsBySchoolID` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Login` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterUser` (IN `firstNameIN` VARCHAR(100), IN `lastNameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `phoneIN` VARCHAR(50), IN `passwordIN` VARCHAR(64), IN `birthDateIN` DATE, IN `genderIN` VARCHAR(50), IN `educationQualificationIN` VARCHAR(150))   BEGIN
+	INSERT INTO `users`(
+        `users`.`first_name`,
+        `users`.`last_name`,
+        `users`.`email`,
+        `users`.`phone`,
+        `users`.`password`,
+        `users`.`birth_date`,
+        `users`.`gender`,
+        `users`.`education_qualification`)
+     VALUES(
+     	 firstNameIN,
+         lastNameIN,
+         emailIN,
+         phoneIN,
+         SHA2(passwordIN,256),
+         birthDateIN,
+         genderIN,
+         educationQualificationIN
+        );
+            
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SendMessage` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateInstructor` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateSchool` ()   BEGIN
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateUser` ()   BEGIN
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -163,6 +237,17 @@ CREATE TABLE `role` (
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'user'),
+(2, 'student'),
+(3, 'instructor'),
+(4, 'school_admin'),
+(5, 'administrator');
+
 -- --------------------------------------------------------
 
 --
@@ -228,9 +313,16 @@ CREATE TABLE `users` (
   `gender` varchar(50) NOT NULL,
   `education_qualification` varchar(150) NOT NULL,
   `password` varchar(64) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `pfp_path` varchar(100) NOT NULL
+  `role_id` int(11) DEFAULT NULL,
+  `pfp_path` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `education_qualification`, `password`, `role_id`, `pfp_path`) VALUES
+(1, 'elonev', 'utonev', 'emailcim', '0630303030', '2000-01-01', 'nembinaris', 'ovoda', '38871925b886b86e9c80e869de1cd67128c29c49cf5927d512afa8ff360976c7', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -443,7 +535,7 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `saved_cards`
@@ -467,7 +559,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
