@@ -20,6 +20,24 @@
   border-radius: 50px;
   background-color: #434a6b;
   margin: 15px 0px;
+  font-size: 32px;
+}
+
+#navbar .navItem:hover .navIconContainer {
+  background-color: #22354F;
+  width: 60px;
+  height: 60px;
+  margin: 0px 5px
+}
+
+#navbar .navItem:hover .navIcons {
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+}
+
+.navItem {
+  cursor: pointer;
 }
 
 .profil {
@@ -57,4 +75,11 @@
 
 .login{
   float: bottom;
+}
+
+.navIconContainer {
+  width: 40px;
+  height: 40px;
+  background-color: #434a6b;
+  border-radius: 100px;
 }
