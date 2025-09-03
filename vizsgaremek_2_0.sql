@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 28, 2025 at 09:18 AM
+-- Generation Time: Sep 03, 2025 at 08:10 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.0.1
 
@@ -68,10 +68,11 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetStudentsBySchoolID` ()   BEGIN
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Login` ()   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Login` (IN `email` VARCHAR(100), IN `password` VARCHAR(64))   BEGIN
+	SELECT*FROM `users` WHERE `users`.`email` = email AND 		`users`.`password`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterUser` (IN `firstNameIN` VARCHAR(100), IN `lastNameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `phoneIN` VARCHAR(50), IN `passwordIN` VARCHAR(64), IN `birthDateIN` DATE, IN `genderIN` VARCHAR(50), IN `educationQualificationIN` VARCHAR(150))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterUser` (IN `firstNameIN` VARCHAR(100), IN `lastNameIN` VARCHAR(100), IN `emailIN` VARCHAR(100), IN `phoneIN` VARCHAR(50), IN `passwordIN` VARCHAR(64), IN `birthDateIN` DATE, IN `genderIN` VARCHAR(50), IN `educationQualificationIN` VARCHAR(150), OUT `result` VARCHAR(100))   BEGIN
 	INSERT INTO `users`(
         `users`.`first_name`,
         `users`.`last_name`,
@@ -91,6 +92,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `RegisterUser` (IN `firstNameIN` VAR
          genderIN,
          educationQualificationIN
         );
+        
+	SET result = "successfull registration";
             
 END$$
 
@@ -603,13 +606,13 @@ ALTER TABLE `reserved_appointment`
 -- AUTO_INCREMENT for table `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `school`
