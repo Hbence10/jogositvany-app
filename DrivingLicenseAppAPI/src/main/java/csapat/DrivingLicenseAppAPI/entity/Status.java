@@ -6,12 +6,12 @@ import jakarta.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "driving_license_category")
-public class DrivingLicenseCategory {
+@Table(name = "status")
+public class Status {
 
     private int id;
     private String name;
-    private int minAge;
 
     private List<DrivingLessons> drivingLessonsList;
+    private List<Request> requestList;
 }

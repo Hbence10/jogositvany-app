@@ -3,12 +3,14 @@ package csapat.DrivingLicenseAppAPI.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-@Table(name = "students")
+import java.util.List;
+
 @Entity
-public class Students {
+@Table(name = "fuel_types")
+public class FuelType {
 
     private int id;
-    private School school;
-    private Instructors instructors;
-    private Users users;
+    private String name;
+
+    private List<Vehicle> vehicles;
 }
