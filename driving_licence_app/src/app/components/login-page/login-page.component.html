@@ -11,7 +11,7 @@
     </div>
 
     <div class="bottom">
-      <button id="login-button">Bejelentkezés</button>
+      <button id="login-button" (click)="login()" [disabled]="loginForm.invalid">Bejelentkezés</button>
       <p>Nincs fiókja? <a routerLink="/registartion">Regisztráljon!</a></p>
     </div>
 </div>
