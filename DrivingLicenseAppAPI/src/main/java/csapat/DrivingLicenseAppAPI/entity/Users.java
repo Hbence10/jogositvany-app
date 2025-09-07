@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "users")
 public class Users {
+//    @Temporal(TemporalType.TIMESTAMP)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
