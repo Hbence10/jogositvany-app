@@ -43,8 +43,8 @@ public class DrivingLessons {
     @Size(max = 7)
     private int endKm;
 
-    private Status status;
-    private DrivingLicenseCategory category;
-    private PaymentMethod paymentMethod;
-    private ReservedHour reservedHour;
+//    private Status status;
+//    private DrivingLicenseCategory category;
+//    private PaymentMethod paymentMethod;
+//    private ReservedHour reservedHour;
 }

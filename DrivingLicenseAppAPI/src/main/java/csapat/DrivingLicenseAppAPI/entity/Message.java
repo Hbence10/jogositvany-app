@@ -19,10 +19,10 @@ public class Message {
     private String content;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private LocalDate createdAt;
 
-    private Users messageTo;
-    private Users messageFrom;
+//    private Users messageTo;
+//    private Users messageFrom;
 }

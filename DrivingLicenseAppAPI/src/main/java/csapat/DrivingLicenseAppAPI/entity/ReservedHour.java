@@ -24,5 +24,5 @@ public class ReservedHour {
     @NotNull
     private int end;
 
-    private ReservedDate date;
+//    private ReservedDate date;
 }

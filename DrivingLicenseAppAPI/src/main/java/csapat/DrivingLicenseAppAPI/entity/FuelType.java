@@ -20,5 +20,5 @@ public class FuelType {
     @Size(max = 11)
     private String name;
 
-    private List<Vehicle> vehicles;
+//    private List<Vehicle> vehicles;
 }

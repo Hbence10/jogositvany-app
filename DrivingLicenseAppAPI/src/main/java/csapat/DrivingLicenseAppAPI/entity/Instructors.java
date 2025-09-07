@@ -18,7 +18,7 @@ public class Instructors {
     @NotNull
     private String promoText;
 
-    private Users user;
-    private School school;
-    private Vehicle vehicle;
+//    private Users user;
+//    private School school;
+//    private Vehicle vehicle;
 }

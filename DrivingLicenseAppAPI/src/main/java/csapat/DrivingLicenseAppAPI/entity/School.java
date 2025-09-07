@@ -53,7 +53,7 @@ public class School {
     @NotNull
     private String bannerImgPath;
 
-    private Users administrator;
-    private List<Instructors> instructorsList;
-    private List<Students> studentsList;
+//    private Users administrator;
+//    private List<Instructors> instructorsList;
+//    private List<Students> studentsList;
 }

@@ -20,5 +20,5 @@ public class PaymentMethod {
     @NotNull
     private String name;
 
-    private List<DrivingLessons> drivingLessonsList;
+//    private List<DrivingLessons> drivingLessonsList;
 }

@@ -11,7 +11,7 @@ public class Students {
     @Column(name = "id")
     private int id;
 
-    private School school;
-    private Instructors instructors;
-    private Users users;
+//    private School school;
+//    private Instructors instructors;
+//    private Users users;
 }

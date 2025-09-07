@@ -25,5 +25,5 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private int minAge;
 
-    private List<DrivingLessons> drivingLessonsList;
+//    private List<DrivingLessons> drivingLessonsList;
 }

@@ -20,6 +20,6 @@ public class Status {
     @Size(max = 100)
     private String name;
 
-    private List<DrivingLessons> drivingLessonsList;
-    private List<Request> requestList;
+//    private List<DrivingLessons> drivingLessonsList;
+//    private List<Request> requestList;
 }

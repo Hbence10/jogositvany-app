@@ -24,6 +24,6 @@ public class Vehicle {
     @Size(max = 100)
     private String name;
 
-    private VehicleType vehicleType;
-    private FuelType fuelType;
+//    private VehicleType vehicleType;
+//    private FuelType fuelType;
 }

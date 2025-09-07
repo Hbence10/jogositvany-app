@@ -17,7 +17,7 @@ public class ReservedDate {
     private int id;
 
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     @NotNull
     private Date date;
 
@@ -25,5 +25,5 @@ public class ReservedDate {
     @NotNull
     private boolean isFull = false;
 
-    private List<ReservedHour> reservedHourList;
+//    private List<ReservedHour> reservedHourList;
 }

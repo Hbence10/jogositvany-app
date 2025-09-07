@@ -16,12 +16,12 @@ public class OpeningDetails {
     private int id;
 
     @Column(name = "opening_time")
-    @Temporal(TemporalType.TIME)
+//    @Temporal(TemporalType.TIME)
     @NotNull
     private LocalTime openingTime;
 
     @Column(name = "close_time")
-    @Temporal(TemporalType.TIME)
+//    @Temporal(TemporalType.TIME)
     @NotNull
     private LocalTime closeTime;
 
@@ -30,5 +30,5 @@ public class OpeningDetails {
     @NotNull
     private String day;
 
-    private School school;
+//    private School school;
 }

@@ -19,7 +19,7 @@ public class Review {
     private String text;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private LocalDate createdAt;
 
@@ -27,7 +27,7 @@ public class Review {
     @NotNull
     private float rating;
 
-    private Users author;
-    private Instructors aboutInstructor;
-    private School aboutSchool;
+//    private Users author;
+//    private Instructors aboutInstructor;
+//    private School aboutSchool;
 }

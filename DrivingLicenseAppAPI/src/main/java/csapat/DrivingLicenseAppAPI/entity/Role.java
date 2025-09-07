@@ -20,7 +20,7 @@ public class Role {
     @Size(max = 100)
     private String name;
 
-    private List<Users> userList;
+//    private List<Users> userList;
 
 
 }

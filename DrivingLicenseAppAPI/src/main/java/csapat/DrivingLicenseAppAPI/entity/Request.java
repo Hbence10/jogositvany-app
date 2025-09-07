@@ -16,7 +16,7 @@ public class Request {
     private int id;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate createdAt;
 
     @Column(name = "requested_date")
@@ -31,8 +31,8 @@ public class Request {
     @NotNull
     private boolean isExam = false;
 
-    private Users sender;
-    private Users picker;
-    private Status status;
-    private Users student;
+//    private Users sender;
+//    private Users picker;
+//    private Status status;
+//    private Users student;
 }
