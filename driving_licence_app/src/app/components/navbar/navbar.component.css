@@ -1,0 +1,85 @@
+#navbar {
+  background-color: #22354F;
+  color: white;
+  padding: 10px;
+  width: 360px;
+  height: 100%;
+}
+
+#navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  display: inline-block;
+  margin: 15px 0px;
+}
+
+#navbar .navItem:hover {
+  width: 310px;
+  height: 70px;
+  border-radius: 50px;
+  background-color: #434a6b;
+  margin: 15px 0px;
+  font-size: 32px;
+}
+
+#navbar .navItem:hover .navIconContainer {
+  background-color: #22354F;
+  width: 60px;
+  height: 60px;
+  margin: 0px 5px
+}
+
+#navbar .navItem:hover .navIcons {
+  width: 60px;
+  height: 60px;
+  font-size: 40px;
+}
+
+.navItem {
+  cursor: pointer;
+}
+
+.profil {
+  font-weight: bold;
+  width: 280px;
+  height: 110px;
+  border-radius: 20px;
+  background-color: #434a6b;
+}
+
+.homePage {
+  font-weight: bold;
+  width: 310px;
+  height: 70px;
+  border-radius: 50px;
+  background-color: #434a6b;
+}
+
+.calendar {
+  font-weight: bold;
+  width: 280px;
+}
+
+.instructors {
+  font-weight: bold;
+  width: 280px;
+
+}
+
+.schools {
+  font-weight: bold;
+  width: 280px;
+
+}
+
+.login{
+  float: bottom;
+}
+
+.navIconContainer {
+  width: 40px;
+  height: 40px;
+  background-color: #434a6b;
+  border-radius: 100px;
+}
