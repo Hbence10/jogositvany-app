@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,19 @@ import java.util.Date;
         @NamedStoredProcedureQuery(name = "Login", procedureName = "Login", parameters = {
                 @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
                 @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {Users.class})
+        }, resultClasses = {Users.class}),
+
+        @NamedStoredProcedureQuery(name = "RegisterUser", procedureName = "RegisterUser", parameters = {
+                @StoredProcedureParameter(name = "firstNameIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "lastNameIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "phoneIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "birthDateIN", mode = ParameterMode.IN, type = LocalDate.class),
+                @StoredProcedureParameter(name = "genderIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "educationQualificationIN", mode = ParameterMode.IN, type = String.class),
+                @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = String.class)
+        }, resultClasses = {String.class})
 })
 public class Users {
     @Id
