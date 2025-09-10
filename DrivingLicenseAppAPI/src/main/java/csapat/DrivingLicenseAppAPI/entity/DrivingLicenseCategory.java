@@ -25,10 +25,45 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private int minAge;
 
+    //Kapcsolatok:
     @OneToMany(
             mappedBy = "category",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<DrivingLessons> drivingLessonsList;
+
+    //Constructorok:
+    public DrivingLicenseCategory() {
+    }
+
+    public DrivingLicenseCategory(String name, int minAge) {
+        this.name = name;
+        this.minAge = minAge;
+    }
+
+    //Getterek & Setterek:
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(int minAge) {
+        this.minAge = minAge;
+    }
 }

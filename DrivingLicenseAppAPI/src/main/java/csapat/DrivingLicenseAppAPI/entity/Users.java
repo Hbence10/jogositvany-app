@@ -78,6 +78,7 @@ public class Users {
     @Size(max = 64)
     private String pfpPath;
 
+    //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     private Role role;
@@ -87,6 +88,9 @@ public class Users {
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
     private Students students;
+
+    @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    private School school;
 
 
     //Constructorok:
@@ -105,6 +109,7 @@ public class Users {
         this.pfpPath = pfpPath;
     }
 
+    //Getterek & Setterek
     public int getId() {
         return id;
     }

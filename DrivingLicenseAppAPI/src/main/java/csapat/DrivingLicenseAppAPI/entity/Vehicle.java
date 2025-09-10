@@ -24,6 +24,9 @@ public class Vehicle {
     @Size(max = 100)
     private String name;
 
+    //Kapcsolatok
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "type_id")
     private VehicleType vehicleType;
 
     @ManyToOne(cascade = {})
@@ -32,4 +35,30 @@ public class Vehicle {
 
     @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
     private Instructors instructor;
+
+    //Constructorok
+    public Vehicle() {
+    }
+
+    public Vehicle(String licensePlate, String name) {
+        this.licensePlate = licensePlate;
+        this.name = name;
+    }
+
+    //Getterek & Setterek
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

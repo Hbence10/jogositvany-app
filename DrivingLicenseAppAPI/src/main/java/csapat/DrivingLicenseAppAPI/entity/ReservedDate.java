@@ -24,10 +24,45 @@ public class ReservedDate {
     @NotNull
     private boolean isFull = false;
 
+    //Kapcsolatok:
     @OneToMany(
             mappedBy = "reservedDate",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<ReservedHour> reservedHourList;
+
+    //Constructorok:
+    public ReservedDate() {
+    }
+
+    public ReservedDate(Date date, boolean isFull) {
+        this.date = date;
+        this.isFull = isFull;
+    }
+
+    //Getterek & Setterek:
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public void setFull(boolean full) {
+        isFull = full;
+    }
 }

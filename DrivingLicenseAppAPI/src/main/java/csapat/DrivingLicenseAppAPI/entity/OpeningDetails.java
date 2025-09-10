@@ -16,12 +16,10 @@ public class OpeningDetails {
     private int id;
 
     @Column(name = "opening_time")
-//    @Temporal(TemporalType.TIME)
     @NotNull
     private LocalTime openingTime;
 
     @Column(name = "close_time")
-//    @Temporal(TemporalType.TIME)
     @NotNull
     private LocalTime closeTime;
 
@@ -30,7 +28,52 @@ public class OpeningDetails {
     @NotNull
     private String day;
 
+    //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     private School schoolOpeningDetail;
+
+    //Constructorok:
+    public OpeningDetails() {
+    }
+
+    public OpeningDetails(int id, LocalTime openingTime, LocalTime closeTime, String day) {
+        this.id = id;
+        this.openingTime = openingTime;
+        this.closeTime = closeTime;
+        this.day = day;
+    }
+
+    //Getterek & Setterek:
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public LocalTime getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(LocalTime openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public LocalTime getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(LocalTime closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 }

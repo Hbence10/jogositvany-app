@@ -20,6 +20,7 @@ public class Status {
     @Size(max = 100)
     private String name;
 
+    //Kapcsolatok:
     @OneToMany(
             mappedBy = "drivingLessonStatus",
             fetch = FetchType.LAZY,
@@ -33,4 +34,29 @@ public class Status {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Request> requestList;
+
+    //Constructorok:#
+    public Status() {
+    }
+
+    public Status(String name) {
+        this.name = name;
+    }
+
+    //Getterek & Setterek
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -19,7 +19,7 @@ public class Instructors {
     @NotNull
     private String promoText;
 
-    //
+    //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users instructorUser;
@@ -45,4 +45,29 @@ public class Instructors {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Students> students;
+
+    //Constructorok:
+    public Instructors() {
+    }
+
+    public Instructors(String promoText) {
+        this.promoText = promoText;
+    }
+
+    //Getterek & Setterek:
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPromoText() {
+        return promoText;
+    }
+
+    public void setPromoText(String promoText) {
+        this.promoText = promoText;
+    }
 }

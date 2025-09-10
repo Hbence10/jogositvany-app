@@ -20,12 +20,36 @@ public class Role {
     @Size(max = 100)
     private String name;
 
+    //Kapcsolatok:
     @OneToMany(
-            mappedBy = "aboutSchool",
+            mappedBy = "role",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Users> userList;
 
+    //Constructorok
+    public Role() {
+    }
 
+    public Role(String name) {
+        this.name = name;
+    }
+
+    //Getterek & Setterek
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

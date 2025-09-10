@@ -20,10 +20,44 @@ public class FuelType {
     @Size(max = 11)
     private String name;
 
+    //Kapcsolatok:
     @OneToMany(
             mappedBy = "fuelType",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Vehicle> vehicles;
+
+    //Constructorok:
+    public FuelType() {
+    }
+
+    public FuelType(String name) {
+        this.name = name;
+    }
+
+    //Getterek & Setterek
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
 }

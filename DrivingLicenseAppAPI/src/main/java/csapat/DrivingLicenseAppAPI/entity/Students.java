@@ -13,6 +13,7 @@ public class Students {
     @Column(name = "id")
     private int id;
 
+    //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     private School studentSchool;
@@ -31,4 +32,17 @@ public class Students {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Review> reviewList;
+
+    @OneToMany(
+            mappedBy = "requestedStudent",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Request> requestList;
+
+    //Constructorok:
+    public Students() {
+    }
+
+    //Getterek & Setterek
 }
