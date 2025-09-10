@@ -2,6 +2,8 @@ package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Table(name = "students")
 @Entity
 public class Students {
@@ -11,7 +13,22 @@ public class Students {
     @Column(name = "id")
     private int id;
 
-//    private School school;
-//    private Instructors instructors;
-//    private Users users;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_id")
+    private School studentSchool;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "instructor_id")
+    private Instructors studentInstructor;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private Users studentUser;
+
+    @OneToMany(
+            mappedBy = "reviewAuthor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Review> reviewList;
 }

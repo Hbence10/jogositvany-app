@@ -30,5 +30,7 @@ public class OpeningDetails {
     @NotNull
     private String day;
 
-//    private School school;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_id")
+    private School schoolOpeningDetail;
 }

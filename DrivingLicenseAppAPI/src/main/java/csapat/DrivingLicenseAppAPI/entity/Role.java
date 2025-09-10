@@ -20,7 +20,12 @@ public class Role {
     @Size(max = 100)
     private String name;
 
-//    private List<Users> userList;
+    @OneToMany(
+            mappedBy = "aboutSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Users> userList;
 
 
 }

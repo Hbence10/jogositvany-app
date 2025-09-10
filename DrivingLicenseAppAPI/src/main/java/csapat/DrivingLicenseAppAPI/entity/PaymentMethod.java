@@ -20,5 +20,10 @@ public class PaymentMethod {
     @NotNull
     private String name;
 
-//    private List<DrivingLessons> drivingLessonsList;
+    @OneToMany(
+            mappedBy = "paymentMethod",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> drivingLessonsList;
 }

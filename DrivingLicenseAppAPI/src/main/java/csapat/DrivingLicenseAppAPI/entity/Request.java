@@ -31,8 +31,14 @@ public class Request {
     @NotNull
     private boolean isExam = false;
 
+
 //    private Users sender;
 //    private Users picker;
-//    private Status status;
-//    private Users student;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "status_id")
+    private Status requestStatus;
+
+
+//    private Students student;
 }

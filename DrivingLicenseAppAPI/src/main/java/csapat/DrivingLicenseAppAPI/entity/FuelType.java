@@ -20,5 +20,10 @@ public class FuelType {
     @Size(max = 11)
     private String name;
 
-//    private List<Vehicle> vehicles;
+    @OneToMany(
+            mappedBy = "fuelType",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Vehicle> vehicles;
 }

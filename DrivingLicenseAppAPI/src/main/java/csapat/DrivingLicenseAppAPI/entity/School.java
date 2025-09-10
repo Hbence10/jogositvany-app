@@ -53,7 +53,33 @@ public class School {
     @NotNull
     private String bannerImgPath;
 
-//    private Users administrator;
-//    private List<Instructors> instructorsList;
-//    private List<Students> studentsList;
+    private Users administrator;
+
+    @OneToMany(
+            mappedBy = "instructorSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Instructors> instructorsList;
+
+    @OneToMany(
+            mappedBy = "schoolOpeningDetail",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<OpeningDetails> openingDetails;
+
+    @OneToMany(
+            mappedBy = "aboutSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Review> reviewList;
+
+    @OneToMany(
+            mappedBy = "studentSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Students> studentsList;
 }

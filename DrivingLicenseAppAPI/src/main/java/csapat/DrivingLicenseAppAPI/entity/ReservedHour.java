@@ -24,5 +24,10 @@ public class ReservedHour {
     @NotNull
     private int end;
 
-//    private ReservedDate date;
+    @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    private DrivingLessons drivingLessons;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "date_id")
+    private ReservedDate reservedDate;
 }

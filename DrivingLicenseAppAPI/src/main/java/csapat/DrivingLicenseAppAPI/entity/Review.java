@@ -19,7 +19,6 @@ public class Review {
     private String text;
 
     @Column(name = "created_at")
-//    @Temporal(TemporalType.TIMESTAMP)
     @NotNull
     private LocalDate createdAt;
 
@@ -27,7 +26,15 @@ public class Review {
     @NotNull
     private float rating;
 
-//    private Users author;
-//    private Instructors aboutInstructor;
-//    private School aboutSchool;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "author_id")
+    private Students reviewAuthor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "about_id")
+    private Instructors aboutInstructor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "about_id")
+    private School aboutSchool;
 }

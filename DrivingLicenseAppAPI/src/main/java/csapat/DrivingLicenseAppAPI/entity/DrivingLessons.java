@@ -43,8 +43,19 @@ public class DrivingLessons {
     @Size(max = 7)
     private int endKm;
 
-//    private Status status;
-//    private DrivingLicenseCategory category;
-//    private PaymentMethod paymentMethod;
-//    private ReservedHour reservedHour;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "status_id")
+    private Status drivingLessonStatus;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "category_id")
+    private DrivingLicenseCategory category;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethod paymentMethod;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hour_id")
+    private ReservedHour reservedHour;
 }

@@ -20,6 +20,17 @@ public class Status {
     @Size(max = 100)
     private String name;
 
-//    private List<DrivingLessons> drivingLessonsList;
-//    private List<Request> requestList;
+    @OneToMany(
+            mappedBy = "drivingLessonStatus",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> drivingLessonsList;
+
+    @OneToMany(
+            mappedBy = "requestStatus",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Request> requestList;
 }

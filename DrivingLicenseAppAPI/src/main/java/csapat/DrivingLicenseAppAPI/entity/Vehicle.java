@@ -24,6 +24,12 @@ public class Vehicle {
     @Size(max = 100)
     private String name;
 
-//    private VehicleType vehicleType;
-//    private FuelType fuelType;
+    private VehicleType vehicleType;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "fuel_type_id")
+    private FuelType fuelType;
+
+    @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    private Instructors instructor;
 }

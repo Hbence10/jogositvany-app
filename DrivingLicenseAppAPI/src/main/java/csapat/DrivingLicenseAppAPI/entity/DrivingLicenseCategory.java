@@ -25,5 +25,10 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private int minAge;
 
-//    private List<DrivingLessons> drivingLessonsList;
+    @OneToMany(
+            mappedBy = "category",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> drivingLessonsList;
 }
