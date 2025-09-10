@@ -60,4 +60,13 @@ public class FuelType {
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
+
+    @Override
+    public String toString() {
+        return "FuelType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", vehicles=" + vehicles +
+                '}';
+    }
 }

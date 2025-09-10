@@ -76,4 +76,15 @@ public class OpeningDetails {
     public void setDay(String day) {
         this.day = day;
     }
+
+    @Override
+    public String toString() {
+        return "OpeningDetails{" +
+                "id=" + id +
+                ", openingTime=" + openingTime +
+                ", closeTime=" + closeTime +
+                ", day='" + day + '\'' +
+                ", schoolOpeningDetail=" + schoolOpeningDetail +
+                '}';
+    }
 }

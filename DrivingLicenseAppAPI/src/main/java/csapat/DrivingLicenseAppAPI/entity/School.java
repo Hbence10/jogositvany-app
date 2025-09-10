@@ -174,4 +174,24 @@ public class School {
     public void setBannerImgPath(String bannerImgPath) {
         this.bannerImgPath = bannerImgPath;
     }
+
+    @Override
+    public String toString() {
+        return "School{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", address='" + address + '\'' +
+                ", promoText='" + promoText + '\'' +
+                ", bannerImgPath='" + bannerImgPath + '\'' +
+                ", administrator=" + administrator +
+                ", instructorsList=" + instructorsList +
+                ", openingDetails=" + openingDetails +
+                ", reviewList=" + reviewList +
+                ", studentsList=" + studentsList +
+                '}';
+    }
 }

@@ -66,4 +66,14 @@ public class DrivingLicenseCategory {
     public void setMinAge(int minAge) {
         this.minAge = minAge;
     }
+
+    @Override
+    public String toString() {
+        return "DrivingLicenseCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", minAge=" + minAge +
+                ", drivingLessonsList=" + drivingLessonsList +
+                '}';
+    }
 }

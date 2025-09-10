@@ -65,4 +65,15 @@ public class ReservedHour {
     public void setEnd(int end) {
         this.end = end;
     }
+
+    @Override
+    public String toString() {
+        return "ReservedHour{" +
+                "id=" + id +
+                ", start=" + start +
+                ", end=" + end +
+                ", drivingLessons=" + drivingLessons +
+                ", reservedDate=" + reservedDate +
+                '}';
+    }
 }

@@ -52,4 +52,13 @@ public class VehicleType {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "VehicleType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", vehicleList=" + vehicleList +
+                '}';
+    }
 }

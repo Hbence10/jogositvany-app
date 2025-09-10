@@ -129,4 +129,21 @@ public class DrivingLessons {
     public void setEndKm(int endKm) {
         this.endKm = endKm;
     }
+
+    @Override
+    public String toString() {
+        return "DrivingLessons{" +
+                "id=" + id +
+                ", startKm=" + startKm +
+                ", location='" + location + '\'' +
+                ", pickUpPlace='" + pickUpPlace + '\'' +
+                ", dropOffPlace='" + dropOffPlace + '\'' +
+                ", isPaid=" + isPaid +
+                ", endKm=" + endKm +
+                ", drivingLessonStatus=" + drivingLessonStatus +
+                ", category=" + category +
+                ", paymentMethod=" + paymentMethod +
+                ", reservedHour=" + reservedHour +
+                '}';
+    }
 }

@@ -3,6 +3,7 @@ package csapat.DrivingLicenseAppAPI.entity;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
 
 @Entity
@@ -32,11 +33,13 @@ public class Review {
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "about_id", insertable = false, updatable = false)
+    @JoinColumn(name = "instructor_id", insertable = false, updatable = false)
+    @Null
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "about_id", insertable = false, updatable = false)
+    @JoinColumn(name = "school_id", insertable = false, updatable = false)
+    @Null
     private School aboutSchool;
 
     //Constructorok
@@ -80,5 +83,18 @@ public class Review {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", createdAt=" + createdAt +
+                ", rating=" + rating +
+                ", reviewAuthor=" + reviewAuthor +
+                ", aboutInstructor=" + aboutInstructor +
+                ", aboutSchool=" + aboutSchool +
+                '}';
     }
 }

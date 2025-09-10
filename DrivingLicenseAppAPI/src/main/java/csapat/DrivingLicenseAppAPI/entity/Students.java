@@ -45,4 +45,17 @@ public class Students {
     }
 
     //Getterek & Setterek
+
+
+    @Override
+    public String toString() {
+        return "Students{" +
+                "id=" + id +
+                ", studentSchool=" + studentSchool +
+                ", studentInstructor=" + studentInstructor +
+                ", studentUser=" + studentUser +
+                ", reviewList=" + reviewList +
+                ", requestList=" + requestList +
+                '}';
+    }
 }

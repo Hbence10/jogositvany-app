@@ -70,4 +70,17 @@ public class Instructors {
     public void setPromoText(String promoText) {
         this.promoText = promoText;
     }
+
+    @Override
+    public String toString() {
+        return "Instructors{" +
+                "id=" + id +
+                ", promoText='" + promoText + '\'' +
+                ", instructorUser=" + instructorUser +
+                ", instructorSchool=" + instructorSchool +
+                ", vehicle=" + vehicle +
+                ", reviewList=" + reviewList +
+                ", students=" + students +
+                '}';
+    }
 }

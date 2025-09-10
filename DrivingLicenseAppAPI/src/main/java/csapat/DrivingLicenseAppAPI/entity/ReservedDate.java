@@ -65,4 +65,14 @@ public class ReservedDate {
     public void setFull(boolean full) {
         isFull = full;
     }
+
+    @Override
+    public String toString() {
+        return "ReservedDate{" +
+                "id=" + id +
+                ", date=" + date +
+                ", isFull=" + isFull +
+                ", reservedHourList=" + reservedHourList +
+                '}';
+    }
 }
