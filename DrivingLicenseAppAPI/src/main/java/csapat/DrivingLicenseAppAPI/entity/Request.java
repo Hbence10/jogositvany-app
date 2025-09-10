@@ -31,8 +31,14 @@ public class Request {
     private boolean isExam = false;
 
     //Kapcsolatok:
-//    private Users sender;
-//    private Users picker;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "sender_id")
+    private Users senderUser;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "picker_id")
+    private Users pickerUser;
+
     @ManyToOne(cascade = {})
     @JoinColumn(name = "status_id")
     private Status requestStatus;

@@ -92,6 +92,19 @@ public class Users {
     @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
     private School school;
 
+    @OneToMany(
+            mappedBy = "senderUser",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Request> sendedRequestList;
+
+    @OneToMany(
+            mappedBy = "pickerUser",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Request> recievedRequestList;
 
     //Constructorok:
     public Users() {
