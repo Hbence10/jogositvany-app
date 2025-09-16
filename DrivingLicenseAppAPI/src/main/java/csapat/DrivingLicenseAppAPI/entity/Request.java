@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -8,6 +11,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "request")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Request {
 
     @Id
@@ -48,54 +54,10 @@ public class Request {
     private Students requestedStudent;
 
     //Constructorok:
-    public Request() {
-    }
-
     public Request(LocalDate createdAt, LocalDateTime requestedDate, String message, boolean isExam) {
         this.createdAt = createdAt;
         this.requestedDate = requestedDate;
         this.message = message;
         this.isExam = isExam;
-    }
-
-    //Getterek & Setterek:
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getRequestedDate() {
-        return requestedDate;
-    }
-
-    public void setRequestedDate(LocalDateTime requestedDate) {
-        this.requestedDate = requestedDate;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean isExam() {
-        return isExam;
-    }
-
-    public void setExam(boolean exam) {
-        isExam = exam;
     }
 }

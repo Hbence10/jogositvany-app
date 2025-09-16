@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "instructor")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Instructors {
 
     @Id
@@ -47,27 +53,7 @@ public class Instructors {
     private List<Students> students;
 
     //Constructorok:
-    public Instructors() {
-    }
-
     public Instructors(String promoText) {
-        this.promoText = promoText;
-    }
-
-    //Getterek & Setterek:
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPromoText() {
-        return promoText;
-    }
-
-    public void setPromoText(String promoText) {
         this.promoText = promoText;
     }
 

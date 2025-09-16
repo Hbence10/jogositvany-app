@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "role")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -29,27 +35,7 @@ public class Role {
     private List<Users> userList;
 
     //Constructorok
-    public Role() {
-    }
-
     public Role(String name) {
-        this.name = name;
-    }
-
-    //Getterek & Setterek
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 

@@ -1,11 +1,17 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Table(name = "students")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Students {
 
     @Id
@@ -39,13 +45,6 @@ public class Students {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Request> requestList;
-
-    //Constructorok:
-    public Students() {
-    }
-
-    //Getterek & Setterek
-
 
     @Override
     public String toString() {

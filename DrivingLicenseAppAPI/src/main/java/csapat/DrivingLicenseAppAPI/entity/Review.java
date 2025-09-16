@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -8,6 +11,9 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "review")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Review {
 
     @Id
@@ -43,45 +49,9 @@ public class Review {
     private School aboutSchool;
 
     //Constructorok
-    public Review() {
-    }
-
     public Review(String text, LocalDate createdAt, float rating) {
         this.text = text;
         this.createdAt = createdAt;
-        this.rating = rating;
-    }
-
-    //Getterek & Setterek:
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
         this.rating = rating;
     }
 

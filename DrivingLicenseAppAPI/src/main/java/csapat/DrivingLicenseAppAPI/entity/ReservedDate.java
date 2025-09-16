@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -9,6 +12,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "reserved_date")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReservedDate {
 
     @Id
@@ -33,37 +39,9 @@ public class ReservedDate {
     private List<ReservedHour> reservedHourList;
 
     //Constructorok:
-    public ReservedDate() {
-    }
-
     public ReservedDate(Date date, boolean isFull) {
         this.date = date;
         this.isFull = isFull;
-    }
-
-    //Getterek & Setterek:
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public boolean isFull() {
-        return isFull;
-    }
-
-    public void setFull(boolean full) {
-        isFull = full;
     }
 
     @Override

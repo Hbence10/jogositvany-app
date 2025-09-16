@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,9 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "opening_details")
+@Getter
+@Setter
+@NoArgsConstructor
 public class OpeningDetails {
 
     @Id
@@ -34,46 +40,10 @@ public class OpeningDetails {
     private School schoolOpeningDetail;
 
     //Constructorok:
-    public OpeningDetails() {
-    }
-
     public OpeningDetails(int id, LocalTime openingTime, LocalTime closeTime, String day) {
         this.id = id;
         this.openingTime = openingTime;
         this.closeTime = closeTime;
-        this.day = day;
-    }
-
-    //Getterek & Setterek:
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public LocalTime getOpeningTime() {
-        return openingTime;
-    }
-
-    public void setOpeningTime(LocalTime openingTime) {
-        this.openingTime = openingTime;
-    }
-
-    public LocalTime getCloseTime() {
-        return closeTime;
-    }
-
-    public void setCloseTime(LocalTime closeTime) {
-        this.closeTime = closeTime;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
         this.day = day;
     }
 

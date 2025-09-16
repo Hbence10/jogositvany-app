@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "fuel_types")
+@Getter
+@Setter
+@NoArgsConstructor
 public class FuelType {
 
     @Id
@@ -29,36 +35,8 @@ public class FuelType {
     private List<Vehicle> vehicles;
 
     //Constructorok:
-    public FuelType() {
-    }
-
     public FuelType(String name) {
         this.name = name;
-    }
-
-    //Getterek & Setterek
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
-
-    public void setVehicles(List<Vehicle> vehicles) {
-        this.vehicles = vehicles;
     }
 
     @Override

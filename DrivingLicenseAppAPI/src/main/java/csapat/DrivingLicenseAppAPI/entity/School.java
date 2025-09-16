@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "school")
+@Getter
+@Setter
+@NoArgsConstructor
 public class School {
 
     @Id
@@ -87,10 +93,6 @@ public class School {
     private List<Students> studentsList;
 
     //Constructorok
-
-    public School() {
-    }
-
     public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {
         this.name = name;
         this.email = email;
@@ -99,79 +101,6 @@ public class School {
         this.town = town;
         this.address = address;
         this.promoText = promoText;
-        this.bannerImgPath = bannerImgPath;
-    }
-
-    //Getterek & Setterek
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getTown() {
-        return town;
-    }
-
-    public void setTown(String town) {
-        this.town = town;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPromoText() {
-        return promoText;
-    }
-
-    public void setPromoText(String promoText) {
-        this.promoText = promoText;
-    }
-
-    public String getBannerImgPath() {
-        return bannerImgPath;
-    }
-
-    public void setBannerImgPath(String bannerImgPath) {
         this.bannerImgPath = bannerImgPath;
     }
 

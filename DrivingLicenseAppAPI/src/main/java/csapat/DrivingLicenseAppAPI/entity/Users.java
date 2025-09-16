@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,20 +17,11 @@ import java.util.List;
         @NamedStoredProcedureQuery(name = "Login", procedureName = "Login", parameters = {
                 @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
                 @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {Users.class}),
-
-        @NamedStoredProcedureQuery(name = "RegisterUser", procedureName = "RegisterUser", parameters = {
-                @StoredProcedureParameter(name = "firstNameIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "lastNameIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "phoneIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "birthDateIN", mode = ParameterMode.IN, type = LocalDate.class),
-                @StoredProcedureParameter(name = "genderIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "educationQualificationIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "result", mode = ParameterMode.OUT, type = String.class)
-        }, resultClasses = {String.class})
+        }, resultClasses = {Users.class})
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,9 +101,6 @@ public class Users {
     private List<Request> recievedRequestList;
 
     //Constructorok:
-    public Users() {
-    }
-
     public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -120,47 +111,6 @@ public class Users {
         this.educationQualification = educationQualification;
         this.password = password;
         this.pfpPath = pfpPath;
-    }
-
-    //Getterek & Setterek
-    public int getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public String getEducationQualification() {
-        return educationQualification;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPfpPath() {
-        return pfpPath;
     }
 
     @Override

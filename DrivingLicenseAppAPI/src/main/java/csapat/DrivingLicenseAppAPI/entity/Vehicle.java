@@ -1,12 +1,18 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Table(name = "vehicle")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Vehicle {
 
     @Id
@@ -37,28 +43,8 @@ public class Vehicle {
     private Instructors instructor;
 
     //Constructorok
-    public Vehicle() {
-    }
-
     public Vehicle(String licensePlate, String name) {
         this.licensePlate = licensePlate;
-        this.name = name;
-    }
-
-    //Getterek & Setterek
-    public String getLicensePlate() {
-        return licensePlate;
-    }
-
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 
