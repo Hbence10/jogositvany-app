@@ -32,7 +32,7 @@ public class Role {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private List<Users> userList;
+    private List<User> userList;
 
     //Constructorok
     public Role(String name) {

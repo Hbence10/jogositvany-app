@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,8 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Users instructorUser;
+    private
+    User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")

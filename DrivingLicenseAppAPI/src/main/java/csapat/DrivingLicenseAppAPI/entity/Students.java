@@ -30,7 +30,7 @@ public class Students {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Users studentUser;
+    private User studentUser;
 
     @OneToMany(
             mappedBy = "reviewAuthor",

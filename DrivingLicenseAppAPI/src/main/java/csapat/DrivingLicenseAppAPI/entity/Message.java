@@ -23,6 +23,6 @@ public class Message {
     private LocalDate createdAt;
 
     //Kapcsolatok:
-//    private Users messageTo;
-//    private Users messageFrom;
+//    private User messageTo;
+//    private User messageFrom;
 }

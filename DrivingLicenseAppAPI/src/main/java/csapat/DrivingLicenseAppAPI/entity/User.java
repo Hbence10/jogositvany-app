@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,12 +17,12 @@ import java.util.List;
         @NamedStoredProcedureQuery(name = "Login", procedureName = "Login", parameters = {
                 @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
                 @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {Users.class})
+        }, resultClasses = {User.class})
 })
 @Getter
 @Setter
 @NoArgsConstructor
-public class Users {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -72,6 +72,22 @@ public class Users {
     @Size(max = 64)
     private String pfpPath;
 
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "last_login")
+    @Null
+    private Date lastLogin;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Null
+    private Date deletedAt;
+
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
@@ -101,7 +117,7 @@ public class Users {
     private List<Request> recievedRequestList;
 
     //Constructorok:
-    public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
+    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -115,7 +131,7 @@ public class Users {
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "User{" +
                 "pfpPath='" + pfpPath + '\'' +
                 ", password='" + password + '\'' +
                 ", educationQualification='" + educationQualification + '\'' +

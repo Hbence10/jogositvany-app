@@ -39,11 +39,11 @@ public class Request {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "sender_id")
-    private Users senderUser;
+    private User senderUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "picker_id")
-    private Users pickerUser;
+    private User pickerUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "status_id")

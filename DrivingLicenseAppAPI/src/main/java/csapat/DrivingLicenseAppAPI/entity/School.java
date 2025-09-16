@@ -62,7 +62,7 @@ public class School {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "administrator_id")
-    private Users administrator;
+    private User administrator;
 
     @OneToMany(
             mappedBy = "instructorSchool",
