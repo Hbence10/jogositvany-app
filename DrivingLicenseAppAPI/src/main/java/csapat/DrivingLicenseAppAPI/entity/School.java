@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class School {
 
     @Id
@@ -102,25 +104,5 @@ public class School {
         this.address = address;
         this.promoText = promoText;
         this.bannerImgPath = bannerImgPath;
-    }
-
-    @Override
-    public String toString() {
-        return "School{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", country='" + country + '\'' +
-                ", town='" + town + '\'' +
-                ", address='" + address + '\'' +
-                ", promoText='" + promoText + '\'' +
-                ", bannerImgPath='" + bannerImgPath + '\'' +
-                ", administrator=" + administrator +
-                ", instructorsList=" + instructorsList +
-                ", openingDetails=" + openingDetails +
-                ", reviewList=" + reviewList +
-                ", studentsList=" + studentsList +
-                '}';
     }
 }

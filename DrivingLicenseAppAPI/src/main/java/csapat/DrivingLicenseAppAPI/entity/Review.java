@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Review {
 
     @Id
@@ -53,18 +55,5 @@ public class Review {
         this.text = text;
         this.createdAt = createdAt;
         this.rating = rating;
-    }
-
-    @Override
-    public String toString() {
-        return "Review{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", createdAt=" + createdAt +
-                ", rating=" + rating +
-                ", reviewAuthor=" + reviewAuthor +
-                ", aboutInstructor=" + aboutInstructor +
-                ", aboutSchool=" + aboutSchool +
-                '}';
     }
 }

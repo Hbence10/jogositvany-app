@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +13,10 @@ import java.util.Map;
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping("/login")
     public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password){

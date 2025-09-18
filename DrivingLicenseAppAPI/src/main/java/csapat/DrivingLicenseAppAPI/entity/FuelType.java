@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class FuelType {
 
     @Id
@@ -37,14 +39,5 @@ public class FuelType {
     //Constructorok:
     public FuelType(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "FuelType{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", vehicles=" + vehicles +
-                '}';
     }
 }

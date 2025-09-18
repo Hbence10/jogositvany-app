@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class DrivingLicenseCategory {
 
     @Id
@@ -43,16 +45,5 @@ public class DrivingLicenseCategory {
     public DrivingLicenseCategory(String name, int minAge) {
         this.name = name;
         this.minAge = minAge;
-    }
-
-
-    @Override
-    public String toString() {
-        return "DrivingLicenseCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", minAge=" + minAge +
-                ", drivingLessonsList=" + drivingLessonsList +
-                '}';
     }
 }

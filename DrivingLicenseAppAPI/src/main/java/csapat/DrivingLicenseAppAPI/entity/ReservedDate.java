@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ReservedDate {
 
     @Id
@@ -42,15 +43,5 @@ public class ReservedDate {
     public ReservedDate(Date date, boolean isFull) {
         this.date = date;
         this.isFull = isFull;
-    }
-
-    @Override
-    public String toString() {
-        return "ReservedDate{" +
-                "id=" + id +
-                ", date=" + date +
-                ", isFull=" + isFull +
-                ", reservedHourList=" + reservedHourList +
-                '}';
     }
 }

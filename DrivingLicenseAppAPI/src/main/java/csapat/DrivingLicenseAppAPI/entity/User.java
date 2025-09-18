@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -22,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,21 +129,5 @@ public class User {
         this.educationQualification = educationQualification;
         this.password = password;
         this.pfpPath = pfpPath;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "pfpPath='" + pfpPath + '\'' +
-                ", password='" + password + '\'' +
-                ", educationQualification='" + educationQualification + '\'' +
-                ", gender='" + gender + '\'' +
-                ", birthDate=" + birthDate +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", id=" + id +
-                '}';
     }
 }

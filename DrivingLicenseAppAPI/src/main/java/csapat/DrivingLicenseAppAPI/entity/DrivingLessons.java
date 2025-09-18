@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class DrivingLessons {
 
     @Id
@@ -74,22 +76,5 @@ public class DrivingLessons {
         this.dropOffPlace = dropOffPlace;
         this.isPaid = isPaid;
         this.endKm = endKm;
-    }
-
-    @Override
-    public String toString() {
-        return "DrivingLessons{" +
-                "id=" + id +
-                ", startKm=" + startKm +
-                ", location='" + location + '\'' +
-                ", pickUpPlace='" + pickUpPlace + '\'' +
-                ", dropOffPlace='" + dropOffPlace + '\'' +
-                ", isPaid=" + isPaid +
-                ", endKm=" + endKm +
-                ", drivingLessonStatus=" + drivingLessonStatus +
-                ", category=" + category +
-                ", paymentMethod=" + paymentMethod +
-                ", reservedHour=" + reservedHour +
-                '}';
     }
 }

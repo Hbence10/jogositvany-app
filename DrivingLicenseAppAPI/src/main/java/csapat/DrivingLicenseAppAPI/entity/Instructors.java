@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Instructors {
 
     @Id
@@ -55,18 +57,5 @@ public class Instructors {
     //Constructorok:
     public Instructors(String promoText) {
         this.promoText = promoText;
-    }
-
-    @Override
-    public String toString() {
-        return "Instructors{" +
-                "id=" + id +
-                ", promoText='" + promoText + '\'' +
-                ", instructorUser=" + instructorUser +
-                ", instructorSchool=" + instructorSchool +
-                ", vehicle=" + vehicle +
-                ", reviewList=" + reviewList +
-                ", students=" + students +
-                '}';
     }
 }

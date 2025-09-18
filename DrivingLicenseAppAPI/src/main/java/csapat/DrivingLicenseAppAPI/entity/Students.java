@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class Students {
 
     @Id
@@ -45,16 +47,4 @@ public class Students {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Request> requestList;
-
-    @Override
-    public String toString() {
-        return "Students{" +
-                "id=" + id +
-                ", studentSchool=" + studentSchool +
-                ", studentInstructor=" + studentInstructor +
-                ", studentUser=" + studentUser +
-                ", reviewList=" + reviewList +
-                ", requestList=" + requestList +
-                '}';
-    }
 }

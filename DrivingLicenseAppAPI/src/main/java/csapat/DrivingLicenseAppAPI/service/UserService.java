@@ -4,7 +4,7 @@ package csapat.DrivingLicenseAppAPI.service;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,11 @@ import java.util.regex.Pattern;
 
 @Transactional
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final String SPECIAL = "!@#$%^&*()-_=+[]{};:,.?/";
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     //Endpointok
     public ResponseEntity<User> login(String username, String password) {

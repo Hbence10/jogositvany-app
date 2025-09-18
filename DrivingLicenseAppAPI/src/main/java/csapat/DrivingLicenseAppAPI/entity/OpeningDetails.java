@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class OpeningDetails {
 
     @Id
@@ -45,16 +47,5 @@ public class OpeningDetails {
         this.openingTime = openingTime;
         this.closeTime = closeTime;
         this.day = day;
-    }
-
-    @Override
-    public String toString() {
-        return "OpeningDetails{" +
-                "id=" + id +
-                ", openingTime=" + openingTime +
-                ", closeTime=" + closeTime +
-                ", day='" + day + '\'' +
-                ", schoolOpeningDetail=" + schoolOpeningDetail +
-                '}';
     }
 }

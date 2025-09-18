@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ReservedHour {
 
     @Id
@@ -42,16 +44,5 @@ public class ReservedHour {
     public ReservedHour(int start, int end) {
         this.start = start;
         this.end = end;
-    }
-
-    @Override
-    public String toString() {
-        return "ReservedHour{" +
-                "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
-                ", drivingLessons=" + drivingLessons +
-                ", reservedDate=" + reservedDate +
-                '}';
     }
 }

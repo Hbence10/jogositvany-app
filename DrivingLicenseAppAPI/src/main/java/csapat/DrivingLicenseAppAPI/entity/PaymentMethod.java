@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class PaymentMethod {
 
     @Id
@@ -38,14 +40,5 @@ public class PaymentMethod {
     public PaymentMethod(int id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "PaymentMethod{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", drivingLessonsList=" + drivingLessonsList +
-                '}';
     }
 }
