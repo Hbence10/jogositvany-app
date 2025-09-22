@@ -1,12 +1,20 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "driving_lessons")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class DrivingLessons {
 
     @Id
@@ -43,8 +51,30 @@ public class DrivingLessons {
     @Size(max = 7)
     private int endKm;
 
-//    private Status status;
-//    private DrivingLicenseCategory category;
-//    private PaymentMethod paymentMethod;
-//    private ReservedHour reservedHour;
+    //Kapcsolatok:
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "status_id")
+    private Status drivingLessonStatus;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "category_id")
+    private DrivingLicenseCategory category;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethod paymentMethod;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hour_id")
+    private ReservedHour reservedHour;
+
+    //Constructorok:
+    public DrivingLessons(int startKm, String location, String pickUpPlace, String dropOffPlace, boolean isPaid, int endKm) {
+        this.startKm = startKm;
+        this.location = location;
+        this.pickUpPlace = pickUpPlace;
+        this.dropOffPlace = dropOffPlace;
+        this.isPaid = isPaid;
+        this.endKm = endKm;
+    }
 }

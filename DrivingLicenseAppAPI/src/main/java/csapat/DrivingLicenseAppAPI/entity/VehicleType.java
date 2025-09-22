@@ -1,6 +1,10 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "vehicle_type")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class VehicleType {
 
     @Id
@@ -20,5 +28,16 @@ public class VehicleType {
     @Size(max = 100)
     private String name;
 
-//    private List<Vehicle> vehicleList;
+    //Kapcsolatok:
+    @OneToMany(
+            mappedBy = "vehicleType",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Vehicle> vehicleList;
+
+    //Constructorok:
+    public VehicleType(String name) {
+        this.name = name;
+    }
 }
