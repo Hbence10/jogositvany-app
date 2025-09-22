@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Transactional
@@ -19,12 +20,15 @@ public class UserService {
     private static final String SPECIAL = "!@#$%^&*()-_=+[]{};:,.?/";
 
     //Endpointok
-    public ResponseEntity<User> login(String username, String password) {
+    public ResponseEntity<Object> login(String username, String password) {
         User loggedUser = userRepository.login(username, password);
 
-        if (loggedUser == null || loggedUser.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        }
+//        if (loggedUser == null || loggedUser.getIsDeleted()) {
+//            return ResponseEntity.notFound().build();
+//        }
+
+        System.out.println(loggedUser.getId());
+//        System.out.println(loggedUser.getStudents());
 
         return ResponseEntity.ok(loggedUser);
     }

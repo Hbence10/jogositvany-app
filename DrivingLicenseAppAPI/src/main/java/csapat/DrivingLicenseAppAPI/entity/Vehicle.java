@@ -22,7 +22,7 @@ public class Vehicle {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "license_path")
+    @Column(name = "license_plate")
     @Size(max = 10)
     @NotNull
     private String licensePlate;
@@ -41,7 +41,7 @@ public class Vehicle {
     @JoinColumn(name = "fuel_type_id")
     private FuelType fuelType;
 
-    @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Instructors instructor;
 
     //Constructorok

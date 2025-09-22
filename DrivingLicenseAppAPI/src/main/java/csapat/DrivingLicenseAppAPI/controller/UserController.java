@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password){
+    public ResponseEntity<Object> login(@RequestParam("email") String email, @RequestParam("password") String password){
         return userService.login(email, password);
     }
 
@@ -30,8 +30,8 @@ public class UserController {
 
 
     //Error lekezelesek:
-    @ExceptionHandler
-    public ResponseEntity<User> handleUniqueError(DataIntegrityViolationException e){
-        return ResponseEntity.notFound().build();
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<String> handleUniqueError(DataIntegrityViolationException e){
+//        return ResponseEntity.status(409).body("UniqueEmail");
+//    }
 }

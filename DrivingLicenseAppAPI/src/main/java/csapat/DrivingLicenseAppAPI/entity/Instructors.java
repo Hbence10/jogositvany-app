@@ -29,8 +29,7 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private
-    User instructorUser;
+    private User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
