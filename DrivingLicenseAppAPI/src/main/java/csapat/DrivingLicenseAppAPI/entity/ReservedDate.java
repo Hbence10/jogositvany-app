@@ -1,14 +1,21 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "reserved_date")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class ReservedDate {
 
     @Id
@@ -17,7 +24,6 @@ public class ReservedDate {
     private int id;
 
     @Column(name = "date")
-//    @Temporal(TemporalType.DATE)
     @NotNull
     private Date date;
 
@@ -25,5 +31,17 @@ public class ReservedDate {
     @NotNull
     private boolean isFull = false;
 
-//    private List<ReservedHour> reservedHourList;
+    //Kapcsolatok:
+    @OneToMany(
+            mappedBy = "reservedDate",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<ReservedHour> reservedHourList;
+
+    //Constructorok:
+    public ReservedDate(Date date, boolean isFull) {
+        this.date = date;
+        this.isFull = isFull;
+    }
 }

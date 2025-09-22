@@ -1,6 +1,10 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "school")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class School {
 
     @Id
@@ -53,7 +61,48 @@ public class School {
     @NotNull
     private String bannerImgPath;
 
-//    private Users administrator;
-//    private List<Instructors> instructorsList;
-//    private List<Students> studentsList;
+    //Kapcsolatok:
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "administrator_id")
+    private User administrator;
+
+    @OneToMany(
+            mappedBy = "instructorSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Instructors> instructorsList;
+
+    @OneToMany(
+            mappedBy = "schoolOpeningDetail",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<OpeningDetails> openingDetails;
+
+    @OneToMany(
+            mappedBy = "aboutSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Review> reviewList;
+
+    @OneToMany(
+            mappedBy = "studentSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<Students> studentsList;
+
+    //Constructorok
+    public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.country = country;
+        this.town = town;
+        this.address = address;
+        this.promoText = promoText;
+        this.bannerImgPath = bannerImgPath;
+    }
 }

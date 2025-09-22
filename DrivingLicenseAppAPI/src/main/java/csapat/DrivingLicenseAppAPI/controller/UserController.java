@@ -1,26 +1,37 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.entity.Users;
+import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping("/login")
-    public Users login(@RequestParam("email") String email, @RequestParam("password") String password){
+    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password){
         return userService.login(email, password);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@RequestBody User newUser){
+        return userService.register(newUser);
+    }
+
+
+    //Error lekezelesek:
+    @ExceptionHandler
+    public ResponseEntity<User> handleUniqueError(DataIntegrityViolationException e){
+        return ResponseEntity.notFound().build();
     }
 }

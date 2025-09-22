@@ -1,6 +1,10 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,6 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "payment_methods")
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class PaymentMethod {
 
     @Id
@@ -20,5 +28,17 @@ public class PaymentMethod {
     @NotNull
     private String name;
 
-//    private List<DrivingLessons> drivingLessonsList;
+    //Kapcsolatok:
+    @OneToMany(
+            mappedBy = "paymentMethod",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> drivingLessonsList;
+
+    //Constructorok:
+    public PaymentMethod(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

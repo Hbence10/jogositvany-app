@@ -1,12 +1,20 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Table(name = "vehicle")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 public class Vehicle {
 
     @Id
@@ -24,6 +32,21 @@ public class Vehicle {
     @Size(max = 100)
     private String name;
 
-//    private VehicleType vehicleType;
-//    private FuelType fuelType;
+    //Kapcsolatok
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "type_id")
+    private VehicleType vehicleType;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "fuel_type_id")
+    private FuelType fuelType;
+
+    @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    private Instructors instructor;
+
+    //Constructorok
+    public Vehicle(String licensePlate, String name) {
+        this.licensePlate = licensePlate;
+        this.name = name;
+    }
 }
