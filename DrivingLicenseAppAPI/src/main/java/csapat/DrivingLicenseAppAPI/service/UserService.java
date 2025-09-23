@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 
+import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Transactional
@@ -19,7 +22,7 @@ public class UserService {
     private static final String SPECIAL = "!@#$%^&*()-_=+[]{};:,.?/";
 
     //Endpointok
-    public ResponseEntity<User> login(String username, String password) {
+    public ResponseEntity<Object> login(String username, String password) {
         User loggedUser = userRepository.login(username, password);
 
         if (loggedUser == null || loggedUser.getIsDeleted()) {
@@ -42,6 +45,19 @@ public class UserService {
         }
 
         return ResponseEntity.internalServerError().build();
+    }
+
+    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id){
+        Students searchedStudent = userRepository.findById(id).get().getStudents();
+        if (searchedStudent == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Integer> responseObject = new HashMap<String, Integer>();
+        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
+        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
+
+        return ResponseEntity.ok(responseObject);
     }
 
     //---------------------------------
