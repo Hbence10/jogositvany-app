@@ -27,6 +27,11 @@ public class DrivingLessons {
     @Size(max = 7)
     private int startKm;
 
+    @Column(name = "end_km")
+    @NotNull
+    @Size(max = 7)
+    private int endKm;
+
     @Column(name = "location")
     @NotNull
     @Size(max = 100)
@@ -42,14 +47,13 @@ public class DrivingLessons {
     @Size(max = 100)
     private String dropOffPlace;
 
+    @Column(name = "lesson_hour_number")
+    @NotNull
+    private int lessonHourNumber;
+
     @Column(name = "is_paid")
     @NotNull
     private boolean isPaid = false;
-
-    @Column(name = "end_km")
-    @NotNull
-    @Size(max = 7)
-    private int endKm;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
@@ -68,13 +72,21 @@ public class DrivingLessons {
     @JoinColumn(name = "hour_id")
     private ReservedHour reservedHour;
 
-    //Constructorok:
-    public DrivingLessons(int startKm, String location, String pickUpPlace, String dropOffPlace, boolean isPaid, int endKm) {
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "drivingLessons")
+    private Students dStudent;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "instructorDrivingLessons")
+    private Instructors dInstructor;
+
+    public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
         this.startKm = startKm;
+        this.endKm = endKm;
         this.location = location;
         this.pickUpPlace = pickUpPlace;
         this.dropOffPlace = dropOffPlace;
+        this.lessonHourNumber = lessonHourNumber;
         this.isPaid = isPaid;
-        this.endKm = endKm;
     }
 }

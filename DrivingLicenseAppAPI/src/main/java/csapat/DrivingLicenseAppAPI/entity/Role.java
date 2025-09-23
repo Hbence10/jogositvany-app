@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class Role {
     private String name;
 
     //Kapcsolatok:
+    @JsonIgnore
     @OneToMany(
             mappedBy = "role",
             fetch = FetchType.LAZY,
@@ -38,6 +40,11 @@ public class Role {
 
     //Constructorok
     public Role(String name) {
+        this.name = name;
+    }
+
+    public Role(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 }

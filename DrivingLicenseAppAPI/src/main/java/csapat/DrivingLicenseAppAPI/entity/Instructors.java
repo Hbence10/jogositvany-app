@@ -29,8 +29,7 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private
-    User instructorUser;
+    private User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
@@ -53,6 +52,13 @@ public class Instructors {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Students> students;
+
+    @OneToMany(
+            mappedBy = "dInstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> instructorDrivingLessons;
 
     //Constructorok:
     public Instructors(String promoText) {
