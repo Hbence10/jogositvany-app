@@ -10,10 +10,17 @@ import { Observable } from 'rxjs';
 export class UsersService {
 
   private http = inject(HttpClient);
+  private baseUrl = 'http://localhost:8080/';
 
   constructor() { }
 
   login(email: string, password: string) : Observable<User> {
-    return this.http.get<User>(`http://localhost:8080/users/login?email=${email}&password=${password}`);
+    return this.http.get<User>(`${this.baseUrl}users/login?email=${email}&password=${password}`);
+  }
+
+  registration(user: User) : Observable<string> {
+
+    console.log(user);
+    return this.http.post<string>(`${this.baseUrl}users/register`, user);
   }
 }

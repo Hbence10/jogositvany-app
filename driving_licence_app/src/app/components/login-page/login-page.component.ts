@@ -22,6 +22,9 @@ export class LoginPageComponent {
       this.usersService.login(this.loginForm.controls["email"].value!, this.loginForm.controls["password"].value!).subscribe({
         next: response => {
           console.log(response);
+        },
+        complete: () => {
+
         }
       });
     }
