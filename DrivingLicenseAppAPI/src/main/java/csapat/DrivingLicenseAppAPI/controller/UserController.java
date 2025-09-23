@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/hours/{id}")
-    public ResponseEntity<Object> getHourDetails(@PathVariable("id") Long id){
+    public ResponseEntity<Map<String, Integer>> getHourDetails(@PathVariable("id") Long id){
         return userService.getHourDetails(id);
     }
 

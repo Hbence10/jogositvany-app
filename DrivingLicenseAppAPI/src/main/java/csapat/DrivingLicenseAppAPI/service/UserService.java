@@ -48,16 +48,17 @@ public class UserService {
         return ResponseEntity.internalServerError().build();
     }
 
-    public ResponseEntity<Object> getHourDetails(Long id){
+    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id){
         Students searchedStudent = userRepository.findById(id).get().getStudents();
         if (searchedStudent == null){
             return ResponseEntity.notFound().build();
         }
 
         Map<String, Integer> responseObject = new HashMap<>();
-//        responseObject.put("drivedHourNumber", searchedStudent.get)
+        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
+        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
 
-        return null;
+        return responseObject;
     }
 
     //---------------------------------
