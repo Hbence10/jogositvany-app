@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -54,11 +53,11 @@ public class UserService {
             return ResponseEntity.notFound().build();
         }
 
-        Map<String, Integer> responseObject = new HashMap<>();
+        Map<String, Integer> responseObject = new HashMap<String, Integer>();
         responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
         responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
 
-        return responseObject;
+        return ResponseEntity.ok(responseObject);
     }
 
     //---------------------------------
