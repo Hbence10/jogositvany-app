@@ -1,3 +1,5 @@
+import { Role } from "./role.model";
+
 export class User {
   constructor(
     public id: number | null,
@@ -8,6 +10,7 @@ export class User {
     public birthDate: string,
     public gender: string,
     public educationQualification: string,
-    public password: string
+    public password: string,
+    public role : Role = new Role(1, "user")
   ) {}
 }

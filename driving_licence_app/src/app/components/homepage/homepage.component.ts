@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-homepage',
@@ -6,6 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
-export class HomepageComponent {
+export class HomepageComponent implements OnInit{
+  private userService = inject(UsersService);
 
+  ngOnInit(): void {
+    // let role = this.userService.loggedUser().role;
+  }
 }
