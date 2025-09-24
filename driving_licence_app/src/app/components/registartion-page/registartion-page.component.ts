@@ -1,8 +1,34 @@
 import { UsersService } from './../../services/users.service';
-import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
+
+function validatePassword(control: AbstractControl): {[key: string]: any} | null  {
+  const password: string = control.value
+
+  const specialCharacters: string = "!@#$%^&*()-_=+[]{};:,.?/"
+  const numberTexts: string = "1234567890"
+  const checkerList: boolean[] = [false, false, false, false]
+
+  for (let i: number = 0; i < password.length; i++) {
+    if (specialCharacters.includes(password[i])) {
+      checkerList[0] = true
+    } else if (numberTexts.includes(password[i])) {
+      checkerList[1] = true
+    } else if (password[i] === password[i].toUpperCase()) {
+      checkerList[2] = true
+    } else if (password[i] === password[i].toLowerCase()) {
+      checkerList[3] = true
+    }
+  }
+
+  if (!checkerList.includes(false)) {
+    return null
+  } else {
+    return { invalid: false }
+  }
+}
 
 @Component({
   selector: 'app-registartion-page',
@@ -10,8 +36,7 @@ import { User } from '../../models/user.model';
   templateUrl: './registartion-page.component.html',
   styleUrl: './registartion-page.component.css'
 })
-export class RegistartionPageComponent {
-
+export class RegistartionPageComponent implements OnInit {
   private usersService = inject(UsersService);
 
   registrationForm = new FormGroup({
@@ -25,6 +50,19 @@ export class RegistartionPageComponent {
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required])
   });
+
+  samePasswordValidator = (control: AbstractControl): {[key: string]: any} | null  => {
+    let originalPassword = this.registrationForm.controls["password"].value
+    if (control.value === originalPassword) {
+      return null
+    } else {
+      return { invalid: false }
+    }
+  }
+
+  ngOnInit(): void {
+    this.registrationForm.controls["confirmPassword"].addValidators(this.samePasswordValidator)
+  }
 
   registration(){
     const newUser:User = new User(0, this.registrationForm.controls["firstName"].value!,
