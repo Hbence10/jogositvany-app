@@ -9,10 +9,10 @@ import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Transactional
 @Service
@@ -20,13 +20,16 @@ import java.util.regex.Pattern;
 public class UserService {
     private final UserRepository userRepository;
     private final EmailSender emailSender;
+    private final PasswordEncoder passwordEncoder;
 
 
     //Endpointok
     public ResponseEntity<Object> login(String username, String password) {
-        User loggedUser = userRepository.login(username, password);
+        User loggedUser = userRepository.login(username);
 
-        if (loggedUser == null || loggedUser.getIsDeleted()) {
+        boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
+
+        if (!successFullLogin || loggedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -35,6 +38,8 @@ public class UserService {
 
     public ResponseEntity<Object> register(User newUser) {
         if (ValidatorCollection.emailChecker(newUser.getEmail()) && ValidatorCollection.passwordChecker(newUser.getPassword())) {
+            String hashedPassword = passwordEncoder.encode(newUser.getPassword());
+            newUser.setPassword(hashedPassword);
             User registeredUser = userRepository.save(newUser);
             return ResponseEntity.ok(registeredUser);
         } else if (!ValidatorCollection.emailChecker(newUser.getEmail()) && !ValidatorCollection.passwordChecker(newUser.getPassword())) {
@@ -87,14 +92,14 @@ public class UserService {
         } else if (user == null) {
             return ResponseEntity.notFound().build();
         } else {
-            user.setPassword(newPassword);
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(hashedPassword);
             userRepository.save(user);
             return ResponseEntity.ok("successfullyReset");
         }
     }
 
-    //---------------------------------
-    //Egyeb
+    //egyeb:
     public static String generateVerificationCode() {
         String code = "";
         ArrayList<String> characters = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));

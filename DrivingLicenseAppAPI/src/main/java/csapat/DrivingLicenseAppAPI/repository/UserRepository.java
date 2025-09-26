@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Procedure(name = "Login", procedureName = "Login")
-    User login(@Param("emailIN") String username, @Param("passwordIN") String password);
+    User login(@Param("emailIN") String username);
 
     @Procedure(name = "getAllEmail", procedureName = "getAllEmail")
     List<String> getAllEmail();
