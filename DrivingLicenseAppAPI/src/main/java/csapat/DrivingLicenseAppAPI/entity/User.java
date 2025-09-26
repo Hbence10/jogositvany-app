@@ -123,6 +123,10 @@ public class User {
     @JsonIgnore
     private List<Request> recievedRequestList;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "school_administrator_id")
+    private School adminSchool;
+
     //Constructorok:
     public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
         this.firstName = firstName;
