@@ -41,9 +41,10 @@ public class UserController {
         return ResponseEntity.ok(returnObject);
     }
 
-    //Error lekezelesek:
-//    @ExceptionHandler
-//    public ResponseEntity<String> handleUniqueError(DataIntegrityViolationException e){
-//        return ResponseEntity.status(409).body("UniqueEmail");
-//    }
+    @PatchMapping("/passwordReset")
+    public ResponseEntity<HashMap<String, String>> updatePassword(@RequestBody Map<String, String> body) {
+        HashMap<String, String> returnObject = new HashMap<>();
+        returnObject.put("result", userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
+        return ResponseEntity.ok(returnObject);
+    }
 }

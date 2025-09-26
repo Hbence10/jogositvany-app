@@ -21,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final EmailSender emailSender;
 
+
     //Endpointok
     public ResponseEntity<Object> login(String username, String password) {
         User loggedUser = userRepository.login(username, password);
@@ -71,6 +72,24 @@ public class UserService {
             String verificationCode = generateVerificationCode();
             emailSender.sendVerificationCodeEmail(email, verificationCode);
             return ResponseEntity.ok(verificationCode);
+        }
+    }
+
+    public ResponseEntity<String> updatePassword(String email, String newPassword) {
+        User user = userRepository.getUserByEmail(email);
+
+        if (!ValidatorCollection.emailChecker(email) && !ValidatorCollection.passwordChecker(newPassword)) {
+            return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
+        } else if (!ValidatorCollection.emailChecker(email)) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else if (!ValidatorCollection.passwordChecker(newPassword)) {
+            return ResponseEntity.status(417).body("InvalidPassword");
+        } else if (user == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return ResponseEntity.ok("successfullyReset");
         }
     }
 
