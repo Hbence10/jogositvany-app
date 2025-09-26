@@ -1,14 +1,16 @@
-<div class="container-fluid d-flex" style="height: 100vh;">
+<div class="container-fluid">
 
-  <div class="row h-100">
-    <div class="col-lg-3"><app-navbar></app-navbar></div>
-    <div class="col-lg-9 ">
-      <div>
-        <router-outlet></router-outlet>
-      </div>
-      <app-footer></app-footer>
-    </div>
+  <div class="row">
+    <div class="col-lg-3"><app-navbar/></div>
+    <div class="col-lg-9 "><router-outlet/></div>
   </div>
 
-
+  <div class="row ">
+    <div class="col-lg-12">
+      <app-footer/>
+    </div>
+  </div>
 </div>
+
+
+

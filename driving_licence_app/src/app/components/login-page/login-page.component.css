@@ -9,6 +9,7 @@
 }
 
 .page {
+  margin: 0px 0px 0px 170px;
   width: 100vh;
   height: 100vh;
   display: flex;
