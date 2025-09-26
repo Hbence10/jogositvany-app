@@ -19,7 +19,9 @@ import java.util.List;
         @NamedStoredProcedureQuery(name = "login", procedureName = "Login", parameters = {
                 @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
                 @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {User.class})
+        }, resultClasses = {User.class}),
+
+        @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class)
 })
 @Getter
 @Setter

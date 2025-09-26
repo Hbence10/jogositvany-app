@@ -34,6 +34,13 @@ public class UserController {
         return userService.register(newUser);
     }
 
+    @GetMapping("/verificationCode")
+    public ResponseEntity<HashMap<String, String>> getVerificationCode(@RequestParam("email") String email) {
+        HashMap<String, String> returnObject = new HashMap<>();
+        returnObject.put("vCode", userService.getVerificationCode(email).getBody());
+        return ResponseEntity.ok(returnObject);
+    }
+
     //Error lekezelesek:
 //    @ExceptionHandler
 //    public ResponseEntity<String> handleUniqueError(DataIntegrityViolationException e){

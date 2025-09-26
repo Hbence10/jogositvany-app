@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.other.ValidatorCollection;
@@ -10,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Transactional
@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final EmailSender emailSender;
 
     //Endpointok
     public ResponseEntity<Object> login(String username, String password) {
@@ -59,7 +60,36 @@ public class UserService {
         return ResponseEntity.ok(responseObject);
     }
 
+    public ResponseEntity<String> getVerificationCode(String email) {
+        List<String> emailList = userRepository.getAllEmail();
+
+        if (!ValidatorCollection.emailChecker(email.trim())) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else if (!emailList.contains(email.trim())) {
+            return ResponseEntity.notFound().build();
+        } else {
+            String verificationCode = generateVerificationCode();
+            emailSender.sendVerificationCodeEmail(email, verificationCode);
+            return ResponseEntity.ok(verificationCode);
+        }
+    }
+
     //---------------------------------
     //Egyeb
+    public static String generateVerificationCode() {
+        String code = "";
+        ArrayList<String> characters = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
+
+        for (int i = 97; i <= 122; i++) {
+            characters.add(String.valueOf((char) i));
+        }
+
+        while (code.length() != 10) {
+            Random random = new Random();
+            code += characters.get(random.nextInt(characters.size()));
+        }
+
+        return code;
+    }
 
 }

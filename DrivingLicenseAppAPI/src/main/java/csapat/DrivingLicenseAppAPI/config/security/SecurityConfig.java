@@ -1,4 +1,4 @@
-package csapat.DrivingLicenseAppAPI.config;
+package csapat.DrivingLicenseAppAPI.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
