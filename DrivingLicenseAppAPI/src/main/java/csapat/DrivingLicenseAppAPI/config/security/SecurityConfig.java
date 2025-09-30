@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -26,18 +27,15 @@ public class SecurityConfig {
                         config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
                         config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
                         config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
+                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
                         config.setMaxAge(3600L);
                         return config;
                     }
                 }))
-                .authorizeHttpRequests((requests) -> requests
-//                                .requestMatchers("").permitAll()
-//                                .requestMatchers("").authenticated()
-                                .anyRequest().permitAll()
-
-                )
+                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 
