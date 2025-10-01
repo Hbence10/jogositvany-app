@@ -16,13 +16,10 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "login", procedureName = "Login", parameters = {
-                @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {User.class}),
-
         @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
         }, resultClasses = {User.class}),
+
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
 })
 @Getter

@@ -33,7 +33,12 @@ public class UserController {
         return userService.register(newUser);
     }
 
-    @GetMapping("/verificationCode")
+    @PostMapping("/checkVerificationCode")
+    public ResponseEntity<Boolean> checkVerificationCode(@RequestParam String vCode){
+        return userService.checkVCode(vCode);
+    }
+
+    @GetMapping("/getVerificationCode")
     public ResponseEntity<HashMap<String, String>> getVerificationCode(@RequestParam("email") String email) {
         HashMap<String, String> returnObject = new HashMap<>();
         returnObject.put("vCode", userService.getVerificationCode(email).getBody());

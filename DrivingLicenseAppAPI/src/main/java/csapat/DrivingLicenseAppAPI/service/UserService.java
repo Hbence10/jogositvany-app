@@ -21,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
+    private String vCode = "";
 
 
     //Endpointok
@@ -53,9 +54,9 @@ public class UserService {
         return ResponseEntity.internalServerError().build();
     }
 
-    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id){
+    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id) {
         Students searchedStudent = userRepository.findById(id).get().getStudents();
-        if (searchedStudent == null){
+        if (searchedStudent == null) {
             return ResponseEntity.notFound().build();
         }
 
@@ -74,9 +75,9 @@ public class UserService {
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
         } else {
-            String verificationCode = generateVerificationCode();
-            emailSender.sendVerificationCodeEmail(email, verificationCode);
-            return ResponseEntity.ok(verificationCode);
+            this.vCode = generateVerificationCode();
+            emailSender.sendVerificationCodeEmail(email, vCode);
+            return ResponseEntity.ok("");
         }
     }
 
@@ -96,6 +97,14 @@ public class UserService {
             user.setPassword(hashedPassword);
             userRepository.save(user);
             return ResponseEntity.ok("successfullyReset");
+        }
+    }
+
+    public ResponseEntity<Boolean> checkVCode(String userVCode){
+        if (userVCode == this.vCode){
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(422).body(false);
         }
     }
 
