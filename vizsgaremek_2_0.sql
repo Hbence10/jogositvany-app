@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 01, 2025 at 11:10 AM
+-- Generation Time: Oct 01, 2025 at 12:00 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -112,6 +112,17 @@ INSERT INTO `driving_license_category` (`id`, `name`, `min_age`) VALUES
 (13, 'CE', 18),
 (14, 'D1E', 18),
 (15, 'DE', 18);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `education`
+--
+
+CREATE TABLE `education` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -458,6 +469,12 @@ ALTER TABLE `driving_license_category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `education`
+--
+ALTER TABLE `education`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `fuel_types`
 --
 ALTER TABLE `fuel_types`
@@ -590,6 +607,12 @@ ALTER TABLE `driving_lessons`
 --
 ALTER TABLE `driving_license_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `education`
+--
+ALTER TABLE `education`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `fuel_types`
