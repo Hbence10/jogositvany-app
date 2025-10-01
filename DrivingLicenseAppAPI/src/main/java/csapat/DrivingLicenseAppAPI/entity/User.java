@@ -104,9 +104,9 @@ public class User {
     @JsonIgnore
     private Students students;
 
-    @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnore
-    private School school;
+//    @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JsonIgnore
+//    private School school;
 
     @OneToMany(
             mappedBy = "senderUser",

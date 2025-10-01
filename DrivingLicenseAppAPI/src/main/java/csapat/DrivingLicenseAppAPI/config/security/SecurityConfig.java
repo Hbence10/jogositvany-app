@@ -34,6 +34,7 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults())
+                .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

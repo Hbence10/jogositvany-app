@@ -67,7 +67,7 @@ public class School {
     private User owner;
 
     @OneToMany(
-            mappedBy = "instructorSchool",
+            mappedBy = "adminSchool",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
