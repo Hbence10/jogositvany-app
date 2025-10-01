@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 01, 2025 at 10:59 AM
+-- Generation Time: Oct 01, 2025 at 11:10 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -37,6 +37,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `asd` (IN `email` VARCHAR(100), IN `
     WHERE 
     u.email = email AND 
     u.password = password;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEmail` ()   BEGIN
+	SELECT `users`.`email` FROM `users`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
