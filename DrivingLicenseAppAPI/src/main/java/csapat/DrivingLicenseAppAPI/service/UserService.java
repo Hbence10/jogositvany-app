@@ -25,8 +25,8 @@ public class UserService {
 
 
     //Endpointok
-    public ResponseEntity<Object> login(String username, String password) {
-        User loggedUser = userRepository.login(username);
+    public ResponseEntity<Object> login(String email, String password) {
+        User loggedUser = userRepository.getUserByEmail(email);
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 
@@ -67,7 +67,7 @@ public class UserService {
         return ResponseEntity.ok(responseObject);
     }
 
-    public ResponseEntity<String> getVerificationCode(String email) {
+    public ResponseEntity<Object> getVerificationCode(String email) {
         List<String> emailList = userRepository.getAllEmail();
 
         if (!ValidatorCollection.emailChecker(email.trim())) {
@@ -76,8 +76,9 @@ public class UserService {
             return ResponseEntity.notFound().build();
         } else {
             this.vCode = generateVerificationCode();
+            System.out.println(vCode);
             emailSender.sendVerificationCodeEmail(email, vCode);
-            return ResponseEntity.ok("");
+            return ResponseEntity.ok(true);
         }
     }
 
@@ -100,11 +101,15 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Boolean> checkVCode(String userVCode){
-        if (userVCode == this.vCode){
-            return ResponseEntity.ok(true);
+    public ResponseEntity<Object> checkVCode(String userVCode) {
+        if (userVCode.length() != 10) {
+            return ResponseEntity.status(417).body("InvalidVerificationCode");
         } else {
-            return ResponseEntity.status(422).body(false);
+            if (userVCode.equals(this.vCode)) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.status(422).body(false);
+            }
         }
     }
 
