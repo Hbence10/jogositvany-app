@@ -3,8 +3,6 @@ package csapat.DrivingLicenseAppAPI.controller;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +31,9 @@ public class UserController {
         return userService.register(newUser);
     }
 
-    @GetMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestParam String vCode){
-        return userService.checkVCode(vCode);
+    @PostMapping("/checkVerificationCode")
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> codeObject){
+        return userService.checkVCode(codeObject.get("vCode"));
     }
 
     @GetMapping("/getVerificationCode")
