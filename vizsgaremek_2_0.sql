@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 01, 2025 at 12:00 PM
+-- Generation Time: Oct 02, 2025 at 07:43 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -123,6 +123,20 @@ CREATE TABLE `education` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `education`
+--
+
+INSERT INTO `education` (`id`, `name`) VALUES
+(1, 'Általános Iskola'),
+(2, 'Szakiskola / Szakképző iskola'),
+(3, 'Szakközépiskola'),
+(4, 'Gimnázium'),
+(5, 'Felsőfokú szakképzés'),
+(6, 'Egyetem'),
+(7, 'Főiskola'),
+(8, 'Doktori képzés');
 
 -- --------------------------------------------------------
 
@@ -612,7 +626,7 @@ ALTER TABLE `driving_license_category`
 -- AUTO_INCREMENT for table `education`
 --
 ALTER TABLE `education`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `fuel_types`
