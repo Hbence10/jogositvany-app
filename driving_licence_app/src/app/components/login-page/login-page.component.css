@@ -8,6 +8,15 @@
   color: #DEE0EB;
 }
 
+.page {
+  margin: 0px;
+  width: 100vh;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .inputs {
   margin: 10px 0px;
   width: 420px;
