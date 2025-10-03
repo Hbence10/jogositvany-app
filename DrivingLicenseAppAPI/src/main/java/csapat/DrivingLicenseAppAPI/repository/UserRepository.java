@@ -5,8 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.List;
 
-    @Procedure(name = "Login", procedureName = "Login")
-    User login(@Param("emailIN") String username, @Param("passwordIN") String password);
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Procedure(name = "getAllEmail", procedureName = "getAllEmail")
+    List<String> getAllEmail();
+
+    @Procedure(name = "getUserByEmail", procedureName = "getUserByEmail")
+    User getUserByEmail(@Param("emailIN") String username);
 }
