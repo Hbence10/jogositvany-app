@@ -2,9 +2,11 @@ package csapat.DrivingLicenseAppAPI.service;
 
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.other.ValidatorCollection;
+import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
+    private final EducationRepository educationRepository;
     private String vCode = "";
 
 
@@ -54,19 +57,7 @@ public class UserService {
         return ResponseEntity.internalServerError().build();
     }
 
-    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id) {
-        Students searchedStudent = userRepository.findById(id).get().getStudents();
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Map<String, Integer> responseObject = new HashMap<String, Integer>();
-        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
-        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
-
-        return ResponseEntity.ok(responseObject);
-    }
-
+    //password reset
     public ResponseEntity<Object> getVerificationCode(String email) {
         List<String> emailList = userRepository.getAllEmail();
 
@@ -113,6 +104,47 @@ public class UserService {
         }
     }
 
+    // update:
+    public ResponseEntity<Object> updateUser(User updatedUser) {
+
+        if (updatedUser.getId() == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            List<Education> allEducation = educationRepository.findAll();
+
+            if (!phoneValidator(updatedUser.getPhone())) {
+                return ResponseEntity.status(417).body("InvalidPhone");
+            } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
+                return ResponseEntity.status(417).body("InvalidEmail");
+            } else if (!allEducation.contains(updatedUser.getUserEducation())){
+                return ResponseEntity.status(417).body("InvalidEducation");
+            }
+            else {
+                User result = userRepository.save(updatedUser);
+                return ResponseEntity.ok(result);
+            }
+        }
+    }
+
+    // delete:
+    public ResponseEntity<Boolean> deleteUser(Long id) {
+        return null;
+    }
+
+    //egyebb endpoint:
+    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id) {
+        Students searchedStudent = userRepository.findById(id).get().getStudents();
+        if (searchedStudent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Integer> responseObject = new HashMap<String, Integer>();
+        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
+        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
+
+        return ResponseEntity.ok(responseObject);
+    }
+
     //egyeb:
     public static String generateVerificationCode() {
         String code = "";
@@ -129,5 +161,12 @@ public class UserService {
 
         return code;
     }
+
+    public Boolean phoneValidator(String phoneNumber) {
+        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
+        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
+        //https://hu.wikipedia.org/wiki/Magyar_mobilszolg%C3%A1ltat%C3%B3k
+    }
+
 
 }

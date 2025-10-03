@@ -31,6 +31,7 @@ public class UserController {
         return userService.register(newUser);
     }
 
+    //password reset
     @PostMapping("/checkVerificationCode")
     public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> codeObject){
         return userService.checkVCode(codeObject.get("vCode"));
@@ -48,5 +49,17 @@ public class UserController {
         HashMap<String, String> returnObject = new HashMap<>();
         returnObject.put("result", userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
         return ResponseEntity.ok(returnObject);
+    }
+
+    //
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateUser(@RequestBody User updatedUser){
+        return userService.updateUser(updatedUser);
+    }
+
+    //
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id){
+        return userService.deleteUser(id);
     }
 }
