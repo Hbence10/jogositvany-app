@@ -128,7 +128,15 @@ public class UserService {
 
     // delete:
     public ResponseEntity<Boolean> deleteUser(Long id) {
-        return null;
+        User searchedUser = userRepository.findById(id).get();
+        if(searchedUser.getId() == null || searchedUser.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            searchedUser.setIsDeleted(true);
+            searchedUser.setDeletedAt(new Date());
+            userRepository.save(searchedUser);
+            return ResponseEntity.ok(true);
+        }
     }
 
     //egyebb endpoint:
