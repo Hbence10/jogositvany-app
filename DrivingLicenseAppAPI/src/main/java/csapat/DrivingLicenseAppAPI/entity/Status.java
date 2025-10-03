@@ -43,7 +43,7 @@ public class Status {
     )
     private List<Request> requestList;
 
-    //Constructorok:#
+    //Constructorok:
     public Status(String name) {
         this.name = name;
     }

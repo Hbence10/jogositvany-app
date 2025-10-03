@@ -3,14 +3,12 @@ package csapat.DrivingLicenseAppAPI.controller;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -18,9 +16,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
-    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password){
-        return userService.login(email, password);
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> loginBody){
+        return userService.login(loginBody.get("email"), loginBody.get("password"));
+    }
+
+    @GetMapping("/hours/{id}")
+    public ResponseEntity<Map<String, Integer>> getHourDetails(@PathVariable("id") Long id){
+        return userService.getHourDetails(id);
     }
 
     @PostMapping("/register")
@@ -28,10 +31,35 @@ public class UserController {
         return userService.register(newUser);
     }
 
+    //password reset
+    @PostMapping("/checkVerificationCode")
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> codeObject){
+        return userService.checkVCode(codeObject.get("vCode"));
+    }
 
-    //Error lekezelesek:
-    @ExceptionHandler
-    public ResponseEntity<User> handleUniqueError(DataIntegrityViolationException e){
-        return ResponseEntity.notFound().build();
+    @GetMapping("/getVerificationCode")
+    public ResponseEntity<HashMap<String, Object>> getVerificationCode(@RequestParam("email") String email) {
+        HashMap<String, Object> returnObject = new HashMap<>();
+        returnObject.put("isSent", userService.getVerificationCode(email).getBody());
+        return ResponseEntity.ok(returnObject);
+    }
+
+    @PatchMapping("/passwordReset")
+    public ResponseEntity<HashMap<String, String>> updatePassword(@RequestBody Map<String, String> body) {
+        HashMap<String, String> returnObject = new HashMap<>();
+        returnObject.put("result", userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
+        return ResponseEntity.ok(returnObject);
+    }
+
+    //
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateUser(@RequestBody User updatedUser){
+        return userService.updateUser(updatedUser);
+    }
+
+    //
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id){
+        return userService.deleteUser(id);
     }
 }

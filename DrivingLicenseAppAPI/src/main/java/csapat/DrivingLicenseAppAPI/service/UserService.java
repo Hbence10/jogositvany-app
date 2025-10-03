@@ -1,28 +1,39 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.entity.Education;
+import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
+import csapat.DrivingLicenseAppAPI.other.ValidatorCollection;
+import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.regex.Pattern;
+import java.util.*;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
-    private static final String SPECIAL = "!@#$%^&*()-_=+[]{};:,.?/";
+    private final EmailSender emailSender;
+    private final PasswordEncoder passwordEncoder;
+    private final EducationRepository educationRepository;
+    private String vCode = "";
+
 
     //Endpointok
-    public ResponseEntity<User> login(String username, String password) {
-        User loggedUser = userRepository.login(username, password);
+    public ResponseEntity<Object> login(String email, String password) {
+        User loggedUser = userRepository.getUserByEmail(email);
 
-        if (loggedUser == null || loggedUser.getIsDeleted()) {
+        boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
+
+        if (!successFullLogin || loggedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -30,55 +41,132 @@ public class UserService {
     }
 
     public ResponseEntity<Object> register(User newUser) {
-        if (emailChecker(newUser.getEmail()) && passwordChecker(newUser.getPassword())) {
+        if (ValidatorCollection.emailChecker(newUser.getEmail()) && ValidatorCollection.passwordChecker(newUser.getPassword())) {
+            String hashedPassword = passwordEncoder.encode(newUser.getPassword());
+            newUser.setPassword(hashedPassword);
             User registeredUser = userRepository.save(newUser);
             return ResponseEntity.ok(registeredUser);
-        } else if (!emailChecker(newUser.getEmail()) && !passwordChecker(newUser.getPassword())) {
+        } else if (!ValidatorCollection.emailChecker(newUser.getEmail()) && !ValidatorCollection.passwordChecker(newUser.getPassword())) {
             return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
-        } else if (!emailChecker(newUser.getEmail())) {
+        } else if (!ValidatorCollection.emailChecker(newUser.getEmail())) {
             return ResponseEntity.status(417).body("InvalidEmail");
-        } else if (!passwordChecker(newUser.getPassword())) {
+        } else if (!ValidatorCollection.passwordChecker(newUser.getPassword())) {
             return ResponseEntity.status(417).body("InvalidPassword");
         }
 
         return ResponseEntity.internalServerError().build();
     }
 
-    //---------------------------------
-    //Egyeb
-    public static boolean emailChecker(String email) {
-        if (email == null || email.length() > 100) {
-            return false;
+    //password reset
+    public ResponseEntity<Object> getVerificationCode(String email) {
+        List<String> emailList = userRepository.getAllEmail();
+
+        if (!ValidatorCollection.emailChecker(email.trim())) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else if (!emailList.contains(email.trim())) {
+            return ResponseEntity.notFound().build();
+        } else {
+            this.vCode = generateVerificationCode();
+            System.out.println(vCode);
+            emailSender.sendVerificationCodeEmail(email, vCode);
+            return ResponseEntity.ok(true);
         }
-        return EMAIL_PATTERN.matcher(email).matches();
     }
 
-    private static boolean passwordChecker(String password) {
-        if (password.length() < 8 || password.length() > 16) {
-            return false;
+    public ResponseEntity<String> updatePassword(String email, String newPassword) {
+        User user = userRepository.getUserByEmail(email);
+
+        if (!ValidatorCollection.emailChecker(email) && !ValidatorCollection.passwordChecker(newPassword)) {
+            return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
+        } else if (!ValidatorCollection.emailChecker(email)) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else if (!ValidatorCollection.passwordChecker(newPassword)) {
+            return ResponseEntity.status(417).body("InvalidPassword");
+        } else if (user == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(hashedPassword);
+            userRepository.save(user);
+            return ResponseEntity.ok("successfullyReset");
         }
+    }
 
-        String specialCharacters = "\"!@#$%^&*()-_=+[]{};:,.?/\"";
-        String numbersText = "1234567890";
-        boolean specialChecker = false;
-        boolean upperCaseChecker = false;
-        boolean lowerCaseChecker = false;
-        boolean initChecker = false;
-
-        for (int i = 0; i < password.trim().length(); i++) {
-            String selectedChar = String.valueOf(password.charAt(i));
-
-            if (numbersText.contains(selectedChar)) {
-                initChecker = true;
-            } else if (specialCharacters.contains(selectedChar)) {
-                specialChecker = true;
-            } else if (selectedChar.equals(selectedChar.toUpperCase())) {
-                upperCaseChecker = true;
-            } else if (selectedChar.equals(selectedChar.toLowerCase())) {
-                lowerCaseChecker = true;
+    public ResponseEntity<Object> checkVCode(String userVCode) {
+        if (userVCode.length() != 10) {
+            return ResponseEntity.status(417).body("InvalidVerificationCode");
+        } else {
+            if (userVCode.equals(this.vCode)) {
+                return ResponseEntity.ok(true);
+            } else {
+                return ResponseEntity.status(422).body(false);
             }
         }
-
-        return specialChecker && upperCaseChecker && lowerCaseChecker && initChecker;
     }
+
+    // update:
+    public ResponseEntity<Object> updateUser(User updatedUser) {
+
+        if (updatedUser.getId() == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            List<Education> allEducation = educationRepository.findAll();
+
+            if (!phoneValidator(updatedUser.getPhone())) {
+                return ResponseEntity.status(417).body("InvalidPhone");
+            } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
+                return ResponseEntity.status(417).body("InvalidEmail");
+            } else if (!allEducation.contains(updatedUser.getUserEducation())){
+                return ResponseEntity.status(417).body("InvalidEducation");
+            }
+            else {
+                User result = userRepository.save(updatedUser);
+                return ResponseEntity.ok(result);
+            }
+        }
+    }
+
+    // delete:
+    public ResponseEntity<Boolean> deleteUser(Long id) {
+        return null;
+    }
+
+    //egyebb endpoint:
+    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id) {
+        Students searchedStudent = userRepository.findById(id).get().getStudents();
+        if (searchedStudent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Map<String, Integer> responseObject = new HashMap<String, Integer>();
+        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
+        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
+
+        return ResponseEntity.ok(responseObject);
+    }
+
+    //egyeb:
+    public static String generateVerificationCode() {
+        String code = "";
+        ArrayList<String> characters = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
+
+        for (int i = 97; i <= 122; i++) {
+            characters.add(String.valueOf((char) i));
+        }
+
+        while (code.length() != 10) {
+            Random random = new Random();
+            code += characters.get(random.nextInt(characters.size()));
+        }
+
+        return code;
+    }
+
+    public Boolean phoneValidator(String phoneNumber) {
+        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
+        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
+        //https://hu.wikipedia.org/wiki/Magyar_mobilszolg%C3%A1ltat%C3%B3k
+    }
+
+
 }

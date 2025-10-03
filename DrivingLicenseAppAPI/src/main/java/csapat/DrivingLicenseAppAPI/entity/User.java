@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +16,11 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "Login", procedureName = "Login", parameters = {
-                @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {User.class})
+        @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
+                @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
+        }, resultClasses = {User.class}),
+
+        @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
 })
 @Getter
 @Setter
@@ -28,7 +30,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "first_name")
     @NotNull
@@ -59,13 +61,7 @@ public class User {
     @Size(max = 50)
     private String gender;
 
-    @Column(name = "education_qualification")
-    @NotNull
-    @Size(max = 150)
-    private String educationQualification;
-
     @Column(name = "password")
-    @Size(max = 64)
     @NotNull
     private String password;
 
@@ -91,24 +87,23 @@ public class User {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {})
+    @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "role_id")
-    private Role role;
+    private Role role = new Role(1, "user");
 
-    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Instructors instructor;
 
-    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
     private Students students;
-
-    @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    private School school;
 
     @OneToMany(
             mappedBy = "senderUser",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Request> sendedRequestList;
 
     @OneToMany(
@@ -116,17 +111,25 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Request> recievedRequestList;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "school_administrator_id")
+    private School adminSchool;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "education_id")
+    private Education userEducation;
+
     //Constructorok:
-    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
+    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
         this.gender = gender;
-        this.educationQualification = educationQualification;
         this.password = password;
         this.pfpPath = pfpPath;
     }
