@@ -61,13 +61,7 @@ public class User {
     @Size(max = 50)
     private String gender;
 
-    @Column(name = "education_qualification")
-    @NotNull
-    @Size(max = 150)
-    private String educationQualification;
-
     @Column(name = "password")
-    @Size(max = 64)
     @NotNull
     private String password;
 
@@ -104,10 +98,6 @@ public class User {
     @JsonIgnore
     private Students students;
 
-//    @OneToOne(mappedBy = "administrator", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JsonIgnore
-//    private School school;
-
     @OneToMany(
             mappedBy = "senderUser",
             fetch = FetchType.LAZY,
@@ -128,15 +118,18 @@ public class User {
     @JoinColumn(name = "school_administrator_id")
     private School adminSchool;
 
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "education_id")
+    private Education userEducation;
+
     //Constructorok:
-    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String educationQualification, String password, String pfpPath) {
+    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
         this.gender = gender;
-        this.educationQualification = educationQualification;
         this.password = password;
         this.pfpPath = pfpPath;
     }
