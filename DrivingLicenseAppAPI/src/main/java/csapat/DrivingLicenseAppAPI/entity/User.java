@@ -16,10 +16,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "Login", procedureName = "Login", parameters = {
-                @StoredProcedureParameter(name = "emailIN", mode = ParameterMode.IN, type = String.class),
-                @StoredProcedureParameter(name = "passwordIN", mode = ParameterMode.IN, type = String.class),
-        }, resultClasses = {User.class})
+        @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
+                @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
+        }, resultClasses = {User.class}),
 })
 @Getter
 @Setter
