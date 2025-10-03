@@ -17,4 +17,60 @@ export class Instructors {
     private students: Students[],
     private instructorDrivingLessons: DrivingLessons[]
   ){}
+
+  get getName(): string {
+    return this.name;
+  }
+  set setName(value: string){
+    this.name = value;
+  }
+
+  get getPromoText(): string {
+    return this.promoText;
+  }
+  set setPromoText(value: string){
+    this.promoText = value;
+  }
+
+  get getInstructorUser(): User {
+    return this.instructorUser;
+  }
+  set setInstructorUser(value: User){
+    this.instructorUser = value;
+  }
+
+  get getInstructorSchool(): School {
+    return this.instructorSchool;
+  }
+  set setInstructorSchool(value: School){
+    this.instructorSchool = value;
+  }
+
+  get getVehicle(): Vehicle {
+    return this.vehicle;
+  }
+  set setVehicle(value: Vehicle){
+    this.vehicle = value;
+  }
+
+  get getReviewList(): Review[] {
+    return this.reviewList;
+  }
+  set setReviewList(value: Review[]){
+    this.reviewList = value;
+  }
+
+  get getStudents(): Students[] {
+    return this.students;
+  }
+  set setStudents(value: Students[]){
+    this.students = value;
+  }
+
+  get getInstructorDrivingLessons(): DrivingLessons[] {
+    return this.instructorDrivingLessons;
+  }
+  set setInstructorDrivingLessons(value: DrivingLessons[]){
+    this.instructorDrivingLessons = value;
+  }
 }
