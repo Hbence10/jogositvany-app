@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class Students {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User studentUser;
 
     @OneToMany(
@@ -39,6 +41,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -46,6 +49,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Request> requestList;
 
     @OneToMany(
@@ -53,5 +57,6 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<DrivingLessons> drivingLessons;
 }

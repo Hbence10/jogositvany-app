@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,12 +17,14 @@ public class StudentController {
 
     //Kezdolap:
     @GetMapping("/instructorDetails")
-    public ResponseEntity<Object> getInstructorDetails(){
-        return studentService.getInstructorDetails();
+    public ResponseEntity<Object> getInstructorDetails(@RequestParam("studentId") Integer studentId) {
+        return studentService.getInstructorDetails(studentId);
     }
 
     @GetMapping("/hourDetails")
-    public ResponseEntity<Object> getHoursDetails(){
-        return studentService.getHoursDetails();
+    public ResponseEntity<Object> getHoursDetails(@RequestParam("studentId") Integer studentId) {
+        return studentService.getHoursDetails(studentId);
     }
+
+    //
 }

@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class OpeningDetails {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
+    @JsonIgnore
     private School schoolOpeningDetail;
 
     //Constructorok:

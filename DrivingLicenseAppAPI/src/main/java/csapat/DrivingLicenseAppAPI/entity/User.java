@@ -91,12 +91,18 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role = new Role(1, "user");
 
+    //Ezek olyan adatok amelyek kellenek a kezdolapkor
     @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnore
     private Students students;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "school_administrator_id")
+    private School adminSchool;
+    //
 
     @OneToMany(
             mappedBy = "senderUser",
@@ -114,12 +120,9 @@ public class User {
     @JsonIgnore
     private List<Request> recievedRequestList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "school_administrator_id")
-    private School adminSchool;
-
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
+    @JsonIgnore
     private Education userEducation;
 
     //Constructorok:
