@@ -139,20 +139,6 @@ public class UserService {
         }
     }
 
-    //egyebb endpoint:
-    public ResponseEntity<Map<String, Integer>> getHourDetails(Long id) {
-        Students searchedStudent = userRepository.findById(id).get().getStudents();
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Map<String, Integer> responseObject = new HashMap<String, Integer>();
-        responseObject.put("drivedHourNumber", searchedStudent.getDrivingLessons().size());
-        responseObject.put("paidedHourNumber", searchedStudent.getDrivingLessons().stream().filter(hour -> hour.isPaid()).toList().size());
-
-        return ResponseEntity.ok(responseObject);
-    }
-
     //egyeb:
     public static String generateVerificationCode() {
         String code = "";
