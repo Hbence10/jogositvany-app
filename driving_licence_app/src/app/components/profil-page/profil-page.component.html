@@ -1,16 +1,23 @@
-<p>profil-page works!</p>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+  <div class="d-flex align-items-center">
 
-<div class="row container-fluid" style="height: 100vh;">
-  <div class="">
-    <img src="" id="avatar"><br>
-    <button id="messageBtn">a</button>
-  </div>
-  <div class="" id="infoBox">
-    <h1 style="color: #DEE0EB;">Nevetés</h1>
-    <h4 style="color: #B3B8D1;">Titulust</h4>
-    <p class="uData">Születési Dátum</p>
-    <p class="uData">Nem</p>
-    <p class="uData">E-mail</p>
-    <p class="uData">Telefonszám</p>
+    <div class="profil text-center">
+      <img src="" id="avatar"><br>
+      <button id="messageBtn">a</button>
+    </div>
+
+    <div class="p-4" id="infoBox">
+      <h1 style="color: #DEE0EB;">Nevetés</h1>
+      <h4 style="color: #B3B8D1;">Titulust</h4>
+      <p class="uData">Születési Dátum</p>
+      <p class="uData">Nem</p>
+      <p class="uData">E-mail</p>
+      <p class="uData">Telefonszám</p>
+      <div id="progressBar">
+        <label>Vezetett órák: <span>9</span>/30</label>
+        <input id="bar" type="range" min="0" max="30" value="9" disabled>
+      </div>
+    </div>
+
   </div>
 </div>
