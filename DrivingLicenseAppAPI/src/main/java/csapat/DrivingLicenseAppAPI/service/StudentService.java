@@ -19,7 +19,7 @@ public class StudentService {
         if (searchedStudent == null) {
             return ResponseEntity.notFound().build();
         } else {
-            return null;
+            return ResponseEntity.ok(searchedStudent.getStudentInstructor());
         }
     }
 

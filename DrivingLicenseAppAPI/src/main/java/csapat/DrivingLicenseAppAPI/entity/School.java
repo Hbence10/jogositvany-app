@@ -65,7 +65,6 @@ public class School {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    @JsonIgnore
     private User owner;
 
     @OneToMany(
@@ -73,7 +72,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<User> adminList;
 
     @OneToMany(
@@ -95,7 +93,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Review> reviewList;
 
     //kerdojel

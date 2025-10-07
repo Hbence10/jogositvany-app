@@ -92,24 +92,20 @@ public class User {
     private Role role;
 
     @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    @JsonIgnore
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    @JsonIgnore
     private Students students;
 
     @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
     private School adminSchool;
-    //
 
     @OneToMany(
             mappedBy = "senderUser",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Request> sendedRequestList;
 
     @OneToMany(
@@ -117,12 +113,10 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Request> recievedRequestList;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
-//    @JsonIgnore
     private Education userEducation;
 
     //Constructorok:

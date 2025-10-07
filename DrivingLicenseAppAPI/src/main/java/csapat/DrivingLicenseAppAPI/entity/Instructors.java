@@ -30,7 +30,6 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User instructorUser;
 
     @ManyToOne(cascade = {})
