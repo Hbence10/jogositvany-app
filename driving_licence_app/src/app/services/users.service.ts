@@ -16,7 +16,7 @@ export class UsersService {
   constructor() { }
 
   login(email: string, password: string) : Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}users/login?email=${email}&password=${password}`);
+    return this.http.post<User>(`${this.baseUrl}users/login`, {email: email, password: password});
   }
 
   registration(user: User) : Observable<string> {
