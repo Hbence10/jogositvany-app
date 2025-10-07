@@ -1,13 +1,13 @@
-<div id="navbar" class="d-flex flex-column justify-content-between align-items-start">
+<div id="navbar" class="navbar d-flex flex-column justify-content-between align-items-start">
 
-  <div class="d-flex flex-column justify-content-start align-items-start">
+  <div id="top" class="d-flex flex-column justify-content-start align-items-start">
 
-    <div class="profil d-flex justify-content-start align-items-center">
+    <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true">
       <div id="avatar"></div>
       <a>Profil</a>
     </div>
 
-    <div class="navItem d-flex justify-content-start align-items-center">
+    <div class="navItem d-flex justify-content-start align-items-center" [class.navbar:hover]="true">
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="home"></mat-icon>
       </div>
@@ -38,6 +38,9 @@
   </div>
 
   <div id="login" class="d-flex justify-content-start align-items-end">
+    <div class="navIconContainer d-flex justify-content-center align-items-center">
+        <mat-icon id="loginIcon" class="navIcons d-flex justify-content-center align-items-center" fontIcon="login"></mat-icon>
+    </div>
     <a routerLink="login">Bejelentkezése</a>
   </div>
 

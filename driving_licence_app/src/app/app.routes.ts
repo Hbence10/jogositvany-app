@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { RegistartionPageComponent } from './components/registartion-page/registartion-page.component';
+import { PasswordResetComponent } from './components/password-reset/password-reset.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomepageComponent },
   { path: 'login', component: LoginPageComponent },
-  { path: 'registartion', component: RegistartionPageComponent }
-
+  { path: 'registartion', component: RegistartionPageComponent },
+  { path: 'passwordReset', component: PasswordResetComponent },
 ];

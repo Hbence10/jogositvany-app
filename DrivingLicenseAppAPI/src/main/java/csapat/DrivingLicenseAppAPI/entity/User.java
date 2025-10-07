@@ -87,15 +87,15 @@ public class User {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
-    private Role role = new Role(1, "user");
+    private Role role;
 
-    //Ezek olyan adatok amelyek kellenek a kezdolapkor
-    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @JsonIgnore
     private Instructors instructor;
 
-    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
     @JsonIgnore
     private Students students;
 
