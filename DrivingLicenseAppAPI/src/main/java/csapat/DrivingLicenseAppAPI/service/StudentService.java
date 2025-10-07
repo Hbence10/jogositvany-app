@@ -14,22 +14,8 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<Object> getInstructorDetails(Integer studentId) {
-        Students searchedStudent = studentRepository.findById(studentId).get();
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(searchedStudent.getStudentInstructor());
-        }
-    }
-
-    public ResponseEntity<Object> getHoursDetails(Integer studentId) {
-        Students searchedStudent = studentRepository.findById(studentId).get();
-
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return null;
-        }
+    public ResponseEntity<Object> getStudentByUserId(int userId){
+        
+        return null;
     }
 }

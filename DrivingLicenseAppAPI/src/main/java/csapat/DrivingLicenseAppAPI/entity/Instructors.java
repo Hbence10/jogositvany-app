@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +31,12 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({})
     private User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
+    @JsonIgnoreProperties({"owner", "instructorsList", "studentsList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -45,6 +48,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({})
     private List<Review> reviewList;
 
     @OneToMany(
@@ -52,6 +56,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({})
     private List<Students> students;
 
     @OneToMany(
@@ -59,6 +64,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({})
     private List<DrivingLessons> instructorDrivingLessons;
 
     //Constructorok:

@@ -1,0 +1,20 @@
+Entity classok a kapcsolatokhoz:
+    1 DrivingLessons --> reservedHour, dStudent, dInstructor
+    2 DrivingLicenseCategory -
+    3 Education -
+    4 FuelType -
+    5 Instructors
+    6 Message
+    7 OpeningDetails -
+    8 PaymentMethod -
+    9 Request
+    10 ReservedDate
+    11 ReservedHour
+    12 Review
+    13 Role -
+    14 School
+    15 Status -
+    16 Students
+    17 User
+    18 Vehicle -
+    19 VehicleType -

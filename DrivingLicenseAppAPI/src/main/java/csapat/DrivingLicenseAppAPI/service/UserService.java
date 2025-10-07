@@ -29,7 +29,7 @@ public class UserService {
 
     //Endpointok
     public ResponseEntity<Object> login(String email, String password) {
-        User loggedUser = userRepository.getUserByEmail(email);
+        User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 

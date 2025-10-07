@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -68,16 +69,20 @@ public class DrivingLessons {
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
+    //
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hour_id")
+    @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "drivingLessons")
+    @JsonIgnoreProperties({})
     private Students dStudent;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructorDrivingLessons")
+    @JsonIgnoreProperties({})
     private Instructors dInstructor;
 
     public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {

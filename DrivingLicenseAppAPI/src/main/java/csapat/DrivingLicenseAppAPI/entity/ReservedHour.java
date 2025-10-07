@@ -33,7 +33,7 @@ public class ReservedHour {
     private int end;
 
     //Kapcsolatok:
-    @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private DrivingLessons drivingLessons;
 
     @ManyToOne(cascade = {})
