@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 02, 2025 at 07:43 AM
+-- Generation Time: Oct 07, 2025 at 11:43 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vizsgaremek_4.0`
+-- Database: `vizsgaremek_5.0`
 --
 
 DELIMITER $$
@@ -77,7 +77,9 @@ CREATE TABLE `driving_lessons` (
   `category_id` int(10) NOT NULL,
   `status_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL
+  `student_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -89,29 +91,31 @@ CREATE TABLE `driving_lessons` (
 CREATE TABLE `driving_license_category` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `min_age` int(2) NOT NULL
+  `min_age` int(2) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `driving_license_category`
 --
 
-INSERT INTO `driving_license_category` (`id`, `name`, `min_age`) VALUES
-(1, 'AM', 14),
-(2, 'A1', 16),
-(3, 'A2', 18),
-(4, 'A', 24),
-(5, 'B1', 17),
-(6, 'B', 17),
-(7, 'C1', 18),
-(8, 'C', 18),
-(9, 'D1', 18),
-(10, 'D', 18),
-(11, 'BE', 17),
-(12, 'C1E', 18),
-(13, 'CE', 18),
-(14, 'D1E', 18),
-(15, 'DE', 18);
+INSERT INTO `driving_license_category` (`id`, `name`, `min_age`, `is_deleted`, `deleted_at`) VALUES
+(1, 'AM', 14, 0, NULL),
+(2, 'A1', 16, 0, NULL),
+(3, 'A2', 18, 0, NULL),
+(4, 'A', 24, 0, NULL),
+(5, 'B1', 17, 0, NULL),
+(6, 'B', 17, 0, NULL),
+(7, 'C1', 18, 0, NULL),
+(8, 'C', 18, 0, NULL),
+(9, 'D1', 18, 0, NULL),
+(10, 'D', 18, 0, NULL),
+(11, 'BE', 17, 0, NULL),
+(12, 'C1E', 18, 0, NULL),
+(13, 'CE', 18, 0, NULL),
+(14, 'D1E', 18, 0, NULL),
+(15, 'DE', 18, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -121,22 +125,24 @@ INSERT INTO `driving_license_category` (`id`, `name`, `min_age`) VALUES
 
 CREATE TABLE `education` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `education`
 --
 
-INSERT INTO `education` (`id`, `name`) VALUES
-(1, 'Általános Iskola'),
-(2, 'Szakiskola / Szakképző iskola'),
-(3, 'Szakközépiskola'),
-(4, 'Gimnázium'),
-(5, 'Felsőfokú szakképzés'),
-(6, 'Egyetem'),
-(7, 'Főiskola'),
-(8, 'Doktori képzés');
+INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Általános Iskola', 0, NULL),
+(2, 'Szakiskola / Szakképző iskola', 0, NULL),
+(3, 'Szakközépiskola', 0, NULL),
+(4, 'Gimnázium', 0, NULL),
+(5, 'Felsőfokú szakképzés', 0, NULL),
+(6, 'Egyetem', 0, NULL),
+(7, 'Főiskola', 0, NULL),
+(8, 'Doktori képzés', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -146,15 +152,17 @@ INSERT INTO `education` (`id`, `name`) VALUES
 
 CREATE TABLE `fuel_types` (
   `id` int(11) NOT NULL,
-  `name` varchar(11) NOT NULL
+  `name` varchar(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fuel_types`
 --
 
-INSERT INTO `fuel_types` (`id`, `name`) VALUES
-(1, 'asd');
+INSERT INTO `fuel_types` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'asd', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -167,15 +175,17 @@ CREATE TABLE `instructor` (
   `user_id` int(10) NOT NULL,
   `school_id` int(10) NOT NULL,
   `promo_text` longtext NOT NULL,
-  `vehicle_id` int(11) NOT NULL
+  `vehicle_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `instructor`
 --
 
-INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`) VALUES
-(1, 7, 1, ' bbn nb', 4);
+INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 7, 1, ' bbn nb', 4, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -188,7 +198,9 @@ CREATE TABLE `message` (
   `message_to` int(10) NOT NULL,
   `message_from` int(10) NOT NULL,
   `content` longtext NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -202,7 +214,9 @@ CREATE TABLE `opening_details` (
   `opening_time` time NOT NULL,
   `close_time` time NOT NULL,
   `day` varchar(100) NOT NULL,
-  `school_id` int(10) NOT NULL
+  `school_id` int(10) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -213,17 +227,19 @@ CREATE TABLE `opening_details` (
 
 CREATE TABLE `payment_methods` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `payment_methods`
 --
 
-INSERT INTO `payment_methods` (`id`, `name`) VALUES
-(1, 'card'),
-(2, 'cash'),
-(3, 'revolut');
+INSERT INTO `payment_methods` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'card', 0, NULL),
+(2, 'cash', 0, NULL),
+(3, 'revolut', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,7 +256,9 @@ CREATE TABLE `request` (
   `msg` longtext NOT NULL,
   `status_id` int(11) NOT NULL,
   `is_exam` tinyint(1) NOT NULL,
-  `student_id` int(10) NOT NULL
+  `student_id` int(10) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -252,7 +270,9 @@ CREATE TABLE `request` (
 CREATE TABLE `reserved_date` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `is_full` tinyint(1) NOT NULL DEFAULT '0'
+  `is_full` tinyint(1) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -265,7 +285,9 @@ CREATE TABLE `reserved_hour` (
   `id` int(11) NOT NULL,
   `start` int(2) NOT NULL,
   `end` int(2) NOT NULL,
-  `date_id` int(11) NOT NULL
+  `date_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -281,7 +303,9 @@ CREATE TABLE `review` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `rating` float NOT NULL,
   `instructor_id` int(10) DEFAULT NULL,
-  `school_id` int(11) DEFAULT NULL
+  `school_id` int(11) DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -292,20 +316,22 @@ CREATE TABLE `review` (
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `role`
 --
 
-INSERT INTO `role` (`id`, `name`) VALUES
-(1, 'ROLE_user'),
-(2, 'ROLE_student'),
-(3, 'ROLE_instructor'),
-(4, 'ROLE_school_admin'),
-(5, 'ROLE_administrator'),
-(6, 'ROLE_school_owner');
+INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'ROLE_user', 0, NULL),
+(2, 'ROLE_student', 0, NULL),
+(3, 'ROLE_instructor', 0, NULL),
+(4, 'ROLE_school_admin', 0, NULL),
+(5, 'ROLE_administrator', 0, NULL),
+(6, 'ROLE_school_owner', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -323,15 +349,17 @@ CREATE TABLE `school` (
   `address` varchar(100) NOT NULL,
   `promo_text` longtext NOT NULL,
   `banner_img_path` longtext NOT NULL,
-  `owner_id` int(10) NOT NULL
+  `owner_id` int(10) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `school`
 --
 
-INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`) VALUES
-(1, 'suli_name1', 'suli_email1', 'suli_tel1', 'suli_country1', 'suli_town1', 'suli_addy1', 'suli_promo1', 'suli_banner1', 1);
+INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 'suli_name1', 'suli_email1', 'suli_tel1', 'suli_country1', 'suli_town1', 'suli_addy1', 'suli_promo1', 'suli_banner1', 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -341,7 +369,9 @@ INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `addres
 
 CREATE TABLE `status` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -354,17 +384,19 @@ CREATE TABLE `students` (
   `id` int(11) NOT NULL,
   `school_id` int(10) NOT NULL,
   `instructor_id` int(10) NOT NULL,
-  `user_id` int(10) NOT NULL
+  `user_id` int(10) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `school_id`, `instructor_id`, `user_id`) VALUES
-(1, 1, 2, 4),
-(2, 1, 3, 5),
-(3, 1, 4, 6);
+INSERT INTO `students` (`id`, `school_id`, `instructor_id`, `user_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 2, 4, 0, NULL),
+(2, 1, 3, 5, 0, NULL),
+(3, 1, 4, 6, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -380,8 +412,8 @@ CREATE TABLE `users` (
   `phone` varchar(50) NOT NULL,
   `birth_date` date NOT NULL,
   `gender` varchar(50) NOT NULL,
-  `education_qualification` varchar(150) NOT NULL,
-  `password` varchar(64) NOT NULL,
+  `education_id` int(11) NOT NULL DEFAULT '1',
+  `password` longtext NOT NULL,
   `role_id` int(11) DEFAULT '1',
   `pfp_path` longtext,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -395,25 +427,26 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `education_qualification`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`) VALUES
-(1, 'elonev', 'utonev', 'emailcim', '0630303030', '2000-01-01', 'nembinaris', 'ovoda', 'test', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(2, 'Elonev2', 'Utonev2', 'Email2', 'Teloszam2', '2000-01-02', 'gender2', 'eq2', '6a05b9c2f026724d6f8ee83bdca46d8b5de9752600802900df61b6ae87f50260', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(3, 'instructor_fn1', 'instructor_ln1', 'instructor_email1', 'instructor_phone1', '2000-01-03', 'gender1', 'instructor__eq1', 'oktato_pass1', 3, 'instructor_pfp1', '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(4, 'testStudent', 'testStudent', 'testStudent', 'student_phone1', '2000-01-01', 'gender', 'student_eq1', 'testStudent', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(5, 'student_fn2', 'student_ln2', 'student_email2', 'student_phone2', '2000-01-01', 'gender', 'student_eq2', 'c0cd37c8058e3378757d0e5e51378721e92a987a296d0e69c365632e0c701d1f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(6, 'student_fn3', 'student_ln3', 'student_email3', 'student_phone3', '2000-01-01', 'gender', 'student_eq3', 'f17becbf178a5ffe74257a596866dd821083793257db537e5dbbdc9325ec177f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(7, 'instructor_fn2', 'instructor_ln2', 'instructor_email2', 'instructor_phone2', '2000-01-01', 'gender', 'intructor_eq2', '69ba1bff07ab778655deb4e6b22ca1262c0de90d40ffbb38d45f57c5f28a89b6', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(8, 'instructor_fn3', 'instructor_ln3', 'instructor_email3', 'instructor_phone3', '2000-01-01', 'gender', 'intructor_eq3', '5bd317fb1c75de595d41878198893bdcc3ff7dfc06c8cdd2f209e00e06218521', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(9, 'admin', 'admin', 'admin', 'admin', '2000-01-01', 'admin', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 5, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(10, 'user', 'user', 'user', 'user', '2000-01-01', 'user', 'user', '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(11, 'a', 'a', 'a', 'a', '2006-08-02', 'a', 'a', 'a', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(12, 'a', 'a', 'testasdaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:23:18', NULL, 0, NULL, NULL),
-(13, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', NULL, NULL, '2025-09-22 08:28:03', NULL, 0, NULL, NULL),
-(14, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:28:55', NULL, 0, NULL, NULL),
-(15, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:29:12', NULL, 0, NULL, NULL),
-(16, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:29:14', NULL, 0, NULL, NULL),
-(17, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:29:51', NULL, 0, NULL, NULL),
-(18, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 'a', 'test5.Asd', 1, NULL, '2025-09-22 08:31:21', NULL, 0, NULL, NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `education_id`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`) VALUES
+(1, 'elonev', 'utonev', 'emailcim', '0630303030', '2000-01-01', 'nembinaris', 1, 'test', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(2, 'Elonev2', 'Utonev2', 'Email2', 'Teloszam2', '2000-01-02', 'gender2', 1, '6a05b9c2f026724d6f8ee83bdca46d8b5de9752600802900df61b6ae87f50260', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(3, 'instructor_fn1', 'instructor_ln1', 'instructor_email1', 'instructor_phone1', '2000-01-03', 'gender1', 1, 'oktato_pass1', 3, 'instructor_pfp1', '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(4, 'testStudent', 'testStudent', 'testStudent', 'student_phone1', '2000-01-01', 'gender', 1, 'testStudent', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(5, 'student_fn2', 'student_ln2', 'student_email2', 'student_phone2', '2000-01-01', 'gender', 1, 'c0cd37c8058e3378757d0e5e51378721e92a987a296d0e69c365632e0c701d1f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(6, 'student_fn3', 'student_ln3', 'student_email3', 'student_phone3', '2000-01-01', 'gender', 1, 'f17becbf178a5ffe74257a596866dd821083793257db537e5dbbdc9325ec177f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(7, 'instructor_fn2', 'instructor_ln2', 'instructor_email2', 'instructor_phone2', '2000-01-01', 'gender', 1, '69ba1bff07ab778655deb4e6b22ca1262c0de90d40ffbb38d45f57c5f28a89b6', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(8, 'instructor_fn3', 'instructor_ln3', 'instructor_email3', 'instructor_phone3', '2000-01-01', 'gender', 1, '5bd317fb1c75de595d41878198893bdcc3ff7dfc06c8cdd2f209e00e06218521', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(9, 'admin', 'admin', 'admin', 'admin', '2000-01-01', 'admin', 1, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 5, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(10, 'user', 'user', 'user', 'user', '2000-01-01', 'user', 1, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(11, 'a', 'a', 'a', 'a', '2006-08-02', 'a', 1, 'a', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
+(12, 'a', 'a', 'testasdaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:23:18', NULL, 0, NULL, NULL),
+(13, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', NULL, NULL, '2025-09-22 08:28:03', NULL, 0, NULL, NULL),
+(14, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:28:55', NULL, 0, NULL, NULL),
+(15, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:12', NULL, 0, NULL, NULL),
+(16, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:14', NULL, 0, NULL, NULL),
+(17, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:51', NULL, 0, NULL, NULL),
+(18, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:31:21', NULL, 0, NULL, NULL),
+(19, 'a', 'a', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', 1, '$argon2id$v=19$m=4096,t=3,p=1$YZh0MOyHB1QFPXVDHvSLHw$YIkIhXvH+7l6mLlVDsTRReiNmDfQDFmgsBo9HT+LLec', 1, NULL, '2025-10-03 06:41:15', NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -426,17 +459,19 @@ CREATE TABLE `vehicle` (
   `license_plate` varchar(10) NOT NULL,
   `name` varchar(100) NOT NULL,
   `type_id` int(10) NOT NULL,
-  `fuel_type_id` int(11) NOT NULL
+  `fuel_type_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `vehicle`
 --
 
-INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`) VALUES
-(3, 'AAAA000', 'car_name', 1, 1),
-(4, 'aaa000', 'name', 1, 1),
-(5, 'ABC123', 'Suzuki Ignis', 1, 1);
+INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`, `is_deleted`, `deleted_at`) VALUES
+(3, 'AAAA000', 'car_name', 1, 1, 0, NULL),
+(4, 'aaa000', 'name', 1, 1, 0, NULL),
+(5, 'ABC123', 'Suzuki Ignis', 1, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -446,19 +481,21 @@ INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`)
 
 CREATE TABLE `vehicle_types` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL
+  `name` varchar(100) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `vehicle_types`
 --
 
-INSERT INTO `vehicle_types` (`id`, `name`) VALUES
-(1, 'Auto'),
-(2, 'Robogó'),
-(3, 'Nagy motor'),
-(4, 'Busz'),
-(5, 'Kamion');
+INSERT INTO `vehicle_types` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Auto', 0, NULL),
+(2, 'Robogó', 0, NULL),
+(3, 'Nagy motor', 0, NULL),
+(4, 'Busz', 0, NULL),
+(5, 'Kamion', 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -590,7 +627,8 @@ ALTER TABLE `students`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `role` (`role_id`),
-  ADD KEY `school_admin` (`school_administrator_id`);
+  ADD KEY `school_admin` (`school_administrator_id`),
+  ADD KEY `education` (`education_id`);
 
 --
 -- Indexes for table `vehicle`
@@ -710,7 +748,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
@@ -801,6 +839,7 @@ ALTER TABLE `students`
 -- Constraints for table `users`
 --
 ALTER TABLE `users`
+  ADD CONSTRAINT `education` FOREIGN KEY (`education_id`) REFERENCES `education` (`id`),
   ADD CONSTRAINT `role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `school_admin` FOREIGN KEY (`school_administrator_id`) REFERENCES `school` (`id`);
 
