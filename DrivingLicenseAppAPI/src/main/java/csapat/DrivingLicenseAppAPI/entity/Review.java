@@ -41,12 +41,12 @@ public class Review {
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructor_id", insertable = false, updatable = false)
+    @JoinColumn(name = "instructor_id")
     @Null
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "school_id", insertable = false, updatable = false)
+    @JoinColumn(name = "school_id")
     @Null
     private School aboutSchool;
 

@@ -18,7 +18,7 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
-        }, resultClasses = {User.class}),
+        }, resultClasses = User.class),
 
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
 })
@@ -99,7 +99,7 @@ public class User {
     @JsonIgnore
     private Students students;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
     private School adminSchool;
     //
@@ -122,7 +122,7 @@ public class User {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Education userEducation;
 
     //Constructorok:

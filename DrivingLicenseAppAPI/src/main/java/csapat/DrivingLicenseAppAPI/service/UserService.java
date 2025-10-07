@@ -116,10 +116,9 @@ public class UserService {
                 return ResponseEntity.status(417).body("InvalidPhone");
             } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
                 return ResponseEntity.status(417).body("InvalidEmail");
-            } else if (!allEducation.contains(updatedUser.getUserEducation())){
+            } else if (!allEducation.contains(updatedUser.getUserEducation())) {
                 return ResponseEntity.status(417).body("InvalidEducation");
-            }
-            else {
+            } else {
                 User result = userRepository.save(updatedUser);
                 return ResponseEntity.ok(result);
             }
