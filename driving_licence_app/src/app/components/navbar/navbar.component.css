@@ -130,6 +130,7 @@
 }
 
 .profil:hover {
+  cursor: pointer;
   width: 90px;
   height: 90px;
   padding: 10px;

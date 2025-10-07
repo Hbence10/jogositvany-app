@@ -2,7 +2,7 @@
 
   <div id="top" class="d-flex flex-column justify-content-start align-items-start">
 
-    <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true">
+    <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true" routerLink="profil">
       <div id="avatar"></div>
       <a>Profil</a>
     </div>
@@ -18,7 +18,7 @@
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="calendar_month"></mat-icon>
       </div>
-      <a>Naptár</a>
+      <a routerLink="calendar">Naptár</a>
     </div>
 
     <div class="navItem d-flex justify-content-start align-items-center">
