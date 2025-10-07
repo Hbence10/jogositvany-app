@@ -99,6 +99,11 @@ public class User {
     @JsonIgnore
     private Students students;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "school_administrator_id")
+    private School adminSchool;
+    //
+
     @OneToMany(
             mappedBy = "senderUser",
             fetch = FetchType.LAZY,
@@ -115,12 +120,9 @@ public class User {
     @JsonIgnore
     private List<Request> recievedRequestList;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "school_administrator_id")
-    private School adminSchool;
-
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
+    @JsonIgnore
     private Education userEducation;
 
     //Constructorok:

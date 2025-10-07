@@ -21,11 +21,6 @@ public class UserController {
         return userService.login(loginBody.get("email"), loginBody.get("password"));
     }
 
-    @GetMapping("/hours/{id}")
-    public ResponseEntity<Map<String, Integer>> getHourDetails(@PathVariable("id") Long id){
-        return userService.getHourDetails(id);
-    }
-
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody User newUser){
         return userService.register(newUser);
