@@ -16,6 +16,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
+            @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = {Students.class})
+})
 public class Students {
 
     @Id
@@ -26,17 +31,17 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList"})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList"})
     private Instructors studentInstructor;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"students"})
     private User studentUser;
 
     @OneToMany(

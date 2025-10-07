@@ -75,14 +75,12 @@ public class DrivingLessons {
     @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "drivingLessons")
-    @JsonIgnoreProperties({})
+    @ManyToOne(cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "student_id")
     private Students dStudent;
 
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructorDrivingLessons")
-    @JsonIgnoreProperties({})
+    @ManyToOne(cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "instructor_id")
     private Instructors dInstructor;
 
     public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
