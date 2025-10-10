@@ -13,8 +13,4 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-
-    public ResponseEntity<Object> getStudentByUserId(int userId){
-        return ResponseEntity.ok(studentRepository.getUserByUserId(userId));
-    }
 }
