@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,6 +31,14 @@ public class Status {
     @Size(max = 100)
     private String name;
 
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok:
     @OneToMany(
             mappedBy = "drivingLessonStatus",
@@ -37,14 +47,6 @@ public class Status {
     )
     @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
-
-    @OneToMany(
-            mappedBy = "requestStatus",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<Request> requestList;
 
     //Constructorok:
     public Status(String name) {

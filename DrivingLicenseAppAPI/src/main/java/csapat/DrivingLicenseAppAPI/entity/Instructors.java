@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,6 +29,14 @@ public class Instructors {
     @Column(name = "promo_text")
     @NotNull
     private String promoText;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)

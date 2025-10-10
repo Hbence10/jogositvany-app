@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -36,6 +38,14 @@ public class OpeningDetails {
     @Size(max = 100)
     @NotNull
     private String day;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})

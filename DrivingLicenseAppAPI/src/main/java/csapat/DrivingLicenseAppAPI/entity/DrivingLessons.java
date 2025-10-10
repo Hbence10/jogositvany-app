@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "driving_lessons")
@@ -55,6 +57,18 @@ public class DrivingLessons {
     @Column(name = "is_paid")
     @NotNull
     private boolean isPaid = false;
+
+    @Column(name = "is_end")
+    @NotNull
+    private boolean isEnd = false;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
