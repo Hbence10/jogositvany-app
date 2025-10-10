@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 10. 10:33
+-- Létrehozás ideje: 2025. Okt 10. 10:42
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -26,15 +26,15 @@ DELIMITER $$
 -- Eljárások
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEmail` ()   BEGIN
-	SELECT `users`.`email` FROM `users`;
+	SELECT `user`.`email` FROM `users`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
-	SELECT * FROM students WHERE students.user_id = userIdIN;
+	SELECT * FROM student WHERE students.user_id = userIdIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
-	SELECT * FROM `users` WHERE emailIN = `users`.`email`;
+	SELECT * FROM `user` WHERE emailIN = `users`.`email`;
 END$$
 
 DELIMITER ;
@@ -61,6 +61,23 @@ CREATE TABLE `driving_lesson` (
   `instructor_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `is_end` tinyint(1) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `driving_lesson_request`
+--
+
+CREATE TABLE `driving_lesson_request` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `start_hour` int(2) NOT NULL,
+  `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -126,6 +143,22 @@ INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 (6, 'Egyetem', 0, NULL),
 (7, 'Főiskola', 0, NULL),
 (8, 'Doktori képzés', 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `exam_request`
+--
+
+CREATE TABLE `exam_request` (
+  `id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `requested_date` date NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -466,6 +499,15 @@ ALTER TABLE `driving_lesson`
   ADD KEY `d_students` (`student_id`);
 
 --
+-- A tábla indexei `driving_lesson_request`
+--
+ALTER TABLE `driving_lesson_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `d_request_student` (`student_id`),
+  ADD KEY `d_request_instructor` (`instructor_id`),
+  ADD KEY `d_status` (`status_id`);
+
+--
 -- A tábla indexei `driving_license_category`
 --
 ALTER TABLE `driving_license_category`
@@ -476,6 +518,15 @@ ALTER TABLE `driving_license_category`
 --
 ALTER TABLE `education`
   ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `exam_request`
+--
+ALTER TABLE `exam_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `e_instructor` (`instructor_id`),
+  ADD KEY `e_school` (`school_id`),
+  ADD KEY `e_student` (`student_id`);
 
 --
 -- A tábla indexei `fuel_type`
@@ -596,6 +647,12 @@ ALTER TABLE `driving_lesson`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `driving_lesson_request`
+--
+ALTER TABLE `driving_lesson_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `driving_license_category`
 --
 ALTER TABLE `driving_license_category`
@@ -606,6 +663,12 @@ ALTER TABLE `driving_license_category`
 --
 ALTER TABLE `education`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT a táblához `exam_request`
+--
+ALTER TABLE `exam_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `fuel_type`
@@ -711,6 +774,22 @@ ALTER TABLE `driving_lesson`
   ADD CONSTRAINT `hour` FOREIGN KEY (`hour_id`) REFERENCES `reserved_hour` (`id`),
   ADD CONSTRAINT `payment` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
   ADD CONSTRAINT `status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+
+--
+-- Megkötések a táblához `driving_lesson_request`
+--
+ALTER TABLE `driving_lesson_request`
+  ADD CONSTRAINT `d_request_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `d_request_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  ADD CONSTRAINT `d_status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+
+--
+-- Megkötések a táblához `exam_request`
+--
+ALTER TABLE `exam_request`
+  ADD CONSTRAINT `e_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `e_school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `e_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
 
 --
 -- Megkötések a táblához `instructor`
