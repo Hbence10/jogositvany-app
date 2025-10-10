@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private MessageService messageService;
+    private final MessageService messageService;
 }

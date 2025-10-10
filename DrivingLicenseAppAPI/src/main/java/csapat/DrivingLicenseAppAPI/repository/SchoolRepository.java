@@ -1,4 +1,7 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
-public interface SchoolRepository {
+import csapat.DrivingLicenseAppAPI.entity.School;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SchoolRepository extends JpaRepository<School, Integer> {
 }

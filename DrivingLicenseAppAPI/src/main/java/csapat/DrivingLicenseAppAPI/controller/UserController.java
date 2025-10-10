@@ -16,12 +16,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-
-    @GetMapping("")
-    public ResponseEntity<Object> asd(){
-        return ResponseEntity.ok(userRepository.findAll());
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Map<String, String> loginBody){

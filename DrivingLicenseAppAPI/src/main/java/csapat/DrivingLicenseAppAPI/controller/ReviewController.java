@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
 }

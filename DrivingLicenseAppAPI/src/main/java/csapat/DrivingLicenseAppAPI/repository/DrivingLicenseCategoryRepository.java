@@ -1,4 +1,7 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
-public interface DrivingLicenseCategoryRepository {
+import csapat.DrivingLicenseAppAPI.entity.DrivingLicenseCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DrivingLicenseCategoryRepository extends JpaRepository<DrivingLicenseCategory, Integer> {
 }

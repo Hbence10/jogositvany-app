@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DrivingLessonController {
 
-    private DrivingLessonService drivingLessonService;
+    private final DrivingLessonService drivingLessonService;
 }

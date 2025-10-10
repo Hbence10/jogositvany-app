@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RequestController {
 
-    private RequestService requestService;
+    private final RequestService requestService;
 }

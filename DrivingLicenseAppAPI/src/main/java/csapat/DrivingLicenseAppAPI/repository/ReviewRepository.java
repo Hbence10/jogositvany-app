@@ -1,4 +1,7 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
-public interface ReviewRepository {
+import csapat.DrivingLicenseAppAPI.entity.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
 }
