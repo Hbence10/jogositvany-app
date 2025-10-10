@@ -2,10 +2,10 @@
 -- version 5.1.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Oct 07, 2025 at 11:43 AM
--- Server version: 5.7.24
--- PHP Version: 8.1.0
+-- Gép: localhost:3306
+-- Létrehozás ideje: 2025. Okt 10. 10:33
+-- Kiszolgáló verziója: 5.7.24
+-- PHP verzió: 8.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,41 +18,23 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vizsgaremek_5.0`
+-- Adatbázis: `vizsgaremek`
 --
 
 DELIMITER $$
 --
--- Procedures
+-- Eljárások
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `asd` (IN `email` VARCHAR(100), IN `password` VARCHAR(100))   BEGIN
-	SELECT  
-    	u.id AS "userId",
-        i.id AS "instructorId",
-        s.id AS "studentId"
-    FROM users u RIGHT JOIN students s ON
-    u.id = s.user_id 
-    LEFT JOIN instructor i ON 
-    i.user_id = u.id
-    WHERE 
-    u.email = email AND 
-    u.password = password;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEmail` ()   BEGIN
 	SELECT `users`.`email` FROM `users`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
-	SELECT * FROM `users` WHERE emailIN = `users`.`email`;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
+	SELECT * FROM students WHERE students.user_id = userIdIN;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `login` (IN `emailIN` VARCHAR(100), IN `passwordIN` VARCHAR(100))   BEGIN
-	SELECT * FROM users 
-    WHERE 
-    users.email = emailIN
-    AND
-    users.password = passwordIN;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
+	SELECT * FROM `users` WHERE emailIN = `users`.`email`;
 END$$
 
 DELIMITER ;
@@ -60,10 +42,10 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `driving_lessons`
+-- Tábla szerkezet ehhez a táblához `driving_lesson`
 --
 
-CREATE TABLE `driving_lessons` (
+CREATE TABLE `driving_lesson` (
   `id` int(11) NOT NULL,
   `start_km` int(7) NOT NULL,
   `end_km` int(7) NOT NULL,
@@ -78,6 +60,7 @@ CREATE TABLE `driving_lessons` (
   `status_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
+  `is_end` tinyint(1) NOT NULL DEFAULT '0',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,7 +68,7 @@ CREATE TABLE `driving_lessons` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `driving_license_category`
+-- Tábla szerkezet ehhez a táblához `driving_license_category`
 --
 
 CREATE TABLE `driving_license_category` (
@@ -97,7 +80,7 @@ CREATE TABLE `driving_license_category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `driving_license_category`
+-- A tábla adatainak kiíratása `driving_license_category`
 --
 
 INSERT INTO `driving_license_category` (`id`, `name`, `min_age`, `is_deleted`, `deleted_at`) VALUES
@@ -120,7 +103,7 @@ INSERT INTO `driving_license_category` (`id`, `name`, `min_age`, `is_deleted`, `
 -- --------------------------------------------------------
 
 --
--- Table structure for table `education`
+-- Tábla szerkezet ehhez a táblához `education`
 --
 
 CREATE TABLE `education` (
@@ -131,7 +114,7 @@ CREATE TABLE `education` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `education`
+-- A tábla adatainak kiíratása `education`
 --
 
 INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
@@ -147,10 +130,10 @@ INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `fuel_types`
+-- Tábla szerkezet ehhez a táblához `fuel_type`
 --
 
-CREATE TABLE `fuel_types` (
+CREATE TABLE `fuel_type` (
   `id` int(11) NOT NULL,
   `name` varchar(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -158,16 +141,16 @@ CREATE TABLE `fuel_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `fuel_types`
+-- A tábla adatainak kiíratása `fuel_type`
 --
 
-INSERT INTO `fuel_types` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'asd', 0, NULL);
+INSERT INTO `fuel_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Benzin', 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `instructor`
+-- Tábla szerkezet ehhez a táblához `instructor`
 --
 
 CREATE TABLE `instructor` (
@@ -181,16 +164,16 @@ CREATE TABLE `instructor` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `instructor`
+-- A tábla adatainak kiíratása `instructor`
 --
 
 INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 7, 1, ' bbn nb', 4, 0, NULL);
+(1, 1, 2, 'instructor promo text', 4, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `message`
+-- Tábla szerkezet ehhez a táblához `message`
 --
 
 CREATE TABLE `message` (
@@ -206,10 +189,10 @@ CREATE TABLE `message` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `opening_details`
+-- Tábla szerkezet ehhez a táblához `opening_detail`
 --
 
-CREATE TABLE `opening_details` (
+CREATE TABLE `opening_detail` (
   `id` int(11) NOT NULL,
   `opening_time` time NOT NULL,
   `close_time` time NOT NULL,
@@ -222,10 +205,10 @@ CREATE TABLE `opening_details` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payment_methods`
+-- Tábla szerkezet ehhez a táblához `payment_method`
 --
 
-CREATE TABLE `payment_methods` (
+CREATE TABLE `payment_method` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -233,38 +216,18 @@ CREATE TABLE `payment_methods` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `payment_methods`
+-- A tábla adatainak kiíratása `payment_method`
 --
 
-INSERT INTO `payment_methods` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'card', 0, NULL),
-(2, 'cash', 0, NULL),
-(3, 'revolut', 0, NULL);
+INSERT INTO `payment_method` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Kártya', 0, NULL),
+(2, 'Készpénz', 0, NULL),
+(3, 'Revolut', 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `request`
---
-
-CREATE TABLE `request` (
-  `id` int(11) NOT NULL,
-  `sender_id` int(10) NOT NULL,
-  `picker_id` int(10) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `requested_date` datetime NOT NULL,
-  `msg` longtext NOT NULL,
-  `status_id` int(11) NOT NULL,
-  `is_exam` tinyint(1) NOT NULL,
-  `student_id` int(10) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reserved_date`
+-- Tábla szerkezet ehhez a táblához `reserved_date`
 --
 
 CREATE TABLE `reserved_date` (
@@ -278,7 +241,7 @@ CREATE TABLE `reserved_date` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reserved_hour`
+-- Tábla szerkezet ehhez a táblához `reserved_hour`
 --
 
 CREATE TABLE `reserved_hour` (
@@ -293,7 +256,7 @@ CREATE TABLE `reserved_hour` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `review`
+-- Tábla szerkezet ehhez a táblához `review`
 --
 
 CREATE TABLE `review` (
@@ -311,7 +274,7 @@ CREATE TABLE `review` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Tábla szerkezet ehhez a táblához `role`
 --
 
 CREATE TABLE `role` (
@@ -322,7 +285,7 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `role`
+-- A tábla adatainak kiíratása `role`
 --
 
 INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
@@ -336,7 +299,7 @@ INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `school`
+-- Tábla szerkezet ehhez a táblához `school`
 --
 
 CREATE TABLE `school` (
@@ -355,16 +318,16 @@ CREATE TABLE `school` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `school`
+-- A tábla adatainak kiíratása `school`
 --
 
 INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'suli_name1', 'suli_email1', 'suli_tel1', 'suli_country1', 'suli_town1', 'suli_addy1', 'suli_promo1', 'suli_banner1', 1, 0, NULL);
+(2, 'AutosIskola1', 'iskola@gmail.com', 'a', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `status`
+-- Tábla szerkezet ehhez a táblához `status`
 --
 
 CREATE TABLE `status` (
@@ -377,10 +340,10 @@ CREATE TABLE `status` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `students`
+-- Tábla szerkezet ehhez a táblához `student`
 --
 
-CREATE TABLE `students` (
+CREATE TABLE `student` (
   `id` int(11) NOT NULL,
   `school_id` int(10) NOT NULL,
   `instructor_id` int(10) NOT NULL,
@@ -390,21 +353,22 @@ CREATE TABLE `students` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `students`
+-- A tábla adatainak kiíratása `student`
 --
 
-INSERT INTO `students` (`id`, `school_id`, `instructor_id`, `user_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 4, 0, NULL),
-(2, 1, 3, 5, 0, NULL),
-(3, 1, 4, 6, 0, NULL);
+INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `is_deleted`, `deleted_at`) VALUES
+(5, 2, 1, 3, 0, NULL),
+(6, 2, 1, 2, 0, NULL),
+(7, 2, 1, 4, 0, NULL),
+(8, 2, 1, 5, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tábla szerkezet ehhez a táblához `user`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
@@ -412,7 +376,6 @@ CREATE TABLE `users` (
   `phone` varchar(50) NOT NULL,
   `birth_date` date NOT NULL,
   `gender` varchar(50) NOT NULL,
-  `education_id` int(11) NOT NULL DEFAULT '1',
   `password` longtext NOT NULL,
   `role_id` int(11) DEFAULT '1',
   `pfp_path` longtext,
@@ -420,38 +383,27 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
-  `school_administrator_id` int(11) DEFAULT NULL
+  `school_administrator_id` int(11) DEFAULT NULL,
+  `education_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `users`
+-- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `education_id`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`) VALUES
-(1, 'elonev', 'utonev', 'emailcim', '0630303030', '2000-01-01', 'nembinaris', 1, 'test', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(2, 'Elonev2', 'Utonev2', 'Email2', 'Teloszam2', '2000-01-02', 'gender2', 1, '6a05b9c2f026724d6f8ee83bdca46d8b5de9752600802900df61b6ae87f50260', NULL, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(3, 'instructor_fn1', 'instructor_ln1', 'instructor_email1', 'instructor_phone1', '2000-01-03', 'gender1', 1, 'oktato_pass1', 3, 'instructor_pfp1', '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(4, 'testStudent', 'testStudent', 'testStudent', 'student_phone1', '2000-01-01', 'gender', 1, 'testStudent', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(5, 'student_fn2', 'student_ln2', 'student_email2', 'student_phone2', '2000-01-01', 'gender', 1, 'c0cd37c8058e3378757d0e5e51378721e92a987a296d0e69c365632e0c701d1f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(6, 'student_fn3', 'student_ln3', 'student_email3', 'student_phone3', '2000-01-01', 'gender', 1, 'f17becbf178a5ffe74257a596866dd821083793257db537e5dbbdc9325ec177f', 2, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(7, 'instructor_fn2', 'instructor_ln2', 'instructor_email2', 'instructor_phone2', '2000-01-01', 'gender', 1, '69ba1bff07ab778655deb4e6b22ca1262c0de90d40ffbb38d45f57c5f28a89b6', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(8, 'instructor_fn3', 'instructor_ln3', 'instructor_email3', 'instructor_phone3', '2000-01-01', 'gender', 1, '5bd317fb1c75de595d41878198893bdcc3ff7dfc06c8cdd2f209e00e06218521', 3, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(9, 'admin', 'admin', 'admin', 'admin', '2000-01-01', 'admin', 1, '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 5, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(10, 'user', 'user', 'user', 'user', '2000-01-01', 'user', 1, '04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(11, 'a', 'a', 'a', 'a', '2006-08-02', 'a', 1, 'a', 1, NULL, '2025-09-16 15:11:08', NULL, 0, NULL, NULL),
-(12, 'a', 'a', 'testasdaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:23:18', NULL, 0, NULL, NULL),
-(13, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', NULL, NULL, '2025-09-22 08:28:03', NULL, 0, NULL, NULL),
-(14, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:28:55', NULL, 0, NULL, NULL),
-(15, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:12', NULL, 0, NULL, NULL),
-(16, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:14', NULL, 0, NULL, NULL),
-(17, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:29:51', NULL, 0, NULL, NULL),
-(18, 'a', 'a', 'testasdaaaa@gmail.com', 'a', '2006-08-02', 'a', 1, 'test5.Asd', 1, NULL, '2025-09-22 08:31:21', NULL, 0, NULL, NULL),
-(19, 'a', 'a', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', 1, '$argon2id$v=19$m=4096,t=3,p=1$YZh0MOyHB1QFPXVDHvSLHw$YIkIhXvH+7l6mLlVDsTRReiNmDfQDFmgsBo9HT+LLec', 1, NULL, '2025-10-03 06:41:15', NULL, 0, NULL, NULL);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`) VALUES
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$RKrOMjLlUohVtc1bMDYqIg$SpIcGMy0yLKv1prK//IIMK9x6o2tGse2Nw/Yq7q8Vfw', NULL, NULL, '2025-10-07 14:06:32', NULL, 0, NULL, NULL, 1),
+(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$x8ZCOKm/NXEMCiY+K2J5xw$IFLOP3wL/S26aywbMGY8v3DfO1VdgCSBOOkqM9gc5CE', NULL, NULL, '2025-10-07 14:06:59', NULL, 0, NULL, NULL, 1),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', NULL, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', NULL, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1),
+(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', NULL, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1),
+(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', NULL, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1),
+(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$LDYkFEW00svoUYrEv4c5Vw$iBjM7m0CD3CaiMhFqaviiyxbAEsLH2sK1aCaN7jYZMU', NULL, NULL, '2025-10-07 14:09:52', NULL, 0, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vehicle`
+-- Tábla szerkezet ehhez a táblához `vehicle`
 --
 
 CREATE TABLE `vehicle` (
@@ -465,7 +417,7 @@ CREATE TABLE `vehicle` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `vehicle`
+-- A tábla adatainak kiíratása `vehicle`
 --
 
 INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`, `is_deleted`, `deleted_at`) VALUES
@@ -476,10 +428,10 @@ INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vehicle_types`
+-- Tábla szerkezet ehhez a táblához `vehicle_type`
 --
 
-CREATE TABLE `vehicle_types` (
+CREATE TABLE `vehicle_type` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -487,10 +439,10 @@ CREATE TABLE `vehicle_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `vehicle_types`
+-- A tábla adatainak kiíratása `vehicle_type`
 --
 
-INSERT INTO `vehicle_types` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+INSERT INTO `vehicle_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 (1, 'Auto', 0, NULL),
 (2, 'Robogó', 0, NULL),
 (3, 'Nagy motor', 0, NULL),
@@ -498,13 +450,13 @@ INSERT INTO `vehicle_types` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 (5, 'Kamion', 0, NULL);
 
 --
--- Indexes for dumped tables
+-- Indexek a kiírt táblákhoz
 --
 
 --
--- Indexes for table `driving_lessons`
+-- A tábla indexei `driving_lesson`
 --
-ALTER TABLE `driving_lessons`
+ALTER TABLE `driving_lesson`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category` (`category_id`),
   ADD KEY `payment` (`payment_method_id`),
@@ -514,25 +466,25 @@ ALTER TABLE `driving_lessons`
   ADD KEY `d_students` (`student_id`);
 
 --
--- Indexes for table `driving_license_category`
+-- A tábla indexei `driving_license_category`
 --
 ALTER TABLE `driving_license_category`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `education`
+-- A tábla indexei `education`
 --
 ALTER TABLE `education`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `fuel_types`
+-- A tábla indexei `fuel_type`
 --
-ALTER TABLE `fuel_types`
+ALTER TABLE `fuel_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `instructor`
+-- A tábla indexei `instructor`
 --
 ALTER TABLE `instructor`
   ADD PRIMARY KEY (`id`),
@@ -541,7 +493,7 @@ ALTER TABLE `instructor`
   ADD KEY `vehicle` (`vehicle_id`);
 
 --
--- Indexes for table `message`
+-- A tábla indexei `message`
 --
 ALTER TABLE `message`
   ADD PRIMARY KEY (`id`),
@@ -549,43 +501,33 @@ ALTER TABLE `message`
   ADD KEY `message_from` (`message_from`);
 
 --
--- Indexes for table `opening_details`
+-- A tábla indexei `opening_detail`
 --
-ALTER TABLE `opening_details`
+ALTER TABLE `opening_detail`
   ADD PRIMARY KEY (`id`),
   ADD KEY `school_2` (`school_id`);
 
 --
--- Indexes for table `payment_methods`
+-- A tábla indexei `payment_method`
 --
-ALTER TABLE `payment_methods`
+ALTER TABLE `payment_method`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `request`
---
-ALTER TABLE `request`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `sender` (`sender_id`),
-  ADD KEY `picker_2` (`picker_id`),
-  ADD KEY `student_2` (`student_id`),
-  ADD KEY `status_2` (`status_id`);
-
---
--- Indexes for table `reserved_date`
+-- A tábla indexei `reserved_date`
 --
 ALTER TABLE `reserved_date`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `reserved_hour`
+-- A tábla indexei `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
   ADD PRIMARY KEY (`id`),
   ADD KEY `date` (`date_id`);
 
 --
--- Indexes for table `review`
+-- A tábla indexei `review`
 --
 ALTER TABLE `review`
   ADD PRIMARY KEY (`id`),
@@ -594,44 +536,43 @@ ALTER TABLE `review`
   ADD KEY `about_school` (`school_id`);
 
 --
--- Indexes for table `role`
+-- A tábla indexei `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `school`
+-- A tábla indexei `school`
 --
 ALTER TABLE `school`
   ADD PRIMARY KEY (`id`),
   ADD KEY `admin` (`owner_id`);
 
 --
--- Indexes for table `status`
+-- A tábla indexei `status`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `students`
+-- A tábla indexei `student`
 --
-ALTER TABLE `students`
+ALTER TABLE `student`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user` (`user_id`),
   ADD KEY `instructor_2_id` (`instructor_id`),
   ADD KEY `school_3` (`school_id`);
 
 --
--- Indexes for table `users`
+-- A tábla indexei `user`
 --
-ALTER TABLE `users`
+ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `role` (`role_id`),
-  ADD KEY `school_admin` (`school_administrator_id`),
-  ADD KEY `education` (`education_id`);
+  ADD KEY `school_admin` (`school_administrator_id`);
 
 --
--- Indexes for table `vehicle`
+-- A tábla indexei `vehicle`
 --
 ALTER TABLE `vehicle`
   ADD PRIMARY KEY (`id`),
@@ -639,216 +580,200 @@ ALTER TABLE `vehicle`
   ADD KEY `fuel` (`fuel_type_id`);
 
 --
--- Indexes for table `vehicle_types`
+-- A tábla indexei `vehicle_type`
 --
-ALTER TABLE `vehicle_types`
+ALTER TABLE `vehicle_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- A kiírt táblák AUTO_INCREMENT értéke
 --
 
 --
--- AUTO_INCREMENT for table `driving_lessons`
+-- AUTO_INCREMENT a táblához `driving_lesson`
 --
-ALTER TABLE `driving_lessons`
+ALTER TABLE `driving_lesson`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `driving_license_category`
+-- AUTO_INCREMENT a táblához `driving_license_category`
 --
 ALTER TABLE `driving_license_category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `education`
+-- AUTO_INCREMENT a táblához `education`
 --
 ALTER TABLE `education`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `fuel_types`
+-- AUTO_INCREMENT a táblához `fuel_type`
 --
-ALTER TABLE `fuel_types`
+ALTER TABLE `fuel_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `instructor`
+-- AUTO_INCREMENT a táblához `instructor`
 --
 ALTER TABLE `instructor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `message`
+-- AUTO_INCREMENT a táblához `message`
 --
 ALTER TABLE `message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `opening_details`
+-- AUTO_INCREMENT a táblához `opening_detail`
 --
-ALTER TABLE `opening_details`
+ALTER TABLE `opening_detail`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `payment_methods`
+-- AUTO_INCREMENT a táblához `payment_method`
 --
-ALTER TABLE `payment_methods`
+ALTER TABLE `payment_method`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `request`
---
-ALTER TABLE `request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `reserved_date`
+-- AUTO_INCREMENT a táblához `reserved_date`
 --
 ALTER TABLE `reserved_date`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `reserved_hour`
+-- AUTO_INCREMENT a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `review`
+-- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `role`
+-- AUTO_INCREMENT a táblához `role`
 --
 ALTER TABLE `role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `school`
+-- AUTO_INCREMENT a táblához `school`
 --
 ALTER TABLE `school`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `status`
+-- AUTO_INCREMENT a táblához `status`
 --
 ALTER TABLE `status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `students`
+-- AUTO_INCREMENT a táblához `student`
 --
-ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `student`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT a táblához `user`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `vehicle`
+-- AUTO_INCREMENT a táblához `vehicle`
 --
 ALTER TABLE `vehicle`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `vehicle_types`
+-- AUTO_INCREMENT a táblához `vehicle_type`
 --
-ALTER TABLE `vehicle_types`
+ALTER TABLE `vehicle_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Constraints for dumped tables
+-- Megkötések a kiírt táblákhoz
 --
 
 --
--- Constraints for table `driving_lessons`
+-- Megkötések a táblához `driving_lesson`
 --
-ALTER TABLE `driving_lessons`
+ALTER TABLE `driving_lesson`
   ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `driving_license_category` (`id`),
   ADD CONSTRAINT `d_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
-  ADD CONSTRAINT `d_students` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `d_students` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `hour` FOREIGN KEY (`hour_id`) REFERENCES `reserved_hour` (`id`),
-  ADD CONSTRAINT `payment` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_methods` (`id`),
+  ADD CONSTRAINT `payment` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
   ADD CONSTRAINT `status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
 --
--- Constraints for table `instructor`
+-- Megkötések a táblához `instructor`
 --
 ALTER TABLE `instructor`
-  ADD CONSTRAINT `asd` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `asd` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
   ADD CONSTRAINT `vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`);
 
 --
--- Constraints for table `message`
+-- Megkötések a táblához `message`
 --
 ALTER TABLE `message`
-  ADD CONSTRAINT `message_from` FOREIGN KEY (`message_from`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `message_to` FOREIGN KEY (`message_to`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `message_from` FOREIGN KEY (`message_from`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `message_to` FOREIGN KEY (`message_to`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `opening_details`
+-- Megkötések a táblához `opening_detail`
 --
-ALTER TABLE `opening_details`
+ALTER TABLE `opening_detail`
   ADD CONSTRAINT `school_2` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`);
 
 --
--- Constraints for table `request`
---
-ALTER TABLE `request`
-  ADD CONSTRAINT `picker` FOREIGN KEY (`picker_id`) REFERENCES `instructor` (`id`),
-  ADD CONSTRAINT `picker_2` FOREIGN KEY (`picker_id`) REFERENCES `school` (`id`),
-  ADD CONSTRAINT `sender` FOREIGN KEY (`sender_id`) REFERENCES `instructor` (`id`),
-  ADD CONSTRAINT `status_2` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`),
-  ADD CONSTRAINT `student_2` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`);
-
---
--- Constraints for table `reserved_hour`
+-- Megkötések a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
   ADD CONSTRAINT `date` FOREIGN KEY (`date_id`) REFERENCES `reserved_date` (`id`);
 
 --
--- Constraints for table `review`
+-- Megkötések a táblához `review`
 --
 ALTER TABLE `review`
   ADD CONSTRAINT `about_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `about_school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
-  ADD CONSTRAINT `author` FOREIGN KEY (`author_id`) REFERENCES `students` (`id`);
+  ADD CONSTRAINT `author` FOREIGN KEY (`author_id`) REFERENCES `student` (`id`);
 
 --
--- Constraints for table `school`
+-- Megkötések a táblához `school`
 --
 ALTER TABLE `school`
-  ADD CONSTRAINT `admin` FOREIGN KEY (`owner_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `admin` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `students`
+-- Megkötések a táblához `student`
 --
-ALTER TABLE `students`
+ALTER TABLE `student`
+  ADD CONSTRAINT `inst` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `school_3` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
-  ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
--- Constraints for table `users`
+-- Megkötések a táblához `user`
 --
-ALTER TABLE `users`
-  ADD CONSTRAINT `education` FOREIGN KEY (`education_id`) REFERENCES `education` (`id`),
+ALTER TABLE `user`
   ADD CONSTRAINT `role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `school_admin` FOREIGN KEY (`school_administrator_id`) REFERENCES `school` (`id`);
 
 --
--- Constraints for table `vehicle`
+-- Megkötések a táblához `vehicle`
 --
 ALTER TABLE `vehicle`
-  ADD CONSTRAINT `fuel` FOREIGN KEY (`fuel_type_id`) REFERENCES `fuel_types` (`id`),
-  ADD CONSTRAINT `type` FOREIGN KEY (`type_id`) REFERENCES `vehicle_types` (`id`);
+  ADD CONSTRAINT `fuel` FOREIGN KEY (`fuel_type_id`) REFERENCES `fuel_type` (`id`),
+  ADD CONSTRAINT `type` FOREIGN KEY (`type_id`) REFERENCES `vehicle_type` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
