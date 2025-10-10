@@ -18,3 +18,37 @@ Entity classok a kapcsolatokhoz:
     17 User
     18 Vehicle -
     19 VehicleType -
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+Repositoryk csoportositása a service classon belul:
+DrivingLessonService:
+    - DrivingLesson
+    - DrivingLessonType
+    - ReservedDate
+    - ReservedHour
+
+InstructorService:
+    - Instructor
+    - Vehicle
+    - VehicleTypeRepository
+
+Message:
+    - Message
+
+OtherStuff:
+
+RequestService:
+    - DrivingLessonRequest
+    - ExamRequest
+
+ReviewService:
+    - Review
+
+School:
+    - School
+
+Student:
+    - Student
