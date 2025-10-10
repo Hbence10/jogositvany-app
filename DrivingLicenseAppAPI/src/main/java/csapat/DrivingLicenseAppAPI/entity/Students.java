@@ -13,7 +13,7 @@ import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "students")
+@Table(name = "student")
 @Entity
 @Getter
 @Setter

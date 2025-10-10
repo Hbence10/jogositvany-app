@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "vehicle_types")
+@Table(name = "vehicle_type")
 @Getter
 @Setter
 @NoArgsConstructor

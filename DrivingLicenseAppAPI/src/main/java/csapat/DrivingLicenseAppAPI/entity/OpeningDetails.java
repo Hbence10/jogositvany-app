@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "opening_details")
+@Table(name = "opening_detail")
 @Getter
 @Setter
 @NoArgsConstructor
