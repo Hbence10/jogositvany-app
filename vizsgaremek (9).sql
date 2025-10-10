@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 10. 10:42
+-- Létrehozás ideje: 2025. Okt 10. 10:52
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -56,11 +56,25 @@ CREATE TABLE `driving_lesson` (
   `is_paid` tinyint(1) NOT NULL DEFAULT '0',
   `payment_method_id` int(10) NOT NULL,
   `hour_id` int(11) NOT NULL,
-  `category_id` int(10) NOT NULL,
+  `type_id` int(10) NOT NULL,
   `status_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `is_end` tinyint(1) NOT NULL DEFAULT '0',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `driving_lesson_instructor`
+--
+
+CREATE TABLE `driving_lesson_instructor` (
+  `id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `driving_lesson_type_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -80,6 +94,22 @@ CREATE TABLE `driving_lesson_request` (
   `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `driving_lesson_type`
+--
+
+CREATE TABLE `driving_lesson_type` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `price` int(5) NOT NULL,
+  `license_category_id` int(11) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -491,12 +521,20 @@ INSERT INTO `vehicle_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 --
 ALTER TABLE `driving_lesson`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `category` (`category_id`),
+  ADD KEY `category` (`type_id`),
   ADD KEY `payment` (`payment_method_id`),
   ADD KEY `hour` (`hour_id`),
   ADD KEY `status` (`status_id`),
   ADD KEY `d_instructor` (`instructor_id`),
   ADD KEY `d_students` (`student_id`);
+
+--
+-- A tábla indexei `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lesson_instructor` (`instructor_id`),
+  ADD KEY `lesson_type` (`driving_lesson_type_id`);
 
 --
 -- A tábla indexei `driving_lesson_request`
@@ -506,6 +544,13 @@ ALTER TABLE `driving_lesson_request`
   ADD KEY `d_request_student` (`student_id`),
   ADD KEY `d_request_instructor` (`instructor_id`),
   ADD KEY `d_status` (`status_id`);
+
+--
+-- A tábla indexei `driving_lesson_type`
+--
+ALTER TABLE `driving_lesson_type`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `d_type` (`license_category_id`);
 
 --
 -- A tábla indexei `driving_license_category`
@@ -647,9 +692,21 @@ ALTER TABLE `driving_lesson`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `driving_lesson_type`
+--
+ALTER TABLE `driving_lesson_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -768,12 +825,19 @@ ALTER TABLE `vehicle_type`
 -- Megkötések a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  ADD CONSTRAINT `category` FOREIGN KEY (`category_id`) REFERENCES `driving_license_category` (`id`),
+  ADD CONSTRAINT `category` FOREIGN KEY (`type_id`) REFERENCES `driving_lesson_type` (`id`),
   ADD CONSTRAINT `d_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `d_students` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `hour` FOREIGN KEY (`hour_id`) REFERENCES `reserved_hour` (`id`),
   ADD CONSTRAINT `payment` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
   ADD CONSTRAINT `status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+
+--
+-- Megkötések a táblához `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  ADD CONSTRAINT `lesson_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `lesson_type` FOREIGN KEY (`driving_lesson_type_id`) REFERENCES `driving_lesson_type` (`id`);
 
 --
 -- Megkötések a táblához `driving_lesson_request`
@@ -782,6 +846,12 @@ ALTER TABLE `driving_lesson_request`
   ADD CONSTRAINT `d_request_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `d_request_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `d_status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
+
+--
+-- Megkötések a táblához `driving_lesson_type`
+--
+ALTER TABLE `driving_lesson_type`
+  ADD CONSTRAINT `d_type` FOREIGN KEY (`license_category_id`) REFERENCES `driving_license_category` (`id`);
 
 --
 -- Megkötések a táblához `exam_request`
