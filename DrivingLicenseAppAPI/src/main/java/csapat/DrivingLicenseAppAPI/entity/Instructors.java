@@ -70,12 +70,28 @@ public class Instructors {
     private List<Students> students;
 
     @OneToMany(
+            mappedBy = "dLessonInstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<DrivingLessonRequest> drivingLessonRequestList;
+
+    @OneToMany(
             mappedBy = "dInstructor",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JsonIgnoreProperties({})
     private List<DrivingLessons> instructorDrivingLessons;
+
+    @OneToMany(
+            mappedBy = "examRequesterInstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<ExamRequest> examRequestList;
 
     //Constructorok:
     public Instructors(String promoText) {

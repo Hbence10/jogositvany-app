@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,8 +45,19 @@ public class DrivingLessonRequest {
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
-    private List<Students> dLessonStudent;
-    private List<Instructors> dLessonInstructor;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "student_id")
+    @JsonIgnoreProperties({})
+    private Students dLessonRequestStudent;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "instructor_id")
+    @JsonIgnoreProperties({})
+    private Instructors dLessonInstructor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({})
     private Status dLessonStatus;
 
 }

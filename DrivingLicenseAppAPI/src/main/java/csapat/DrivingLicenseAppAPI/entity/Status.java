@@ -48,6 +48,14 @@ public class Status {
     @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
 
+    @OneToMany(
+            mappedBy = "dLessonStatus",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnore
+    private List<DrivingLessonRequest> drivingLessonsRequestList;
+
     //Constructorok:
     public Status(String name) {
         this.name = name;

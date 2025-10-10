@@ -63,13 +63,13 @@ public class Students {
     @JsonIgnore
     private List<Review> reviewList;
 
-//    @OneToMany(
-//            mappedBy = "requestedStudent",
-//            fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-//    )
-//    @JsonIgnoreProperties({})
-//    private List<Request> requestList;
+    @OneToMany(
+            mappedBy = "dLessonRequestStudent",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<DrivingLessonRequest> requestList;
 
     @OneToMany(
             mappedBy = "dStudent",
@@ -78,4 +78,12 @@ public class Students {
     )
     @JsonIgnoreProperties({})
     private List<DrivingLessons> drivingLessons;
+
+    @OneToMany(
+            mappedBy = "examStudent",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<ExamRequest> examRequestList;
 }

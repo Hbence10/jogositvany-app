@@ -46,12 +46,12 @@ public class DrivingLicenseCategory {
 
     //Kapcsolatok:
     @OneToMany(
-            mappedBy = "category",
+            mappedBy = "drivingLicenseCategory",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     @JsonIgnore
-    private List<DrivingLessons> drivingLessonsList;
+    private List<DrivingLessonType> drivingLessonTypeList;
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {
