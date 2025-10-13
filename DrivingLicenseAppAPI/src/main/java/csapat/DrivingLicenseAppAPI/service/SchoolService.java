@@ -1,8 +1,11 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.repository.OpeningDetailRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Transactional
@@ -11,4 +14,15 @@ import org.springframework.stereotype.Service;
 public class SchoolService {
 
     private final SchoolRepository schoolRepository;
+    private final OpeningDetailRepository openingDetails;
+
+    public ResponseEntity<Object> getInfo(int id){
+        School searchedSchool = schoolRepository.findById(id).get();
+
+        if(searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedSchool);
+        }
+    }
 }

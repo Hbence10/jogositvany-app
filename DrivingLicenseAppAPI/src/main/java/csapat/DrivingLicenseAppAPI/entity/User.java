@@ -97,7 +97,7 @@ public class User {
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnoreProperties({"studentUser", "drivingLessons", "requestList", "reviewList"})
+    @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private Students students;
 
     @OneToOne(cascade = {})
@@ -105,22 +105,6 @@ public class User {
 //    @JsonIgnoreProperties({"studentUser"})
     @JsonIgnore
     private School adminSchool;
-
-//    @OneToMany(
-//            mappedBy = "senderUser",
-//            fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-//    )
-//    @JsonIgnoreProperties({})
-//    private List<Request> sendedRequestList;
-
-//    @OneToMany(
-//            mappedBy = "pickerUser",
-//            fetch = FetchType.LAZY,
-//            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-//    )
-//    @JsonIgnoreProperties({})
-//    private List<Request> recievedRequestList;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
