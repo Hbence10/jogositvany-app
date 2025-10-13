@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,14 +12,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
-        }, resultClasses = {User.class}),
+        }, resultClasses = User.class),
 
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
 })
@@ -91,38 +91,23 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
+    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+//    @JsonIgnoreProperties({"instructorUser"})
     @JsonIgnore
     private Instructors instructor;
 
-    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    @JsonIgnore
+    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private Students students;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
+//    @JsonIgnoreProperties({"studentUser"})
+    @JsonIgnore
     private School adminSchool;
-    //
-
-    @OneToMany(
-            mappedBy = "senderUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<Request> sendedRequestList;
-
-    @OneToMany(
-            mappedBy = "pickerUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<Request> recievedRequestList;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
-    @JsonIgnore
     private Education userEducation;
 
     //Constructorok:

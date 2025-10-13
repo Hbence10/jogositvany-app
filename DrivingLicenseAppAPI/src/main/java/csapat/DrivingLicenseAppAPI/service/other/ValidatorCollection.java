@@ -1,4 +1,4 @@
-package csapat.DrivingLicenseAppAPI.other;
+package csapat.DrivingLicenseAppAPI.service.other;
 
 import java.util.ArrayList;
 import java.util.Arrays;

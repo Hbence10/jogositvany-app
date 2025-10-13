@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -41,14 +42,22 @@ public class Review {
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructor_id", insertable = false, updatable = false)
+    @JoinColumn(name = "instructor_id")
     @Null
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "school_id", insertable = false, updatable = false)
+    @JoinColumn(name = "school_id")
     @Null
     private School aboutSchool;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Constructorok
     public Review(String text, LocalDate createdAt, float rating) {

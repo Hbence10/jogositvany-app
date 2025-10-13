@@ -1,14 +1,14 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.service.RequestService;
+import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/request")
+@RequestMapping("/drivingLesson")
 @RequiredArgsConstructor
-public class RequestController {
+public class DrivingLessonController {
 
-    private final RequestService requestService;
+    private final DrivingLessonService drivingLessonService;
 }

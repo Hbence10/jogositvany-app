@@ -13,23 +13,4 @@ import org.springframework.stereotype.Service;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-
-    public ResponseEntity<Object> getInstructorDetails(Integer studentId) {
-        Students searchedStudent = studentRepository.findById(studentId).get();
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return null;
-        }
-    }
-
-    public ResponseEntity<Object> getHoursDetails(Integer studentId) {
-        Students searchedStudent = studentRepository.findById(studentId).get();
-
-        if (searchedStudent == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return null;
-        }
-    }
 }

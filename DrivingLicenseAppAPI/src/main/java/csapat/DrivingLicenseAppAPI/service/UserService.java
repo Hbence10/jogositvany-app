@@ -3,9 +3,8 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.Education;
-import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
-import csapat.DrivingLicenseAppAPI.other.ValidatorCollection;
+import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -29,7 +28,7 @@ public class UserService {
 
     //Endpointok
     public ResponseEntity<Object> login(String email, String password) {
-        User loggedUser = userRepository.getUserByEmail(email);
+        User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 
@@ -116,10 +115,9 @@ public class UserService {
                 return ResponseEntity.status(417).body("InvalidPhone");
             } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
                 return ResponseEntity.status(417).body("InvalidEmail");
-            } else if (!allEducation.contains(updatedUser.getUserEducation())){
+            } else if (!allEducation.contains(updatedUser.getUserEducation())) {
                 return ResponseEntity.status(417).body("InvalidEducation");
-            }
-            else {
+            } else {
                 User result = userRepository.save(updatedUser);
                 return ResponseEntity.ok(result);
             }

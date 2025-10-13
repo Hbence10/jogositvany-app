@@ -1,6 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,29 +11,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Table(name = "vehicle")
 @Entity
+@Table(name = "driving_lesson_type")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class Vehicle {
+public class DrivingLessonType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "license_plate")
-    @Size(max = 10)
-    @NotNull
-    private String licensePlate;
-
     @Column(name = "name")
     @NotNull
     @Size(max = 100)
     private String name;
+
+    @Column(name = "price")
+    @NotNull
+    @Size(max = 5)
+    private int price;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -43,22 +44,22 @@ public class Vehicle {
     @Null
     private LocalDateTime deletedAt;
 
-    //Kapcsolatok
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "type_id")
-    private VehicleType vehicleType;
+    //Kapcsolatok:
+    @OneToMany(
+            mappedBy = "drivingLessonType",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<DrivingLessons> instructorDrivingLessons;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "fuel_type_id")
-    private FuelType fuelType;
+    @JoinColumn(name = "license_category_id")
+    @JsonIgnoreProperties({})
+    private DrivingLicenseCategory drivingLicenseCategory;
 
-    @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnore
-    private Instructors instructor;
-
-    //Constructorok
-    public Vehicle(String licensePlate, String name) {
-        this.licensePlate = licensePlate;
-        this.name = name;
-    }
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_id")
+    @JsonIgnoreProperties({})
+    private School drivingTypeSchool;
 }

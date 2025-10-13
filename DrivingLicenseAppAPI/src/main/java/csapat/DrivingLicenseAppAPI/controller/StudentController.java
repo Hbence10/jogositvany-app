@@ -14,17 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class StudentController {
 
     private final StudentService studentService;
-
-    //Kezdolap:
-    @GetMapping("/instructorDetails")
-    public ResponseEntity<Object> getInstructorDetails(@RequestParam("studentId") Integer studentId) {
-        return studentService.getInstructorDetails(studentId);
-    }
-
-    @GetMapping("/hourDetails")
-    public ResponseEntity<Object> getHoursDetails(@RequestParam("studentId") Integer studentId) {
-        return studentService.getHoursDetails(studentId);
-    }
-
-    //
 }

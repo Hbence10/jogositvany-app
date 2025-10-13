@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "driving_lessons")
+@Table(name = "driving_lesson")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -55,14 +58,22 @@ public class DrivingLessons {
     @NotNull
     private boolean isPaid = false;
 
+    @Column(name = "is_end")
+    @NotNull
+    private boolean isEnd = false;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "status_id")
     private Status drivingLessonStatus;
-
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "category_id")
-    private DrivingLicenseCategory category;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "payment_method_id")
@@ -70,15 +81,21 @@ public class DrivingLessons {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hour_id")
+    @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "drivingLessons")
+    @ManyToOne(cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "student_id")
     private Students dStudent;
 
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructorDrivingLessons")
+    @ManyToOne(cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "instructor_id")
     private Instructors dInstructor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "type_id")
+    private DrivingLessonType drivingLessonType;
+
 
     public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
         this.startKm = startKm;

@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,13 +36,22 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private int minAge;
 
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok:
     @OneToMany(
-            mappedBy = "category",
+            mappedBy = "drivingLicenseCategory",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private List<DrivingLessons> drivingLessonsList;
+    @JsonIgnore
+    private List<DrivingLessonType> drivingLessonTypeList;
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {

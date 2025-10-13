@@ -1,14 +1,14 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.service.RequestService;
+import csapat.DrivingLicenseAppAPI.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/request")
+@RequestMapping("/review")
 @RequiredArgsConstructor
-public class RequestController {
+public class ReviewController {
 
-    private final RequestService requestService;
+    private final ReviewService reviewService;
 }

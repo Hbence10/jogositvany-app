@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,29 +11,30 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "reserved_hour")
+@Table(name = "driving_lesson_request")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class ReservedHour {
+public class DrivingLessonRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "start")
-    @Size(max = 2)
+    @Column(name = "date")
     @NotNull
-    private int start;
+    private Date date;
 
-    @Column(name = "end")
-    @Size(max = 2)
+    @Column(name = "start_hour")
     @NotNull
-    private int end;
+    @Size(max = 2)
+    private int startHour;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -43,16 +45,19 @@ public class ReservedHour {
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
-    @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    private DrivingLessons drivingLessons;
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "student_id")
+    @JsonIgnoreProperties({})
+    private Students dLessonRequestStudent;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "date_id")
-    private ReservedDate reservedDate;
+    @JoinColumn(name = "instructor_id")
+    @JsonIgnoreProperties({})
+    private Instructors dLessonInstructor;
 
-    //Constructorok:
-    public ReservedHour(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "status_id")
+    @JsonIgnoreProperties({})
+    private Status dLessonStatus;
+
 }

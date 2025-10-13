@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<String> getAllEmail();
 
     @Procedure(name = "getUserByEmail", procedureName = "getUserByEmail")
-    User getUserByEmail(@Param("emailIN") String username);
+    User getUserByEmail(@Param("emailIN") String email);
 }
