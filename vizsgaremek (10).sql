@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 10. 10:52
+-- Létrehozás ideje: 2025. Okt 13. 18:33
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -65,6 +65,13 @@ CREATE TABLE `driving_lesson` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `driving_lesson`
+--
+
+INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_deleted`, `deleted_at`) VALUES
+(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 0, 2, 1, 1, 1, 1, 5, 0, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -79,6 +86,13 @@ CREATE TABLE `driving_lesson_instructor` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `driving_lesson_instructor`
+--
+
+INSERT INTO `driving_lesson_instructor` (`id`, `instructor_id`, `driving_lesson_type_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 1, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -89,12 +103,20 @@ CREATE TABLE `driving_lesson_request` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
+  `msg` longtext,
   `date` date NOT NULL,
   `start_hour` int(2) NOT NULL,
   `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `driving_lesson_request`
+--
+
+INSERT INTO `driving_lesson_request` (`id`, `student_id`, `instructor_id`, `msg`, `date`, `start_hour`, `status_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 5, 1, 'Szia ', '2025-10-14', 14, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,6 +133,13 @@ CREATE TABLE `driving_lesson_type` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `driving_lesson_type`
+--
+
+INSERT INTO `driving_lesson_type` (`id`, `name`, `price`, `license_category_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 0, '2025-10-13 18:29:14');
 
 -- --------------------------------------------------------
 
@@ -190,6 +219,13 @@ CREATE TABLE `exam_request` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `exam_request`
+--
+
+INSERT INTO `exam_request` (`id`, `instructor_id`, `school_id`, `requested_date`, `student_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 2, '2025-10-14', 5, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -249,6 +285,13 @@ CREATE TABLE `message` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `message`
+--
+
+INSERT INTO `message` (`id`, `message_to`, `message_from`, `content`, `created_at`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 3, 'A message táblához tartozó test adat', '2025-10-13 18:28:44', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -257,13 +300,20 @@ CREATE TABLE `message` (
 
 CREATE TABLE `opening_detail` (
   `id` int(11) NOT NULL,
-  `opening_time` time NOT NULL,
-  `close_time` time NOT NULL,
+  `opening_time` int(2) NOT NULL,
+  `close_time` int(2) NOT NULL,
   `day` varchar(100) NOT NULL,
   `school_id` int(10) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `opening_detail`
+--
+
+INSERT INTO `opening_detail` (`id`, `opening_time`, `close_time`, `day`, `school_id`, `is_deleted`, `deleted_at`) VALUES
+(2, 10, 17, 'Hétfő', 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -301,6 +351,13 @@ CREATE TABLE `reserved_date` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `reserved_date`
+--
+
+INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
+(1, '2025-10-14', 0, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -315,6 +372,13 @@ CREATE TABLE `reserved_hour` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `reserved_hour`
+--
+
+INSERT INTO `reserved_hour` (`id`, `start`, `end`, `date_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 10, 12, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -333,6 +397,14 @@ CREATE TABLE `review` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `review`
+--
+
+INSERT INTO `review` (`id`, `author_id`, `text`, `created_at`, `rating`, `instructor_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 5, 'Oktató1-ről való tesztadat vélemény', '2025-10-13 18:24:38', 4, 1, NULL, 0, NULL),
+(2, 5, 'Autósiskola1-ről való teszt vélemény', '2025-10-13 18:24:38', 1, NULL, 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -399,6 +471,14 @@ CREATE TABLE `status` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `status`
+--
+
+INSERT INTO `status` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
+(1, 'státusz_tipus1', 0, NULL),
+(2, 'státusz_tipus2', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -550,7 +630,8 @@ ALTER TABLE `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_type`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `d_type` (`license_category_id`);
+  ADD KEY `d_type` (`license_category_id`),
+  ADD KEY `d_school` (`school_id`);
 
 --
 -- A tábla indexei `driving_license_category`
@@ -689,25 +770,25 @@ ALTER TABLE `vehicle_type`
 -- AUTO_INCREMENT a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_instructor`
 --
 ALTER TABLE `driving_lesson_instructor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_type`
 --
 ALTER TABLE `driving_lesson_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `driving_license_category`
@@ -725,7 +806,7 @@ ALTER TABLE `education`
 -- AUTO_INCREMENT a táblához `exam_request`
 --
 ALTER TABLE `exam_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `fuel_type`
@@ -743,13 +824,13 @@ ALTER TABLE `instructor`
 -- AUTO_INCREMENT a táblához `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `opening_detail`
 --
 ALTER TABLE `opening_detail`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `payment_method`
@@ -761,19 +842,19 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT a táblához `reserved_date`
 --
 ALTER TABLE `reserved_date`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `role`
@@ -791,7 +872,7 @@ ALTER TABLE `school`
 -- AUTO_INCREMENT a táblához `status`
 --
 ALTER TABLE `status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `student`
@@ -851,6 +932,7 @@ ALTER TABLE `driving_lesson_request`
 -- Megkötések a táblához `driving_lesson_type`
 --
 ALTER TABLE `driving_lesson_type`
+  ADD CONSTRAINT `d_school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
   ADD CONSTRAINT `d_type` FOREIGN KEY (`license_category_id`) REFERENCES `driving_license_category` (`id`);
 
 --
