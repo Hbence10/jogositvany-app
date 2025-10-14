@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -50,7 +51,7 @@ public class DrivingLessonType {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
     @ManyToOne(cascade = {})
@@ -60,6 +61,7 @@ public class DrivingLessonType {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+//    @JsonIgnoreProperties({})
+    @JsonIgnore
     private School drivingTypeSchool;
 }

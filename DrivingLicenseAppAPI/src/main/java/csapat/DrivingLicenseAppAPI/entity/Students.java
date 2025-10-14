@@ -21,7 +21,7 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
-            @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
+                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
         }, resultClasses = {Students.class})
 })
 public class Students {
@@ -42,12 +42,12 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList", "drivingLessonsType", "openingDetails"})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "examRequestList", "drivingLessonsType"})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList"})
+    @JsonIgnoreProperties({"instructorSchool", "reviewList", "students", "examRequestList", "drivingLessonRequestList", "instructorDrivingLessons"})
     private Instructors studentInstructor;
 
     @OneToOne(cascade = CascadeType.ALL)
