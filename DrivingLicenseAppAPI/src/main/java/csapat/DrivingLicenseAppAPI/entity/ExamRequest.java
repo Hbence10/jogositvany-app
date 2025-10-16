@@ -40,7 +40,6 @@ public class ExamRequest {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({})
     private Instructors examRequesterInstructor;
 
     @ManyToOne(cascade = {})
@@ -50,6 +49,6 @@ public class ExamRequest {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
+//    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private Students examStudent;
 }

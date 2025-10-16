@@ -92,8 +92,7 @@ public class User {
     private Role role;
 
     @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-//    @JsonIgnoreProperties({"instructorUser"})
-    @JsonIgnore
+    @JsonIgnoreProperties({"instructorUser", "reviewList"})
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})

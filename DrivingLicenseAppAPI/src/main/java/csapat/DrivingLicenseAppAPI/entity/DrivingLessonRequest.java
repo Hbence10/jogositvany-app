@@ -47,13 +47,13 @@ public class DrivingLessonRequest {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
-    private Students dLessonRequestStudent;
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
+    private Students dlessonRequestStudent;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
     @JsonIgnoreProperties({})
-    private Instructors dLessonInstructor;
+    private Instructors dlessonInstructor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "status_id")

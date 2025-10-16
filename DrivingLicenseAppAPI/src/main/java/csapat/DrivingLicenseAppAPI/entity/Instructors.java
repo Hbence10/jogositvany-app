@@ -41,12 +41,12 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"instructor"})
     private User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "instructorsList", "studentsList"})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -66,32 +66,31 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private List<Students> students;
 
+    //innen van a baj
     @OneToMany(
-            mappedBy = "dLessonInstructor",
+            mappedBy = "dlessonInstructor",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+//    @JsonIgnoreProperties({"dlessonInstructor"})
     private List<DrivingLessonRequest> drivingLessonRequestList;
-
-    @OneToMany(
-            mappedBy = "dInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnoreProperties({})
-    private List<DrivingLessons> instructorDrivingLessons;
 
     @OneToMany(
             mappedBy = "examRequesterInstructor",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
+
+    @OneToMany(
+            mappedBy = "dinstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private List<DrivingLessons> instructorDrivingLessons;
 
     //Constructorok:
     public Instructors(String promoText) {

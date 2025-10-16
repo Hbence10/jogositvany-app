@@ -42,12 +42,12 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList", "drivingLessonsType", "openingDetails"})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList", "drivingLessonsType", "openingDetails", "examRequestList"})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList"})
+    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList", "drivingLessonRequestList", "examRequestList"})
     private Instructors studentInstructor;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -64,7 +64,7 @@ public class Students {
     private List<Review> reviewList;
 
     @OneToMany(
-            mappedBy = "dLessonRequestStudent",
+            mappedBy = "dlessonRequestStudent",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
@@ -72,7 +72,7 @@ public class Students {
     private List<DrivingLessonRequest> requestList;
 
     @OneToMany(
-            mappedBy = "dStudent",
+            mappedBy = "dstudent",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
