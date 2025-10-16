@@ -15,8 +15,13 @@ public class SchoolController {
 
     private final SchoolService schoolService;
 
-    @GetMapping("/info/{id}")
-    public ResponseEntity<Object> getSchoolInfo(@PathVariable("id") int id){
-        return schoolService.getInfo(id);
+    @GetMapping("/searchByName")
+    public ResponseEntity<Object> getSchoolByName(){
+        return null;
+    }
+
+    @GetMapping("/searchByLocation")
+    public ResponseEntity<Object> getSchoolByLocation(){
+        return null;
     }
 }
