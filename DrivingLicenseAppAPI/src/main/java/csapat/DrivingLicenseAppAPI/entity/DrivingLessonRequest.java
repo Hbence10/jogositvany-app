@@ -53,7 +53,7 @@ public class DrivingLessonRequest {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
     @JsonIgnoreProperties({})
-    private Instructors dlessonInstructor;
+    private Instructors dLessonInstructor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "status_id")

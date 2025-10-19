@@ -53,43 +53,22 @@ public class Instructors {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @OneToMany(
-            mappedBy = "aboutInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({})
     private List<Review> reviewList;
 
-    @OneToMany(
-            mappedBy = "studentInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private List<Students> students;
 
     //innen van a baj
-    @OneToMany(
-            mappedBy = "dlessonInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-//    @JsonIgnoreProperties({"dlessonInstructor"})
+    @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
-    @OneToMany(
-            mappedBy = "examRequesterInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<ExamRequest> examRequestList;
 
-    @OneToMany(
-            mappedBy = "dinstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessons> instructorDrivingLessons;
 
     //Constructorok:

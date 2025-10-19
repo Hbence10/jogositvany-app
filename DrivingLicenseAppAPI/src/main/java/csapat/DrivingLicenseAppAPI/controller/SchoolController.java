@@ -15,13 +15,15 @@ public class SchoolController {
 
     private final SchoolService schoolService;
 
-    @GetMapping("/searchByName")
-    public ResponseEntity<Object> getSchoolByName(){
+    //kereses
+    @GetMapping("/search")
+    public ResponseEntity<Object> getSchoolBySearch(){
         return null;
     }
 
-    @GetMapping("/searchByLocation")
-    public ResponseEntity<Object> getSchoolByLocation(){
+    //
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getSchool(@PathVariable("id") int id){
         return null;
     }
 }

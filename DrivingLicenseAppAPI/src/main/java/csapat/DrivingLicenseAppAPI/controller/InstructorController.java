@@ -12,13 +12,15 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
-    @GetMapping("/searchByName")
-    public ResponseEntity<Object> getInstructorByName(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName){
+    //kereses
+    @GetMapping("/search")
+    public ResponseEntity<Object> getInstructorBySeach(){
         return null;
     }
 
-    @GetMapping("/searchByFillter")
-    public ResponseEntity<Object> getInstructorByFillter(){
+    //
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getInstructor(@PathVariable("id") int id){
         return null;
     }
 }
