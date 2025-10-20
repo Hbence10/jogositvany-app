@@ -81,7 +81,12 @@ public class ReviewService {
 
     //@PreAuthorize("hasRole('student')")
     public ResponseEntity<Review> updateReview(Review updatedReview) {
-        return null;
+        Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
+        if(searchedReview.getId() == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
+        }
     }
 
     //@PreAuthorize("hasRole('student')")
