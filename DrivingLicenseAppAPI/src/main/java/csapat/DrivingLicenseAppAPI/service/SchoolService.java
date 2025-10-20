@@ -25,4 +25,31 @@ public class SchoolService {
             return ResponseEntity.ok().body(searchedSchool);
         }
     }
+
+    //Iskola tagjainak a kezelese
+    //Jelentkezesek
+    public ResponseEntity<Object> addStudent(){
+        return null;
+    }
+
+    public ResponseEntity<Object> addInstructor(){
+        return null;
+    }
+
+    public ResponseEntity<Object> addSchoolAdmin(){
+        return null;
+    }
+
+    //Tagok torlese
+    public ResponseEntity<Object> deleteStudent(Integer studentId){
+        return null;
+    }
+
+    public ResponseEntity<Object> deleteInstructor(Integer instructorId){
+        return null;
+    }
+
+    public ResponseEntity<Object> deleteAdmin(Integer adminId){
+        return null;
+    }
 }
