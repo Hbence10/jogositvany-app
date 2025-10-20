@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional
@@ -85,6 +86,14 @@ public class ReviewService {
 
     //@PreAuthorize("hasRole('student')")
     public ResponseEntity<Object> deleteReview(Integer id) {
-        return null;
+        Review searchedReview = reviewRepository.findById(id).get();
+        if(searchedReview.getId() == null){
+            return ResponseEntity.notFound().build();
+        } else {
+            searchedReview.setDeleted(true);
+            searchedReview.setDeletedAt(LocalDateTime.now());
+            reviewRepository.save(searchedReview);
+            return ResponseEntity.ok().build();
+        }
     }
 }
