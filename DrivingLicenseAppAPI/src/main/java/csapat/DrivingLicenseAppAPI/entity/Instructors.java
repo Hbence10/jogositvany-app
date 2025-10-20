@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Instructors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Instructors id;
 
     @Column(name = "promo_text")
     @NotNull
