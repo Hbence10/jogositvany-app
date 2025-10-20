@@ -25,9 +25,9 @@ public class ReviewService {
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
 
-    public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId){
+    public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId) {
         School searchedSchool = schoolRepository.findById(schoolId).get();
-        if(searchedSchool.getId() == null){
+        if (searchedSchool.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
             List<Review> reviewList = searchedSchool.getReviewList();
@@ -35,9 +35,9 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId){
+    public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId) {
         Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
-        if(searchedInstructor.getId() == null){
+        if (searchedInstructor.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
             List<Review> reviewList = searchedInstructor.getReviewList();
@@ -48,14 +48,34 @@ public class ReviewService {
     //@PreAuthorize("hasRole('student')")
     public ResponseEntity<Review> createReview(Review newReview) {
         Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
+        boolean validAboutObject = false;
 
-        if (newReview.getId() != null){
+        if (newReview.getId() != null) {
             return ResponseEntity.internalServerError().build();
-        } else if(authorStudent.getId() == null){
+        } else if (authorStudent.getId() == null) {
+            return ResponseEntity.notFound().build();
+        } else if (newReview.getAboutInstructor() == null && newReview.getAboutSchool() == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return null;
+        if (newReview.getAboutSchool() == null && newReview.getAboutInstructor() != null) {
+            Instructors searchedInstructor = instructorRepository.findById(newReview.getAboutInstructor().getId()).get();
+            if(searchedInstructor.getId() != null){
+                validAboutObject = true;
+            }
+
+        } else if (newReview.getAboutSchool() != null && newReview.getAboutInstructor() == null) {
+            School searchedSchool = schoolRepository.findById(newReview.getAboutSchool().getId()).get();
+            if(searchedSchool.getId() != null){
+               validAboutObject = true;
+            }
+        }
+
+        if (validAboutObject){
+            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //@PreAuthorize("hasRole('student')")

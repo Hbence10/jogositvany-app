@@ -23,7 +23,7 @@ public class Instructors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Instructors id;
+    private Integer id;
 
     @Column(name = "promo_text")
     @NotNull
