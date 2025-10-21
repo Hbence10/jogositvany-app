@@ -1,4 +1,7 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
-public interface InstructorJoinRequestRepository {
+import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InstructorJoinRequestRepository extends JpaRepository<InstructorJoinRequest, Integer> {
 }

@@ -29,8 +29,6 @@ public class InstructorController {
         return instructorService.deleteStudent(id);
     }
 
-    //jelentkezesi keres kuldese:
-
     //Egyeb:
     //
     @GetMapping("/{id}")

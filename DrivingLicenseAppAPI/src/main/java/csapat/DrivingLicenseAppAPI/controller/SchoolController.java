@@ -60,6 +60,4 @@ public class SchoolController {
     }
 
     //nyitvatartas szerkesztese:
-
-    //jelentkezesi keres kuldese:
 }
