@@ -14,13 +14,25 @@ public class InstructorController {
 
     //kereses
     @GetMapping("/search")
-    public ResponseEntity<Object> getInstructorBySeach(){
+    public ResponseEntity<Object> getInstructorBySeach() {
         return null;
     }
 
+    //diakok kezelese:
+    @PostMapping("/students")
+    public ResponseEntity<Object> addStudent() {
+        return instructorService.addStudent();
+    }
+
+    @DeleteMapping("/students/{id}")
+    public ResponseEntity<Object> deleteStudent(@PathVariable("id") Long id) {
+        return instructorService.deleteStudent(id);
+    }
+
+    //Egyeb:
     //
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getInstructor(@PathVariable("id") int id){
+    public ResponseEntity<Object> getInstructor(@PathVariable("id") int id) {
         return null;
     }
 }

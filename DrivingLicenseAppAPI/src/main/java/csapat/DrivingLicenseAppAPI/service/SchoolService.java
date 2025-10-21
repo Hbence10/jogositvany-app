@@ -28,27 +28,33 @@ public class SchoolService {
 
     //Iskola tagjainak a kezelese
     //Jelentkezesek
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> addStudent(){
         return null;
     }
 
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> addInstructor(){
         return null;
     }
 
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> addSchoolAdmin(){
         return null;
     }
 
     //Tagok torlese
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> deleteStudent(Integer studentId){
         return null;
     }
 
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> deleteInstructor(Integer instructorId){
         return null;
     }
 
+    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> deleteAdmin(Integer adminId){
         return null;
     }
