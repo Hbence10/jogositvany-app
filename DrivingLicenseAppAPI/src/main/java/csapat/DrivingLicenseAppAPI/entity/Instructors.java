@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +23,7 @@ public class Instructors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "promo_text")
     @NotNull
@@ -41,57 +40,35 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"instructor"})
     private User instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "instructorsList", "studentsList"})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @OneToMany(
-            mappedBy = "aboutInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnoreProperties({})
     private List<Review> reviewList;
 
-    @OneToMany(
-            mappedBy = "studentInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnoreProperties({})
+    @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
     private List<Students> students;
 
-    @OneToMany(
-            mappedBy = "dLessonInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnoreProperties({})
+    //innen van a baj
+    @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
-    @OneToMany(
-            mappedBy = "dInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnoreProperties({})
-    private List<DrivingLessons> instructorDrivingLessons;
-
-    @OneToMany(
-            mappedBy = "examRequesterInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnoreProperties({})
+    @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<ExamRequest> examRequestList;
+
+    @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
+    private List<DrivingLessons> instructorDrivingLessons;
 
     //Constructorok:
     public Instructors(String promoText) {

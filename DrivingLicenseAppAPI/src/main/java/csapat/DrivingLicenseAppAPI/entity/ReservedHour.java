@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +49,7 @@ public class ReservedHour {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "date_id")
+    @JsonIgnoreProperties({"reservedHourList"})
     private ReservedDate reservedDate;
 
     //Constructorok:

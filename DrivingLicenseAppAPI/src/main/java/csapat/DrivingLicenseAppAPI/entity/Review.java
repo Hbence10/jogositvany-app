@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "text")
     @NotNull
@@ -36,21 +37,6 @@ public class Review {
     @NotNull
     private float rating;
 
-    //Kapcsolatok:
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "author_id")
-    private Students reviewAuthor;
-
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructor_id")
-    @Null
-    private Instructors aboutInstructor;
-
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "school_id")
-    @Null
-    private School aboutSchool;
-
     @Column(name = "is_deleted")
     @NotNull
     private boolean isDeleted = false;
@@ -58,6 +44,24 @@ public class Review {
     @Column(name = "deleted_at")
     @Null
     private LocalDateTime deletedAt;
+
+    //Kapcsolatok:
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "author_id")
+    @JsonIgnoreProperties({})
+    private Students reviewAuthor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "instructor_id")
+    @Null
+    @JsonIgnoreProperties({})
+    private Instructors aboutInstructor;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_id")
+    @Null
+    @JsonIgnoreProperties({})
+    private School aboutSchool;
 
     //Constructorok
     public Review(String text, LocalDate createdAt, float rating) {
