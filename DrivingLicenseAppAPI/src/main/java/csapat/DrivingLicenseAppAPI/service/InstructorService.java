@@ -27,4 +27,6 @@ public class InstructorService {
     public ResponseEntity<Object> deleteStudent(Long studentId){
         return null;
     }
+
+    //jelentkezesi keres kuldese:
 }

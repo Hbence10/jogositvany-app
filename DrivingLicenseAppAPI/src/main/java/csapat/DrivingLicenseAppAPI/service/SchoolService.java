@@ -1,8 +1,10 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.repository.OpeningDetailRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
+import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,22 +16,15 @@ import org.springframework.stereotype.Service;
 public class SchoolService {
 
     private final SchoolRepository schoolRepository;
+    private final UserRepository userRepository;
     private final OpeningDetailRepository openingDetails;
-
-    public ResponseEntity<Object> getInfo(int id){
-        School searchedSchool = schoolRepository.findById(id).get();
-
-        if(searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedSchool);
-        }
-    }
 
     //Iskola tagjainak a kezelese
     //Jelentkezesek
     //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
     public ResponseEntity<Object> addStudent(){
+
+
         return null;
     }
 
@@ -58,4 +53,8 @@ public class SchoolService {
     public ResponseEntity<Object> deleteAdmin(Integer adminId){
         return null;
     }
+
+    //nyitvatartas szerkesztese
+
+    //jelentkezesi keres kuldese:
 }
