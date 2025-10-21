@@ -106,6 +106,12 @@
 
 .login {
   float: bottom;
+
+}
+
+#login img {
+  width: 70px;
+  height: 70px;
 }
 
 .navIconContainer {
