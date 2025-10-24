@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 13. 18:33
+-- Létrehozás ideje: 2025. Okt 21. 12:12
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -70,7 +70,7 @@ CREATE TABLE `driving_lesson` (
 --
 
 INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_deleted`, `deleted_at`) VALUES
-(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 0, 2, 1, 1, 1, 1, 5, 0, 0, NULL);
+(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -272,6 +272,23 @@ INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_i
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `instructor_join_request`
+--
+
+CREATE TABLE `instructor_join_request` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `accepted_at` datetime DEFAULT NULL,
+  `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `message`
 --
 
@@ -462,6 +479,24 @@ INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `addres
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `school_join_request`
+--
+
+CREATE TABLE `school_join_request` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `school_id` int(11) NOT NULL,
+  `requested_role` varchar(10) NOT NULL,
+  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `accepted_at` datetime DEFAULT NULL,
+  `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `status`
 --
 
@@ -489,7 +524,7 @@ INSERT INTO `status` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 CREATE TABLE `student` (
   `id` int(11) NOT NULL,
   `school_id` int(10) NOT NULL,
-  `instructor_id` int(10) NOT NULL,
+  `instructor_id` int(10) DEFAULT NULL,
   `user_id` int(10) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
@@ -500,8 +535,8 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `is_deleted`, `deleted_at`) VALUES
-(5, 2, 1, 3, 0, NULL),
-(6, 2, 1, 2, 0, NULL),
+(5, 2, 1, 2, 0, NULL),
+(6, 2, 1, 3, 0, NULL),
 (7, 2, 1, 4, 0, NULL),
 (8, 2, 1, 5, 0, NULL);
 
@@ -670,6 +705,14 @@ ALTER TABLE `instructor`
   ADD KEY `vehicle` (`vehicle_id`);
 
 --
+-- A tábla indexei `instructor_join_request`
+--
+ALTER TABLE `instructor_join_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `instructor_join_student_id` (`student_id`),
+  ADD KEY `instructor_join_instructor_id` (`instructor_id`);
+
+--
 -- A tábla indexei `message`
 --
 ALTER TABLE `message`
@@ -724,6 +767,14 @@ ALTER TABLE `role`
 ALTER TABLE `school`
   ADD PRIMARY KEY (`id`),
   ADD KEY `admin` (`owner_id`);
+
+--
+-- A tábla indexei `school_join_request`
+--
+ALTER TABLE `school_join_request`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student_join_user_id` (`user_id`),
+  ADD KEY `student_join_school_id` (`school_id`);
 
 --
 -- A tábla indexei `status`
@@ -821,6 +872,12 @@ ALTER TABLE `instructor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT a táblához `instructor_join_request`
+--
+ALTER TABLE `instructor_join_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `message`
 --
 ALTER TABLE `message`
@@ -867,6 +924,12 @@ ALTER TABLE `role`
 --
 ALTER TABLE `school`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `school_join_request`
+--
+ALTER TABLE `school_join_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `status`
@@ -952,6 +1015,13 @@ ALTER TABLE `instructor`
   ADD CONSTRAINT `vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`);
 
 --
+-- Megkötések a táblához `instructor_join_request`
+--
+ALTER TABLE `instructor_join_request`
+  ADD CONSTRAINT `instructor_join_instructor_id` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `instructor_join_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
+
+--
 -- Megkötések a táblához `message`
 --
 ALTER TABLE `message`
@@ -983,6 +1053,13 @@ ALTER TABLE `review`
 --
 ALTER TABLE `school`
   ADD CONSTRAINT `admin` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`);
+
+--
+-- Megkötések a táblához `school_join_request`
+--
+ALTER TABLE `school_join_request`
+  ADD CONSTRAINT `student_join_school_id` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `student_join_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Megkötések a táblához `student`
