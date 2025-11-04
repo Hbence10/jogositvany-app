@@ -70,6 +70,15 @@ public class Instructors {
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessons> instructorDrivingLessons;
 
+    //
+    @OneToMany(
+            mappedBy = "instructorJoinRequestInstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<InstructorJoinRequest> instructorJoinRequestList;
+
     //Constructorok:
     public Instructors(String promoText) {
         this.promoText = promoText;

@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,7 +24,7 @@ public class SchoolJoinRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @Column(name = "requested_role")
     @NotNull
@@ -32,26 +32,33 @@ public class SchoolJoinRequest {
     private String requestedRole;
 
     @Column(name = "is_accepted")
-    private boolean isAccepted = false;
+    @Null
+    private boolean isAccepted;
 
     @Column(name = "accepted_at")
     @Null
-    private LocalDate acceptedAt;
+    private LocalDateTime acceptedAt;
 
     @Column(name = "sended_at")
-    @Null
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date sendedAt;
 
     @Column(name = "is_deleted")
-    @NotNull
-    private boolean isDeleted = false;
+    @Null
+    private boolean isDeleted;
 
     @Column(name = "deleted_at")
     @Null
     private LocalDateTime deletedAt;
 
-    //kapcsolatok
-    User schoolRequestUser;
-    School schoolRequestSchool;
+    //Kapcsolatok
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({})
+    private User schoolJoinRequestUser;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_id")
+    @JsonIgnoreProperties({})
+    private School schoolJoinRequestSchool;
 }

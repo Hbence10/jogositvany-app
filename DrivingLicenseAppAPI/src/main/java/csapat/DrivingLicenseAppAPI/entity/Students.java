@@ -87,4 +87,13 @@ public class Students {
     )
     @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
+
+    //
+    @OneToMany(
+            mappedBy = "instructorJoinRequestStudent",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<InstructorJoinRequest> instructorJoinRequestList;
 }

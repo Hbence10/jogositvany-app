@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -108,6 +109,15 @@ public class User {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
     private Education userEducation;
+
+    //
+    @OneToMany(
+            mappedBy = "schoolJoinRequestUser",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok:
     public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {

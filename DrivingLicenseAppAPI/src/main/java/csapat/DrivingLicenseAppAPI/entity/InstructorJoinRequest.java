@@ -1,12 +1,12 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -22,9 +22,10 @@ public class InstructorJoinRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
 
     @Column(name = "is_accepted")
+    @Null
     private boolean isAccepted = false;
 
     @Column(name = "accepted_at")
@@ -32,18 +33,25 @@ public class InstructorJoinRequest {
     private LocalDateTime acceptedAt;
 
     @Column(name = "sended_at")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date sendedAt;
 
     @Column(name = "is_deleted")
-    @NotNull
+    @Null
     private boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
     private LocalDateTime deletedAt;
 
-    //kapcsolatok:
-    Students instructorRequestStudent;
-    Instructors instructorsRequestInstructor;
+    //Kapcsolatok
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "student_id")
+    @JsonIgnoreProperties({})
+    private Students instructorJoinRequestStudent;
+
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "instructor_id")
+    @JsonIgnoreProperties({})
+    private Instructors instructorJoinRequestInstructor;
 }

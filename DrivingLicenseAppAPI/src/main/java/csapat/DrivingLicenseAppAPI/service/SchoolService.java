@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.User;
 import csapat.DrivingLicenseAppAPI.repository.OpeningDetailRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
@@ -16,45 +17,46 @@ import org.springframework.stereotype.Service;
 public class SchoolService {
 
     private final SchoolRepository schoolRepository;
-    private final UserRepository userRepository;
     private final OpeningDetailRepository openingDetails;
+//    private final SchoolRe
+
+    public ResponseEntity<Object> getInfo(int id) {
+        School searchedSchool = schoolRepository.findById(id).get();
+
+        if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedSchool);
+        }
+    }
 
     //Iskola tagjainak a kezelese
     //Jelentkezesek
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> addStudent(){
+    public ResponseEntity<Students> addStudent(Long userId, Integer schoolId) {
+
 
 
         return null;
     }
 
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> addInstructor(){
+    public ResponseEntity<Object> addInstructor() {
         return null;
     }
 
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> addSchoolAdmin(){
+    public ResponseEntity<Object> addSchoolAdmin() {
         return null;
     }
 
     //Tagok torlese
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> deleteStudent(Integer studentId){
+    public ResponseEntity<Object> deleteStudent(Integer studentId) {
         return null;
     }
 
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> deleteInstructor(Integer instructorId){
+    public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
         return null;
     }
 
-    //@PreAuthorize("hasAnyRole('school_admin', 'school_owner')")
-    public ResponseEntity<Object> deleteAdmin(Integer adminId){
+    public ResponseEntity<Object> deleteAdmin(Integer adminId) {
         return null;
     }
-
-    //nyitvatartas szerkesztese
-
-    //jelentkezesi keres kuldese:
 }

@@ -130,6 +130,15 @@ public class School {
     @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
 
+    //
+    @OneToMany(
+            mappedBy = "schoolJoinRequestSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<SchoolJoinRequest> schoolJoinRequestList;
+
     //Constructorok
     public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {
         this.name = name;
