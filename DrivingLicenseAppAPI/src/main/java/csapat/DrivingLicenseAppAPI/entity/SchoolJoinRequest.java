@@ -64,6 +64,5 @@ public class SchoolJoinRequest {
 
     public SchoolJoinRequest(String requestedRole, User user, School school) {
         this.requestedRole = requestedRole;
-//        this.sch
     }
 }

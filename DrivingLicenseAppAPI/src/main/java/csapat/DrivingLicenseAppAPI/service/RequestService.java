@@ -1,8 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.School;
-import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
-import csapat.DrivingLicenseAppAPI.entity.User;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ public class RequestService {
 
     private final SchoolRepository schoolRepository;
     private final StudentRepository studentRepository;
+    private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
 
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
@@ -44,7 +43,18 @@ public class RequestService {
         }
     }
 
-    public ResponseEntity<Object> sendInstructorJoinRequest() {
-        return null;
+    public ResponseEntity<Object> sendInstructorJoinRequest(Integer studentId, Integer instructorId) {
+        Students searchedStudent = studentRepository.findById(studentId).get();
+        Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+
+        if (searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
+            instructorJoinRequestRepository.save(instructorJoinRequest);
+            return ResponseEntity.ok().build();
+        }
     }
 }

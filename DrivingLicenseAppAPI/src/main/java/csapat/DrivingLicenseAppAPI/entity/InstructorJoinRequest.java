@@ -54,4 +54,9 @@ public class InstructorJoinRequest {
     @JoinColumn(name = "instructor_id")
     @JsonIgnoreProperties({})
     private Instructors instructorJoinRequestInstructor;
+
+    public InstructorJoinRequest(Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor) {
+        this.instructorJoinRequestStudent = instructorJoinRequestStudent;
+        this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
+    }
 }
