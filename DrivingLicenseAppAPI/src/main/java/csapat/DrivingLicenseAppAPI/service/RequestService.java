@@ -1,12 +1,16 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.repository.DrivingLessonRequestRepository;
-import csapat.DrivingLicenseAppAPI.repository.ExamRequestRepository;
-import csapat.DrivingLicenseAppAPI.repository.InstructorJoinRequestRepository;
-import csapat.DrivingLicenseAppAPI.repository.SchoolJoinRequestRepository;
+import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
+import csapat.DrivingLicenseAppAPI.entity.User;
+import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Transactional
 @Service
@@ -18,6 +22,29 @@ public class RequestService {
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
 
+    private final SchoolRepository schoolRepository;
+    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
+    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
+        School searchedSchool = schoolRepository.findById(schoolId).get();
+        User searchedUser = userRepository.findById(userId).get();
+        ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
 
+        if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (!roleList.contains(requestedRole)) {
+            return ResponseEntity.notFound().build();
+        } else {
+            SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(requestedRole, searchedUser, searchedSchool);
+            schoolJoinRequestRepository.save(newSchoolJoinRequest);
+            return ResponseEntity.ok().build();
+        }
+    }
+
+    public ResponseEntity<Object> sendInstructorJoinRequest() {
+        return null;
+    }
 }

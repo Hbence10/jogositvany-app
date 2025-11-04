@@ -61,4 +61,9 @@ public class SchoolJoinRequest {
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({})
     private School schoolJoinRequestSchool;
+
+    public SchoolJoinRequest(String requestedRole, User user, School school) {
+        this.requestedRole = requestedRole;
+//        this.sch
+    }
 }
