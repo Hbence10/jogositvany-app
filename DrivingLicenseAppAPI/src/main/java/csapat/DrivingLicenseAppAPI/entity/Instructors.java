@@ -83,4 +83,9 @@ public class Instructors {
     public Instructors(String promoText) {
         this.promoText = promoText;
     }
+
+    public Instructors(School instructorSchool, User instructorUser) {
+        this.instructorSchool = instructorSchool;
+        this.instructorUser = instructorUser;
+    }
 }

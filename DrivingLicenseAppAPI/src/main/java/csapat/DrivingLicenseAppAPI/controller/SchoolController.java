@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/school")
 @RequiredArgsConstructor
@@ -27,35 +29,8 @@ public class SchoolController {
 
     //Iskola tagjainak a kezelese
     //Jelentkezesek:
-    @PostMapping("/student")
-    public ResponseEntity<Students> addStudent(){
-//        return schoolService.addStudent();
-        return null;
-    }
-
-    @PostMapping("/instructor")
-    public ResponseEntity<Object> addInstructor(){
-        return schoolService.addInstructor();
-    }
-
-    @PostMapping("/admin")
-    public ResponseEntity<Object> addSchoolAdmin(){
-        return schoolService.addSchoolAdmin();
-    }
-
-    //Tagok torlese
-    @DeleteMapping("/student/{id}")
-    public ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer studentId){
-        return schoolService.deleteStudent(studentId);
-    }
-
-    @DeleteMapping("/instructor/{id}")
-    public ResponseEntity<Object> deleteInstructor(@PathVariable("id") Integer instructorId){
-        return schoolService.deleteInstructor(instructorId);
-    }
-
-    @DeleteMapping("/admin/{id}")
-    public ResponseEntity<Object> deleteAdmin(@PathVariable("id") Integer adminId){
-        return schoolService.deleteAdmin(adminId);
+    @PostMapping("/request/{id}")
+    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody){
+        return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status"));
     }
 }

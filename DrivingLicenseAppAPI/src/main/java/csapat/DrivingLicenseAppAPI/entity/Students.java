@@ -96,4 +96,11 @@ public class Students {
     )
     @JsonIgnoreProperties({})
     private List<InstructorJoinRequest> instructorJoinRequestList;
+
+    //
+
+    public Students(User studentUser, School studentSchool) {
+        this.studentUser = studentUser;
+        this.studentSchool = studentSchool;
+    }
 }
