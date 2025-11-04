@@ -1,4 +1,4 @@
-import { UsersService } from './../../services/users.service';
+import { UsersService } from '../../services/users.service';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -39,12 +39,12 @@ function validatePassword(
 }
 
 @Component({
-  selector: 'app-registartion-page',
+  selector: 'app-registration-page',
   imports: [ReactiveFormsModule, RouterModule],
-  templateUrl: './registartion-page.component.html',
-  styleUrl: './registartion-page.component.css',
+  templateUrl: './registration-page.component.html',
+  styleUrl: './registration-page.component.css',
 })
-export class RegistartionPageComponent implements OnInit {
+export class RegistrationPageComponent implements OnInit {
   private usersService = inject(UsersService);
 
   registrationForm!: FormGroup;
