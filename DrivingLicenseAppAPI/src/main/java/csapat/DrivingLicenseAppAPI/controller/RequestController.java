@@ -14,22 +14,22 @@ public class RequestController {
 
     private final RequestService requestService;
 
-    @PostMapping("/school")
+    @PostMapping("/schoolJoin")
     private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody Map<String, String> requestBody){
         return requestService.sendSchoolJoinRequest(Integer.valueOf(requestBody.get("schoolId")), Integer.valueOf(requestBody.get("userId")), requestBody.get("requestedRole"));
     }
 
-    @PostMapping("/instructor")
+    @PostMapping("/instructorJoin")
     private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody Map<String, Integer> requestBody){
         return requestService.sendInstructorJoinRequest(requestBody.get("studentId"), requestBody.get("instructorId"));
     }
 
-    @DeleteMapping("/school/{id}")
+    @DeleteMapping("/schoolJoin/{id}")
     private ResponseEntity<Object> deleteSchoolJoinRequest(@PathVariable("id") Integer id){
         return requestService.deleteSchoolJoinRequest(id);
     }
 
-    @DeleteMapping("/instructor/{id}")
+    @DeleteMapping("/instructorJoin/{id}")
     private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id){
         return requestService.deleteInstructorJoinRequest(id);
     }

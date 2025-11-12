@@ -1,11 +1,11 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.User;
-import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,10 +47,15 @@ public class UserController {
         return ResponseEntity.ok(returnObject);
     }
 
-    //
+    //Frissitesek:
     @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestBody User updatedUser){
         return userService.updateUser(updatedUser);
+    }
+
+    @PatchMapping("/pfp/{id}")
+    public ResponseEntity<User> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file){
+        return userService.updatePfp(id, file);
     }
 
     //

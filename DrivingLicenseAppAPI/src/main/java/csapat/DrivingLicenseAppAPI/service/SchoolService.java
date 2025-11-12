@@ -21,7 +21,7 @@ public class SchoolService {
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
         SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.findById(joinRequestId).get();
 
-        if (searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.isDeleted()) {
+        if (searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else if (!status.equals("accept") || !status.equals("refuse")) {
             return null;

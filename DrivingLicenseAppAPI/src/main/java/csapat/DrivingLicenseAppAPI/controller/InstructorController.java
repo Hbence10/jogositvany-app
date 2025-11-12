@@ -12,12 +12,6 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
-    //kereses
-    @GetMapping("/search")
-    public ResponseEntity<Object> getInstructorBySeach() {
-        return null;
-    }
-
     //diakok kezelese:
     @PostMapping("/students")
     public ResponseEntity<Object> addStudent() {
@@ -27,12 +21,5 @@ public class InstructorController {
     @DeleteMapping("/students/{id}")
     public ResponseEntity<Object> deleteStudent(@PathVariable("id") Long id) {
         return instructorService.deleteStudent(id);
-    }
-
-    //Egyeb:
-    //
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getInstructor(@PathVariable("id") int id) {
-        return null;
     }
 }

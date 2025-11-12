@@ -72,7 +72,7 @@ public class User {
     private String pfpPath;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date createdAt;
 
     @Column(name = "last_login")
@@ -90,7 +90,7 @@ public class User {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
-    private Role role;
+    private Role role = new Role(1, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties({"instructorUser", "reviewList"})

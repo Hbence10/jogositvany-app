@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -25,8 +26,6 @@ public class UserService {
     private final EducationRepository educationRepository;
     private String vCode = "";
 
-
-    //Endpointok
     public ResponseEntity<Object> login(String email, String password) {
         User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
 
@@ -122,6 +121,10 @@ public class UserService {
                 return ResponseEntity.ok(result);
             }
         }
+    }
+
+    public ResponseEntity<User> updatePfp(Integer id, MultipartFile file){
+        return null;
     }
 
     // delete:
