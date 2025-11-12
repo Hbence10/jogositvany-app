@@ -45,7 +45,7 @@ public class SchoolJoinRequest {
 
     @Column(name = "is_deleted")
     @Null
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @Column(name = "deleted_at")
     @Null

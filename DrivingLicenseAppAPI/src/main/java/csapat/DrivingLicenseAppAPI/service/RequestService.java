@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,6 +26,7 @@ public class RequestService {
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
 
+    //Jelentkezesi kerelmek
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
         School searchedSchool = schoolRepository.findById(schoolId).get();
         User searchedUser = userRepository.findById(userId).get();
@@ -57,4 +59,30 @@ public class RequestService {
             return ResponseEntity.ok().build();
         }
     }
+
+    public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
+        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.findById(id).get();
+
+        if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            searchedRequest.setIsDeleted(true);
+            searchedRequest.setDeletedAt(LocalDateTime.now());
+            return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedRequest));
+        }
+    }
+
+    public ResponseEntity<Object> deleteInstructorJoinRequest(Integer id) {
+        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.findById(id).get();
+
+        if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            searchedRequest.setIsDeleted(true);
+            searchedRequest.setDeletedAt(LocalDateTime.now());
+            return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedRequest));
+        }
+    }
+
+    //Vezetesi kerelmek
 }

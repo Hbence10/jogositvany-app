@@ -22,7 +22,7 @@ public class InstructorJoinRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "is_accepted")
     @Null
@@ -38,7 +38,7 @@ public class InstructorJoinRequest {
 
     @Column(name = "is_deleted")
     @Null
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
