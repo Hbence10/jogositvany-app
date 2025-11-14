@@ -39,20 +39,22 @@ public class UserService {
     }
 
     public ResponseEntity<Object> register(User newUser) {
-        if (ValidatorCollection.emailChecker(newUser.getEmail()) && ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            String hashedPassword = passwordEncoder.encode(newUser.getPassword());
-            newUser.setPassword(hashedPassword);
-            User registeredUser = userRepository.save(newUser);
-            return ResponseEntity.ok(registeredUser);
-        } else if (!ValidatorCollection.emailChecker(newUser.getEmail()) && !ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
+        Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
+        if (searchedEducation == null || searchedEducation.getId() == null) {
+            return ResponseEntity.notFound().build();
         } else if (!ValidatorCollection.emailChecker(newUser.getEmail())) {
-            return ResponseEntity.status(417).body("InvalidEmail");
+            return ResponseEntity.status(417).body("invalidEmail");
+        } else if (!ValidatorCollection.phoneValidator(newUser.getPhone())) {
+            return ResponseEntity.status(417).body("invalidPhone");
         } else if (!ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            return ResponseEntity.status(417).body("InvalidPassword");
+            return ResponseEntity.status(417).body("invalidPassword");
+        } else {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            emailSender.sendEmailAboutRegistration(newUser.getEmail()); //Itt majd le kell kezelni, ha a user egy nem letezo emailt ad meg
+            userRepository.save(newUser);
         }
 
-        return ResponseEntity.internalServerError().build();
+        return ResponseEntity.ok().body("success");
     }
 
     //password reset
@@ -110,7 +112,7 @@ public class UserService {
         } else {
             List<Education> allEducation = educationRepository.findAll();
 
-            if (!phoneValidator(updatedUser.getPhone())) {
+            if (!ValidatorCollection.phoneValidator(updatedUser.getPhone())) {
                 return ResponseEntity.status(417).body("InvalidPhone");
             } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
                 return ResponseEntity.status(417).body("InvalidEmail");
@@ -123,7 +125,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<User> updatePfp(Integer id, MultipartFile file){
+    public ResponseEntity<User> updatePfp(Integer id, MultipartFile file) {
         return null;
     }
 
@@ -147,12 +149,6 @@ public class UserService {
         }
 
         return code;
-    }
-
-    public Boolean phoneValidator(String phoneNumber) {
-        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
-        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
-        //https://hu.wikipedia.org/wiki/Magyar_mobilszolg%C3%A1ltat%C3%B3k
     }
 
 

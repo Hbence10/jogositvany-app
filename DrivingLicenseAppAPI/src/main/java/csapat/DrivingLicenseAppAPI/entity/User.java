@@ -72,7 +72,7 @@ public class User {
     private String pfpPath;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Column(name = "last_login")
