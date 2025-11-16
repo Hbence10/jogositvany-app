@@ -18,17 +18,22 @@ public class ReviewController {
 
     @GetMapping("/school/{id}")
     public ResponseEntity<List<Review>> getReviewsAboutSchool(@PathVariable("id") Integer schoolId) {
-        return getReviewsAboutSchool(schoolId);
+        return reviewService.getReviewsAboutSchool(schoolId);
     }
 
     @GetMapping("/instructor/{id}")
     public ResponseEntity<List<Review>> getReviewsAboutInstructor(@PathVariable("id") Integer instructorId) {
-        return getReviewsAboutInstructor(instructorId);
+        return reviewService.getReviewsAboutInstructor(instructorId);
     }
 
-    @PostMapping("/addReview")
-    public ResponseEntity<Review> createReview(@RequestBody Review newReview) {
-        return reviewService.createReview(newReview);
+    @PostMapping("/school/{id}")
+    public ResponseEntity<Review> createSchoolReview(@RequestBody Review newReview, @PathVariable("id") Integer schoolId) {
+        return reviewService.createSchoolReview(newReview, schoolId);
+    }
+
+    @PostMapping("/instructor/{id}")
+    public ResponseEntity<Review> createInstructorReview (@RequestBody Review newReview, @PathVariable("id") Integer instructorId) {
+        return reviewService.createSchoolReview(newReview, instructorId);
     }
 
     @PutMapping("/updateReview")

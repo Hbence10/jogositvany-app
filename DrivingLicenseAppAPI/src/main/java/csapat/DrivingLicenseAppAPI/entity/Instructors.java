@@ -45,7 +45,7 @@ public class Instructors {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @JsonIgnoreProperties({"owner", "instructorsList", "adminList" , "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)

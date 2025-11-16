@@ -99,4 +99,8 @@ public class Students {
         this.studentUser = studentUser;
         this.studentSchool = studentSchool;
     }
+
+    public Students(Integer id) {
+        this.id = id;
+    }
 }

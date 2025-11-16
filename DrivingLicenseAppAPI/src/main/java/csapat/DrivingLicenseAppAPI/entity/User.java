@@ -74,23 +74,27 @@ public class User {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createdAt;
 
     @Column(name = "last_login")
     @Null
+    @JsonIgnore
     private LocalDateTime lastLogin;
 
     @Column(name = "is_deleted")
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     @Null
+    @JsonIgnore
     private Date deletedAt;
 
+    @JsonIgnore
     @Column(name = "verification_code")
     @Null
-    @JsonIgnore
     private String vCode;
 
     //Kapcsolatok:
@@ -116,7 +120,6 @@ public class User {
     @JsonIgnoreProperties({"userEducationList"})
     private Education userEducation;
 
-    //
     @OneToMany(
             mappedBy = "schoolJoinRequestUser",
             fetch = FetchType.LAZY,
