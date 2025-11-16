@@ -45,11 +45,12 @@ public class Instructors {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"owner", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
+    @JsonIgnoreProperties({"instructor"})
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
@@ -57,10 +58,9 @@ public class Instructors {
     private List<Review> reviewList;
 
     @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private List<Students> students;
 
-    //innen van a baj
     @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
@@ -70,7 +70,6 @@ public class Instructors {
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessons> instructorDrivingLessons;
 
-    //
     @OneToMany(
             mappedBy = "instructorJoinRequestInstructor",
             fetch = FetchType.LAZY,

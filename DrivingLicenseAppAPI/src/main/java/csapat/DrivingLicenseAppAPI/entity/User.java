@@ -11,6 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class User {
 
     @Column(name = "last_login")
     @Null
-    private Date lastLogin;
+    private LocalDateTime lastLogin;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
@@ -89,15 +90,17 @@ public class User {
 
     @Column(name = "verification_code")
     @Null
+    @JsonIgnore
     private String vCode;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
+    @JsonIgnoreProperties({"userList"})
     private Role role = new Role(1, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -106,11 +109,11 @@ public class User {
 
     @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
-//    @JsonIgnoreProperties({"studentUser"})
     private School adminSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
+    @JsonIgnoreProperties({"userEducationList"})
     private Education userEducation;
 
     //
@@ -119,7 +122,7 @@ public class User {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok:

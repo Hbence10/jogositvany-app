@@ -97,6 +97,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({"schoolOpeningDetail"})
     private List<OpeningDetails> openingDetails;
 
     @OneToMany(
@@ -106,7 +107,6 @@ public class School {
     )
     private List<Review> reviewList;
 
-    //kerdojel
     @OneToMany(
             mappedBy = "studentSchool",
             fetch = FetchType.LAZY,
@@ -136,7 +136,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok

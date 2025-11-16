@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional
@@ -33,6 +34,8 @@ public class UserService {
         if (!successFullLogin || loggedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
+        loggedUser.setLastLogin(LocalDateTime.now());
+        userRepository.save(loggedUser);
 
         return ResponseEntity.ok(loggedUser);
     }
