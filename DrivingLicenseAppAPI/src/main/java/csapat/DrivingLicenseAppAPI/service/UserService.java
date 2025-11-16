@@ -105,7 +105,7 @@ public class UserService {
             String hashedPassword = passwordEncoder.encode(newPassword);
             user.setPassword(hashedPassword);
             userRepository.save(user);
-            return ResponseEntity.ok("successfullyReset");
+            return ResponseEntity.ok("success");
         }
     }
 
@@ -135,8 +135,17 @@ public class UserService {
     }
 
     // delete:
-    public ResponseEntity<Boolean> deleteUser(Long id) {
-        return null;
+    public ResponseEntity<String> deleteUser(Integer id) {
+        User searchedUser = userRepository.findById(id).get();
+        if(searchedUser == null || searchedUser.getId() == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        searchedUser.setIsDeleted(true);
+        searchedUser.setDeletedAt(new Date());
+        userRepository.save(searchedUser);
+
+        return ResponseEntity.ok().body("success");
     }
 
     //egyeb:
