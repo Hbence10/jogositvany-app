@@ -130,7 +130,6 @@ public class School {
     @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
 
-    //
     @OneToMany(
             mappedBy = "schoolJoinRequestSchool",
             fetch = FetchType.LAZY,

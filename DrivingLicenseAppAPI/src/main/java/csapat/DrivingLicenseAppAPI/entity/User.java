@@ -104,7 +104,7 @@ public class User {
     private Instructors instructor;
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students students;
 
     @OneToOne(cascade = {})

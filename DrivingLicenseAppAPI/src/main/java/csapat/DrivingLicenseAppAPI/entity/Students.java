@@ -42,12 +42,12 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"instructorSchool", "reviewList", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     @Null
     private Instructors studentInstructor;
 
