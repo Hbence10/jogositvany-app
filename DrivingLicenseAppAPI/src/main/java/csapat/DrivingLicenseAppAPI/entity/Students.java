@@ -42,18 +42,18 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList", "drivingLessonsType", "openingDetails", "examRequestList"})
+    @JsonIgnoreProperties({})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList", "drivingLessonRequestList", "examRequestList"})
+    @JsonIgnoreProperties({})
     @Null
     private Instructors studentInstructor;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"students"})
+    @JsonIgnoreProperties({})
     private User studentUser;
 
     @OneToMany(
@@ -61,7 +61,6 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -88,7 +87,6 @@ public class Students {
     @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
 
-    //
     @OneToMany(
             mappedBy = "instructorJoinRequestStudent",
             fetch = FetchType.LAZY,
@@ -96,8 +94,6 @@ public class Students {
     )
     @JsonIgnoreProperties({})
     private List<InstructorJoinRequest> instructorJoinRequestList;
-
-    //
 
     public Students(User studentUser, School studentSchool) {
         this.studentUser = studentUser;

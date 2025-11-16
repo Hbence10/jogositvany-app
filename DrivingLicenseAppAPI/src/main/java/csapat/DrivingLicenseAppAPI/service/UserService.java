@@ -81,7 +81,7 @@ public class UserService {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else {
             User searchedUser = userRepository.getUserByEmail(email);
-            if (searchedUser == null || searchedUser.getId() == null){
+            if (searchedUser == null || searchedUser.getId() == null) {
                 return ResponseEntity.notFound().build();
             }
 
@@ -99,11 +99,10 @@ public class UserService {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else if (!ValidatorCollection.passwordChecker(newPassword)) {
             return ResponseEntity.status(417).body("InvalidPassword");
-        } else if (user == null) {
+        } else if (user == null || user.getId() == null || user.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            String hashedPassword = passwordEncoder.encode(newPassword);
-            user.setPassword(hashedPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
             return ResponseEntity.ok("success");
         }
@@ -135,9 +134,9 @@ public class UserService {
     }
 
     // delete:
-    public ResponseEntity<String> deleteUser(Integer id) {
+    public ResponseEntity<String> deleteUser(Integer id)    {
         User searchedUser = userRepository.findById(id).get();
-        if(searchedUser == null || searchedUser.getId() == null){
+        if (searchedUser == null || searchedUser.getId() == null) {
             return ResponseEntity.notFound().build();
         }
 

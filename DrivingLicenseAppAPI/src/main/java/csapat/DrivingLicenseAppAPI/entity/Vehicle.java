@@ -53,7 +53,6 @@ public class Vehicle {
     private FuelType fuelType;
 
     @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JsonIgnore
     private Instructors instructor;
 
     //Constructorok

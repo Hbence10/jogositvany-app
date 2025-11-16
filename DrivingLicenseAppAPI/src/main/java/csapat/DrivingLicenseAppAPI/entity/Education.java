@@ -45,9 +45,7 @@ public class Education {
             fetch = FetchType.LAZY,
             cascade = {}
     )
-    @JsonIgnore
     private List<User> userEducationList;
-
 
     public Education(String name) {
         this.name = name;

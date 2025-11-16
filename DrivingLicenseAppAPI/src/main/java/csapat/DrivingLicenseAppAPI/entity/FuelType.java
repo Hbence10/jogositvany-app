@@ -46,7 +46,6 @@ public class FuelType {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Vehicle> vehicles;
 
     //Constructorok:

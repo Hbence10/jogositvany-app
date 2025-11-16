@@ -41,10 +41,8 @@ public class UserController {
     }
 
     @PatchMapping("/passwordReset")
-    public ResponseEntity<HashMap<String, String>> updatePassword(@RequestBody Map<String, String> body) {
-        HashMap<String, String> returnObject = new HashMap<>();
-        returnObject.put("result", userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
-        return ResponseEntity.ok(returnObject);
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
     }
 
     //Frissitesek:
@@ -59,7 +57,7 @@ public class UserController {
     }
 
     //
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id){
         return userService.deleteUser(id);
     }

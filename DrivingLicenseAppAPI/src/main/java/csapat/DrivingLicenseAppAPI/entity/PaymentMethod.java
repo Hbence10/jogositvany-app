@@ -45,7 +45,6 @@ public class PaymentMethod {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
 
     //Constructorok:
