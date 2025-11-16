@@ -87,6 +87,10 @@ public class User {
     @Null
     private Date deletedAt;
 
+    @Column(name = "verification_code")
+    @Null
+    private String vCode;
+
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")

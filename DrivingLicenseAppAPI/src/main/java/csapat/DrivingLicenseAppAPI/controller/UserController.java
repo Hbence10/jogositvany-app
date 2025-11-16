@@ -28,16 +28,16 @@ public class UserController {
     }
 
     //password reset
-    @PostMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> codeObject){
-        return userService.checkVCode(codeObject.get("vCode"));
-    }
-
     @GetMapping("/getVerificationCode")
     public ResponseEntity<HashMap<String, Object>> getVerificationCode(@RequestParam("email") String email) {
         HashMap<String, Object> returnObject = new HashMap<>();
         returnObject.put("isSent", userService.getVerificationCode(email).getBody());
         return ResponseEntity.ok(returnObject);
+    }
+
+    @PostMapping("/checkVerificationCode")
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> body){
+        return userService.checkVCode(body.get("vCode"), body.get("email"));
     }
 
     @PatchMapping("/passwordReset")

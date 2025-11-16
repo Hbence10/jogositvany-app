@@ -24,7 +24,6 @@ public class UserService {
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
-    private String vCode = "";
 
     public ResponseEntity<Object> login(String email, String password) {
         User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
@@ -58,7 +57,7 @@ public class UserService {
     }
 
     //password reset
-    public ResponseEntity<Object> getVerificationCode(String email) {
+    public ResponseEntity<String> getVerificationCode(String email) {
         List<String> emailList = userRepository.getAllEmail();
 
         if (!ValidatorCollection.emailChecker(email.trim())) {
@@ -66,11 +65,29 @@ public class UserService {
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
         } else {
-            this.vCode = generateVerificationCode();
-            System.out.println(vCode);
+            User searchedUser = userRepository.getUserByEmail(email);
+            String vCode = generateVerificationCode();
+            searchedUser.setVCode(passwordEncoder.encode(vCode));
+            userRepository.save(searchedUser);
             emailSender.sendVerificationCodeEmail(email, vCode);
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok().body("success");
         }
+    }
+
+    public ResponseEntity<Object> checkVCode(String userVCode, String email) {
+        if (userVCode.length() != 10) {
+            return ResponseEntity.status(417).body("InvalidVerificationCode");
+        } else if (!ValidatorCollection.emailChecker(email)) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else {
+            User searchedUser = userRepository.getUserByEmail(email);
+            if (searchedUser == null || searchedUser.getId() == null){
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
+        }
+
     }
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
@@ -89,18 +106,6 @@ public class UserService {
             user.setPassword(hashedPassword);
             userRepository.save(user);
             return ResponseEntity.ok("successfullyReset");
-        }
-    }
-
-    public ResponseEntity<Object> checkVCode(String userVCode) {
-        if (userVCode.length() != 10) {
-            return ResponseEntity.status(417).body("InvalidVerificationCode");
-        } else {
-            if (userVCode.equals(this.vCode)) {
-                return ResponseEntity.ok(true);
-            } else {
-                return ResponseEntity.status(422).body(false);
-            }
         }
     }
 
