@@ -155,6 +155,17 @@ public class UserService {
         return ResponseEntity.ok().body("success");
     }
 
+    //egyeb endpointok:
+    public ResponseEntity<User> getUserById(Integer id){
+        User searchedUser = userRepository.findById(id).get();
+
+        if(searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedUser);
+        }
+    }
+
     //egyeb:
     public static String generateVerificationCode() {
         String code = "";

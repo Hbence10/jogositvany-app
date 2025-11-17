@@ -56,9 +56,15 @@ public class UserController {
         return userService.updatePfp(id, file);
     }
 
-    //
+    //Torles
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id){
         return userService.deleteUser(id);
+    }
+
+    //Egyeb endpointok:
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id){
+        return null;
     }
 }
