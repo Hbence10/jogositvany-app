@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Nov 14. 09:49
+-- Létrehozás ideje: 2025. Nov 16. 19:52
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -26,7 +26,7 @@ DELIMITER $$
 -- Eljárások
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEmail` ()   BEGIN
-	SELECT `user`.`email` FROM `users`;
+	SELECT `user`.`email` FROM `user`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
@@ -34,7 +34,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
-	SELECT * FROM `user` WHERE emailIN = `users`.`email`;
+	SELECT * FROM `user` WHERE emailIN = `user`.`email`;
 END$$
 
 DELIMITER ;
@@ -286,6 +286,13 @@ CREATE TABLE `instructor_join_request` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `instructor_join_request`
+--
+
+INSERT INTO `instructor_join_request` (`id`, `student_id`, `instructor_id`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
+(1, 5, 1, 0, '2025-11-20 14:49:05', '2025-11-16 13:49:13', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -494,6 +501,13 @@ CREATE TABLE `school_join_request` (
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- A tábla adatainak kiíratása `school_join_request`
+--
+
+INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `requested_role`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 2, 'student', 0, '2025-11-17 14:43:41', '2025-11-16 13:44:19', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -563,7 +577,7 @@ CREATE TABLE `user` (
   `deleted_at` datetime DEFAULT NULL,
   `school_administrator_id` int(11) DEFAULT NULL,
   `education_id` int(11) NOT NULL,
-  `verification_code` longtext NOT NULL
+  `verification_code` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -571,15 +585,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`, `verification_code`) VALUES
-(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$RKrOMjLlUohVtc1bMDYqIg$SpIcGMy0yLKv1prK//IIMK9x6o2tGse2Nw/Yq7q8Vfw', NULL, NULL, '2025-10-07 14:06:32', NULL, 0, NULL, NULL, 1, ''),
-(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$x8ZCOKm/NXEMCiY+K2J5xw$IFLOP3wL/S26aywbMGY8v3DfO1VdgCSBOOkqM9gc5CE', NULL, NULL, '2025-10-07 14:06:59', NULL, 0, NULL, NULL, 1, ''),
-(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', NULL, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, ''),
-(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', NULL, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, ''),
-(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', NULL, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, ''),
-(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', NULL, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, ''),
-(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$LDYkFEW00svoUYrEv4c5Vw$iBjM7m0CD3CaiMhFqaviiyxbAEsLH2sK1aCaN7jYZMU', NULL, NULL, '2025-10-07 14:09:52', NULL, 0, NULL, NULL, 1, ''),
-(9, 'firstName', 'lastName', 'sulisdolgok8@gmail.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Vzcayiku0gQFucZhnPeIyg$bpPAhzgpMY2WE4uChqICeMAtl4UVeiam29CawSLJ1UU', 1, NULL, '2025-11-14 09:17:33', NULL, 0, NULL, NULL, 1, ''),
-(10, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$G8nN8oZSlgNV6bIUGNqvsA$9L7LIYTKgBj6qEs4ZYBx7Yms4yikUSotx0dZdwgV+Y8', 1, NULL, '2025-11-14 09:45:22', NULL, 0, NULL, NULL, 1, '');
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, NULL, '2025-10-07 14:06:32', '2025-11-16 20:34:58', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
+(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, NULL, '2025-10-07 14:06:59', '2025-11-16 20:49:42', 0, NULL, NULL, 1, NULL),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
+(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
+(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
+(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, NULL, '2025-10-07 14:09:52', '2025-11-16 20:18:46', 0, NULL, 2, 1, NULL),
+(11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, NULL, '2025-11-16 10:34:22', NULL, 1, '2025-11-16 13:12:05', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -878,7 +891,7 @@ ALTER TABLE `instructor`
 -- AUTO_INCREMENT a táblához `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `message`
@@ -932,7 +945,7 @@ ALTER TABLE `school`
 -- AUTO_INCREMENT a táblához `school_join_request`
 --
 ALTER TABLE `school_join_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `status`
@@ -950,7 +963,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle`
