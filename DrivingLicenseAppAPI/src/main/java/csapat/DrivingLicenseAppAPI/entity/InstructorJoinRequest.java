@@ -26,7 +26,7 @@ public class InstructorJoinRequest {
 
     @Column(name = "is_accepted")
     @Null
-    private boolean isAccepted = false;
+    private Boolean isAccepted = false;
 
     @Column(name = "accepted_at")
     @Null

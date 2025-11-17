@@ -33,7 +33,7 @@ public class SchoolJoinRequest {
 
     @Column(name = "is_accepted")
     @Null
-    private boolean isAccepted;
+    private Boolean isAccepted;
 
     @Column(name = "accepted_at")
     @Null
