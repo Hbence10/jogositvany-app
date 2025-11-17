@@ -34,9 +34,9 @@ public class SchoolService {
                     Instructors newInstructor = new Instructors(searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getSchoolJoinRequestUser());
                     instructorRepository.save(newInstructor);
                 }
-                searchedSchoolJoinRequest.setAccepted(true);
+                searchedSchoolJoinRequest.setIsAccepted(true);
             } else {
-                searchedSchoolJoinRequest.setAccepted(false);
+                searchedSchoolJoinRequest.setIsAccepted(false);
             }
             return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedSchoolJoinRequest));
         }
