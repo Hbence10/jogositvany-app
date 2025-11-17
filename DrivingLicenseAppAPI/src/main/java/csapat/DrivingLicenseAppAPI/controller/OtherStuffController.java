@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLicenseCategory;
 import csapat.DrivingLicenseAppAPI.entity.PaymentMethod;
 import csapat.DrivingLicenseAppAPI.service.OtherStuffService;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,10 @@ public class OtherStuffController {
     @GetMapping("/paymentMethod")
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod(){
         return otherStuffService.getAllPaymentMethod();
+    }
+
+    @GetMapping("/licenseCategory")
+    public ResponseEntity<List<DrivingLicenseCategory>> getAllCategory(){
+        return otherStuffService.getAllCategory();
     }
 }
