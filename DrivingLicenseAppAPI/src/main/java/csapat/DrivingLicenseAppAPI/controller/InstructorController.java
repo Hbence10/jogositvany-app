@@ -11,15 +11,4 @@ import org.springframework.web.bind.annotation.*;
 public class InstructorController {
 
     private final InstructorService instructorService;
-
-    //diakok kezelese:
-    @PostMapping("/students")
-    public ResponseEntity<Object> addStudent() {
-        return instructorService.addStudent();
-    }
-
-    @DeleteMapping("/students/{id}")
-    public ResponseEntity<Object> deleteStudent(@PathVariable("id") Long id) {
-        return instructorService.deleteStudent(id);
-    }
 }

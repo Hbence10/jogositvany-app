@@ -86,7 +86,7 @@ public class ReviewService {
 
     public ResponseEntity<Review> updateReview(Review updatedReview) {
         Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
-        if (searchedReview.getId() == null) {
+        if (searchedReview == null || searchedReview.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok().body(reviewRepository.save(updatedReview));

@@ -2,7 +2,6 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class ReviewController {
 
     @PostMapping("/instructor/{id}")
     public ResponseEntity<Review> createInstructorReview (@RequestBody Review newReview, @PathVariable("id") Integer instructorId) {
-        return reviewService.createSchoolReview(newReview, instructorId);
+        return reviewService.createInstructorReview(newReview, instructorId);
     }
 
     @PutMapping("/updateReview")

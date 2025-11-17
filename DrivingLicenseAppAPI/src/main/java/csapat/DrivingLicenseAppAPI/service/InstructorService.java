@@ -16,17 +16,4 @@ public class InstructorService {
     private final InstructorRepository instructorRepository;
     private final VehicleRepository vehicleRepository;
     private final VehicleTypeRepository vehicleTypeRepository;
-
-    //diakok kezelese
-    //@PreAuthorize("hasRole('instructor')")
-    public ResponseEntity<Object> addStudent(){
-        return null;
-    }
-
-    //@PreAuthorize("hasRole('instructor')")
-    public ResponseEntity<Object> deleteStudent(Long studentId){
-        return null;
-    }
-
-    //jelentkezesi keres kuldese:
 }

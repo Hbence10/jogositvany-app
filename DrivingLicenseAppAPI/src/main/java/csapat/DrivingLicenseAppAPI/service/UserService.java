@@ -69,6 +69,11 @@ public class UserService {
             return ResponseEntity.notFound().build();
         } else {
             User searchedUser = userRepository.getUserByEmail(email);
+
+            if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
             String vCode = generateVerificationCode();
             searchedUser.setVCode(passwordEncoder.encode(vCode));
             userRepository.save(searchedUser);
@@ -84,7 +89,7 @@ public class UserService {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else {
             User searchedUser = userRepository.getUserByEmail(email);
-            if (searchedUser == null || searchedUser.getId() == null) {
+            if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
 
@@ -139,7 +144,7 @@ public class UserService {
     // delete:
     public ResponseEntity<String> deleteUser(Integer id)    {
         User searchedUser = userRepository.findById(id).get();
-        if (searchedUser == null || searchedUser.getId() == null) {
+        if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
 
