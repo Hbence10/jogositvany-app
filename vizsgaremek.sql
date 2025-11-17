@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Okt 21. 12:12
+-- Létrehozás ideje: 2025. Nov 14. 09:49
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -487,7 +487,7 @@ CREATE TABLE `school_join_request` (
   `user_id` int(11) NOT NULL,
   `school_id` int(11) NOT NULL,
   `requested_role` varchar(10) NOT NULL,
-  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
+  `is_accepted` tinyint(1) DEFAULT NULL,
   `accepted_at` datetime DEFAULT NULL,
   `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -562,21 +562,24 @@ CREATE TABLE `user` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
   `school_administrator_id` int(11) DEFAULT NULL,
-  `education_id` int(11) NOT NULL
+  `education_id` int(11) NOT NULL,
+  `verification_code` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`) VALUES
-(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$RKrOMjLlUohVtc1bMDYqIg$SpIcGMy0yLKv1prK//IIMK9x6o2tGse2Nw/Yq7q8Vfw', NULL, NULL, '2025-10-07 14:06:32', NULL, 0, NULL, NULL, 1),
-(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$x8ZCOKm/NXEMCiY+K2J5xw$IFLOP3wL/S26aywbMGY8v3DfO1VdgCSBOOkqM9gc5CE', NULL, NULL, '2025-10-07 14:06:59', NULL, 0, NULL, NULL, 1),
-(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', NULL, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1),
-(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', NULL, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1),
-(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', NULL, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1),
-(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', NULL, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1),
-(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$LDYkFEW00svoUYrEv4c5Vw$iBjM7m0CD3CaiMhFqaviiyxbAEsLH2sK1aCaN7jYZMU', NULL, NULL, '2025-10-07 14:09:52', NULL, 0, NULL, NULL, 1);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`, `verification_code`) VALUES
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$RKrOMjLlUohVtc1bMDYqIg$SpIcGMy0yLKv1prK//IIMK9x6o2tGse2Nw/Yq7q8Vfw', NULL, NULL, '2025-10-07 14:06:32', NULL, 0, NULL, NULL, 1, ''),
+(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$x8ZCOKm/NXEMCiY+K2J5xw$IFLOP3wL/S26aywbMGY8v3DfO1VdgCSBOOkqM9gc5CE', NULL, NULL, '2025-10-07 14:06:59', NULL, 0, NULL, NULL, 1, ''),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', NULL, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, ''),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', NULL, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, ''),
+(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', NULL, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, ''),
+(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', NULL, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, ''),
+(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$LDYkFEW00svoUYrEv4c5Vw$iBjM7m0CD3CaiMhFqaviiyxbAEsLH2sK1aCaN7jYZMU', NULL, NULL, '2025-10-07 14:09:52', NULL, 0, NULL, NULL, 1, ''),
+(9, 'firstName', 'lastName', 'sulisdolgok8@gmail.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Vzcayiku0gQFucZhnPeIyg$bpPAhzgpMY2WE4uChqICeMAtl4UVeiam29CawSLJ1UU', 1, NULL, '2025-11-14 09:17:33', NULL, 0, NULL, NULL, 1, ''),
+(10, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$G8nN8oZSlgNV6bIUGNqvsA$9L7LIYTKgBj6qEs4ZYBx7Yms4yikUSotx0dZdwgV+Y8', 1, NULL, '2025-11-14 09:45:22', NULL, 0, NULL, NULL, 1, '');
 
 -- --------------------------------------------------------
 
@@ -947,7 +950,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle`
