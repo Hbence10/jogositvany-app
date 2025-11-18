@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "review")
@@ -21,7 +24,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "text")
     @NotNull
@@ -29,25 +32,39 @@ public class Review {
 
     @Column(name = "created_at")
     @NotNull
+    @JsonIgnore
     private LocalDate createdAt;
 
     @Column(name = "rating")
     @NotNull
     private float rating;
 
+    @Column(name = "is_deleted")
+    @NotNull
+    @JsonIgnore
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    @JsonIgnore
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "author_id")
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "instructor_id", insertable = false, updatable = false)
+    @JoinColumn(name = "instructor_id")
     @Null
+    @JsonIgnore
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "school_id", insertable = false, updatable = false)
+    @JoinColumn(name = "school_id")
     @Null
+    @JsonIgnore
     private School aboutSchool;
 
     //Constructorok

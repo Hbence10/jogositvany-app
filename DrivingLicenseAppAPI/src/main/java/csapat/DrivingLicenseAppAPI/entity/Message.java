@@ -1,12 +1,20 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Message {
 
     @Id
@@ -21,6 +29,14 @@ public class Message {
     @Column(name = "created_at")
     @NotNull
     private LocalDate createdAt;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
 //    private User messageTo;

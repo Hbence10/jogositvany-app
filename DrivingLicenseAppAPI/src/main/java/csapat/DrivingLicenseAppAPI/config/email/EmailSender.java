@@ -22,5 +22,21 @@ public class EmailSender {
         mailSender.send(message);
     }
 
+    public void sendEmailAboutRegistration(String toEmail){
+    }
 
+    public void sendEmailAboutPasswordReset(String toEmail){
+    }
+
+    public void sendEmailAboutDrivingLesson(String toEmail){
+    }
+
+    public void sendEmailAboutDrivingLessonCancel(String toEmail){
+    }
+
+    public void sendEmailAboutInstructorRequest(String toEmail){
+    }
+
+    public void sendEmailAboutStudentRequest(String toEmail){
+    }
 }

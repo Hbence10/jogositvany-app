@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,11 +8,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "payment_methods")
+@Table(name = "payment_method")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,12 +24,22 @@ public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @Size(max = 100)
     @NotNull
     private String name;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    @JsonIgnore
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    @JsonIgnore
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @OneToMany(
@@ -34,6 +47,7 @@ public class PaymentMethod {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
 
     //Constructorok:
