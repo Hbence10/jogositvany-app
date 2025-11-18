@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +32,14 @@ public class ReservedDate {
     @Column(name = "is_full")
     @NotNull
     private boolean isFull = false;
+
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @OneToMany(

@@ -7,10 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     @Procedure(name = "getAllEmail", procedureName = "getAllEmail")
     List<String> getAllEmail();
 
     @Procedure(name = "getUserByEmail", procedureName = "getUserByEmail")
-    User getUserByEmail(@Param("emailIN") String username);
+    User getUserByEmail(@Param("emailIN") String email);
 }

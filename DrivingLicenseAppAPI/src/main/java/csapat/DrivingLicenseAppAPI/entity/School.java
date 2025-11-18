@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +25,7 @@ public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -61,6 +65,14 @@ public class School {
     @NotNull
     private String bannerImgPath;
 
+    @Column(name = "is_deleted")
+    @NotNull
+    private Boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
@@ -85,6 +97,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({"schoolOpeningDetail"})
     private List<OpeningDetails> openingDetails;
 
     @OneToMany(
@@ -100,6 +113,30 @@ public class School {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
     private List<Students> studentsList;
+
+    @OneToMany(
+            mappedBy = "drivingTypeSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<DrivingLessonType> drivingLessonsType;
+
+    @OneToMany(
+            mappedBy = "examSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<ExamRequest> examRequestList;
+
+    @OneToMany(
+            mappedBy = "schoolJoinRequestSchool",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok
     public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {

@@ -8,7 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,15 +31,21 @@ public class Education {
     @Size(max = 100)
     private String name;
 
+    @Column(name = "is_deleted")
+    @NotNull
+    private boolean isDeleted = false;
+
+    @Column(name = "deleted_at")
+    @Null
+    private LocalDateTime deletedAt;
+
     //Kapcsolatok
     @OneToMany(
             mappedBy = "userEducation",
             fetch = FetchType.LAZY,
             cascade = {}
     )
-    @JsonIgnore
     private List<User> userEducationList;
-
 
     public Education(String name) {
         this.name = name;

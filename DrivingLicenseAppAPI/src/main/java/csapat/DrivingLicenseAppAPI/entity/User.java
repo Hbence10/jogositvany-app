@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,15 +11,16 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
-        }, resultClasses = {User.class}),
+        }, resultClasses = User.class),
 
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
 })
@@ -30,7 +32,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "first_name")
     @NotNull
@@ -72,56 +74,59 @@ public class User {
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createdAt;
 
     @Column(name = "last_login")
     @Null
-    private Date lastLogin;
+    @JsonIgnore
+    private LocalDateTime lastLogin;
 
     @Column(name = "is_deleted")
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     @Null
+    @JsonIgnore
     private Date deletedAt;
+
+    @JsonIgnore
+    @Column(name = "verification_code")
+    @Null
+    private String vCode;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
-    private Role role;
+    @JsonIgnoreProperties({"userList"})
+    private Role role = new Role(1, "ROLE_user");
 
-    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    @JsonIgnore
+    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private Instructors instructor;
 
-    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}) //Az Instructor class-ban levo field-re mutat
-    @JsonIgnore
+    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students students;
 
-    @OneToMany(
-            mappedBy = "senderUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<Request> sendedRequestList;
-
-    @OneToMany(
-            mappedBy = "pickerUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<Request> recievedRequestList;
-
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
     private School adminSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "education_id")
+    @JsonIgnoreProperties({"userEducationList"})
     private Education userEducation;
+
+    @OneToMany(
+            mappedBy = "schoolJoinRequestUser",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnore
+    private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok:
     public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {

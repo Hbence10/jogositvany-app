@@ -1,4 +1,4 @@
-package csapat.DrivingLicenseAppAPI.other;
+package csapat.DrivingLicenseAppAPI.service.other;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,18 +43,9 @@ public class ValidatorCollection {
         return specialChecker && upperCaseChecker && lowerCaseChecker && initChecker;
     }
 
-    public static boolean phoneValidator(String phone) {
-        if (phone.length() != 12) {
-            return false;
-        } else if (phone.charAt(0) != '+') {
-            return false;
-        }
-
-        ArrayList<String> supplierIds = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
-        if (!supplierIds.contains(phone.substring(3, 5))) {
-            return false;
-        }
-
-        return true;
+    public static Boolean phoneValidator(String phoneNumber) {
+        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
+        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
+        //https://hu.wikipedia.org/wiki/Magyar_mobilszolg%C3%A1ltat%C3%B3k
     }
 }
