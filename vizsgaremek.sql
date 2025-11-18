@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 18, 2025 at 05:14 PM
+-- Generation Time: Nov 18, 2025 at 05:45 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -25,6 +25,10 @@ DELIMITER $$
 --
 -- Procedures
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLesson` ()   BEGIN
+	SELECT*FROM driving_lesson;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonCategory` ()   BEGIN
 	SELECT*FROM driving_license_category;
 END$$
@@ -35,10 +39,6 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonRequest` ()   BEGIN
 	SELECT*FROM driving_lesson_request;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessons` ()   BEGIN
-	SELECT*FROM driving_lesson;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonType` ()   BEGIN
@@ -125,12 +125,112 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehichleType` ()   BEGIN
 	SELECT*FROM vehicle_type;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonByID` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `driving_lesson` WHERE `driving_lesson.id`= idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonCategory` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `driving_license_category` WHERE
+    `driving_license_category`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructorById` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `driving_lesson_instructor` WHERE
+    `driving_lesson_instructor`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonRequest` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `driving_lesson_request` WHERE
+    `driving_lesson_request`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonType` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `driving_lesson_type` WHERE
+    `driving_lesson_type`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getEducation` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `education` WHERE `education`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getExamRequest` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `exam_request` WHERE `exam_request`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getFuelType` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `fuel_type` WHERE `fuel_type`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructor` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `instructor` WHERE `instructor`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorJoinRequest` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `instructor_join_request` WHERE `instructor_join_request`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMessage` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `message` WHERE `message`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOpeningDetail` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `opening_detail` WHERE `opening_detail`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPaymentMethod` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `payment_method` WHERE `payment_method`.id = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDate` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `reserved_date` WHERE `reserved_date`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHour` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `reserved_hour` WHERE `reserved_hour`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReview` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `review` WHERE `review`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRole` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `role` WHERE `role`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchool` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `school` WHERE `school`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolJoinRequest` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `school_join_request` WHERE `school_join_request`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStatus` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `status` WHERE `status`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudent` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `student` WHERE `student`.`id` = idIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
 	SELECT * FROM student WHERE students.user_id = userIdIN;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getUser` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `user` WHERE `user`.`id` = idIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
 	SELECT * FROM `user` WHERE emailIN = `user`.`email`;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getVehicle` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `vehicle` WHERE `vehicle`.`id` = idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getVehicleType` (IN `idIN` INT)   BEGIN
+	SELECT*FROM `vehicle_type` WHERE `vehicle_type`.`id` = idIN;
 END$$
 
 DELIMITER ;
