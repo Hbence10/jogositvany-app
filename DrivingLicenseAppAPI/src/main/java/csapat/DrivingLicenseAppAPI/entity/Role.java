@@ -40,7 +40,6 @@ public class Role {
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
-    @JsonIgnore
     @OneToMany(
             mappedBy = "role",
             fetch = FetchType.LAZY,

@@ -2,7 +2,6 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +17,22 @@ public class ReviewController {
 
     @GetMapping("/school/{id}")
     public ResponseEntity<List<Review>> getReviewsAboutSchool(@PathVariable("id") Integer schoolId) {
-        return getReviewsAboutSchool(schoolId);
+        return reviewService.getReviewsAboutSchool(schoolId);
     }
 
     @GetMapping("/instructor/{id}")
     public ResponseEntity<List<Review>> getReviewsAboutInstructor(@PathVariable("id") Integer instructorId) {
-        return getReviewsAboutInstructor(instructorId);
+        return reviewService.getReviewsAboutInstructor(instructorId);
     }
 
-    @PostMapping("/addReview")
-    public ResponseEntity<Review> createReview(@RequestBody Review newReview) {
-        return reviewService.createReview(newReview);
+    @PostMapping("/school/{id}")
+    public ResponseEntity<Review> createSchoolReview(@RequestBody Review newReview, @PathVariable("id") Integer schoolId) {
+        return reviewService.createSchoolReview(newReview, schoolId);
+    }
+
+    @PostMapping("/instructor/{id}")
+    public ResponseEntity<Review> createInstructorReview (@RequestBody Review newReview, @PathVariable("id") Integer instructorId) {
+        return reviewService.createInstructorReview(newReview, instructorId);
     }
 
     @PutMapping("/updateReview")

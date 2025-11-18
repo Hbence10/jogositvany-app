@@ -52,3 +52,7 @@ School:
 
 Student:
     - Student
+
+/////////////////////////////////////////////////
+Reigsztracional jelen levo validaciok:
+//Validaciok: telefonszam, email, education, password

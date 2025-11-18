@@ -46,53 +46,56 @@ public class ReviewService {
         }
     }
 
-    //@PreAuthorize("hasRole('student')")
-    public ResponseEntity<Review> createReview(Review newReview) {
+    public ResponseEntity<Review> createSchoolReview(Review newReview, Integer schoolId) {
         Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
-        boolean validAboutObject = false;
+        School searchedSchool = schoolRepository.findById(schoolId).get();
 
-        if (newReview.getId() != null) {
-            return ResponseEntity.internalServerError().build();
-        } else if (authorStudent.getId() == null) {
+        if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
             return ResponseEntity.notFound().build();
-        } else if (newReview.getAboutInstructor() == null && newReview.getAboutSchool() == null) {
+        } else if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (newReview.getAboutSchool() == null && newReview.getAboutInstructor() != null) {
-            Instructors searchedInstructor = instructorRepository.findById(newReview.getAboutInstructor().getId()).get();
-            if(searchedInstructor.getId() != null){
-                validAboutObject = true;
-            }
-
-        } else if (newReview.getAboutSchool() != null && newReview.getAboutInstructor() == null) {
-            School searchedSchool = schoolRepository.findById(newReview.getAboutSchool().getId()).get();
-            if(searchedSchool.getId() != null){
-               validAboutObject = true;
-            }
-        }
-
-        if (validAboutObject){
-            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+        } else if (newReview.getId() != null) {
+            return null;
+        } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
+            return null;
         } else {
-            return ResponseEntity.notFound().build();
+            newReview.setAboutSchool(searchedSchool);
+            newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+            return ResponseEntity.ok().body(reviewRepository.save(newReview));
         }
     }
 
-    //@PreAuthorize("hasRole('student')")
+    public ResponseEntity<Review> createInstructorReview(Review newReview, Integer instructorId) {
+        Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
+        Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+
+        if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (newReview.getId() != null) {
+            return null;
+        } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
+            return null;
+        } else {
+            newReview.setAboutInstructor(searchedInstructor);
+            newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+        }
+    }
+
     public ResponseEntity<Review> updateReview(Review updatedReview) {
         Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
-        if(searchedReview.getId() == null){
+        if (searchedReview == null || searchedReview.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
         }
     }
 
-    //@PreAuthorize("hasRole('student')")
     public ResponseEntity<Object> deleteReview(Integer id) {
         Review searchedReview = reviewRepository.findById(id).get();
-        if(searchedReview.getId() == null){
+        if (searchedReview.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
             searchedReview.setDeleted(true);

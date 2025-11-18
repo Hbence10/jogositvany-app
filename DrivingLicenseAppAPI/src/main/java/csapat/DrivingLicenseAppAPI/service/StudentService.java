@@ -17,14 +17,14 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<Object> getInfo(int id){
+    public ResponseEntity<Object> getInfo(int id) {
         return null;
     }
 
-    public ResponseEntity<Map<String, Integer>> getLessonDetails(int id){
+    public ResponseEntity<Map<String, Integer>> getLessonDetails(int id) {
         Students searchedStudent = studentRepository.findById(id).get();
 
-        if (searchedStudent.getId() == null){
+        if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             Map<String, Integer> responseBody = new HashMap<>();

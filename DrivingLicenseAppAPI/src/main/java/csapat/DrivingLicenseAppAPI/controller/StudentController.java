@@ -14,19 +14,8 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    @GetMapping("/search")
-    public ResponseEntity<Object> getStudentByName(){
-        return null;
-    }
-
     @GetMapping("/lessonDetails/{id}")
     public ResponseEntity<Map<String, Integer>> getLessonDetails(@PathVariable("id") int studentId){
         return studentService.getLessonDetails(studentId);
-    }
-
-    //
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getStudent(@PathVariable("id") int id){
-        return null;
     }
 }

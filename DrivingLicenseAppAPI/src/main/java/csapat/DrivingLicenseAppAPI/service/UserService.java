@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional
@@ -23,10 +25,7 @@ public class UserService {
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
-    private String vCode = "";
 
-
-    //Endpointok
     public ResponseEntity<Object> login(String email, String password) {
         User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
 
@@ -35,29 +34,33 @@ public class UserService {
         if (!successFullLogin || loggedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
+        loggedUser.setLastLogin(LocalDateTime.now());
+        userRepository.save(loggedUser);
 
         return ResponseEntity.ok(loggedUser);
     }
 
     public ResponseEntity<Object> register(User newUser) {
-        if (ValidatorCollection.emailChecker(newUser.getEmail()) && ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            String hashedPassword = passwordEncoder.encode(newUser.getPassword());
-            newUser.setPassword(hashedPassword);
-            User registeredUser = userRepository.save(newUser);
-            return ResponseEntity.ok(registeredUser);
-        } else if (!ValidatorCollection.emailChecker(newUser.getEmail()) && !ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
+        Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
+        if (searchedEducation == null || searchedEducation.getId() == null) {
+            return ResponseEntity.notFound().build();
         } else if (!ValidatorCollection.emailChecker(newUser.getEmail())) {
-            return ResponseEntity.status(417).body("InvalidEmail");
+            return ResponseEntity.status(417).body("invalidEmail");
+        } else if (!ValidatorCollection.phoneValidator(newUser.getPhone())) {
+            return ResponseEntity.status(417).body("invalidPhone");
         } else if (!ValidatorCollection.passwordChecker(newUser.getPassword())) {
-            return ResponseEntity.status(417).body("InvalidPassword");
+            return ResponseEntity.status(417).body("invalidPassword");
+        } else {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            emailSender.sendEmailAboutRegistration(newUser.getEmail()); //Itt majd le kell kezelni, ha a user egy nem letezo emailt ad meg
+            userRepository.save(newUser);
         }
 
-        return ResponseEntity.internalServerError().build();
+        return ResponseEntity.ok().body("success");
     }
 
     //password reset
-    public ResponseEntity<Object> getVerificationCode(String email) {
+    public ResponseEntity<String> getVerificationCode(String email) {
         List<String> emailList = userRepository.getAllEmail();
 
         if (!ValidatorCollection.emailChecker(email.trim())) {
@@ -65,11 +68,34 @@ public class UserService {
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
         } else {
-            this.vCode = generateVerificationCode();
-            System.out.println(vCode);
+            User searchedUser = userRepository.getUserByEmail(email);
+
+            if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            String vCode = generateVerificationCode();
+            searchedUser.setVCode(passwordEncoder.encode(vCode));
+            userRepository.save(searchedUser);
             emailSender.sendVerificationCodeEmail(email, vCode);
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok().body("success");
         }
+    }
+
+    public ResponseEntity<Object> checkVCode(String userVCode, String email) {
+        if (userVCode.length() != 10) {
+            return ResponseEntity.status(417).body("InvalidVerificationCode");
+        } else if (!ValidatorCollection.emailChecker(email)) {
+            return ResponseEntity.status(417).body("InvalidEmail");
+        } else {
+            User searchedUser = userRepository.getUserByEmail(email);
+            if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
+        }
+
     }
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
@@ -81,25 +107,12 @@ public class UserService {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else if (!ValidatorCollection.passwordChecker(newPassword)) {
             return ResponseEntity.status(417).body("InvalidPassword");
-        } else if (user == null) {
+        } else if (user == null || user.getId() == null || user.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            String hashedPassword = passwordEncoder.encode(newPassword);
-            user.setPassword(hashedPassword);
+            user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
-            return ResponseEntity.ok("successfullyReset");
-        }
-    }
-
-    public ResponseEntity<Object> checkVCode(String userVCode) {
-        if (userVCode.length() != 10) {
-            return ResponseEntity.status(417).body("InvalidVerificationCode");
-        } else {
-            if (userVCode.equals(this.vCode)) {
-                return ResponseEntity.ok(true);
-            } else {
-                return ResponseEntity.status(422).body(false);
-            }
+            return ResponseEntity.ok("success");
         }
     }
 
@@ -111,7 +124,7 @@ public class UserService {
         } else {
             List<Education> allEducation = educationRepository.findAll();
 
-            if (!phoneValidator(updatedUser.getPhone())) {
+            if (!ValidatorCollection.phoneValidator(updatedUser.getPhone())) {
                 return ResponseEntity.status(417).body("InvalidPhone");
             } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
                 return ResponseEntity.status(417).body("InvalidEmail");
@@ -124,9 +137,33 @@ public class UserService {
         }
     }
 
-    // delete:
-    public ResponseEntity<Boolean> deleteUser(Long id) {
+    public ResponseEntity<User> updatePfp(Integer id, MultipartFile file) {
         return null;
+    }
+
+    // delete:
+    public ResponseEntity<String> deleteUser(Integer id)    {
+        User searchedUser = userRepository.findById(id).get();
+        if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        searchedUser.setIsDeleted(true);
+        searchedUser.setDeletedAt(new Date());
+        userRepository.save(searchedUser);
+
+        return ResponseEntity.ok().body("success");
+    }
+
+    //egyeb endpointok:
+    public ResponseEntity<User> getUserById(Integer id){
+        User searchedUser = userRepository.findById(id).get();
+
+        if(searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedUser);
+        }
     }
 
     //egyeb:
@@ -144,12 +181,6 @@ public class UserService {
         }
 
         return code;
-    }
-
-    public Boolean phoneValidator(String phoneNumber) {
-        ArrayList<String> phoneServiceCodes = new ArrayList<String>(Arrays.asList("30", "20", "70", "50", "31"));
-        return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
-        //https://hu.wikipedia.org/wiki/Magyar_mobilszolg%C3%A1ltat%C3%B3k
     }
 
 

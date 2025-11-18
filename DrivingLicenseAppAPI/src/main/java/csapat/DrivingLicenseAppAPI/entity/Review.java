@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Review {
 
     @Column(name = "created_at")
     @NotNull
+    @JsonIgnore
     private LocalDate createdAt;
 
     @Column(name = "rating")
@@ -39,28 +41,30 @@ public class Review {
 
     @Column(name = "is_deleted")
     @NotNull
+    @JsonIgnore
     private boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "author_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
     @Null
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     @Null
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private School aboutSchool;
 
     //Constructorok

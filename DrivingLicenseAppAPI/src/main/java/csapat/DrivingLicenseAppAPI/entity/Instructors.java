@@ -31,7 +31,7 @@ public class Instructors {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
@@ -45,11 +45,12 @@ public class Instructors {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList"})
+    @JsonIgnoreProperties({"owner", "instructorsList", "adminList" , "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
+    @JsonIgnoreProperties({"instructor"})
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
@@ -57,10 +58,9 @@ public class Instructors {
     private List<Review> reviewList;
 
     @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private List<Students> students;
 
-    //innen van a baj
     @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
@@ -70,8 +70,21 @@ public class Instructors {
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
     private List<DrivingLessons> instructorDrivingLessons;
 
+    @OneToMany(
+            mappedBy = "instructorJoinRequestInstructor",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<InstructorJoinRequest> instructorJoinRequestList;
+
     //Constructorok:
     public Instructors(String promoText) {
         this.promoText = promoText;
+    }
+
+    public Instructors(School instructorSchool, User instructorUser) {
+        this.instructorSchool = instructorSchool;
+        this.instructorUser = instructorUser;
     }
 }

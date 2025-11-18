@@ -33,7 +33,7 @@ public class Students {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
@@ -42,17 +42,18 @@ public class Students {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "studentsList", "reviewList", "drivingLessonsType", "openingDetails", "examRequestList"})
+    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School studentSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({"students", "instructorDrivingLessons", "instructorSchool", "reviewList", "drivingLessonRequestList", "examRequestList"})
+    @JsonIgnoreProperties({"instructorSchool", "reviewList", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
+    @Null
     private Instructors studentInstructor;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"students"})
+    @JsonIgnoreProperties({"students", "instructor"})
     private User studentUser;
 
     @OneToMany(
@@ -60,7 +61,6 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -86,4 +86,21 @@ public class Students {
     )
     @JsonIgnoreProperties({})
     private List<ExamRequest> examRequestList;
+
+    @OneToMany(
+            mappedBy = "instructorJoinRequestStudent",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnoreProperties({})
+    private List<InstructorJoinRequest> instructorJoinRequestList;
+
+    public Students(User studentUser, School studentSchool) {
+        this.studentUser = studentUser;
+        this.studentSchool = studentSchool;
+    }
+
+    public Students(Integer id) {
+        this.id = id;
+    }
 }

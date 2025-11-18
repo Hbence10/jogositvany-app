@@ -1,11 +1,11 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.User;
-import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +28,6 @@ public class UserController {
     }
 
     //password reset
-    @PostMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> codeObject){
-        return userService.checkVCode(codeObject.get("vCode"));
-    }
-
     @GetMapping("/getVerificationCode")
     public ResponseEntity<HashMap<String, Object>> getVerificationCode(@RequestParam("email") String email) {
         HashMap<String, Object> returnObject = new HashMap<>();
@@ -40,22 +35,36 @@ public class UserController {
         return ResponseEntity.ok(returnObject);
     }
 
-    @PatchMapping("/passwordReset")
-    public ResponseEntity<HashMap<String, String>> updatePassword(@RequestBody Map<String, String> body) {
-        HashMap<String, String> returnObject = new HashMap<>();
-        returnObject.put("result", userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
-        return ResponseEntity.ok(returnObject);
+    @PostMapping("/checkVerificationCode")
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> body){
+        return userService.checkVCode(body.get("vCode"), body.get("email"));
     }
 
-    //
+    @PatchMapping("/passwordReset")
+    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> body) {
+        return ResponseEntity.ok(userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
+    }
+
+    //Frissitesek:
     @PutMapping("/update")
     public ResponseEntity<Object> updateUser(@RequestBody User updatedUser){
         return userService.updateUser(updatedUser);
     }
 
-    //
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") Long id){
+    @PatchMapping("/pfp/{id}")
+    public ResponseEntity<User> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file){
+        return userService.updatePfp(id, file);
+    }
+
+    //Torles
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id){
         return userService.deleteUser(id);
+    }
+
+    //Egyeb endpointok:
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id){
+        return null;
     }
 }

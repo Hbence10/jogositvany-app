@@ -49,7 +49,7 @@ public class ReservedHour {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "date_id")
-    @JsonIgnoreProperties({"reservedHourList"})
+    @JsonIgnoreProperties({})
     private ReservedDate reservedDate;
 
     //Constructorok:

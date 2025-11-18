@@ -45,7 +45,6 @@ public class Status {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
 
     @OneToMany(
@@ -53,7 +52,6 @@ public class Status {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonsRequestList;
 
     //Constructorok:

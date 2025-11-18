@@ -50,11 +50,9 @@ public class OpeningDetails {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnore
     private School schoolOpeningDetail;
 
     //Constructorok:
-
     public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, LocalDateTime deletedAt) {
         this.openingTime = openingTime;
         this.closeTime = closeTime;

@@ -82,12 +82,12 @@ public class DrivingLessons {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "hour_id")
-    @JsonIgnoreProperties({"drivingLessons"})
+    @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
     @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList"})
+    @JsonIgnoreProperties({})
     private Students dstudent;
 
     @ManyToOne(cascade = {CascadeType.DETACH})
@@ -96,9 +96,8 @@ public class DrivingLessons {
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "type_id")
-    @JsonIgnoreProperties({"instructorDrivingLessons", "drivingTypeSchool"})
+    @JsonIgnoreProperties({})
     private DrivingLessonType drivingLessonType;
-
 
     public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
         this.startKm = startKm;

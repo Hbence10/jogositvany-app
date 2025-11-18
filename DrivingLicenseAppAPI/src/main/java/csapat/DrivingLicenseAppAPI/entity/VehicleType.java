@@ -45,7 +45,6 @@ public class VehicleType {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
     private List<Vehicle> vehicleList;
 
     //Constructorok:
