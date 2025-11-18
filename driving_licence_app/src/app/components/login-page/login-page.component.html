@@ -1,19 +1,31 @@
-<div class="page">
+<div id="mainContainer" class="container-fluid d-flex flex-column justify-content-between align-items-center">
 
-  <div id="login" class="d-flex flex-column justify-content-between align-items-center">
-      <div class="top">
-        <h1>Bejelentkezés</h1>
-          <form [formGroup]="loginForm">
-            <label for="Email"><input class="inputs" type="text" placeholder="Email" formControlName="email"></label>
-            <label for="password"><input class="inputs" type="password" placeholder="Jelszó" formControlName="password"></label>
-            <label for="remember-me"><input class="check" type="checkbox"> Emlékezzen rám</label>
-          </form>
-          <a id="forgotten" routerLink="/password-reset">Elfelejtette a jelszavát?</a>
-      </div>
+  <div class="row h-100">
+    <div class="col-lg-12 h-100 d-flex flex-column justify-content-between align-items-center">
+      <div id="secondContainer" class="container-fluid d-flex flex-column justify-content-between align-items-center">
 
-      <div class="bottom">
-        <button id="login-button" (click)="login()" [disabled]="loginForm.invalid">Bejelentkezés</button>
-        <p>Nincs fiókja? <a routerLink="/registration">Regisztráljon!</a></p>
+        <div class="row">
+          <div class="col-lg-12 top">
+            <h1>Bejelentkezés</h1>
+            <p class="text-danger"></p>
+              <form [formGroup]="loginForm">
+                <label for="Email"><input class="inputs" type="text" placeholder="Email" formControlName="email"></label>
+                <label for="password"><input class="inputs" type="password" placeholder="Jelszó" formControlName="password"></label>
+              </form>
+              <div class="d-flex justify-content-between align-items-center">
+                <label for="remember-me"><input class="check" type="checkbox"> Emlékezzen rám</label>
+                <a id="forgotten" routerLink="/password-reset">Elfelejtette a jelszavát?</a>
+              </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="bottom col-lg-12">
+            <button id="login-button" (click)="login()" [disabled]="loginForm.invalid">Bejelentkezés</button>
+            <p>Nincs fiókja? <a routerLink="/registration">Regisztráljon!</a></p>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </div>

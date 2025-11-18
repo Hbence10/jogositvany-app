@@ -10,13 +10,13 @@ import { Observable } from 'rxjs';
 export class UsersService {
 
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/';
+  private baseUrl = signal('http://localhost:8080/users');
   loggedUser =  signal<null | User>(null)
 
   constructor() { }
 
   login(email: string, password: string) : Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}users/login`, {email: email, password: password});
+    return this.http.post<User>(`${this.baseUrl()}/login`, {email: email, password: password});
   }
 
   registration(user: User) : Observable<string> {
