@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
 import { Education } from '../../models/education.model';
@@ -49,6 +49,7 @@ function validatePassword(
 export class RegistrationPageComponent implements OnInit {
   private usersService = inject(UsersService);
   private otherService = inject(OtherStuffServiceService);
+  private router = inject(Router)
 
   registrationForm!: FormGroup;
   educationList: Education[] = []
@@ -99,10 +100,11 @@ export class RegistrationPageComponent implements OnInit {
       this.registrationForm.controls['password'].value!
     );
 
-    console.log(newUser);
     this.usersService.registration(newUser).subscribe({
-      next: response => console.log(response)
+      next: response => console.log(response),
+      complete: () => {
+        this.router.navigate(['/login']);
+      }
     });
-    // console.log(this.registrationForm);
   }
 }

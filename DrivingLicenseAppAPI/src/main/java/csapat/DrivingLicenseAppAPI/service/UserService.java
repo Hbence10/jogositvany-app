@@ -61,7 +61,7 @@ public class UserService {
             userRepository.save(newUser);
         }
 
-        return ResponseEntity.ok().body("success");
+        return ResponseEntity.ok().build();
     }
 
     //password reset
