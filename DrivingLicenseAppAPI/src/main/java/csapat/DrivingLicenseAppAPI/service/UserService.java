@@ -41,18 +41,23 @@ public class UserService {
     }
 
     public ResponseEntity<Object> register(User newUser) {
+        System.out.println(newUser);
+
         Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
         if (searchedEducation == null || searchedEducation.getId() == null) {
             return ResponseEntity.notFound().build();
         } else if (!ValidatorCollection.emailChecker(newUser.getEmail())) {
+            System.out.println("invalidEmail");
             return ResponseEntity.status(417).body("invalidEmail");
         } else if (!ValidatorCollection.phoneValidator(newUser.getPhone())) {
+            System.out.println("invalidPhone");
             return ResponseEntity.status(417).body("invalidPhone");
         } else if (!ValidatorCollection.passwordChecker(newUser.getPassword())) {
+            System.out.println("invalidPassword");
             return ResponseEntity.status(417).body("invalidPassword");
         } else {
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            emailSender.sendEmailAboutRegistration(newUser.getEmail()); //Itt majd le kell kezelni, ha a user egy nem letezo emailt ad meg
+//            emailSender.sendEmailAboutRegistration(newUser.getEmail()); //Itt majd le kell kezelni, ha a user egy nem letezo emailt ad meg
             userRepository.save(newUser);
         }
 
@@ -118,7 +123,6 @@ public class UserService {
 
     // update:
     public ResponseEntity<Object> updateUser(User updatedUser) {
-
         if (updatedUser.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {

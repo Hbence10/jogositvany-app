@@ -21,6 +21,6 @@ export class UsersService {
 
   registration(user: User) : Observable<string> {
     console.log(user);
-    return this.http.post<string>(`${this.baseUrl}users/register`, user);
+    return this.http.post<string>(`${this.baseUrl}/register`, user);
   }
 }

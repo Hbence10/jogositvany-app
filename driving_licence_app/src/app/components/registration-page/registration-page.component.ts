@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
+import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
+import { Education } from '../../models/education.model';
 
 function validatePassword(
   control: AbstractControl
@@ -46,8 +48,10 @@ function validatePassword(
 })
 export class RegistrationPageComponent implements OnInit {
   private usersService = inject(UsersService);
+  private otherService = inject(OtherStuffServiceService);
 
   registrationForm!: FormGroup;
+  educationList: Education[] = []
 
   samePasswordValidator = (
     control: AbstractControl
@@ -75,22 +79,30 @@ export class RegistrationPageComponent implements OnInit {
     this.registrationForm.controls['confirmPassword'].addValidators(
       this.samePasswordValidator
     );
+
+    const subscription = this.otherService.getAllEducation().subscribe({
+      next: response => this.educationList = response.map(edu => Object.assign(new Education(), edu)),
+      complete: () => {console.log(this.educationList)}
+    })
   }
 
   registration() {
     const newUser: User = new User(
-      0,
+      null,
       this.registrationForm.controls['firstName'].value!,
       this.registrationForm.controls['lastName'].value!,
       this.registrationForm.controls['email'].value!,
       this.registrationForm.controls['phone'].value!,
       this.registrationForm.controls['birthDate'].value!,
       this.registrationForm.controls['gender'].value!,
-      this.registrationForm.controls['education'].value!,
+      this.educationList[+this.registrationForm.controls['education'].value],
       this.registrationForm.controls['password'].value!
     );
+
+    console.log(newUser);
     this.usersService.registration(newUser).subscribe({
-      next: (user) => console.log(user),
+      next: response => console.log(response)
     });
+    // console.log(this.registrationForm);
   }
 }

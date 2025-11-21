@@ -8,11 +8,11 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OtherStuffServiceService {
   private http = inject(HttpClient);
-
+  private baseUrl = 'http://localhost:8080'
 
   constructor() { }
 
   getAllEducation(): Observable<Education[]>{
-    this.http.get<Education[]>(``)
+    return this.http.get<Education[]>(`http://localhost:8080/education`)
   }
 }
