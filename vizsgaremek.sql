@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 19, 2025 at 06:42 PM
+-- Generation Time: Nov 23, 2025 at 06:50 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -122,191 +122,191 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteVehicleType` (IN `idIN` INT) 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLesson` ()   BEGIN
-	SELECT*FROM driving_lesson;
+	SELECT*FROM `driving_lesson` WHERE `driving_lesson`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonInstructor` ()   BEGIN
-	SELECT*FROM driving_lesson_instructor;
+	SELECT*FROM driving_lesson_instructor WHERE `driving_lesson_instructor`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonRequest` ()   BEGIN
-	SELECT*FROM driving_lesson_request;
+	SELECT*FROM driving_lesson_request WHERE `driving_lesson_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonType` ()   BEGIN
-	SELECT*FROM driving_lesson_type;
+	SELECT*FROM driving_lesson_type WHERE `driving_lesson_type`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLicenseCategory` ()   BEGIN
-	SELECT*FROM driving_license_category;
+	SELECT*FROM driving_license_category WHERE `driving_lesson_category`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEducation` ()   BEGIN
-	SELECT*FROM education;
+	SELECT*FROM education WHERE `education`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEmail` ()   BEGIN
-	SELECT `user`.`email` FROM `user`;
+	SELECT `user`.`email` FROM `user` WHERE `user`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllExamRequest` ()   BEGIN
-	SELECT*FROM exam_request;
+	SELECT*FROM exam_request WHERE `exam_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllFuelType` ()   BEGIN
-	SELECT*FROM fuel_type;
+	SELECT*FROM fuel_type WHERE `fuel_type`.`is_deleted` = 0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllInstructor` ()   BEGIN
+	SELECT*FROM instructor WHERE `instructor`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllInstructorJoinRequest` ()   BEGIN
-	SELECT*FROM instructor_join_request;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllIntructor` ()   BEGIN
-	SELECT*FROM instructor;
+	SELECT*FROM instructor_join_request WHERE `instructor_join_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllMessage` ()   BEGIN
-	SELECT*FROM message;
+	SELECT*FROM message WHERE `message`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllOpeningDetail` ()   BEGIN
-	SELECT*FROM opening_detail;
+	SELECT*FROM opening_detail WHERE `opening_detail`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllPayMethod` ()   BEGIN
-	SELECT*FROM payment_method;
+	SELECT*FROM payment_method WHERE `payment_method`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReservedDate` ()   BEGIN
-	SELECT*FROM reserved_date;
+	SELECT*FROM reserved_date WHERE `reserved_date`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReservedHour` ()   BEGIN
-	SELECT*FROM reserved_hour;
+	SELECT*FROM reserved_hour WHERE `reserved_hour`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllReview` ()   BEGIN
-	SELECT*FROM review;
+	SELECT*FROM review WHERE `review`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllRole` ()   BEGIN
-	SELECT*FROM role;
+	SELECT*FROM role WHERE `role`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllSchool` ()   BEGIN
-	SELECT*FROM school;
+	SELECT*FROM school WHERE `school`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllSchoolJoinRequest` ()   BEGIN
-	SELECT*FROM school_join_request;
+	SELECT*FROM school_join_request WHERE `school_join_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllStatus` ()   BEGIN
-	SELECT*FROM `status`;
+	SELECT*FROM `status` WHERE `status`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllStudent` ()   BEGIN
-	SELECT*FROM student;
+	SELECT*FROM student WHERE `student`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllUser` ()   BEGIN
-	SELECT*FROM `user`;
+	SELECT*FROM `user` WHERE `user`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehichle` ()   BEGIN
-	SELECT*FROM vehicle;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehicle` ()   BEGIN
+	SELECT*FROM vehicle WHERE `vehicle`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehichleType` ()   BEGIN
-	SELECT*FROM vehicle_type;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehicleType` ()   BEGIN
+	SELECT*FROM vehicle_type WHERE `vehicle_type`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonByID` (IN `idIN` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLesson` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson` WHERE `driving_lesson.id`= idIN;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructorById` (IN `idIN` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson_instructor` WHERE
     `driving_lesson_instructor`.id = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonRequest` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson_request` WHERE
-    `driving_lesson_request`.id = idIN;
+    `driving_lesson_request`.id = idIN  AND `driving_lesson_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonType` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson_type` WHERE
-    `driving_lesson_type`.id = idIN;
+    `driving_lesson_type`.id = idIN AND `driving_lesson_type`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLicenseCategory` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_license_category` WHERE
-    `driving_license_category`.`id` = idIN;
+    `driving_license_category`.`id` = idIN AND `driving_license_category`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getEducation` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `education` WHERE `education`.id = idIN;
+	SELECT*FROM `education` WHERE `education`.id = idIN AND `education`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getExamRequest` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `exam_request` WHERE `exam_request`.id = idIN;
+	SELECT*FROM `exam_request` WHERE `exam_request`.id = idIN AND `exam_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getFuelType` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `fuel_type` WHERE `fuel_type`.`id` = idIN;
+	SELECT*FROM `fuel_type` WHERE `fuel_type`.`id` = idIN AND `fuel_type`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructor` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `instructor` WHERE `instructor`.`id` = idIN;
+	SELECT*FROM `instructor` WHERE `instructor`.`id` = idIN AND `instructor`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorJoinRequest` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `instructor_join_request` WHERE `instructor_join_request`.`id` = idIN;
+	SELECT*FROM `instructor_join_request` WHERE `instructor_join_request`.`id` = idIN AND `instructor_join_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMessage` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `message` WHERE `message`.`id` = idIN;
+	SELECT*FROM `message` WHERE `message`.`id` = idIN AND `message`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getOpeningDetail` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `opening_detail` WHERE `opening_detail`.`id` = idIN;
+	SELECT*FROM `opening_detail` WHERE `opening_detail`.`id` = idIN AND `opening_detail`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPaymentMethod` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `payment_method` WHERE `payment_method`.id = idIN;
+	SELECT*FROM `payment_method` WHERE `payment_method`.id = idIN AND `payment_method`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDate` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `reserved_date` WHERE `reserved_date`.`id` = idIN;
+	SELECT*FROM `reserved_date` WHERE `reserved_date`.`id` = idIN AND `reserved_date`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHour` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `reserved_hour` WHERE `reserved_hour`.`id` = idIN;
+	SELECT*FROM `reserved_hour` WHERE `reserved_hour`.`id` = idIN AND `reserved_hour`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReview` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `review` WHERE `review`.`id` = idIN;
+	SELECT*FROM `review` WHERE `review`.`id` = idIN AND `review`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getRole` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `role` WHERE `role`.`id` = idIN;
+	SELECT*FROM `role` WHERE `role`.`id` = idIN AND `role`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchool` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `school` WHERE `school`.`id` = idIN;
+	SELECT*FROM `school` WHERE `school`.`id` = idIN AND `school`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolJoinRequest` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `school_join_request` WHERE `school_join_request`.`id` = idIN;
+	SELECT*FROM `school_join_request` WHERE `school_join_request`.`id` = idIN AND `school_join_request`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStatus` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `status` WHERE `status`.`id` = idIN;
+	SELECT*FROM `status` WHERE `status`.`id` = idIN AND `status`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudent` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `student` WHERE `student`.`id` = idIN;
+	SELECT*FROM `student` WHERE `student`.`id` = idIN AND `student`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
@@ -314,19 +314,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUser` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `user` WHERE `user`.`id` = idIN;
+	SELECT*FROM `user` WHERE `user`.`id` = idIN AND `user`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUserByEmail` (IN `emailIN` VARCHAR(100))   BEGIN
-	SELECT * FROM `user` WHERE emailIN = `user`.`email`;
+	SELECT * FROM `user` WHERE emailIN = `user`.`email` AND `user`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getVehicle` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `vehicle` WHERE `vehicle`.`id` = idIN;
+	SELECT*FROM `vehicle` WHERE `vehicle`.`id` = idIN AND `vehicle`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getVehicleType` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `vehicle_type` WHERE `vehicle_type`.`id` = idIN;
+	SELECT*FROM `vehicle_type` WHERE `vehicle_type`.`id` = idIN AND `vehicle_type`.`is_deleted` = 0;
 END$$
 
 DELIMITER ;
