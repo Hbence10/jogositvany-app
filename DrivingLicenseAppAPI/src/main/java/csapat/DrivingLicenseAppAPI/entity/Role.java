@@ -20,12 +20,12 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "getAllRole", procedureName = "getAllRole", resultClasses = Role.class),
+        @NamedStoredProcedureQuery(name = "getRole", procedureName = "getRole", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = User.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "deleteRole", procedureName = "deleteRole", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)
 })
 public class Role {

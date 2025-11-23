@@ -20,12 +20,12 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = User.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "getAllSchoolJoinRequest", procedureName = "getAllSchoolJoinRequest", resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "getSchoolJoinRequest", procedureName = "getSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)
 })
 public class SchoolJoinRequest {

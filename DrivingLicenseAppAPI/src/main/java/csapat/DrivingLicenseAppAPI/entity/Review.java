@@ -20,12 +20,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "getAllReview", procedureName = "getAllReview", resultClasses = Review.class),
+        @NamedStoredProcedureQuery(name = "getReview", procedureName = "getReview", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = User.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "deleteReview", procedureName = "deleteReview", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)
 })
 public class Review {

@@ -12,7 +12,6 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "driving_lesson_request")
@@ -21,12 +20,12 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = User.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "getAllDrivingLessonRequest", procedureName = "getAllDrivingLessonRequest", resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonRequest", procedureName = "getDrivingLessonRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLessonRequest", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)
 })
 public class DrivingLessonRequest {

@@ -20,12 +20,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = User.class),
-        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
-                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        @NamedStoredProcedureQuery(name = "getAllOpeningDetail", procedureName = "getAllOpeningDetail", resultClasses = OpeningDetails.class),
+        @NamedStoredProcedureQuery(name = "getOpeningDetail", procedureName = "getOpeningDetail", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = OpeningDetails.class),
+        @NamedStoredProcedureQuery(name = "deleteOpeningDetail", procedureName = "deleteOpeningDetail", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)
 })
 public class OpeningDetails {
