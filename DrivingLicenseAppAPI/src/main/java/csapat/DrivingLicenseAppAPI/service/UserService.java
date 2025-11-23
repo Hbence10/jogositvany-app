@@ -122,7 +122,7 @@ public class UserService {
         if (updatedUser.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
-            List<Education> allEducation = educationRepository.findAll();
+            List<Education> allEducation = educationRepository.getAllEducation();
 
             if (!ValidatorCollection.phoneValidator(updatedUser.getPhone())) {
                 return ResponseEntity.status(417).body("InvalidPhone");
@@ -143,21 +143,19 @@ public class UserService {
 
     // delete:
     public ResponseEntity<String> deleteUser(Integer id)    {
-        User searchedUser = userRepository.findById(id).get();
+        User searchedUser = userRepository.getUser(id);
         if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
 
-        searchedUser.setIsDeleted(true);
-        searchedUser.setDeletedAt(new Date());
-        userRepository.save(searchedUser);
+        userRepository.deleteUser(id);
 
         return ResponseEntity.ok().body("success");
     }
 
     //egyeb endpointok:
     public ResponseEntity<User> getUserById(Integer id){
-        User searchedUser = userRepository.findById(id).get();
+        User searchedUser = userRepository.getUser(id);
 
         if(searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()){
             return ResponseEntity.notFound().build();

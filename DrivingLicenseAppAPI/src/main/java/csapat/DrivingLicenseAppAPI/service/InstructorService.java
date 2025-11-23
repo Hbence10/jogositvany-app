@@ -22,7 +22,7 @@ public class InstructorService {
     private final StudentRepository studentRepository;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
-        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.findById(requestId).get();
+        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId);
 
         if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();

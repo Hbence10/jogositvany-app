@@ -19,7 +19,7 @@ public class SchoolService {
     private final InstructorRepository instructorRepository;
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
-        SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.findById(joinRequestId).get();
+        SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId);
 
         if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();

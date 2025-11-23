@@ -62,31 +62,27 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
-        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.findById(id).get();
+        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            searchedRequest.setIsDeleted(true);
-            searchedRequest.setDeletedAt(LocalDateTime.now());
-            return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedRequest));
+            return ResponseEntity.ok().body(schoolJoinRequestRepository.deleteSchoolJoinRequest(id));
         }
     }
 
     public ResponseEntity<Object> deleteInstructorJoinRequest(Integer id) {
-        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.findById(id).get();
+        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            searchedRequest.setIsDeleted(true);
-            searchedRequest.setDeletedAt(LocalDateTime.now());
-            return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedRequest));
+            return ResponseEntity.ok().body(instructorJoinRequestRepository.deleteInstructorJoinRequest(id));
         }
     }
 
     public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id){
-        School searchedSchool = schoolRepository.findById(id).get();
+        School searchedSchool = schoolRepository.getSchool(id);
         if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -95,7 +91,7 @@ public class RequestService {
     }
 
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
-        Instructors searchedInstructor = instructorRepository.findById(id).get();
+        Instructors searchedInstructor = instructorRepository.getInstructor(id);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
             return ResponseEntity.notFound().build();
         } else {

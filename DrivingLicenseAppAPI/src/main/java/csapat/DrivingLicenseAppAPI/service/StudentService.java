@@ -22,7 +22,7 @@ public class StudentService {
     }
 
     public ResponseEntity<Map<String, Integer>> getLessonDetails(int id) {
-        Students searchedStudent = studentRepository.findById(id).get();
+        Students searchedStudent = studentRepository.getStudent(id);
 
         if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
             return ResponseEntity.notFound().build();
