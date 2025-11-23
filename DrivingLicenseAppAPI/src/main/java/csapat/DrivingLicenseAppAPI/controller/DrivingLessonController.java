@@ -19,8 +19,8 @@ public class DrivingLessonController {
 
     private final DrivingLessonService drivingLessonService;
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<DrivingLessons>> getLessonInformationByUser(@PathVariable("id") Integer id) {
-        return null;
+    @GetMapping("/student/{id}")
+    public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(@PathVariable("id") Integer studentId) {
+        return drivingLessonService.getLessonInformationByStudent(studentId);
     }
 }

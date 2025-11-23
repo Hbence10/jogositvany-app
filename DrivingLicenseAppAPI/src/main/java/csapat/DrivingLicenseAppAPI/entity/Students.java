@@ -22,7 +22,14 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
             @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
-        }, resultClasses = {Students.class})
+        }, resultClasses = {Students.class}),
+        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = User.class),
+        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
 })
 public class Students {
 

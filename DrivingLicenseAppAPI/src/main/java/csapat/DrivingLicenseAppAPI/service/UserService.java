@@ -26,7 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
 
-    public ResponseEntity<Object> login(String email, String password) {
+    public ResponseEntity<User> login(String email, String password) {
         User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());

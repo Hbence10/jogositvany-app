@@ -19,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "", procedureName = "", resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = User.class),
+        @NamedStoredProcedureQuery(name = "", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class VehicleType {
 
     @Id
