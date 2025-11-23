@@ -1,10 +1,20 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.Students;
-import csapat.DrivingLicenseAppAPI.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface StudentRepository extends JpaRepository<Students, Integer> {
+
+    @Procedure(name = "getAllStudent", procedureName = "getAllStudent")
+    List<Students> getAllStudent();
+
+    @Procedure(name = "getStudent", procedureName = "getStudent")
+    Students getStudent(@Param("idIN") Integer id);
+
+    @Procedure(name = "deleteStudent", procedureName = "deleteStudent")
+    String deleteStudent(@Param("idIN") Integer id);
 }

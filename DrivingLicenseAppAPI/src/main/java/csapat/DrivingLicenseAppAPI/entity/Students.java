@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,7 +20,7 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
-            @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
+                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
         }, resultClasses = {Students.class}),
         @NamedStoredProcedureQuery(name = "getAllStudent", procedureName = "getAllStudent", resultClasses = Students.class),
         @NamedStoredProcedureQuery(name = "getStudent", procedureName = "getStudent", parameters = {
