@@ -22,9 +22,6 @@ import java.util.List;
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
         }, resultClasses = User.class),
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
-                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
-        }, resultClasses = {Students.class}),
         @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = User.class),
         @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
