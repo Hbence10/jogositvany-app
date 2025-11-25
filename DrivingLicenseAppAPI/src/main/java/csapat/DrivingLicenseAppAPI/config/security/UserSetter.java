@@ -25,6 +25,6 @@ public class UserSetter implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users loggedUser = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("userNotFound"));
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(loggedUser.getRole().getName()));
-        return new User(loggedUser.getEmail(), loggedUser.getPassword(), authorities);
+        return new User(loggedUser.getId().toString(), loggedUser.getPassword(), authorities);
     }
 }
