@@ -84,14 +84,14 @@ public class School {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private Users owner;
 
     @OneToMany(
             mappedBy = "adminSchool",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private List<User> adminList;
+    private List<Users> adminList;
 
     @OneToMany(
             mappedBy = "instructorSchool",

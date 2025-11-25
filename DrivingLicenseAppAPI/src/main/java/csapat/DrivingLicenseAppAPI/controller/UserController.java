@@ -1,6 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.entity.User;
+import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody Map<String, String> loginBody){
+    public ResponseEntity<Users> login(@RequestBody Map<String, String> loginBody){
         return userService.login(loginBody.get("email"), loginBody.get("password"));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody User newUser){
+    public ResponseEntity<Object> register(@RequestBody Users newUser){
         return userService.register(newUser);
     }
 
@@ -47,12 +47,12 @@ public class UserController {
 
     //Frissitesek:
     @PutMapping("/update")
-    public ResponseEntity<Object> updateUser(@RequestBody User updatedUser){
+    public ResponseEntity<Object> updateUser(@RequestBody Users updatedUser){
         return userService.updateUser(updatedUser);
     }
 
     @PatchMapping("/pfp/{id}")
-    public ResponseEntity<User> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file){
+    public ResponseEntity<Users> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file){
         return userService.updatePfp(id, file);
     }
 
@@ -64,7 +64,7 @@ public class UserController {
 
     //Egyeb endpointok:
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id){
+    public ResponseEntity<Users> getUserById(@PathVariable("id") Integer id){
         return null;
     }
 }

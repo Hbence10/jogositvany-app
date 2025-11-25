@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
         @NamedStoredProcedureQuery(name = "getAllReview", procedureName = "getAllReview", resultClasses = Review.class),
         @NamedStoredProcedureQuery(name = "getReview", procedureName = "getReview", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = User.class),
+        }, resultClasses = Users.class),
         @NamedStoredProcedureQuery(name = "deleteReview", procedureName = "deleteReview", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = String.class)

@@ -60,7 +60,7 @@ public class Students {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"students", "instructor"})
-    private User studentUser;
+    private Users studentUser;
 
     @OneToMany(
             mappedBy = "reviewAuthor",
@@ -101,7 +101,7 @@ public class Students {
     @JsonIgnoreProperties({})
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    public Students(User studentUser, School studentSchool) {
+    public Students(Users studentUser, School studentSchool) {
         this.studentUser = studentUser;
         this.studentSchool = studentSchool;
     }

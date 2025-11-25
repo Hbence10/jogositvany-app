@@ -50,7 +50,7 @@ public class Instructors {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor"})
-    private User instructorUser;
+    private Users instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
@@ -92,7 +92,7 @@ public class Instructors {
         this.promoText = promoText;
     }
 
-    public Instructors(School instructorSchool, User instructorUser) {
+    public Instructors(School instructorSchool, Users instructorUser) {
         this.instructorSchool = instructorSchool;
         this.instructorUser = instructorUser;
     }

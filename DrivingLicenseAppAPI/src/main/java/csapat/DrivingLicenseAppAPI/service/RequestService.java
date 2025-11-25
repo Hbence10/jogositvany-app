@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,7 @@ public class RequestService {
     //Jelentkezesi kerelmek
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
         School searchedSchool = schoolRepository.findById(schoolId).get();
-        User searchedUser = userRepository.findById(userId).get();
+        Users searchedUser = userRepository.findById(userId).get();
         ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
 
         if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {

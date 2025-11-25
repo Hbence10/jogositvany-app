@@ -55,7 +55,7 @@ public class Education {
             cascade = {}
     )
     @JsonIgnore
-    private List<User> userEducationList;
+    private List<Users> userEducationList;
 
     public Education(String name) {
         this.name = name;
