@@ -71,6 +71,7 @@ public class Users {
 
     @Column(name = "password")
     @NotNull
+    @JsonIgnore
     private String password;
 
     @Column(name = "pfp_path")
