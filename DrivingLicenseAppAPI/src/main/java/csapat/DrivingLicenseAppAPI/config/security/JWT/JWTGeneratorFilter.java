@@ -37,7 +37,7 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
                     .claim("id", Integer.valueOf(authentication.getName()))
                     .claim("authorities", authentication.getAuthorities()
                             .stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")))
-                    .issuedAt(new Date()).expiration(new Date((new Date()).getTime() + 30000000))
+                    .issuedAt(new Date()).expiration(new Date((new Date()).getTime() + 30))
                     .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64.encode(secret))
                     .compact();
             response.setHeader("Authorization", jwt);
