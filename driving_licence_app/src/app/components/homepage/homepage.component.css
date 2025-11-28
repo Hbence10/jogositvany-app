@@ -1,4 +1,40 @@
 
 .box{
   margin: 0px 25px 25px 0px;
+  background-color: #22354F;
+  border-radius: 15px;
+}
+
+#school {
+  width: 500px;
+  height: 600px;
+}
+
+#instructor {
+  width: 350px;
+  height: 400px;
+}
+
+#license-category {
+  width: 351px;
+  height: 160px;
+}
+
+#calendar {
+  width: 435px;
+  height: 600px;
+}
+
+#car {
+  width: 435px;
+  height: 250px;
+}
+
+.progressbar-driven {
+  width: 900px;
+  height: 140px;
+}
+.progressbar-payed {
+  width: 900px;
+  height: 100px;
 }
