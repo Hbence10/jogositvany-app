@@ -30,6 +30,7 @@ public class StudentService {
             Map<String, Integer> responseBody = new HashMap<>();
             responseBody.put("paidLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.isPaid()).toList().size());
             responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.isEnd()).toList().size());
+            responseBody.put("totalLessonNumber", searchedStudent.getDrivingLessons().size());
             return ResponseEntity.ok().body(responseBody);
         }
     }

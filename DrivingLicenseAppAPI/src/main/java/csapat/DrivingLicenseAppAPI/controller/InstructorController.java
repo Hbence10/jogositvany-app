@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
+    @Operation(summary = "", description = "")
     @PostMapping("/handleRequest")
     private ResponseEntity<Object> handleJoinRequest(@RequestBody Map<String, String> body){
         return instructorService.handleRequest(Integer.valueOf(body.get("requestId")), body.get("status"));

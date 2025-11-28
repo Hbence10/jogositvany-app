@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class DrivingLessonController {
 
     private final DrivingLessonService drivingLessonService;
 
+    @Operation(summary = "", description = "")
     @GetMapping("/student/{id}")
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(@PathVariable("id") Integer studentId) {
         return drivingLessonService.getLessonInformationByStudent(studentId);
