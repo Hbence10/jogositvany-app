@@ -16,7 +16,7 @@ public class SchoolController {
 
     private final SchoolService schoolService;
 
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Iskolához való jelentkezés", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
     @PostMapping("/request/{id}")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody){
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status"));

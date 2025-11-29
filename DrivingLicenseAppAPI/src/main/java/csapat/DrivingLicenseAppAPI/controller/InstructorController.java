@@ -15,7 +15,7 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Oktatóhoz való jelentkezés", description = "Az oktatóhoz való jelentkezési kérelem eldöntése, hogy elfogadja-e a diák jelentkezését vagy nem.")
     @PostMapping("/handleRequest")
     private ResponseEntity<Object> handleJoinRequest(@RequestBody Map<String, String> body){
         return instructorService.handleRequest(Integer.valueOf(body.get("requestId")), body.get("status"));
