@@ -23,7 +23,6 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "Bejelentkezés", description = "Az email és jelszó alapján visszaad egy User objectet.")
-    @PostMapping("/login")
     @Parameters({
             @Parameter(name = "email", description = "A felhasználó által beírt email cím.", required = true),
             @Parameter(name = "password", description = "A fekhasználó által beírt jelszó.", required = true)
@@ -33,6 +32,7 @@ public class UserController {
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet adott meg."),
             @ApiResponse(responseCode = "200", description = "Sikeres bejelentkezés", useReturnTypeSchema = true)
     })
+    @PostMapping("/login")
     public ResponseEntity<Users> login(@RequestBody Map<String, String> loginBody) {
         return userService.login(loginBody.get("email"), loginBody.get("password"));
     }
