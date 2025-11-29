@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,7 +29,11 @@ public class UserService {
     private final EducationRepository educationRepository;
 
     public ResponseEntity<Users> login(String email, String password) {
-        Users loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
+        Users loggedUser = userRepository.getUserByEmail(email);
+
+        if (loggedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 
@@ -137,8 +143,26 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Users> updatePfp(Integer id, MultipartFile file) {
-        return null;
+    public ResponseEntity<Users> updatePfp(Integer id, MultipartFile pfpFile) {
+        Users searchedUser = userRepository.getUser(id);
+
+        if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            String filePath = "" + File.separator + pfpFile.getOriginalFilename();
+
+            try {
+                FileOutputStream fout = new FileOutputStream(filePath);
+                fout.write(pfpFile.getBytes());
+                fout.close();
+
+                searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename());
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().build();
+            }
+
+            return ResponseEntity.ok().body(userRepository.save(searchedUser));
+        }
     }
 
     // delete:
