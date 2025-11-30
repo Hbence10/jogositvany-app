@@ -28,6 +28,12 @@ public class SchoolController {
     private final SchoolRepository schoolRepository;
 
     @Operation(summary = "Iskolához való jelentkezés", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
+    @Parameter(name = "id", description = "Az adott csatlakozási kérelemhez tartozó id.", in = ParameterIn.PATH)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kerelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
+    })
     @PostMapping("/request/{id}")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody){
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status"));
@@ -73,7 +79,7 @@ public class SchoolController {
     }
 
     @Operation(summary = "Iskalához tartozó csatlakozási kérelmek", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")
-    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true)
+    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),

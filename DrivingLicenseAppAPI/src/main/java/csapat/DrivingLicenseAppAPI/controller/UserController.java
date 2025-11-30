@@ -5,6 +5,7 @@ import csapat.DrivingLicenseAppAPI.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -111,7 +112,7 @@ public class UserController {
 
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")
     @Parameters({
-            @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true),
+            @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH),
             @Parameter(name = "pfpImg", description = "A fekhasználó által kiválasztott új profilkép fájla.", required = true)
     })
     @PatchMapping("/pfp/{id}")
@@ -121,7 +122,7 @@ public class UserController {
 
     //Torles
     @Operation(summary = "Profilok törlése", description = "Id alapján töröl egy User-t.")
-    @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true)
+    @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne törölni, amely nem létzik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók törlés", useReturnTypeSchema = true)
@@ -133,7 +134,7 @@ public class UserController {
 
     //Egyeb endpointok:
     @Operation(summary = "User id alapján", description = "User-t id alapján returnol.")
-    @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true)
+    @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne lekérni, amely nem létzik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók lekérés", useReturnTypeSchema = true)

@@ -5,6 +5,7 @@ import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class RequestController {
     }
 
     @Operation(summary = "Iskolai csatlakozás törlése", description = "Az iskolához való csatlakozási kérelem törlése")
-    @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true)
+    @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
@@ -55,7 +56,7 @@ public class RequestController {
     }
 
     @Operation(summary = "Oktatói csatlakozás törlése", description = "")
-    @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true)
+    @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
@@ -66,7 +67,7 @@ public class RequestController {
     }
 
     @Operation(summary = "Oktatóhoz tartozó kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
-    @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true)
+    @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező oktatóhoz tartozó kérelmek lekérdezése"),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),

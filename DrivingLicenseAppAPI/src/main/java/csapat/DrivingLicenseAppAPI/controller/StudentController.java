@@ -3,6 +3,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 import csapat.DrivingLicenseAppAPI.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @Operation(summary = "A tanuló óráiról adatok.", description = "Az adott tanuló óráinak összegzése és azokról információ visszaadása.")
-    @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true)
+    @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező diák adatainak a lekérése."),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérés", useReturnTypeSchema = true)
