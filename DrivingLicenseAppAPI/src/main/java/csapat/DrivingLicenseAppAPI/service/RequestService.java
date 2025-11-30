@@ -80,15 +80,6 @@ public class RequestService {
         }
     }
 
-    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id){
-        School searchedSchool = schoolRepository.getSchool(id);
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
-        }
-    }
-
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
         Instructors searchedInstructor = instructorRepository.getInstructor(id);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){

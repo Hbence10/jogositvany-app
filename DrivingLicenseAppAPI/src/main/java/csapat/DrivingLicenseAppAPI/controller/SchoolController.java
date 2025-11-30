@@ -1,16 +1,19 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,8 +34,8 @@ public class SchoolController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
-            @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni.")
-            @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni.")
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni."),
+            @ApiResponse(responseCode = "417", description = "Felépitésben nem megfelelő email cím vagy telefonszám.")
     })
     @PutMapping("")
     public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool){
@@ -55,6 +58,17 @@ public class SchoolController {
     @PutMapping("/{id}/openingDetails")
     public ResponseEntity<School> updateOpeningDetails(){
         return schoolService.updateOpeningDetails();
+    }
+
+    @Operation(summary = "Iskalához tartozó csatlakozási kérelmek", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")
+    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
+    })
+    @GetMapping("/{id}/joinRequests")
+    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(@PathVariable("id") Integer id){
+        return schoolService.getAllJoinRequestBySchool(id);
     }
 
     //

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -68,5 +70,14 @@ public class SchoolService {
 
     public ResponseEntity<School> updateOpeningDetails() {
         return null;
+    }
+
+    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id){
+        School searchedSchool = schoolRepository.getSchool(id);
+        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+        }
     }
 }

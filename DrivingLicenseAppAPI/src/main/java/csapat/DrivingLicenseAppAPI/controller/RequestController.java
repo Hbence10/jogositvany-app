@@ -65,17 +65,6 @@ public class RequestController {
         return requestService.deleteInstructorJoinRequest(id);
     }
 
-    @Operation(summary = "Iskalához tartozó kérelmek", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")
-    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true)
-    @ApiResponses({
-            @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-    })
-    @GetMapping("/school/{id}")
-    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(@PathVariable("id") Integer id){
-        return requestService.getAllJoinRequestBySchool(id);
-    }
-
     @Operation(summary = "Oktatóhoz tartozó kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
     @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true)
     @ApiResponses({
