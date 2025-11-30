@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class Instructors {
 
     @Id
@@ -31,21 +41,23 @@ public class Instructors {
 
     @Column(name = "is_deleted")
     @NotNull
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor"})
-    private User instructorUser;
+    private Users instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "instructorsList", "adminList" , "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @JsonIgnoreProperties({"owner", "instructorsList", "adminList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -83,7 +95,7 @@ public class Instructors {
         this.promoText = promoText;
     }
 
-    public Instructors(School instructorSchool, User instructorUser) {
+    public Instructors(School instructorSchool, Users instructorUser) {
         this.instructorSchool = instructorSchool;
         this.instructorUser = instructorUser;
     }

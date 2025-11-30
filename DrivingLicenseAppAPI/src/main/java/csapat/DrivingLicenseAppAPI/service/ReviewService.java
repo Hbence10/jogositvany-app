@@ -27,7 +27,7 @@ public class ReviewService {
     private final InstructorRepository instructorRepository;
 
     public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId) {
-        School searchedSchool = schoolRepository.findById(schoolId).get();
+        School searchedSchool = schoolRepository.getSchool(schoolId);
         if (searchedSchool.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -37,7 +37,7 @@ public class ReviewService {
     }
 
     public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId) {
-        Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
         if (searchedInstructor.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -94,13 +94,11 @@ public class ReviewService {
     }
 
     public ResponseEntity<Object> deleteReview(Integer id) {
-        Review searchedReview = reviewRepository.findById(id).get();
+        Review searchedReview = reviewRepository.getReview(id);
         if (searchedReview.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
-            searchedReview.setDeleted(true);
-            searchedReview.setDeletedAt(LocalDateTime.now());
-            reviewRepository.save(searchedReview);
+            reviewRepository.deleteReview(id);
             return ResponseEntity.ok().build();
         }
     }

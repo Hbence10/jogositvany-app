@@ -19,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory", resultClasses = DrivingLicenseCategory.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLicenseCategory", procedureName = "getDrivingLicenseCategory", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLicenseCategory.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class DrivingLicenseCategory {
 
     @Id
@@ -42,10 +51,12 @@ public class DrivingLicenseCategory {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:

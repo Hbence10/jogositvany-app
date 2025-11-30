@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +13,6 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "driving_lesson_request")
@@ -20,6 +20,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllDrivingLessonRequest", procedureName = "getAllDrivingLessonRequest", resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonRequest", procedureName = "getDrivingLessonRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLessonRequest", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class DrivingLessonRequest {
 
     @Id
@@ -38,10 +47,12 @@ public class DrivingLessonRequest {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:

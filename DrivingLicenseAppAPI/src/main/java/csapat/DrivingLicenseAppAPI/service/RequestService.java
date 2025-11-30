@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +29,7 @@ public class RequestService {
     //Jelentkezesi kerelmek
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
         School searchedSchool = schoolRepository.findById(schoolId).get();
-        User searchedUser = userRepository.findById(userId).get();
+        Users searchedUser = userRepository.findById(userId).get();
         ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
 
         if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
@@ -62,46 +61,22 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
-        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.findById(id).get();
+        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            searchedRequest.setIsDeleted(true);
-            searchedRequest.setDeletedAt(LocalDateTime.now());
-            return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedRequest));
+            return ResponseEntity.ok().body(schoolJoinRequestRepository.deleteSchoolJoinRequest(id));
         }
     }
 
     public ResponseEntity<Object> deleteInstructorJoinRequest(Integer id) {
-        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.findById(id).get();
+        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            searchedRequest.setIsDeleted(true);
-            searchedRequest.setDeletedAt(LocalDateTime.now());
-            return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedRequest));
+            return ResponseEntity.ok().body(instructorJoinRequestRepository.deleteInstructorJoinRequest(id));
         }
     }
-
-    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id){
-        School searchedSchool = schoolRepository.findById(id).get();
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
-        }
-    }
-
-    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
-        Instructors searchedInstructor = instructorRepository.findById(id).get();
-        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
-        }
-
-    }
-
 }

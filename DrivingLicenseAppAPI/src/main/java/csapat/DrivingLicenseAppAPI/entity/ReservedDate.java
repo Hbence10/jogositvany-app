@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllReservedDate", procedureName = "getAllReservedDate", resultClasses = ReservedDate.class),
+        @NamedStoredProcedureQuery(name = "getReservedDate", procedureName = "getReservedDate", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = ReservedDate.class),
+        @NamedStoredProcedureQuery(name = "deleteReservedDate", procedureName = "deleteReservedDate", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class ReservedDate {
 
     @Id
@@ -35,10 +45,12 @@ public class ReservedDate {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:

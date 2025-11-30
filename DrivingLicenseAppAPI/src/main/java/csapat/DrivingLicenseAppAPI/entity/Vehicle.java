@@ -19,6 +19,15 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllVehicle", procedureName = "getAllVehicle", resultClasses = Vehicle.class),
+        @NamedStoredProcedureQuery(name = "getVehicle", procedureName = "getVehicle", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Vehicle.class),
+        @NamedStoredProcedureQuery(name = "deleteVehicle", procedureName = "deleteVehicle", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class Vehicle {
 
     @Id
@@ -38,10 +47,12 @@ public class Vehicle {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok

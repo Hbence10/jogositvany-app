@@ -20,6 +20,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllSchool", procedureName = "getAllSchool", resultClasses = School.class),
+        @NamedStoredProcedureQuery(name = "getSchool", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = School.class),
+        @NamedStoredProcedureQuery(name = "deleteSchool", procedureName = "deleteSchool", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class School {
 
     @Id
@@ -67,29 +76,34 @@ public class School {
 
     @Column(name = "is_deleted")
     @NotNull
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private Users owner;
 
     @OneToMany(
             mappedBy = "adminSchool",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    private List<User> adminList;
+//    @JsonIgnoreProperties({"adminSchool"})
+    @JsonIgnore
+    private List<Users> adminList;
 
     @OneToMany(
             mappedBy = "instructorSchool",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnoreProperties({"instructorSchool", "vehicle", "reviewList", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private List<Instructors> instructorsList;
 
     @OneToMany(
@@ -105,6 +119,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -112,6 +127,8 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+//    @JsonIgnore
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
     @OneToMany(
@@ -119,7 +136,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessonType> drivingLessonsType;
 
     @OneToMany(
@@ -127,7 +144,7 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(
@@ -135,7 +152,8 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+//    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
     //Constructorok

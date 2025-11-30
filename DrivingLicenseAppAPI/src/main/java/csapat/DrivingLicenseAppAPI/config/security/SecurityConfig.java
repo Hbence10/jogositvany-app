@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.config.security;
 
+import csapat.DrivingLicenseAppAPI.config.security.JWT.JWTGeneratorFilter;
+import csapat.DrivingLicenseAppAPI.config.security.JWT.JWTValidatorFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -34,7 +37,11 @@ public class SecurityConfig {
                         return config;
                     }
                 }))
-                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
+                .authorizeHttpRequests((requests) ->
+                        requests.anyRequest().permitAll()
+                )
+                .addFilterAfter(new JWTGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());

@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class),
+        @NamedStoredProcedureQuery(name = "getFuelType", procedureName = "getFuelType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = FuelType.class),
+        @NamedStoredProcedureQuery(name = "deleteFuelType", procedureName = "deleteFuelType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class FuelType {
 
     @Id
@@ -34,10 +42,12 @@ public class FuelType {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:

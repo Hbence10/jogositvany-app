@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,6 +18,15 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllInstructorJoinRequest", procedureName = "getAllInstructorJoinRequest", resultClasses = InstructorJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "getInstructorJoinRequest", procedureName = "getInstructorJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = InstructorJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteInstructorJoinRequest", procedureName = "deleteInstructorJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class InstructorJoinRequest {
 
     @Id
@@ -38,10 +48,12 @@ public class InstructorJoinRequest {
 
     @Column(name = "is_deleted")
     @Null
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok

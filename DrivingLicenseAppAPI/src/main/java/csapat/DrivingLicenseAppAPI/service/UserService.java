@@ -3,7 +3,7 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.Education;
-import csapat.DrivingLicenseAppAPI.entity.User;
+import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,8 +28,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
 
-    public ResponseEntity<Object> login(String email, String password) {
-        User loggedUser = userRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).toList().get(0);
+    public ResponseEntity<Users> login(String email, String password) {
+        Users loggedUser = userRepository.getUserByEmail(email);
+
+        if (loggedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 
@@ -40,9 +46,7 @@ public class UserService {
         return ResponseEntity.ok(loggedUser);
     }
 
-    public ResponseEntity<Object> register(User newUser) {
-        System.out.println(newUser);
-
+    public ResponseEntity<Object> register(Users newUser) {
         Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
         if (searchedEducation == null || searchedEducation.getId() == null) {
             return ResponseEntity.notFound().build();
@@ -73,7 +77,7 @@ public class UserService {
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
         } else {
-            User searchedUser = userRepository.getUserByEmail(email);
+            Users searchedUser = userRepository.getUserByEmail(email);
 
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -93,7 +97,7 @@ public class UserService {
         } else if (!ValidatorCollection.emailChecker(email)) {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else {
-            User searchedUser = userRepository.getUserByEmail(email);
+            Users searchedUser = userRepository.getUserByEmail(email);
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
@@ -104,7 +108,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
-        User user = userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email);
 
         if (!ValidatorCollection.emailChecker(email) && !ValidatorCollection.passwordChecker(newPassword)) {
             return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
@@ -122,11 +126,12 @@ public class UserService {
     }
 
     // update:
-    public ResponseEntity<Object> updateUser(User updatedUser) {
+    public ResponseEntity<Object> updateUser(Users updatedUser) {
+
         if (updatedUser.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {
-            List<Education> allEducation = educationRepository.findAll();
+            List<Education> allEducation = educationRepository.getAllEducation();
 
             if (!ValidatorCollection.phoneValidator(updatedUser.getPhone())) {
                 return ResponseEntity.status(417).body("InvalidPhone");
@@ -135,33 +140,49 @@ public class UserService {
             } else if (!allEducation.contains(updatedUser.getUserEducation())) {
                 return ResponseEntity.status(417).body("InvalidEducation");
             } else {
-                User result = userRepository.save(updatedUser);
+                Users result = userRepository.save(updatedUser);
                 return ResponseEntity.ok(result);
             }
         }
     }
 
-    public ResponseEntity<User> updatePfp(Integer id, MultipartFile file) {
-        return null;
+    public ResponseEntity<Users> updatePfp(Integer id, MultipartFile pfpFile) {
+        Users searchedUser = userRepository.getUser(id);
+
+        if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            String filePath = "" + File.separator + pfpFile.getOriginalFilename();
+
+            try {
+                FileOutputStream fout = new FileOutputStream(filePath);
+                fout.write(pfpFile.getBytes());
+                fout.close();
+
+                searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename());
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().build();
+            }
+
+            return ResponseEntity.ok().body(userRepository.save(searchedUser));
+        }
     }
 
     // delete:
     public ResponseEntity<String> deleteUser(Integer id)    {
-        User searchedUser = userRepository.findById(id).get();
+        Users searchedUser = userRepository.getUser(id);
         if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
 
-        searchedUser.setIsDeleted(true);
-        searchedUser.setDeletedAt(new Date());
-        userRepository.save(searchedUser);
+        userRepository.deleteUser(id);
 
         return ResponseEntity.ok().body("success");
     }
 
     //egyeb endpointok:
-    public ResponseEntity<User> getUserById(Integer id){
-        User searchedUser = userRepository.findById(id).get();
+    public ResponseEntity<Users> getUserById(Integer id){
+        Users searchedUser = userRepository.getUser(id);
 
         if(searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()){
             return ResponseEntity.notFound().build();

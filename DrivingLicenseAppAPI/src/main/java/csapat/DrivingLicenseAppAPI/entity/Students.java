@@ -21,8 +21,15 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
-            @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
-        }, resultClasses = {Students.class})
+                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
+        }, resultClasses = {Students.class}),
+        @NamedStoredProcedureQuery(name = "getAllStudent", procedureName = "getAllStudent", resultClasses = Students.class),
+        @NamedStoredProcedureQuery(name = "getStudent", procedureName = "getStudent", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Students.class),
+        @NamedStoredProcedureQuery(name = "deleteStudent", procedureName = "deleteStudent", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
 })
 public class Students {
 
@@ -33,10 +40,12 @@ public class Students {
 
     @Column(name = "is_deleted")
     @NotNull
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok
@@ -54,13 +63,14 @@ public class Students {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"students", "instructor"})
-    private User studentUser;
+    private Users studentUser;
 
     @OneToMany(
             mappedBy = "reviewAuthor",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -68,7 +78,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessonRequest> requestList;
 
     @OneToMany(
@@ -76,7 +86,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessons> drivingLessons;
 
     @OneToMany(
@@ -84,7 +94,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(
@@ -92,10 +102,10 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    public Students(User studentUser, School studentSchool) {
+    public Students(Users studentUser, School studentSchool) {
         this.studentUser = studentUser;
         this.studentSchool = studentSchool;
     }

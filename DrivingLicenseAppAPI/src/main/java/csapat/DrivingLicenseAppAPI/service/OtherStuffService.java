@@ -26,18 +26,18 @@ public class OtherStuffService {
     private final FuelTypeRepository fuelTypeRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod(){
-        return ResponseEntity.ok().body(paymentMethodRepository.findAll().stream().filter(paymentMethod -> !paymentMethod.getIsDeleted()).toList());
+        return ResponseEntity.ok().body(paymentMethodRepository.getAllPayMethod());
     }
 
     public ResponseEntity<List<DrivingLicenseCategory>> getAllCategory(){
-        return ResponseEntity.ok().body(drivingLicenseCategoryRepository.findAll());
+        return ResponseEntity.ok().body(drivingLicenseCategoryRepository.getAllDrivingLicenseCategory());
     }
 
     public ResponseEntity<List<FuelType>> getAllFuelType(){
-        return ResponseEntity.ok().body(fuelTypeRepository.findAll());
+        return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
     }
 
     public ResponseEntity<List<Education>> getAllEducation(){
-        return ResponseEntity.ok().body(educationRepository.findAll());
+        return ResponseEntity.ok().body(educationRepository.getAllEducation());
     }
 }

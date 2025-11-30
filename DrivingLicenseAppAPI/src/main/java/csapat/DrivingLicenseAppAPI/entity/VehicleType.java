@@ -19,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllVehichleType", procedureName = "getAllVehichleType", resultClasses = VehicleType.class),
+        @NamedStoredProcedureQuery(name = "getVehicleType", procedureName = "getVehicleType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = VehicleType.class),
+        @NamedStoredProcedureQuery(name = "deleteVehicleType", procedureName = "deleteVehicleType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class VehicleType {
 
     @Id
@@ -33,10 +42,12 @@ public class VehicleType {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok:

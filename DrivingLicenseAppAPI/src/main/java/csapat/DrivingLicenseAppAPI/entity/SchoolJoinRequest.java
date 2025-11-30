@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,6 +20,15 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllSchoolJoinRequest", procedureName = "getAllSchoolJoinRequest", resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "getSchoolJoinRequest", procedureName = "getSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class SchoolJoinRequest {
 
     @Id
@@ -45,24 +55,26 @@ public class SchoolJoinRequest {
 
     @Column(name = "is_deleted")
     @Null
+    @JsonIgnore
     private Boolean isDeleted;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({})
-    private User schoolJoinRequestUser;
+    private Users schoolJoinRequestUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School schoolJoinRequestSchool;
 
-    public SchoolJoinRequest(String requestedRole, User user, School school) {
+    public SchoolJoinRequest(String requestedRole, Users user, School school) {
         this.requestedRole = requestedRole;
     }
 }

@@ -19,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class),
+        @NamedStoredProcedureQuery(name = "getEducation", procedureName = "getEducation", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Education.class),
+        @NamedStoredProcedureQuery(name = "deleteEducation", procedureName = "deleteEducation", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class Education {
 
     @Id
@@ -33,10 +42,12 @@ public class Education {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
+    @JsonIgnore
     private LocalDateTime deletedAt;
 
     //Kapcsolatok
@@ -46,7 +57,7 @@ public class Education {
             cascade = {}
     )
     @JsonIgnore
-    private List<User> userEducationList;
+    private List<Users> userEducationList;
 
     public Education(String name) {
         this.name = name;
