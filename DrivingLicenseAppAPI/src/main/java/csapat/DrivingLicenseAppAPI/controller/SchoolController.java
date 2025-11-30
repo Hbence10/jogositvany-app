@@ -115,6 +115,17 @@ public class SchoolController {
         return schoolService.getAllExamRequest(id);
     }
 
+    @Operation(summary = "Iskalához törlése", description = "Az adott iskola törlése id alapján.")
+    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Egy nem létező iskola törlése"),
+            @ApiResponse(responseCode = "200", description = "Sikeres iskola törlés"),
+    })
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Object> deleteSchool(@PathVariable("id") Integer id) {
+        return schoolService.deleteSchool(id);
+    }
+
     //
     @GetMapping("{id}")
     public School getSchoolById(@PathVariable("id") Integer id) {

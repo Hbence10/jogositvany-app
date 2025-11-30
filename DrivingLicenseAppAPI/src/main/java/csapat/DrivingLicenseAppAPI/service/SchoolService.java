@@ -138,4 +138,14 @@ public class SchoolService {
             return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
         }
     }
+
+    public ResponseEntity<Object> deleteSchool(Integer id){
+        School searchedSchool = schoolRepository.getSchool(id);
+        if(searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            schoolRepository.deleteSchool(id);
+            return ResponseEntity.ok().build();
+        }
+    }
 }
