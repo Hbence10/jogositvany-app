@@ -25,6 +25,7 @@ public class SchoolService {
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
+    private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
         SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId);
@@ -86,13 +87,14 @@ public class SchoolService {
 
     public ResponseEntity<School> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
         School searchedSchool = schoolRepository.getSchool(id);
-        ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
         if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
             return ResponseEntity.notFound().build();
         } else if (newOpeningDetails.getId() != null){
             return null;
         } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()){
+            return ResponseEntity.status(417).build();
+        } else if (!dayNames.contains(newOpeningDetails.getDay())) {
             return ResponseEntity.status(417).build();
         } else {
             List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
@@ -102,16 +104,38 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> updateOpeningDetails() {
-        return null;
+    public ResponseEntity<School> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
+        School searchedSchool = schoolRepository.getSchool(id);
+
+        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else if (updatedOpeningDetails.getId() != null){
+            return null;
+        } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()){
+            return ResponseEntity.status(417).build();
+        } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
+            return ResponseEntity.status(417).build();
+        } else {
+            openingDetailRepository.save(updatedOpeningDetails);
+            return ResponseEntity.ok().body(schoolRepository.getSchool(id));
+        }
     }
 
-    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id) {
+    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id) {
         School searchedSchool = schoolRepository.getSchool(id);
         if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+        }
+    }
+
+    public ResponseEntity<List<ExamRequest>> getAllExamRequest(Integer id) {
+        School searchedSchool = schoolRepository.getSchool(id);
+        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
         }
     }
 }

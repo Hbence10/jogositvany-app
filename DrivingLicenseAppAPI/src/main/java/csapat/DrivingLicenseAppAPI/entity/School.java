@@ -127,7 +127,8 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
     @OneToMany(

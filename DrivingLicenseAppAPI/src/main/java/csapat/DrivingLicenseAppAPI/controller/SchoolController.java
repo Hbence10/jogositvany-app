@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -80,9 +81,16 @@ public class SchoolController {
     }
 
     @Operation(summary = "Nyitvatartás modósitása.")
+    @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett nyitvatartásnak az objectje")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás frissités."),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás frissités."),
+            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció.")
+    })
     @PutMapping("/{id}/openingDetails")
-    public ResponseEntity<School> updateOpeningDetails() {
-        return schoolService.updateOpeningDetails();
+    public ResponseEntity<School> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails updatedOpeningDetails) {
+        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
     }
 
     @Operation(summary = "Iskalához tartozó csatlakozási kérelmek", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")
@@ -92,8 +100,19 @@ public class SchoolController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @GetMapping("/{id}/joinRequests")
-    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(@PathVariable("id") Integer id) {
-        return schoolService.getAllJoinRequestBySchool(id);
+    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id) {
+        return schoolService.getAllJoinRequest(id);
+    }
+
+    @Operation(summary = "Iskalához tartozó vizsga kérelmek", description = "Az adott iskolához tartozó vizsga kérelmek lekérdezése")
+    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
+    })
+    @GetMapping("/{id}/examRequest")
+    private ResponseEntity<List<ExamRequest>> getAllExamRequest(@PathVariable("id") Integer id) {
+        return schoolService.getAllExamRequest(id);
     }
 
     //

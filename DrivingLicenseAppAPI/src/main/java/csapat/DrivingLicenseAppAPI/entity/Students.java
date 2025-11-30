@@ -70,6 +70,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
@@ -77,7 +78,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessonRequest> requestList;
 
     @OneToMany(
@@ -85,7 +86,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessons> drivingLessons;
 
     @OneToMany(
@@ -93,7 +94,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(
@@ -101,7 +102,7 @@ public class Students {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
     public Students(Users studentUser, School studentSchool) {
