@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
+import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Transactional
 @Service
@@ -41,5 +43,15 @@ public class InstructorService {
             searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
             return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
         }
+    }
+
+    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
+        Instructors searchedInstructor = instructorRepository.getInstructor(id);
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+        }
+
     }
 }

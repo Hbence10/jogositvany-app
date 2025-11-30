@@ -65,15 +65,4 @@ public class RequestController {
     private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id){
         return requestService.deleteInstructorJoinRequest(id);
     }
-
-    @Operation(summary = "Oktatóhoz tartozó kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
-    @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "404", description = "Egy nem létező oktatóhoz tartozó kérelmek lekérdezése"),
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-    })
-    @GetMapping("/instructor/{id}")
-    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id){
-        return requestService.getAllJoinRequestByInstructor(id);
-    }
 }

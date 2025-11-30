@@ -30,7 +30,7 @@ public class SchoolController {
 
     @Operation(summary = "Iskolához való jelentkezés", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
     @Parameter(name = "id", description = "Az adott csatlakozási kérelemhez tartozó id.", in = ParameterIn.PATH)
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kerelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kérelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
@@ -115,7 +115,7 @@ public class SchoolController {
         return schoolService.getAllExamRequest(id);
     }
 
-    @Operation(summary = "Iskalához törlése", description = "Az adott iskola törlése id alapján.")
+    @Operation(summary = "Iskola törlése", description = "Az adott iskola törlése id alapján.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskola törlése"),

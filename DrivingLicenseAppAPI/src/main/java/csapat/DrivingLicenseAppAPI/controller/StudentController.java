@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -31,5 +28,12 @@ public class StudentController {
     @GetMapping("/lessonDetails/{id}")
     public ResponseEntity<Map<String, Integer>> getLessonDetails(@PathVariable("id") int studentId) {
         return studentService.getLessonDetails(studentId);
+    }
+
+    @Operation(summary = "", description = "")
+    @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true, in = ParameterIn.PATH)
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer id){
+        return null;
     }
 }

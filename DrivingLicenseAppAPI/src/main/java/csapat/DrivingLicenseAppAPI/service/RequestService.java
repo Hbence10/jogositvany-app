@@ -79,15 +79,4 @@ public class RequestService {
             return ResponseEntity.ok().body(instructorJoinRequestRepository.deleteInstructorJoinRequest(id));
         }
     }
-
-    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
-        Instructors searchedInstructor = instructorRepository.getInstructor(id);
-        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
-        }
-
-    }
-
 }
