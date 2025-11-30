@@ -1,9 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.Instructors;
-import csapat.DrivingLicenseAppAPI.entity.School;
-import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
-import csapat.DrivingLicenseAppAPI.entity.Students;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.transaction.Transactional;
@@ -14,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Transactional
@@ -22,7 +21,7 @@ import java.util.List;
 public class SchoolService {
 
     private final SchoolRepository schoolRepository;
-    private final OpeningDetailRepository openingDetails;
+    private final OpeningDetailRepository openingDetailRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
@@ -85,8 +84,22 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> addOpeningDetails() {
-        return null;
+    public ResponseEntity<School> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
+        School searchedSchool = schoolRepository.getSchool(id);
+        ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
+
+        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else if (newOpeningDetails.getId() != null){
+            return null;
+        } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()){
+            return ResponseEntity.status(417).build();
+        } else {
+            List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
+            openingDetailsList.add(newOpeningDetails);
+            searchedSchool.setOpeningDetails(openingDetailsList);
+            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
+        }
     }
 
     public ResponseEntity<School> updateOpeningDetails() {

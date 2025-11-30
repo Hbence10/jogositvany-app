@@ -1,8 +1,8 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
-import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
     })
     @PostMapping("/request/{id}")
-    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody){
+    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody) {
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status"));
     }
 
@@ -47,7 +47,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "417", description = "Felépitésben nem megfelelő email cím vagy telefonszám.")
     })
     @PutMapping("")
-    public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool){
+    public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool) {
         return schoolService.updateSchool(updatedSchool);
     }
 
@@ -62,19 +62,26 @@ public class SchoolController {
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett.")
     })
-    public ResponseEntity<School> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg){
+    public ResponseEntity<School> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
 
     @Operation(summary = "Nyitvatartás hozzáadása.")
+    @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH)
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új nyitvatartásnak az objectje")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás hozzáadás."),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás hozzáadás."),
+            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció.")
+    })
     @PostMapping("/{id}/openingDetails")
-    public ResponseEntity<School> addOpeningDetails(){
-        return schoolService.addOpeningDetails();
+    public ResponseEntity<School> addOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails newOpeningDetails) {
+        return schoolService.addOpeningDetails(id, newOpeningDetails);
     }
 
     @Operation(summary = "Nyitvatartás modósitása.")
     @PutMapping("/{id}/openingDetails")
-    public ResponseEntity<School> updateOpeningDetails(){
+    public ResponseEntity<School> updateOpeningDetails() {
         return schoolService.updateOpeningDetails();
     }
 
@@ -85,13 +92,13 @@ public class SchoolController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @GetMapping("/{id}/joinRequests")
-    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(@PathVariable("id") Integer id){
+    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(@PathVariable("id") Integer id) {
         return schoolService.getAllJoinRequestBySchool(id);
     }
 
     //
     @GetMapping("{id}")
-    public School getSchoolById(@PathVariable("id") Integer id){
+    public School getSchoolById(@PathVariable("id") Integer id) {
         return schoolRepository.findById(id).get();
     }
 }
