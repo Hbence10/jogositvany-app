@@ -1,7 +1,11 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.entity.Instructors;
+import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
+import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +46,27 @@ public class SchoolService {
         }
     }
 
+    public ResponseEntity<School> updateSchool(School updatedSchool) {
+        if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
+            return ResponseEntity.notFound().build();
+        } else if (!ValidatorCollection.emailChecker(updatedSchool.getEmail())) {
+            return ResponseEntity.status(417).build();
+        } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone())) {
+            return ResponseEntity.status(417).build();
+        } else {
+            return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
+        }
+    }
 
+    public ResponseEntity<School> changeCoverImg() {
+        return null;
+    }
+
+    public ResponseEntity<School> addOpeningDetails() {
+        return null;
+    }
+
+    public ResponseEntity<School> updateOpeningDetails() {
+        return null;
+    }
 }

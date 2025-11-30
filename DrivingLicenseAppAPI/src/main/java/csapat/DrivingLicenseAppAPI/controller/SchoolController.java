@@ -5,6 +5,8 @@ import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,27 +28,33 @@ public class SchoolController {
     }
 
     @Operation(summary = "Iskola frissitése", description = "Az iskola adatainak a frissitése. Minden adat frissitése kivéve a boritókép és a nyitvatartás.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni.")
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni.")
+    })
     @PutMapping("")
     public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool){
-        return null;
+        return schoolService.updateSchool(updatedSchool);
     }
 
     @Operation(summary = "Iskola boritókép csere.")
     @PatchMapping("/coverImg/{id}")
     public ResponseEntity<School> changeCoverImg(){
-        return null;
+        return schoolService.changeCoverImg();
     }
 
     @Operation(summary = "Nyitvatartás hozzáadása.")
     @PostMapping("/{id}/openingDetails")
     public ResponseEntity<School> addOpeningDetails(){
-        return null;
+        return schoolService.addOpeningDetails();
     }
 
     @Operation(summary = "Nyitvatartás modósitása.")
     @PutMapping("/{id}/openingDetails")
     public ResponseEntity<School> updateOpeningDetails(){
-        return null;
+        return schoolService.updateOpeningDetails();
     }
 
     //
