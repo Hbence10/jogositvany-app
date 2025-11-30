@@ -2,7 +2,7 @@
 
   <div id="top" class="d-flex flex-column justify-content-start align-items-start">
 
-    <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true">
+    <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true" routerLink="profil">
       <div id="avatar"></div>
       <a>Profil</a>
     </div>
@@ -18,28 +18,28 @@
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="calendar_month"></mat-icon>
       </div>
-      <a>Naptár</a>
+      <a routerLink="calendar">Naptár</a>
     </div>
 
     <div class="navItem d-flex justify-content-start align-items-center">
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="people"></mat-icon>
       </div>
-      <a>Oktatók</a>
+      <a routerLink="search-page">Oktatók</a>
     </div>
 
     <div class="navItem d-flex justify-content-start align-items-center">
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="home_work"></mat-icon>
       </div>
-      <a>Iskolák</a>
+      <a routerLink="search-page" >Iskolák</a>
     </div>
 
   </div>
 
-  <div id="login" class="d-flex justify-content-start align-items-end">
-    <div class="navIconContainer d-flex justify-content-center align-items-center">
-        <mat-icon id="loginIcon" class="navIcons d-flex justify-content-center align-items-center" fontIcon="login"></mat-icon>
+  <div id="login" class="d-flex justify-content-center align-items-center">
+    <div class="d-flex justify-content-center align-items-center">
+        <img src="assets/icons/kijeletkezés.svg" alt="">
     </div>
     <a routerLink="login">Bejelentkezése</a>
   </div>

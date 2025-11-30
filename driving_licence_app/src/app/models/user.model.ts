@@ -1,3 +1,4 @@
+import { Education } from "./education.model";
 import { Role } from "./role.model";
 
 export class User {
@@ -9,7 +10,7 @@ export class User {
     public phone: string,
     public birthDate: string,
     public gender: string,
-    public educationQualification: string,
+    public userEducation: Education,
     public password: string,
     public role : Role = new Role(1, "user")
   ) {}
@@ -56,11 +57,11 @@ export class User {
     this.gender = value;
   }
 
-  get getEducationQualification(): string {
-    return this.educationQualification;
+  get getEducationQualification(): Education {
+    return this.userEducation;
   }
-  set setEducationQualification(value: string) {
-    this.educationQualification = value;
+  set setEducationQualification(value: Education) {
+    this.userEducation = value;
   }
 
   get getPassword(): string {
