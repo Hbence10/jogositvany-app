@@ -7,11 +7,14 @@ import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -44,8 +47,17 @@ public class SchoolController {
 
     @Operation(summary = "Iskola boritókép csere.")
     @PatchMapping("/coverImg/{id}")
-    public ResponseEntity<School> changeCoverImg(){
-        return schoolService.changeCoverImg();
+    @Parameters({
+            @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH),
+            @Parameter(name = "bannerImg", description = "A feltöltött boritókép.")
+    })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres boritókép csere."),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
+            @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett.")
+    })
+    public ResponseEntity<School> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg){
+        return schoolService.changeCoverImg(id, coverImg);
     }
 
     @Operation(summary = "Nyitvatartás hozzáadása.")

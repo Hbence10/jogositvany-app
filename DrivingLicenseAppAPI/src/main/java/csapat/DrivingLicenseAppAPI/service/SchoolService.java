@@ -10,7 +10,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 @Transactional
@@ -60,8 +63,26 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> changeCoverImg() {
-        return null;
+    public ResponseEntity<School> changeCoverImg(Integer id, MultipartFile bannerImg) {
+        School searchedSchool = schoolRepository.getSchool(id);
+
+        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            String filePath = "" + File.separator + bannerImg.getOriginalFilename();
+
+            try {
+                FileOutputStream fout = new FileOutputStream(filePath);
+                fout.write(bannerImg.getBytes());
+                fout.close();
+
+                searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().build();
+            }
+
+            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
+        }
     }
 
     public ResponseEntity<School> addOpeningDetails() {
@@ -72,7 +93,7 @@ public class SchoolService {
         return null;
     }
 
-    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id){
+    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequestBySchool(Integer id) {
         School searchedSchool = schoolRepository.getSchool(id);
         if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
             return ResponseEntity.notFound().build();
