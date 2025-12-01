@@ -27,6 +27,7 @@ public class UserService {
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
+    String vCode = "";
 
     public ResponseEntity<Users> login(String email, String password) {
         Users loggedUser = userRepository.getUserByEmail(email);
@@ -84,6 +85,7 @@ public class UserService {
             }
 
             String vCode = generateVerificationCode();
+            System.out.println(vCode);
             searchedUser.setVCode(passwordEncoder.encode(vCode));
             userRepository.save(searchedUser);
             emailSender.sendVerificationCodeEmail(email, vCode);
@@ -101,7 +103,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
-
+            System.out.println(passwordEncoder.matches(userVCode, searchedUser.getVCode()));
             return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
         }
 
