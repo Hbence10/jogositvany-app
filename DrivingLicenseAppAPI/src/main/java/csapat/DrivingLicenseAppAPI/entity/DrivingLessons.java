@@ -33,17 +33,17 @@ public class DrivingLessons {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "start_km")
     @NotNull
     @Size(max = 7)
-    private int startKm;
+    private Integer startKm;
 
     @Column(name = "end_km")
     @NotNull
     @Size(max = 7)
-    private int endKm;
+    private Integer endKm;
 
     @Column(name = "location")
     @NotNull
@@ -62,15 +62,15 @@ public class DrivingLessons {
 
     @Column(name = "lesson_hour_number")
     @NotNull
-    private int lessonHourNumber;
+    private Integer lessonHourNumber;
 
     @Column(name = "is_paid")
     @NotNull
-    private boolean isPaid = false;
+    private Boolean isPaid = false;
 
     @Column(name = "is_end")
     @NotNull
-    private boolean isEnd = false;
+    private Boolean isEnd = false;
 
     @Column(name = "is_deleted")
     @NotNull

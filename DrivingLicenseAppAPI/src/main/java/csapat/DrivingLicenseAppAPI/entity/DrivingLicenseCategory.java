@@ -33,7 +33,7 @@ public class DrivingLicenseCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -43,7 +43,7 @@ public class DrivingLicenseCategory {
     @Column(name = "min_age")
     @NotNull
     @Size(max = 2)
-    private int minAge;
+    private Integer minAge;
 
     @Column(name = "description")
     @NotNull

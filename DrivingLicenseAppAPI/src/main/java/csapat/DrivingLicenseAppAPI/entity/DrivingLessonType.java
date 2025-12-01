@@ -34,7 +34,7 @@ public class DrivingLessonType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -44,7 +44,7 @@ public class DrivingLessonType {
     @Column(name = "price")
     @NotNull
     @Size(max = 5)
-    private int price;
+    private Integer price;
 
     @Column(name = "is_deleted")
     @NotNull

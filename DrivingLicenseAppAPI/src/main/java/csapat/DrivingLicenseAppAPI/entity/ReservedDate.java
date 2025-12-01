@@ -33,7 +33,7 @@ public class ReservedDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "date")
     @NotNull
@@ -41,7 +41,7 @@ public class ReservedDate {
 
     @Column(name = "is_full")
     @NotNull
-    private boolean isFull = false;
+    private Boolean isFull = false;
 
     @Column(name = "is_deleted")
     @NotNull

@@ -34,7 +34,7 @@ public class DrivingLessonRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "date")
     @NotNull
@@ -43,7 +43,22 @@ public class DrivingLessonRequest {
     @Column(name = "start_hour")
     @NotNull
     @Size(max = 2)
-    private int startHour;
+    private Integer startHour;
+
+    @Column(name = "start_min")
+    @NotNull
+    @Size(max = 2)
+    private Integer startMin;
+
+    @Column(name = "end_hour")
+    @NotNull
+    @Size(max = 2)
+    private int endHour;
+
+    @Column(name = "end_min")
+    @NotNull
+    @Size(max = 2)
+    private Integer endMin;
 
     @Column(name = "is_deleted")
     @NotNull

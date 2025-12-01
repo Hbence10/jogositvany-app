@@ -33,17 +33,27 @@ public class ReservedHour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @Column(name = "start")
+    @Column(name = "start_hour")
     @Size(max = 2)
     @NotNull
-    private int start;
+    private Integer startHour;
 
-    @Column(name = "end")
+    @Column(name = "start_minute")
     @Size(max = 2)
     @NotNull
-    private int end;
+    private Integer startMinute;
+
+    @Column(name = "end_hour")
+    @Size(max = 2)
+    @NotNull
+    private Integer endHour;
+
+    @Column(name = "end_minute")
+    @Size(max = 2)
+    @NotNull
+    private Integer endMinute;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -63,10 +73,4 @@ public class ReservedHour {
     @JoinColumn(name = "date_id")
     @JsonIgnoreProperties({})
     private ReservedDate reservedDate;
-
-    //Constructorok:
-    public ReservedHour(int start, int end) {
-        this.start = start;
-        this.end = end;
-    }
 }

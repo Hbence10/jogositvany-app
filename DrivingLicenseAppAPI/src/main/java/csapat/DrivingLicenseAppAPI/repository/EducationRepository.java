@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface EducationRepository extends JpaRepository<Education, Long> {
+public interface EducationRepository extends JpaRepository<Education, Integer> {
     @Procedure(name = "getAllEducation", procedureName = "getAllEducation")
     List<Education> getAllEducation();
 

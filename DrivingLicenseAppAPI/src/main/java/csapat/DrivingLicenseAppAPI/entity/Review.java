@@ -46,7 +46,7 @@ public class Review {
 
     @Column(name = "rating")
     @NotNull
-    private float rating;
+    private Float rating;
 
     @Column(name = "is_deleted")
     @NotNull
