@@ -61,7 +61,7 @@
                   <label for="education"></label>
                     <select class="inputs" formControlName="education" placeholder="Végzettség" formControlName="education">
                       @for (education of educationList; track $index) {
-                        <option [value]="education.id">{{education.name}}</option>
+                        <option [value]="education.getId">{{education.getName}}</option>
                       }
                     </select>
                 </div>

@@ -1,13 +1,13 @@
-import { DrivingLessonRequest } from "./driving-lesson-request.model";
-import { DrivingLessons } from "./driving-lessons.model";
-import { ExamRequest } from "./exam-request.model";
-import { InstructorJoinRequest } from "./instructor-join-request.model";
-import { Instructors } from "./instructors.model";
-import { Review } from "./review.model";
-import { School } from "./school.model";
-import { User } from "./user.model";
+import { DrivingLessonRequest } from './driving-lesson-request.model';
+import { DrivingLessons } from './driving-lessons.model';
+import { ExamRequest } from './exam-request.model';
+import { InstructorJoinRequest } from './instructor-join-request.model';
+import { Instructors } from './instructors.model';
+import { Review } from './review.model';
+import { School } from './school.model';
+import { User } from './user.model';
 
-export class Students{
+export class Students {
   constructor(
     private id: number,
     private studentSchool: School,
@@ -16,9 +16,10 @@ export class Students{
     private reviewList: Review[],
     private requestList: DrivingLessonRequest[],
     private drivingLessons: DrivingLessons[],
-    private examRequestList:ExamRequest[],
-    private intructorJoinRequestList:InstructorJoinRequest[]
-  ){}
+    private examRequestList: ExamRequest[],
+    private intructorJoinRequestList: InstructorJoinRequest[]
+  ) {}
+
   get getStudentSchool(): School {
     return this.studentSchool;
   }
@@ -29,7 +30,7 @@ export class Students{
   get getStudentInstructor(): Instructors {
     return this.studentInstructor;
   }
-  set setStudentInstructor(value: Instructors){
+  set setStudentInstructor(value: Instructors) {
     this.studentInstructor = value;
   }
 
@@ -43,10 +44,16 @@ export class Students{
   get getReviewList(): Review[] {
     return this.reviewList;
   }
-  set setReviewList(value: Review[]){
+  set setReviewList(value: Review[]) {
     this.reviewList = value;
   }
 
+  get getRequestList(): DrivingLessonRequest[] {
+    return this.requestList;
+  }
+  set setRequestList(value: DrivingLessonRequest[]) {
+    this.requestList = value;
+  }
 
   get getDrivingLessons(): DrivingLessons[] {
     return this.drivingLessons;
@@ -55,4 +62,17 @@ export class Students{
     this.drivingLessons = value;
   }
 
+  get getExamRequestList(): ExamRequest[] {
+    return this.examRequestList;
+  }
+  set setExamRequestList(value: ExamRequest[]) {
+    this.examRequestList = value;
+  }
+
+  get getIntructorJoinRequestList(): InstructorJoinRequest[] {
+    return this.intructorJoinRequestList;
+  }
+  set setIntructorJoinRequestList(value: InstructorJoinRequest[]) {
+    this.intructorJoinRequestList = value;
+  }
 }

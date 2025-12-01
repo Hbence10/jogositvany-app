@@ -1,9 +1,9 @@
-import { DrivingLicenseCategory } from "./driving-license.model";
-import { Instructors } from "./instructors.model";
-import { PaymentMethod } from "./payment-method.model";
-import { ReservedHour } from "./reserved-hour.model";
-import { Status } from "./status.model";
-import { Students } from "./students.model";
+import { DrivingLicenseCategory } from './driving-license.model';
+import { Instructors } from './instructors.model';
+import { PaymentMethod } from './payment-method.model';
+import { ReservedHour } from './reserved-hour.model';
+import { Status } from './status.model';
+import { Students } from './students.model';
 
 export class DrivingLessons {
   constructor(
@@ -15,15 +15,14 @@ export class DrivingLessons {
     private dropOffPlace: string,
     private lessonHourNumber: number,
     private isPaid: boolean,
-    private isEnd:boolean,
+    private isEnd: boolean,
     private drivingLessonStatus: Status,
     private category: DrivingLicenseCategory,
     private paymentMethod: PaymentMethod,
     private reservedHour: ReservedHour,
     private dStudent: Students,
-    private dInstructor: Instructors,
-  ){}
-
+    private dInstructor: Instructors
+  ) {}
 
   get getStartKm(): number {
     return this.startKm;
@@ -35,7 +34,7 @@ export class DrivingLessons {
   get getEndKm(): number {
     return this.endKm;
   }
-  set setEndKm(value: number){
+  set setEndKm(value: number) {
     this.endKm = value;
   }
 
@@ -49,49 +48,49 @@ export class DrivingLessons {
   get getPickUpPlace(): string {
     return this.pickUpPlace;
   }
-  set setPickUpPlace(value: string){
+  set setPickUpPlace(value: string) {
     this.pickUpPlace = value;
   }
 
   get getDropOffPlace(): string {
     return this.dropOffPlace;
   }
-  set setDropOffPlace(value: string){
+  set setDropOffPlace(value: string) {
     this.dropOffPlace = value;
   }
 
   get getLessonHourNumber(): number {
     return this.lessonHourNumber;
   }
-  set setLessonHourNumber(value: number){
+  set setLessonHourNumber(value: number) {
     this.lessonHourNumber = value;
   }
 
   get getIsPaid(): boolean {
     return this.isPaid;
   }
-  set setIsPaid(value: boolean){
+  set setIsPaid(value: boolean) {
     this.isPaid = value;
   }
 
   get getDrivingLessonStatus(): Status {
     return this.drivingLessonStatus;
   }
-  set setDrivingLessonStatus(value: Status){
+  set setDrivingLessonStatus(value: Status) {
     this.drivingLessonStatus = value;
   }
 
   get getCategory(): DrivingLicenseCategory {
     return this.category;
   }
-  set setCategory(value: DrivingLicenseCategory){
+  set setCategory(value: DrivingLicenseCategory) {
     this.category = value;
   }
 
   get getPaymentMethod(): PaymentMethod {
     return this.paymentMethod;
   }
-  set setPaymentMethod(value: PaymentMethod){
+  set setPaymentMethod(value: PaymentMethod) {
     this.paymentMethod = value;
   }
 
@@ -105,7 +104,7 @@ export class DrivingLessons {
   get getStudent(): Students {
     return this.dStudent;
   }
-  set setStudent(value: Students){
+  set setStudent(value: Students) {
     this.dStudent = value;
   }
 
@@ -115,5 +114,4 @@ export class DrivingLessons {
   set setInstructor(value: Instructors) {
     this.dInstructor = value;
   }
-
 }

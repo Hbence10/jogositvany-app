@@ -1,59 +1,59 @@
-import { DrivingLessonType } from "./driving-lesson-type.model";
-import { ExamRequest } from "./exam-request.model";
-import { Instructors } from "./instructors.model";
-import { OpeningDetails } from "./opening-details.model";
-import { Review } from "./review.model";
-import { SchoolJoinRequest } from "./school-join-request.model";
-import { Students } from "./students.model";
-import { User } from "./user.model";
+import { DrivingLessonType } from './driving-lesson-type.model';
+import { ExamRequest } from './exam-request.model';
+import { Instructors } from './instructors.model';
+import { OpeningDetails } from './opening-details.model';
+import { Review } from './review.model';
+import { SchoolJoinRequest } from './school-join-request.model';
+import { Students } from './students.model';
+import { User } from './user.model';
 
 export class School {
   constructor(
     private id: number,
     private name: string,
     private email: string,
-    private phone:string,
+    private phone: string,
     private country: string,
     private town: string,
     private address: string,
     private promoText: string,
     private bannerImgPath: string,
     private adminList: User[],
-    private owner:User,
+    private owner: User,
     private instructorsList: Instructors[],
     private openingDetails: OpeningDetails[],
     private reviewList: Review[],
     private studentsList: Students[],
-    private drivingLessonsList:DrivingLessonType[],
-    private examRequestList:ExamRequest[],
-    private schoolJoinRequestList:SchoolJoinRequest[],
-  ){}
+    private drivingLessonsList: DrivingLessonType[],
+    private examRequestList: ExamRequest[],
+    private schoolJoinRequestList: SchoolJoinRequest[]
+  ) {}
 
   get getName(): string {
     return this.name;
   }
-  set setName(value: string){
+  set setName(value: string) {
     this.name = value;
   }
 
   get getEmail(): string {
     return this.email;
   }
-  set setEmail(value: string){
+  set setEmail(value: string) {
     this.email = value;
   }
 
   get getPhone(): string {
     return this.phone;
   }
-  set setPhone(value: string){
+  set setPhone(value: string) {
     this.phone = value;
   }
 
   get getCountry(): string {
     return this.country;
   }
-  set setCountry(value: string){
+  set setCountry(value: string) {
     this.country = value;
   }
 
@@ -85,32 +85,66 @@ export class School {
     this.bannerImgPath = value;
   }
 
+  get getAdminList(): User[] {
+    return this.adminList;
+  }
+  set setAdminList(value: User[]) {
+    this.adminList = value;
+  }
+
+  get getOwner(): User {
+    return this.owner;
+  }
+  set setOwner(value: User) {
+    this.owner = value;
+  }
 
   get getInstructorsList(): Instructors[] {
     return this.instructorsList;
   }
-  set setInstructorsList(value: Instructors[]){
+  set setInstructorsList(value: Instructors[]) {
     this.instructorsList = value;
   }
 
   get getOpeningDetails(): OpeningDetails[] {
     return this.openingDetails;
   }
-  set setOpeningDetails(value: OpeningDetails[]){
+  set setOpeningDetails(value: OpeningDetails[]) {
     this.openingDetails = value;
   }
 
   get getReviewList(): Review[] {
     return this.reviewList;
   }
-  set setReviewList(value: Review[]){
+  set setReviewList(value: Review[]) {
     this.reviewList = value;
   }
 
   get getStudentsList(): Students[] {
     return this.studentsList;
   }
-  set setStudentsList(value: Students[]){
+  set setStudentsList(value: Students[]) {
     this.studentsList = value;
+  }
+
+  get getDrivingLessonsList(): DrivingLessonType[] {
+    return this.drivingLessonsList;
+  }
+  set setDrivingLessonsList(value: DrivingLessonType[]) {
+    this.drivingLessonsList = value;
+  }
+
+  get getExamRequestList(): ExamRequest[] {
+    return this.examRequestList;
+  }
+  set setExamRequestList(value: ExamRequest[]) {
+    this.examRequestList = value;
+  }
+
+  get getSchoolJoinRequestList(): SchoolJoinRequest[] {
+    return this.schoolJoinRequestList;
+  }
+  set setSchoolJoinRequestList(value: SchoolJoinRequest[]) {
+    this.schoolJoinRequestList = value;
   }
 }

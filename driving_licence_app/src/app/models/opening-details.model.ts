@@ -11,14 +11,14 @@ export class OpeningDetails {
   get getOpeningTime(): Date {
     return this.openingTime;
   }
-  set setOpeningTime(value: Date){
+  set setOpeningTime(value: Date) {
     this.openingTime = value;
   }
 
   get getCloseTime(): Date {
     return this.closeTime;
   }
-  set setCloseTime(value: Date){
+  set setCloseTime(value: Date) {
     this.closeTime = value;
   }
 
@@ -32,7 +32,7 @@ export class OpeningDetails {
   get getSchoolOpeningDetail(): School {
     return this.schoolOpeningDetail;
   }
-  set setSchoolOpeningDetail(value: School){
+  set setSchoolOpeningDetail(value: School) {
     this.schoolOpeningDetail = value;
   }
 }

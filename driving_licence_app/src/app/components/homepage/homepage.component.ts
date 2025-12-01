@@ -8,10 +8,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
-export class HomepageComponent implements OnInit{
+export class HomepageComponent{
   private userService = inject(UsersService);
   view = signal<string>("")
-
+/*
   ngOnInit(): void {
     let role = this.userService.loggedUser()!.role.getName;
 
@@ -25,7 +25,7 @@ export class HomepageComponent implements OnInit{
 
     }
   }
-
+*/
 
 
 }
