@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 25, 2025 at 11:35 AM
+-- Generation Time: Dec 01, 2025 at 09:45 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -30,7 +30,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLesson` (IN `idIN` INT
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `˙driving_lesson_instructor`.`id` = idIN;
+	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_instructor`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonRequest` (IN `idIN` INT)   BEGIN
@@ -362,7 +362,7 @@ CREATE TABLE `driving_lesson` (
 --
 
 INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_deleted`, `deleted_at`) VALUES
-(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 0, NULL);
+(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -383,7 +383,7 @@ CREATE TABLE `driving_lesson_instructor` (
 --
 
 INSERT INTO `driving_lesson_instructor` (`id`, `instructor_id`, `driving_lesson_type_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 1, 0, NULL);
+(1, 1, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -398,6 +398,9 @@ CREATE TABLE `driving_lesson_request` (
   `msg` longtext,
   `date` date NOT NULL,
   `start_hour` int(2) NOT NULL,
+  `start_min` int(2) NOT NULL,
+  `end_hour` int(2) NOT NULL,
+  `end_min` int(2) NOT NULL,
   `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
@@ -407,8 +410,8 @@ CREATE TABLE `driving_lesson_request` (
 -- Dumping data for table `driving_lesson_request`
 --
 
-INSERT INTO `driving_lesson_request` (`id`, `student_id`, `instructor_id`, `msg`, `date`, `start_hour`, `status_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 1, 'Szia ', '2025-10-14', 14, 1, 0, NULL);
+INSERT INTO `driving_lesson_request` (`id`, `student_id`, `instructor_id`, `msg`, `date`, `start_hour`, `start_min`, `end_hour`, `end_min`, `status_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 5, 1, 'Szia ', '2025-10-14', 14, 0, 0, 0, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -431,7 +434,7 @@ CREATE TABLE `driving_lesson_type` (
 --
 
 INSERT INTO `driving_lesson_type` (`id`, `name`, `price`, `license_category_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 0, '2025-10-13 18:29:14');
+(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -452,7 +455,7 @@ CREATE TABLE `driving_license_category` (
 --
 
 INSERT INTO `driving_license_category` (`id`, `name`, `min_age`, `is_deleted`, `deleted_at`) VALUES
-(1, 'AM', 14, 0, NULL),
+(1, 'AM', 14, 1, '2025-12-01 00:00:00'),
 (2, 'A1', 16, 0, NULL),
 (3, 'A2', 18, 0, NULL),
 (4, 'A', 24, 0, NULL),
@@ -486,7 +489,7 @@ CREATE TABLE `education` (
 --
 
 INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Általános Iskola', 0, NULL),
+(1, 'Általános Iskola', 1, '2025-12-01 00:00:00'),
 (2, 'Szakiskola / Szakképző iskola', 0, NULL),
 (3, 'Szakközépiskola', 0, NULL),
 (4, 'Gimnázium', 0, NULL),
@@ -516,7 +519,7 @@ CREATE TABLE `exam_request` (
 --
 
 INSERT INTO `exam_request` (`id`, `instructor_id`, `school_id`, `requested_date`, `student_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, '2025-10-14', 5, 0, NULL);
+(1, 1, 2, '2025-10-14', 5, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -536,7 +539,7 @@ CREATE TABLE `fuel_type` (
 --
 
 INSERT INTO `fuel_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Benzin', 0, NULL);
+(1, 'Benzin', 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -559,7 +562,7 @@ CREATE TABLE `instructor` (
 --
 
 INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 'instructor promo text', 4, 0, NULL);
+(1, 1, 2, 'instructor promo text', 4, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -583,7 +586,7 @@ CREATE TABLE `instructor_join_request` (
 --
 
 INSERT INTO `instructor_join_request` (`id`, `student_id`, `instructor_id`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 1, 0, '2025-11-20 14:49:05', '2025-11-16 13:49:13', 0, NULL);
+(1, 5, 1, 0, '2025-11-20 14:49:05', '2025-11-16 13:49:13', 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -606,7 +609,7 @@ CREATE TABLE `message` (
 --
 
 INSERT INTO `message` (`id`, `message_to`, `message_from`, `content`, `created_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 3, 'A message táblához tartozó test adat', '2025-10-13 18:28:44', 0, NULL);
+(1, 1, 3, 'A message táblához tartozó test adat', '2025-12-01 09:13:26', 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -649,7 +652,7 @@ CREATE TABLE `payment_method` (
 --
 
 INSERT INTO `payment_method` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Kártya', 0, NULL),
+(1, 'Kártya', 1, '2025-12-01 00:00:00'),
 (2, 'Készpénz', 0, NULL),
 (3, 'Revolut', 0, NULL);
 
@@ -672,7 +675,7 @@ CREATE TABLE `reserved_date` (
 --
 
 INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
-(1, '2025-10-14', 0, 0, NULL);
+(1, '2025-10-14', 0, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -682,8 +685,10 @@ INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`
 
 CREATE TABLE `reserved_hour` (
   `id` int(11) NOT NULL,
-  `start` int(2) NOT NULL,
-  `end` int(2) NOT NULL,
+  `start_hour` int(2) NOT NULL,
+  `start_min` int(2) NOT NULL,
+  `end_hour` int(2) NOT NULL,
+  `end_min` int(2) NOT NULL,
   `date_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL
@@ -693,8 +698,8 @@ CREATE TABLE `reserved_hour` (
 -- Dumping data for table `reserved_hour`
 --
 
-INSERT INTO `reserved_hour` (`id`, `start`, `end`, `date_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 10, 12, 1, 0, NULL);
+INSERT INTO `reserved_hour` (`id`, `start_hour`, `start_min`, `end_hour`, `end_min`, `date_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 10, 0, 12, 0, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -719,7 +724,7 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`id`, `author_id`, `text`, `created_at`, `rating`, `instructor_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 'Oktató1-ről való tesztadat vélemény', '2025-10-13 18:24:38', 4, 1, NULL, 0, NULL),
+(1, 5, 'Oktató1-ről való tesztadat vélemény', '2025-12-01 09:17:26', 4, 1, NULL, 1, '2025-12-01 00:00:00'),
 (2, 5, 'Autósiskola1-ről való teszt vélemény', '2025-10-13 18:24:38', 1, NULL, 2, 0, NULL);
 
 -- --------------------------------------------------------
@@ -740,7 +745,7 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'ROLE_user', 0, NULL),
+(1, 'ROLE_user', 1, '2025-12-01 00:00:00'),
 (2, 'ROLE_student', 0, NULL),
 (3, 'ROLE_instructor', 0, NULL),
 (4, 'ROLE_school_admin', 0, NULL),
@@ -798,7 +803,7 @@ CREATE TABLE `school_join_request` (
 --
 
 INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `requested_role`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 'student', 0, '2025-11-17 14:43:41', '2025-11-16 13:44:19', 0, NULL);
+(1, 1, 2, 'student', 0, '2025-11-17 14:43:41', '2025-11-16 13:44:19', 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -818,7 +823,7 @@ CREATE TABLE `status` (
 --
 
 INSERT INTO `status` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'státusz_tipus1', 0, NULL),
+(1, 'státusz_tipus1', 1, '2025-12-01 00:00:00'),
 (2, 'státusz_tipus2', 0, NULL);
 
 -- --------------------------------------------------------
@@ -877,7 +882,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`, `verification_code`) VALUES
-(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, NULL, '2025-10-07 14:06:32', '2025-11-16 20:34:58', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, NULL, '2025-10-07 14:06:32', '2025-11-16 20:34:58', 1, '2025-12-01 00:00:00', NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
 (2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, NULL, '2025-10-07 14:06:59', '2025-11-16 20:49:42', 0, NULL, NULL, 1, NULL),
 (3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
 (4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
@@ -929,7 +934,7 @@ CREATE TABLE `vehicle_type` (
 --
 
 INSERT INTO `vehicle_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Auto', 0, NULL),
+(1, 'Auto', 1, '2025-12-01 00:00:00'),
 (2, 'Robogó', 0, NULL),
 (3, 'Nagy motor', 0, NULL),
 (4, 'Busz', 0, NULL),
