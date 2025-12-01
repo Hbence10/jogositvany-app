@@ -1,6 +1,6 @@
 
 .box{
-  margin: 0px 25px 25px 0px;
+  margin: 15px;
   background-color: #22354F;
   border-radius: 15px;
 }
@@ -12,12 +12,12 @@
 
 #instructor {
   width: 350px;
-  height: 400px;
+  height: 405px;
 }
 
 #license-category {
   width: 351px;
-  height: 160px;
+  height: 165px;
 }
 
 #calendar {
@@ -31,10 +31,10 @@
 }
 
 .progressbar-driven {
-  width: 900px;
+  width: 880px;
   height: 140px;
 }
 .progressbar-payed {
-  width: 900px;
+  width: 880px;
   height: 100px;
 }
