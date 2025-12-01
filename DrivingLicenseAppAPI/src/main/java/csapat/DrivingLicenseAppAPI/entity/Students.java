@@ -74,7 +74,7 @@ public class Students {
     private List<Review> reviewList;
 
     @OneToMany(
-            mappedBy = "dlessonRequestStudent",
+            mappedBy = "dLessonRequestStudent",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )

@@ -116,7 +116,7 @@ public class Users {
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
-    private Students students;
+    private Students student;
 
     @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")

@@ -51,7 +51,7 @@ public class SchoolJoinRequest {
 
     @Column(name = "sended_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date sendedAt;
+    private Date sentAt;
 
     @Column(name = "is_deleted")
     @Null

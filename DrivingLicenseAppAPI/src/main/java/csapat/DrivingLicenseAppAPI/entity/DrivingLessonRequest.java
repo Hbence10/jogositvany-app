@@ -53,7 +53,7 @@ public class DrivingLessonRequest {
     @Column(name = "end_hour")
     @NotNull
     @Size(max = 2)
-    private int endHour;
+    private Integer endHour;
 
     @Column(name = "end_min")
     @NotNull
@@ -74,7 +74,7 @@ public class DrivingLessonRequest {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
     @JsonIgnoreProperties({})
-    private Students dlessonRequestStudent;
+    private Students dLessonRequestStudent;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
