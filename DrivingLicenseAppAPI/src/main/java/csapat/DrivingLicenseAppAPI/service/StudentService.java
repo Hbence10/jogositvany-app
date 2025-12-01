@@ -34,4 +34,14 @@ public class StudentService {
             return ResponseEntity.ok().body(responseBody);
         }
     }
+
+    public ResponseEntity<Object> deleteStudent(Integer id){
+        Students searchedStudent = studentRepository.getStudent(id);
+        if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            studentRepository.deleteStudent(id);
+            return ResponseEntity.ok().build();
+        }
+    }
 }

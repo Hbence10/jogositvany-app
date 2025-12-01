@@ -30,10 +30,14 @@ public class StudentController {
         return studentService.getLessonDetails(studentId);
     }
 
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Tanuló törlése", description = "Tanuló törlése id alapján")
     @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Nem létező diák törlése."),
+            @ApiResponse(responseCode = "200", description = "Sikeres törlés", useReturnTypeSchema = true)
+    })
     @DeleteMapping("/{id}")
     private ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer id){
-        return null;
+        return studentService.deleteStudent(id);
     }
 }
