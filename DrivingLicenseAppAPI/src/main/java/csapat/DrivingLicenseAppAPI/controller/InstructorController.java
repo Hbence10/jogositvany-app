@@ -65,4 +65,10 @@ public class InstructorController {
     private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor){
         return null;
     }
+
+    @Operation(summary = "Tanuló felvétele", description = "Oktató adatainak frissitése.")
+    @PostMapping("/addStudent/{id}")
+    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer id){
+        return null;
+    }
 }
