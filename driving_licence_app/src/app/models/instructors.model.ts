@@ -8,7 +8,6 @@ import { Vehicle } from "./vehicle.model";
 export class Instructors {
   constructor(
     private id: number,
-    private name: string,
     private promoText: string,
     private instructorUser: User,
     private instructorSchool: School,
@@ -18,12 +17,7 @@ export class Instructors {
     private instructorDrivingLessons: DrivingLessons[]
   ){}
 
-  get getName(): string {
-    return this.name;
-  }
-  set setName(value: string){
-    this.name = value;
-  }
+
 
   get getPromoText(): string {
     return this.promoText;

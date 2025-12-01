@@ -1,6 +1,9 @@
+import { DrivingLessonType } from "./driving-lesson-type.model";
+import { ExamRequest } from "./exam-request.model";
 import { Instructors } from "./instructors.model";
 import { OpeningDetails } from "./opening-details.model";
 import { Review } from "./review.model";
+import { SchoolJoinRequest } from "./school-join-request.model";
 import { Students } from "./students.model";
 import { User } from "./user.model";
 
@@ -15,11 +18,15 @@ export class School {
     private address: string,
     private promoText: string,
     private bannerImgPath: string,
-    private administrator: User,
+    private adminList: User[],
+    private owner:User,
     private instructorsList: Instructors[],
     private openingDetails: OpeningDetails[],
     private reviewList: Review[],
-    private studentsList: Students[]
+    private studentsList: Students[],
+    private drivingLessonsList:DrivingLessonType[],
+    private examRequestList:ExamRequest[],
+    private schoolJoinRequestList:SchoolJoinRequest[],
   ){}
 
   get getName(): string {
@@ -78,12 +85,6 @@ export class School {
     this.bannerImgPath = value;
   }
 
-  get getAdministrator(): User {
-    return this.administrator;
-  }
-  set setAdministrator(value: User) {
-    this.administrator = value;
-  }
 
   get getInstructorsList(): Instructors[] {
     return this.instructorsList;

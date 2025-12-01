@@ -5,7 +5,7 @@ export class DrivingLicenseCategory {
     private id: number,
     private name: string,
     private minAge: number,
-    private drivingLessonsList: DrivingLessons[],
+    private description: string,
 
   ){}
 
@@ -23,11 +23,11 @@ export class DrivingLicenseCategory {
     this.minAge = value;
   }
 
-  get getDrivingLessonsList(): DrivingLessons[] {
-    return this.drivingLessonsList;
+  get getDescription(): string {
+    return this.description;
   }
-  set setDrivingLessonsList(value: DrivingLessons[]){
-    this.drivingLessonsList = value;
+  set setDescription(newDescription: string){
+    this.description = newDescription;
   }
 
 }

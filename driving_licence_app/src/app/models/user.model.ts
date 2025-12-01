@@ -1,5 +1,9 @@
 import { Education } from "./education.model";
+import { Instructors } from "./instructors.model";
 import { Role } from "./role.model";
+import { SchoolJoinRequest } from "./school-join-request.model";
+import { School } from "./school.model";
+import { Students } from "./students.model";
 
 export class User {
   constructor(
@@ -9,10 +13,15 @@ export class User {
     public email: string,
     public phone: string,
     public birthDate: string,
-    public gender: string,
+    public gender: "male" | "female" | "other",
     public userEducation: Education,
     public password: string,
-    public role : Role = new Role(1, "user")
+    private intructor?:Instructors,
+    private student?:Students,
+    private adminSchool?:School,
+    private schoolJoinRequestList?:SchoolJoinRequest[],
+    private pfpPath:string = "",
+    public role : Role = new Role(1, "user"),
   ) {}
 
   get getFirstName(): string {
@@ -53,9 +62,7 @@ export class User {
   get getGender(): string {
     return this.gender;
   }
-  set setGender(value: string){
-    this.gender = value;
-  }
+
 
   get getEducationQualification(): Education {
     return this.userEducation;

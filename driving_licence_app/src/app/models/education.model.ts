@@ -1,7 +1,7 @@
 export class Education {
 
   constructor(
-    public id?: number,
-    public name?: string
+    private id?: number,
+    private name?: string
   ){}
 }

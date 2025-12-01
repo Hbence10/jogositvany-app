@@ -15,6 +15,7 @@ export class DrivingLessons {
     private dropOffPlace: string,
     private lessonHourNumber: number,
     private isPaid: boolean,
+    private isEnd:boolean,
     private drivingLessonStatus: Status,
     private category: DrivingLicenseCategory,
     private paymentMethod: PaymentMethod,

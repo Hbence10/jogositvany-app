@@ -1,4 +1,7 @@
+import { DrivingLessonRequest } from "./driving-lesson-request.model";
 import { DrivingLessons } from "./driving-lessons.model";
+import { ExamRequest } from "./exam-request.model";
+import { InstructorJoinRequest } from "./instructor-join-request.model";
 import { Instructors } from "./instructors.model";
 import { Review } from "./review.model";
 import { School } from "./school.model";
@@ -11,8 +14,10 @@ export class Students{
     private studentInstructor: Instructors,
     private studentUser: User,
     private reviewList: Review[],
-    private requestList: Request[],
-    private drivingLessons: DrivingLessons[]
+    private requestList: DrivingLessonRequest[],
+    private drivingLessons: DrivingLessons[],
+    private examRequestList:ExamRequest[],
+    private intructorJoinRequestList:InstructorJoinRequest[]
   ){}
   get getStudentSchool(): School {
     return this.studentSchool;
@@ -42,12 +47,6 @@ export class Students{
     this.reviewList = value;
   }
 
-  get getRequestList(): Request[] {
-    return this.requestList;
-  }
-  set setRequestList(value: Request[]){
-    this.requestList = value;
-  }
 
   get getDrivingLessons(): DrivingLessons[] {
     return this.drivingLessons;
