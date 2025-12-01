@@ -1,4 +1,4 @@
-#login {
+#secondContainer {
   margin: auto;
   padding: 40px;
   border-radius: 20px;
@@ -6,15 +6,6 @@
   width: 500px;
   background-color: #22354F;
   color: #DEE0EB;
-}
-
-.page {
-  margin: 0px;
-  width: 100vh;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .inputs {
@@ -56,4 +47,8 @@ a{
 
 .bottom {
   text-align: center;
+}
+
+#mainContainer {
+  height: 100vh;
 }
