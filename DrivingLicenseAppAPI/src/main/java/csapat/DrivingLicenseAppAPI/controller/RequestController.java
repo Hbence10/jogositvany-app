@@ -65,4 +65,38 @@ public class RequestController {
     private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id){
         return requestService.deleteInstructorJoinRequest(id);
     }
+
+    @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
+    @PostMapping("/drivingLesson")
+    private ResponseEntity<Object> addDrivingLessonRequest(){
+        return null;
+    }
+
+    @Operation(summary = "Vizsga kérelem küldése", description = "")
+    @PostMapping("/exam")
+    private ResponseEntity<Object> addExamRequest(){
+        return null;
+    }
+
+    @Operation(summary = "Órához való kérelem törlése", description = "Vezetési óra törlése id alapján.")
+    @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
+            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.")
+    })
+    @DeleteMapping("/drivingLesson/{id}")
+    private ResponseEntity<Object> deleteDrivingLessonRequest(@PathVariable("id") Integer id){
+        return null;
+    }
+
+    @Operation(summary = "Vizsga kérelem törlése", description = "Vizsga kérelem törlése id alapján.")
+    @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
+            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.")
+    })
+    @DeleteMapping("/exam/{id}")
+    private ResponseEntity<Object> deleteExamRequest(@PathVariable("id") Integer id){
+        return null;
+    }
 }

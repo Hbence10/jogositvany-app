@@ -26,7 +26,6 @@ public class RequestService {
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
 
-    //Jelentkezesi kerelmek
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
         School searchedSchool = schoolRepository.findById(schoolId).get();
         Users searchedUser = userRepository.findById(userId).get();
@@ -79,4 +78,6 @@ public class RequestService {
             return ResponseEntity.ok().body(instructorJoinRequestRepository.deleteInstructorJoinRequest(id));
         }
     }
+
+
 }
