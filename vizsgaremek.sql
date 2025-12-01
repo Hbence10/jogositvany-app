@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2025 at 09:45 AM
+-- Generation Time: Dec 01, 2025 at 10:33 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -138,7 +138,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLessonType` ()   BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLicenseCategory` ()   BEGIN
-	SELECT*FROM driving_license_category WHERE `driving_lesson_category`.`is_deleted` = 0;
+	SELECT*FROM driving_license_category WHERE `driving_license_category`.`is_deleted` = 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllEducation` ()   BEGIN
@@ -173,7 +173,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllOpeningDetail` ()   BEGIN
 	SELECT*FROM opening_detail WHERE `opening_detail`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllPayMethod` ()   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllPaymentMethod` ()   BEGIN
 	SELECT*FROM payment_method WHERE `payment_method`.`is_deleted` = 0;
 END$$
 
@@ -222,7 +222,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllVehicleType` ()   BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLesson` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `driving_lesson` WHERE `driving_lesson.id`= idIN;
+	SELECT*FROM `driving_lesson` WHERE driving_lesson.id= idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
@@ -310,7 +310,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudent` (IN `idIN` INT)   BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentByUserId` (IN `userIdIN` INT)   BEGIN
-	SELECT * FROM student WHERE students.user_id = userIdIN;
+	SELECT * FROM student WHERE `student`.user_id = userIdIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUser` (IN `idIN` INT)   BEGIN
