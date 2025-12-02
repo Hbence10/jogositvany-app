@@ -10,22 +10,6 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 })
 export class HomepageComponent{
   private userService = inject(UsersService);
-  view = signal<string>("")
-/*
-  ngOnInit(): void {
-    let role = this.userService.loggedUser()!.role.getName;
-
-    if (role === "students"){
-
-    } else if (role === "instructor"){
-
-    } else if (role === "schoolAdmin" || role === "schoolOwner"){
-
-    } else if (role === "admin"){
-
-    }
-  }
-*/
 
 
 }

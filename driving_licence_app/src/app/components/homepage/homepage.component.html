@@ -1,8 +1,8 @@
-<div class="container d-flex p-0 justify-content-center">
+<div class="container d-flex p-0 justify-content-center mainFont">
   <div class="col-lg-12">
     <div class="row">
       <div class="container-fluid d-flex">
-        <div class="col" >
+        <div class="col">
           <div class="box" id="school">
             <p>név</p>
             <p>cím</p>
@@ -19,42 +19,97 @@
         <div class="col">
           <div class="row">
             <div class="container justify-content-center">
-              <div class="box" id="instructor">
-                <div><img src="" alt="" /></div>
-                <button>prof</button>
-                <button>msg</button>
+              <div
+                class="container-fluid text-center d-flex flex-column align-items-center box"
+                id="instructor"
+              >
+                <h1>Oktató neve</h1>
+                <div>
+                  <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" />
+                </div>
+                <div>
+                  <button>profil</button>
+                  <button>üzenet</button>
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="container justify-content-center align-items-center">
-              <div class="box" id="license-category">
+            <div
+              class="container-fluid justify-content-center align-items-center"
+            >
+              <div
+                class="container-fluid text-center d-flex flex-column align-items-center box"
+                id="license-category"
+              >
                 <p>Jogosítvány Kategória</p>
                 <h1>B</h1>
               </div>
             </div>
           </div>
         </div>
-        <div class="col" >
+        <div class="col">
           <div class="box" id="calendar"></div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="container-fluid d-flex">
-        <div class="col">
-          <div class="box progressbar-driven">
-            <p>vezetett</p>
-          </div>
-          <div class="box progressbar-payed">
-            <p>befizetett</p>
-          </div>
-        </div>
-        <div class="col">
-          <div class="box" id="car">
-            <p>név</p>
-            <p>típus</p>
-            <p>rendszám</p>
+        <div class="col-lg-12">
+          <div class="container-fluid d-flex">
+            <div class="col" style="margin-right: 30px">
+              <div class="row">
+                <div
+                  class="container-fluid d-flex flex-column align-items-center box"
+                  id="progressbar-driven"
+                >
+                  <input id="bar"
+                    type="range"
+                    min="0"
+                    max="30"
+                    value="9"
+                    disabled
+                  />
+
+                  <div class="container-fluid">
+                    <div class="d-flex">
+                        <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
+                        <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
+                    </div>
+                    <div>
+                      <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="box progressbar-payed">
+                  <p>befizetett</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col p-0">
+              <div class="row p-0">
+                <div
+                  class="container-fluid text-center d-flex flex-column align-items-center box"
+                  id="car"
+                >
+                  <img src="assets/icons/kijeletkezés.svg" alt="" />
+                  <div class="text-start">
+                    <p>név</p>
+                  </div>
+                  <div class="text-start">
+                    <p>típus</p>
+                  </div>
+                  <div class="text-start">
+                    <p>rendszám</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
