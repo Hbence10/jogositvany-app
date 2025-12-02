@@ -1,19 +1,43 @@
-<div class="container d-flex p-0 justify-content-center mainFont">
+<div class="container d-flex p-0 justify-content-center mainFont fullPage">
   <div class="col-lg-12">
     <div class="row">
-      <div class="container-fluid d-flex">
+      <div class="container-fluid d-flex ">
         <div class="col">
-          <div class="box" id="school">
+          <div class="container-fluid text-start d-flex flex-column align-items-center box" id="school">
             <p>név</p>
-            <p>cím</p>
-            <p>e-mail</p>
-            <p>telefonszám</p>
-            <p>nyitvatartás</p>
-            <p>hétfő</p>
-            <p>kedd</p>
-            <p>szerda</p>
-            <p>csütörtök</p>
-            <p>péntek</p>
+            <div class="default-info d-flex flex-column">
+              <div class="info-field">
+                <p>cím</p>
+              </div>
+              <div class="info-field">
+                <p>e-mail</p>
+              </div>
+              <div class="info-field">
+                <p>telefonszám</p>
+              </div>
+            </div>
+            <div class="container-fluid d-flex flex-column align-items-center">
+              <div class="info-field m-0">
+                <p>nyitvatartás</p>
+              </div>
+              <div class="container-fluid d-flex flex-column days text-start">
+                <div class="day">
+                  <p>hétfő</p>
+                </div>
+                <div class="day isSelected">
+                  <p>kedd</p>
+                </div>
+                <div class="day">
+                  <p>szerda</p>
+                </div>
+                <div class="day">
+                  <p>csütörtök</p>
+                </div>
+                <div class="day text-start">
+                  <p>péntek</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col">
@@ -57,7 +81,7 @@
       <div class="container-fluid d-flex">
         <div class="col-lg-12">
           <div class="container-fluid d-flex">
-            <div class="col" style="margin-right: 30px">
+            <div class="col" >
               <div class="row">
                 <div
                   class="container-fluid d-flex flex-column align-items-center box"
@@ -85,8 +109,19 @@
               </div>
 
               <div class="row">
-                <div class="box progressbar-payed">
-                  <p>befizetett</p>
+                <div class="container-fluid d-flex flex-column align-items-center box " id="progressbar-payed">
+                  <input id="bar"
+                    type="range"
+                    min="0"
+                    max="30"
+                    value="9"
+                    disabled
+                  />
+
+                  <div class="container-fluid">
+                    <div class="d-flex">
+                        <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
+                  </div>
                 </div>
               </div>
             </div>

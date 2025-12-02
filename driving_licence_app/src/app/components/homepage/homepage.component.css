@@ -1,4 +1,6 @@
-
+.fullPage {
+  height: 100vh;
+}
 .box{
   margin: 15px !important;
   background-color: #22354F;
@@ -83,11 +85,42 @@
   width: 840px;
 }
 
-.progressbar-payed {
+#progressbar-payed {
   width: 880px;
   height: 100px;
 }
 
+.info-field{
+  width: 450px;
+  height: 40px;
+  background-color: #636da1;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  padding: 0px  15px;
+}
+
+.info-field P {
+  margin: 0px;
+  font-size: 24px;
+}
+
+.isSelected {
+  background-color: #434A6B;
+}
+.day {
+    padding: 5px;
+}
+.day p {
+  margin: 0px;
+}
+
+.days{
+  width: 425px;
+  background-color: #636da1;
+  padding: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 
 
 
