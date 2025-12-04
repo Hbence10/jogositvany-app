@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,8 +35,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Sikeres bejelentkezés", useReturnTypeSchema = true)
     })
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody Map<String, String> loginBody) {
-        return userService.login(loginBody.get("email"), loginBody.get("password"));
+    public ResponseEntity<Users> login(@RequestBody JsonNode loginBody) {
+        return userService.login(loginBody.get("email").asText(), loginBody.get("password").asText());
     }
 
     @Operation(summary = "Regisztráció", description = "Új profil létrehozása.")
@@ -78,8 +79,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Helyes hitelesitő kód megadása.", useReturnTypeSchema = true)
     })
     @PostMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestBody Map<String, String> body) {
-        return userService.checkVCode(body.get("vCode"), body.get("email"));
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body) {
+        return userService.checkVCode(body.get("vCode").asText(), body.get("email").asText());
     }
 
     @Operation(summary = "Jelszó megváltoztatása", description = "Az adott felhasználónak a jelszavát változtatja meg.")
@@ -93,8 +94,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Sikeres jelszó változtatás", useReturnTypeSchema = true)
     })
     @PatchMapping("/passwordReset")
-    public ResponseEntity<String> updatePassword(@RequestBody Map<String, String> body) {
-        return ResponseEntity.ok(userService.updatePassword(body.get("email"), body.get("newPassword")).getBody());
+    public ResponseEntity<String> updatePassword(@RequestBody JsonNode body) {
+        return ResponseEntity.ok(userService.updatePassword(body.get("email").asText(), body.get("newPassword").asText()).getBody());
     }
 
     //Frissitesek:

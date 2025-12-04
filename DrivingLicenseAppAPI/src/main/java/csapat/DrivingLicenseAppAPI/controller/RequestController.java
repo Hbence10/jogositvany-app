@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
@@ -31,8 +32,8 @@ public class RequestController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @PostMapping("/school")
-    private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody Map<String, String> requestBody){
-        return requestService.sendSchoolJoinRequest(Integer.valueOf(requestBody.get("schoolId")), Integer.valueOf(requestBody.get("userId")), requestBody.get("requestedRole"));
+    private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody){
+        return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asInt(), requestBody.get("userId").asInt(), requestBody.get("requestedRole").asText());
     }
 
     @Operation(summary = "Oktatóhoz való csatlakozás", description = "Az oktatóhoz való csatlakozási kérelem küldése.")
@@ -42,8 +43,8 @@ public class RequestController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @PostMapping("/instructor")
-    private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody Map<String, Integer> requestBody){
-        return requestService.sendInstructorJoinRequest(requestBody.get("studentId"), requestBody.get("instructorId"));
+    private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody JsonNode requestBody){
+        return requestService.sendInstructorJoinRequest(requestBody.get("studentId").asInt(), requestBody.get("instructorId").asInt());
     }
 
     @Operation(summary = "Iskolai csatlakozás törlése", description = "Az iskolához való csatlakozási kérelem törlése")

@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
@@ -36,8 +37,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
     })
     @PostMapping("/request/{id}")
-    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody Map<String, String> requestBody) {
-        return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status"));
+    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
+        return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status").asText());
     }
 
     @Operation(summary = "Iskola frissitése", description = "Az iskola adatainak a frissitése. Minden adat frissitése kivéve a boritókép és a nyitvatartás.")

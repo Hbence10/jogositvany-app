@@ -5,6 +5,7 @@ import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,8 +32,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
             @ApiResponse(responseCode = "404", description = "Nem létező kérelem elfogadása vagy nem megfelelő válasz adása.")
     })
-    private ResponseEntity<Object> handleJoinRequest(@RequestBody Map<String, String> body) {
-        return instructorService.handleRequest(Integer.valueOf(body.get("requestId")), body.get("status"));
+    private ResponseEntity<Object> handleJoinRequest(@RequestBody JsonNode requestBody) {
+        return instructorService.handleRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Oktatóhoz tartozó csatlakozási kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
