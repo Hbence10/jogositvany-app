@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 01, 2025 at 10:33 AM
+-- Generation Time: Dec 04, 2025 at 09:51 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -434,7 +434,8 @@ CREATE TABLE `driving_lesson_type` (
 --
 
 INSERT INTO `driving_lesson_type` (`id`, `name`, `price`, `license_category_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 1, '2025-12-01 00:00:00');
+(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 1, '2025-12-01 00:00:00'),
+(2, 'alapoktatas', 10000, 6, 3, 0, '2025-12-04 09:50:48');
 
 -- --------------------------------------------------------
 
@@ -675,7 +676,11 @@ CREATE TABLE `reserved_date` (
 --
 
 INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
-(1, '2025-10-14', 0, 1, '2025-12-01 00:00:00');
+(1, '2025-10-14', 0, 1, '2025-12-01 00:00:00'),
+(2, '2025-12-04', 0, 0, '2025-12-04 12:24:12'),
+(3, '2025-12-03', 0, 0, '2025-12-03 10:34:20'),
+(4, '2025-12-02', 0, 0, '2025-12-02 06:34:37'),
+(5, '2025-12-01', 0, 0, '2025-12-01 15:34:53');
 
 -- --------------------------------------------------------
 
@@ -699,7 +704,11 @@ CREATE TABLE `reserved_hour` (
 --
 
 INSERT INTO `reserved_hour` (`id`, `start_hour`, `start_min`, `end_hour`, `end_min`, `date_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 10, 0, 12, 0, 1, 1, '2025-12-01 00:00:00');
+(1, 10, 0, 12, 0, 1, 1, '2025-12-01 00:00:00'),
+(2, 1, 1, 2, 2, 2, 0, '2025-12-04 13:35:30'),
+(3, 1, 1, 2, 2, 2, 0, '2025-12-03 10:35:30'),
+(4, 1, 1, 2, 2, 4, 0, '2025-12-02 10:36:47'),
+(5, 1, 1, 2, 2, 5, 0, '2025-12-01 10:36:47');
 
 -- --------------------------------------------------------
 
@@ -778,7 +787,8 @@ CREATE TABLE `school` (
 --
 
 INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
-(2, 'AutosIskola1', 'iskola@gmail.com', 'a', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL);
+(2, 'AutosIskola1', 'iskola@gmail.com', 'a', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL),
+(3, 'Iskola2', 'iskola2@gmail.com', 'A', 'Orszag', 'Varos', 'Cim', 'promo', 'banner', 12, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -889,7 +899,8 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
 (6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
 (7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, NULL, '2025-10-07 14:09:52', '2025-11-16 20:18:46', 0, NULL, 2, 1, NULL),
-(11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, NULL, '2025-11-16 10:34:22', NULL, 1, '2025-11-16 13:12:05', NULL, 1, NULL);
+(11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, NULL, '2025-11-16 10:34:22', NULL, 1, '2025-11-16 13:12:05', NULL, 1, NULL),
+(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'pfp_path', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1110,7 +1121,8 @@ ALTER TABLE `student`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `role` (`role_id`),
-  ADD KEY `school_admin` (`school_administrator_id`);
+  ADD KEY `school_admin` (`school_administrator_id`),
+  ADD KEY `education` (`education_id`);
 
 --
 -- Indexes for table `vehicle`
@@ -1152,7 +1164,7 @@ ALTER TABLE `driving_lesson_request`
 -- AUTO_INCREMENT for table `driving_lesson_type`
 --
 ALTER TABLE `driving_lesson_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `driving_license_category`
@@ -1212,13 +1224,13 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT for table `reserved_date`
 --
 ALTER TABLE `reserved_date`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `review`
@@ -1236,7 +1248,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `school`
 --
 ALTER TABLE `school`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `school_join_request`
@@ -1260,7 +1272,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
@@ -1386,6 +1398,7 @@ ALTER TABLE `student`
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
+  ADD CONSTRAINT `education` FOREIGN KEY (`education_id`) REFERENCES `education` (`id`),
   ADD CONSTRAINT `role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   ADD CONSTRAINT `school_admin` FOREIGN KEY (`school_administrator_id`) REFERENCES `school` (`id`);
 
