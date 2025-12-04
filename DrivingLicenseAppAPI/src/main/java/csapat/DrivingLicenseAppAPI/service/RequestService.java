@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -79,17 +80,42 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> addDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
-        return null;
+        if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartHour(), addedDrivingLessonRequest.getStartMin(), addedDrivingLessonRequest.getEndHour(), addedDrivingLessonRequest.getEndMin())) {
+            return ResponseEntity.status(417).build();
+        } else {
+            Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId());
+            Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId());
+
+            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                drivingLessonRequestRepository.save(addedDrivingLessonRequest);
+                return ResponseEntity.ok().build();
+            }
+        }
     }
 
     public ResponseEntity<Object> addExamRequest(ExamRequest addedExamRequest) {
-        return null;
+        Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId());
+        Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId());
+        School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId());
+
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            examRequestRepository.save(addedExamRequest);
+            return ResponseEntity.ok().build();
+        }
     }
 
-    public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId){
+    public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId) {
         DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId);
 
-        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()){
+        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             drivingLessonRequestRepository.deleteDrivingLessonRequest(requestId);
@@ -97,9 +123,9 @@ public class RequestService {
         }
     }
 
-    public ResponseEntity<Object> deleteExamRequest(Integer requestId){
+    public ResponseEntity<Object> deleteExamRequest(Integer requestId) {
         ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId);
-        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()){
+        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             examRequestRepository.deleteExamRequest(requestId);
