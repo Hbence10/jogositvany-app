@@ -30,4 +30,8 @@ public class DrivingLessonService {
             return ResponseEntity.ok().body(searchedStudent.getDrivingLessons());
         }
     }
+
+    public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
+        return null;
+    }
 }

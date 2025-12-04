@@ -66,9 +66,15 @@ public class InstructorController {
         return null;
     }
 
-    @Operation(summary = "Tanuló felvétele", description = "Oktató adatainak frissitése.")
+    @Operation(summary = "Tanuló felvétele", description = "Tanuló felvétele az oktatóhoz az által, hogy az oktató elfogadja-e a diák csatlakozási kérelmet.")
     @PostMapping("/addStudent/{id}")
     private ResponseEntity<Object> addStudent(@PathVariable("id") Integer id){
+        return null;
+    }
+
+    @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az")
+    @PostMapping("/handleDrivingLessonRequest")
+    private ResponseEntity<Object> handleDrivingLessonRequest(){
         return null;
     }
 }

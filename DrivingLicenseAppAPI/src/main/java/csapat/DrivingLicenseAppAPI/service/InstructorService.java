@@ -1,12 +1,12 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class InstructorService {
 
         if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
-        }  else if (!status.equals("accept") || !status.equals("refuse")) {
+        } else if (!status.equals("accept") || !status.equals("refuse")) {
             return null;
         } else {
             if (status.equals("accept")) {
@@ -46,13 +46,32 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id){
+    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id) {
         Instructors searchedInstructor = instructorRepository.getInstructor(id);
-        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
         }
+    }
 
+    public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
+        return null;
+    }
+
+    public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
+        return null;
+    }
+
+    public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
+        return null;
+    }
+
+    public ResponseEntity<Object> addStudent(Integer requestId) {
+        return null;
+    }
+
+    public ResponseEntity<Object> handleDrivingLessonRequest(){
+        return null;
     }
 }

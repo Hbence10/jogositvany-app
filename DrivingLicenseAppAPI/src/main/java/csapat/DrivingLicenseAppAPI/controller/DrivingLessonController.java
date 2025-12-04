@@ -8,12 +8,8 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +29,11 @@ public class DrivingLessonController {
     @GetMapping("/student/{id}")
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(@PathVariable("id") Integer studentId) {
         return drivingLessonService.getLessonInformationByStudent(studentId);
+    }
+
+    @Operation(summary = "Óra lemondása", description = "")
+    @DeleteMapping("/cancel/{id}")
+    public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
+        return null;
     }
 }
