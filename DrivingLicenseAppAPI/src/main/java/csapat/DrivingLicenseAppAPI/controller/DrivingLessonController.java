@@ -34,6 +34,6 @@ public class DrivingLessonController {
     @Operation(summary = "Óra lemondása", description = "")
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
-        return null;
+        return drivingLessonService.cancelDrivingLesson(id);
     }
 }

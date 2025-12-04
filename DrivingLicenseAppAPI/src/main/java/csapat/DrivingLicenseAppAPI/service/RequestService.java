@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Transactional
 @Service
@@ -79,5 +78,19 @@ public class RequestService {
         }
     }
 
+    public ResponseEntity<Object> addDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
+        return null;
+    }
 
+    public ResponseEntity<Object> addExamRequest(ExamRequest addedExamRequest) {
+        return null;
+    }
+
+    public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId){
+        return null;
+    }
+
+    public ResponseEntity<Object> deleteExamRequest(Integer requestId){
+        return null;
+    }
 }

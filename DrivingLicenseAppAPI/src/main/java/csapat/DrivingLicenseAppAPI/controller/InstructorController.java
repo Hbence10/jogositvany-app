@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
@@ -48,33 +49,33 @@ public class InstructorController {
     @Operation(summary = "Oktató törlése", description = "Az oktató törlése id alapján.")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deleteInstructor(@PathVariable("id") Integer id) {
-        return null;
+    private ResponseEntity<Object> deleteInstructor(@PathVariable("id") Integer instructorId) {
+        return instructorService.deleteInstructor(instructorId);
     }
 
     @Operation(summary = "Óra kérelmek lekérdezése", description = "Az adott oktatóhoz tartozó órakérelmek megszerzése")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
     @GetMapping("/{id}/drivingLessonRequest")
     private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId){
-        return null;
+        return instructorService.getDrivingLessonRequestByInstructor(instructorId);
     }
 
     @Operation(summary = "Oktató frissitése", description = "Oktató adatainak frissitése.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.")
     @PutMapping("")
     private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor){
-        return null;
+        return instructorService.updateInstructor(updatedInstructor);
     }
 
     @Operation(summary = "Tanuló felvétele", description = "Tanuló felvétele az oktatóhoz az által, hogy az oktató elfogadja-e a diák csatlakozási kérelmet.")
     @PostMapping("/addStudent/{id}")
-    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer id){
-        return null;
+    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer joinRequestId){
+        return instructorService.addStudent(joinRequestId);
     }
 
-    @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az")
+    @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
     @PostMapping("/handleDrivingLessonRequest")
-    private ResponseEntity<Object> handleDrivingLessonRequest(){
-        return null;
+    private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody){
+        return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }
 }

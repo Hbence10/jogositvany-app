@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
+import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.RequestService;
@@ -68,14 +70,14 @@ public class RequestController {
 
     @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
     @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> addDrivingLessonRequest(){
-        return null;
+    private ResponseEntity<Object> addDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest){
+        return requestService.addDrivingLessonRequest(addedDrivingLessonRequest);
     }
 
     @Operation(summary = "Vizsga kérelem küldése", description = "")
     @PostMapping("/exam")
-    private ResponseEntity<Object> addExamRequest(){
-        return null;
+    private ResponseEntity<Object> addExamRequest(@RequestBody ExamRequest addedExamRequest){
+        return requestService.addExamRequest(addedExamRequest);
     }
 
     @Operation(summary = "Órához való kérelem törlése", description = "Vezetési óra törlése id alapján.")
@@ -86,7 +88,7 @@ public class RequestController {
     })
     @DeleteMapping("/drivingLesson/{id}")
     private ResponseEntity<Object> deleteDrivingLessonRequest(@PathVariable("id") Integer id){
-        return null;
+        return requestService.deleteDrivingLessonRequest(id);
     }
 
     @Operation(summary = "Vizsga kérelem törlése", description = "Vizsga kérelem törlése id alapján.")
@@ -97,6 +99,6 @@ public class RequestController {
     })
     @DeleteMapping("/exam/{id}")
     private ResponseEntity<Object> deleteExamRequest(@PathVariable("id") Integer id){
-        return null;
+        return requestService.deleteExamRequest(id);
     }
 }

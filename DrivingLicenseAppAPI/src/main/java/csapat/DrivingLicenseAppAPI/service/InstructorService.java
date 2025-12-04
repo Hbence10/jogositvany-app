@@ -71,7 +71,7 @@ public class InstructorService {
         return null;
     }
 
-    public ResponseEntity<Object> handleDrivingLessonRequest(){
+    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status){
         return null;
     }
 }
