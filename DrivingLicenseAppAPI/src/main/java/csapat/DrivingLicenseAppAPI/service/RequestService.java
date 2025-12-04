@@ -87,10 +87,23 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId){
-        return null;
+        DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId);
+
+        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            drivingLessonRequestRepository.deleteDrivingLessonRequest(requestId);
+            return ResponseEntity.ok().build();
+        }
     }
 
     public ResponseEntity<Object> deleteExamRequest(Integer requestId){
-        return null;
+        ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId);
+        if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else {
+            examRequestRepository.deleteExamRequest(requestId);
+            return ResponseEntity.ok().build();
+        }
     }
 }
