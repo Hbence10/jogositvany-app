@@ -4,9 +4,9 @@ package csapat.DrivingLicenseAppAPI.service;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Users;
-import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 @Transactional
 @Service
@@ -50,13 +53,13 @@ public class UserService {
         Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
         if (searchedEducation == null || searchedEducation.getId() == null) {
             return ResponseEntity.notFound().build();
-        } else if (!ValidatorCollection.emailChecker(newUser.getEmail())) {
+        } else if (!ValidatorCollection.emailValidator(newUser.getEmail())) {
             System.out.println("invalidEmail");
             return ResponseEntity.status(417).body("invalidEmail");
         } else if (!ValidatorCollection.phoneValidator(newUser.getPhone())) {
             System.out.println("invalidPhone");
             return ResponseEntity.status(417).body("invalidPhone");
-        } else if (!ValidatorCollection.passwordChecker(newUser.getPassword())) {
+        } else if (!ValidatorCollection.passwordValidator(newUser.getPassword())) {
             System.out.println("invalidPassword");
             return ResponseEntity.status(417).body("invalidPassword");
         } else {
@@ -72,7 +75,7 @@ public class UserService {
     public ResponseEntity<String> getVerificationCode(String email) {
         List<String> emailList = userRepository.getAllEmail();
 
-        if (!ValidatorCollection.emailChecker(email.trim())) {
+        if (!ValidatorCollection.emailValidator(email.trim())) {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
@@ -94,7 +97,7 @@ public class UserService {
     public ResponseEntity<Object> checkVCode(String userVCode, String email) {
         if (userVCode.length() != 10) {
             return ResponseEntity.status(417).body("InvalidVerificationCode");
-        } else if (!ValidatorCollection.emailChecker(email)) {
+        } else if (!ValidatorCollection.emailValidator(email)) {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else {
             Users searchedUser = userRepository.getUserByEmail(email);
@@ -110,11 +113,9 @@ public class UserService {
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
         Users user = userRepository.getUserByEmail(email);
 
-        if (!ValidatorCollection.emailChecker(email) && !ValidatorCollection.passwordChecker(newPassword)) {
-            return ResponseEntity.status(417).body("InvalidPasswordAndEmail");
-        } else if (!ValidatorCollection.emailChecker(email)) {
+        if (!ValidatorCollection.emailValidator(email)) {
             return ResponseEntity.status(417).body("InvalidEmail");
-        } else if (!ValidatorCollection.passwordChecker(newPassword)) {
+        } else if (!ValidatorCollection.passwordValidator(newPassword)) {
             return ResponseEntity.status(417).body("InvalidPassword");
         } else if (user == null || user.getId() == null || user.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -135,7 +136,7 @@ public class UserService {
 
             if (!ValidatorCollection.phoneValidator(updatedUser.getPhone())) {
                 return ResponseEntity.status(417).body("InvalidPhone");
-            } else if (!ValidatorCollection.emailChecker(updatedUser.getEmail())) {
+            } else if (!ValidatorCollection.emailValidator(updatedUser.getEmail())) {
                 return ResponseEntity.status(417).body("InvalidEmail");
             } else if (!allEducation.contains(updatedUser.getUserEducation())) {
                 return ResponseEntity.status(417).body("InvalidEducation");
@@ -169,7 +170,7 @@ public class UserService {
     }
 
     // delete:
-    public ResponseEntity<String> deleteUser(Integer id)    {
+    public ResponseEntity<String> deleteUser(Integer id) {
         Users searchedUser = userRepository.getUser(id);
         if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -181,10 +182,10 @@ public class UserService {
     }
 
     //egyeb endpointok:
-    public ResponseEntity<Users> getUserById(Integer id){
+    public ResponseEntity<Users> getUserById(Integer id) {
         Users searchedUser = userRepository.getUser(id);
 
-        if(searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()){
+        if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok().body(searchedUser);

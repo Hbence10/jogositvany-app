@@ -54,7 +54,7 @@ public class SchoolService {
     public ResponseEntity<School> updateSchool(School updatedSchool) {
         if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
             return ResponseEntity.notFound().build();
-        } else if (!ValidatorCollection.emailChecker(updatedSchool.getEmail())) {
+        } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail())) {
             return ResponseEntity.status(417).build();
         } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone())) {
             return ResponseEntity.status(417).build();
