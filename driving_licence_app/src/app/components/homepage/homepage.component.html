@@ -1,146 +1,170 @@
-<div class="container d-flex p-0 justify-content-center mainFont fullPage">
-  <div class="col-lg-12">
-    <div class="row">
-      <div class="container-fluid d-flex ">
-        <div class="col">
-          <div class="container-fluid text-start d-flex flex-column align-items-center box" id="school">
-            <p>név</p>
-            <div class="default-info d-flex flex-column">
-              <div class="info-field">
-                <p>cím</p>
-              </div>
-              <div class="info-field">
-                <p>e-mail</p>
-              </div>
-              <div class="info-field">
-                <p>telefonszám</p>
-              </div>
-            </div>
-            <div class="container-fluid d-flex flex-column align-items-center">
-              <div class="info-field m-0">
-                <p>nyitvatartás</p>
-              </div>
-              <div class="container-fluid d-flex flex-column days text-start">
-                <div class="day">
-                  <p>hétfő</p>
-                </div>
-                <div class="day isSelected">
-                  <p>kedd</p>
-                </div>
-                <div class="day">
-                  <p>szerda</p>
-                </div>
-                <div class="day">
-                  <p>csütörtök</p>
-                </div>
-                <div class="day text-start">
-                  <p>péntek</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="row">
-            <div class="container justify-content-center">
-              <div
-                class="container-fluid text-center d-flex flex-column align-items-center box"
-                id="instructor"
-              >
-                <h1>Oktató neve</h1>
-                <div>
-                  <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" />
-                </div>
-                <div>
-                  <button>profil</button>
-                  <button>üzenet</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
+<div class="container-fluid d-flex p-0 justify-content-center mainFont">
+  <div class="row">
+    <div class="col-lg-12 p-0">
+      <div class="container-fluid d-flex" id="mainContainer">
+        <div class="row">
+          <div class="col p-0">
             <div
-              class="container-fluid justify-content-center align-items-center"
+              class="container-fluid text-start d-flex flex-column align-items-center box"
+              id="school"
             >
+              <p>név</p>
+              <div class="default-info d-flex flex-column">
+                <div class="info-field">
+                  <p>cím</p>
+                </div>
+                <div class="info-field">
+                  <p>e-mail</p>
+                </div>
+                <div class="info-field">
+                  <p>telefonszám</p>
+                </div>
+              </div>
               <div
-                class="container-fluid text-center d-flex flex-column align-items-center box"
-                id="license-category"
+                class="container-fluid d-flex flex-column align-items-center"
               >
-                <p>Jogosítvány Kategória</p>
-                <h1>B</h1>
+                <div class="info-field m-0">
+                  <p>nyitvatartás</p>
+                </div>
+                <div class="container-fluid d-flex flex-column days text-start">
+                  <div class="day">
+                    <p>hétfő</p>
+                  </div>
+                  <div class="day isSelected">
+                    <p>kedd</p>
+                  </div>
+                  <div class="day">
+                    <p>szerda</p>
+                  </div>
+                  <div class="day">
+                    <p>csütörtök</p>
+                  </div>
+                  <div class="day text-start">
+                    <p>péntek</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="box" id="calendar"></div>
+          <div class="col p-0">
+            <div class="container-fluid">
+              <div class="row">
+                <div
+                  class="text-center d-flex flex-column align-items-center justify-content-center box"
+                  id="instructor"
+                >
+                  <h1>Oktató neve</h1>
+                  <div>
+                    <img
+                      src="assets/icons/kijeletkezés.svg"
+                      alt="Profil fotó"
+                    />
+                  </div>
+                  <div>
+                    <button>profil</button>
+                    <button>üzenet</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div
+                  class="container-fluid text-center d-flex flex-column justify-content-center align-items-center box"
+                  id="license-category"
+                >
+                  <p>Jogosítvány Kategória</p>
+                  <h1>B</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col p-0">
+            <div class="box" id="calendar"></div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
+
       <div class="container-fluid d-flex">
-        <div class="col-lg-12">
-          <div class="container-fluid d-flex">
-            <div class="col" >
+        <div class="row">
+          <div class="col-lg-12 p-0">
+            <div class="container-fluid">
               <div class="row">
-                <div
-                  class="container-fluid d-flex flex-column align-items-center box"
-                  id="progressbar-driven"
-                >
-                  <input id="bar"
-                    type="range"
-                    min="0"
-                    max="30"
-                    value="9"
-                    disabled
-                  />
-
+                <div class="col-lg-8 p-0">
                   <div class="container-fluid">
-                    <div class="d-flex">
-                        <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
-                        <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
+                    <div class="row">
+                      <div class="col-lg-12 p-0">
+                        <div
+                          class="d-flex flex-column align-items-start box"
+                          id="progressbar-driven"
+                        >
+                          <input
+                            id="bar"
+                            type="range"
+                            min="0"
+                            max="30"
+                            value="9"
+                            disabled
+                          />
+                          <div class="d-flex">
+                            <p class="lesson-info-item lesson-info-driven me-4">
+                              Vezetett órák: <span>9</span>
+                            </p>
+                            <p class="lesson-info-item lesson-info-extra">
+                              Plusz órák: <span>0</span>
+                            </p>
+                          </div>
+                          <div>
+                            <p class="lesson-info-item lesson-info-required">
+                              Kötelező órák: <span>21</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                    <div class="row">
+                      <div class="col p-0">
+                        <div
+                          class="d-flex flex-column align-items-start box"
+                          id="progressbar-payed"
+                        >
+                          <input
+                            id="bar"
+                            type="range"
+                            min="0"
+                            max="30"
+                            value="9"
+                            disabled
+                          />
+                          <div class="d-flex">
+                            <p class="lesson-info-item lesson-info-driven me-4">
+                              Befizetett órák: <span>9</span>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
                 </div>
-              </div>
-
-              <div class="row">
-                <div class="container-fluid d-flex flex-column align-items-center box " id="progressbar-payed">
-                  <input id="bar"
-                    type="range"
-                    min="0"
-                    max="30"
-                    value="9"
-                    disabled
-                  />
-
+                <div class="col-lg-4 p-0">
                   <div class="container-fluid">
-                    <div class="d-flex">
-                        <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col p-0">
-              <div class="row p-0">
-                <div
-                  class="container-fluid text-center d-flex flex-column align-items-center box"
-                  id="car"
-                >
-                  <img src="assets/icons/kijeletkezés.svg" alt="" />
-                  <div class="text-start">
-                    <p>név</p>
-                  </div>
-                  <div class="text-start">
-                    <p>típus</p>
-                  </div>
-                  <div class="text-start">
-                    <p>rendszám</p>
+                    <div class="row p-0">
+                      <div
+                        class="container-fluid text-center d-flex flex-column align-items-center box"
+                        id="car"
+                      >
+                        <img src="assets/icons/kijeletkezés.svg" alt="" />
+                        <div class="text-start">
+                          <p>név</p>
+                        </div>
+                        <div class="text-start">
+                          <p>típus</p>
+                        </div>
+                        <div class="text-start">
+                          <p>rendszám</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
