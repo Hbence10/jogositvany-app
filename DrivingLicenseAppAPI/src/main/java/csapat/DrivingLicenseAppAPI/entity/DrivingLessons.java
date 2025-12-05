@@ -72,15 +72,15 @@ public class DrivingLessons {
     @NotNull
     private Boolean isEnd = false;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_cancelled")
     @NotNull
     @JsonIgnore
-    private Boolean isDeleted = false;
+    private Boolean isCancelled = false;
 
-    @Column(name = "deleted_at")
+    @Column(name = "cancelled_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    private LocalDateTime cancelledAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})

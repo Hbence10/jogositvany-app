@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Transactional
@@ -25,11 +27,12 @@ public class InstructorService {
     private final StudentRepository studentRepository;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
+        ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
         InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId);
 
         if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
-        } else if (!status.equals("accept") || !status.equals("refuse")) {
+        } else if (!statusTypes.contains(status)) {
             return null;
         } else {
             if (status.equals("accept")) {
@@ -77,7 +80,7 @@ public class InstructorService {
         return null;
     }
 
-    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status){
+    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         return null;
     }
 }

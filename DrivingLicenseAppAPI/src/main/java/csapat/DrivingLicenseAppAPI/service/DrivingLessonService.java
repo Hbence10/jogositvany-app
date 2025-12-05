@@ -32,6 +32,12 @@ public class DrivingLessonService {
     }
 
     public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
-        return null;
+        DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId);
+        if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
+            return ResponseEntity.ok().build();
+        }
     }
 }
