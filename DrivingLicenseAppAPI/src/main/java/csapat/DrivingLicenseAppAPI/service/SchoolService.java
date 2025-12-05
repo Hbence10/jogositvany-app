@@ -154,6 +154,11 @@ public class SchoolService {
     }
 
     public ResponseEntity<School> getSchoolById(Integer id) {
-        return null;
+        School searchedShcool = schoolRepository.getSchool(id);
+        if (searchedShcool == null || searchedShcool.getId() == null || searchedShcool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedShcool);
+        }
     }
 }

@@ -82,12 +82,17 @@ public class InstructorService {
         return null;
     }
 
-    public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId){
+    public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId) {
         FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId);
         return null;
     }
 
-    public ResponseEntity<Instructors> getInstructorById(Integer id){
-        return null;
+    public ResponseEntity<Instructors> getInstructorById(Integer id) {
+        Instructors searchedInstructor = instructorRepository.getInstructor(id);
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedInstructor);
+        }
     }
 }

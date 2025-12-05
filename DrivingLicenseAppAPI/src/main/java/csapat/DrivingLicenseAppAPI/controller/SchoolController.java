@@ -1,7 +1,10 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
+import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
+import csapat.DrivingLicenseAppAPI.entity.School;
+import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/school")
@@ -133,14 +135,18 @@ public class SchoolController {
 
     })
     @GetMapping("")
-    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "budapest") String name, @RequestParam(value = "town", defaultValue = "") String town){
+    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "budapest") String name, @RequestParam(value = "town", defaultValue = "") String town) {
         return schoolService.getSchoolBySearch(name, town);
     }
 
-    @Operation(summary = "", description = "")
-    @Parameter(name = "", description = "", required = true, in = ParameterIn.PATH)
+    @Operation(summary = "Iskola id alapján", description = "Iskola lekérdezése id alapján.")
+    @Parameter(name = "id", description = "Az iskolához tartozó id.", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Egy nem létező iskola lekérdezése"),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés")
+    })
     @GetMapping("/{id}")
-    private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id){
+    private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id) {
         return schoolService.getSchoolById(id);
     }
 }

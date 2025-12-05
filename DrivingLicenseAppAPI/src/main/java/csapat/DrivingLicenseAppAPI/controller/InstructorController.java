@@ -5,7 +5,6 @@ import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/instructor")
@@ -44,7 +42,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @GetMapping("/{id}/request")
-    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id){
+    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id) {
         return instructorService.getAllJoinRequestByInstructor(id);
     }
 
@@ -58,26 +56,26 @@ public class InstructorController {
     @Operation(summary = "Óra kérelmek lekérdezése", description = "Az adott oktatóhoz tartozó órakérelmek megszerzése")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
     @GetMapping("/{id}/drivingLessonRequest")
-    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId){
+    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId) {
         return instructorService.getDrivingLessonRequestByInstructor(instructorId);
     }
 
     @Operation(summary = "Oktató frissitése", description = "Oktató adatainak frissitése.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.")
     @PutMapping("")
-    private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor){
+    private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor) {
         return instructorService.updateInstructor(updatedInstructor);
     }
 
     @Operation(summary = "Tanuló felvétele", description = "Tanuló felvétele az oktatóhoz az által, hogy az oktató elfogadja-e a diák csatlakozási kérelmet.")
     @PostMapping("/addStudent/{id}")
-    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer joinRequestId){
+    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer joinRequestId) {
         return instructorService.addStudent(joinRequestId);
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
     @PostMapping("/handleDrivingLessonRequest")
-    private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody){
+    private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody) {
         return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }
 
@@ -89,12 +87,16 @@ public class InstructorController {
 
     })
     @GetMapping("")
-    private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId){
+    private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId) {
         return instructorService.getInstructorsBySearch(name, fuelTypeId);
     }
 
-    @Operation(summary = "", description = "")
-    @Parameter(name = "", description = "", required = true, in = ParameterIn.PATH)
+    @Operation(summary = "Oktató id alapján.", description = "Oktató lekérdezése id alapján.")
+    @Parameter(name = "id", description = "Az oktatóhoz tartozó id", required = true, in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Egy nem létező oktató lekérése."),
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
+    })
     @GetMapping("/{id}")
     private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
         return instructorService.getInstructorById(id);
