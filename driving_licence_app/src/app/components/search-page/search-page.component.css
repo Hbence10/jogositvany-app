@@ -14,12 +14,25 @@
 }
 #profileImg {
   width: 100%;
+  height: 100%;
+}
+
+input {
+  width: 100%;
+  border-radius: 15px 15px 0px 0px;
+  border: none;
   height: 45px;
 }
 
 img {
-  width: 250px;
+  background-color: #22354F;
+  width: 100%;
   height: 250px;
+  border-radius: 15px 15px 0px 0px;
+}
+
+div {
+  border-radius: 15px;
 }
 
 #townIn {
@@ -28,6 +41,23 @@ img {
 
 #nameIn {
   height: 435px;
+}
+
+button {
+  background-color: #22354F;
+  color: #DEE0EB;
+  border: none;
+  border-radius: 5px;
+  margin: 7.5px;
+  height: 50px;
+}
+
+.profileBtn{
+  width: 50px;
+}
+
+.signBtn {
+  width: 180px;
 }
 
 #descriptionText{
@@ -54,5 +84,4 @@ img {
 
 #mainContainer {
   height: 900px;
-  padding: 15px;
 }
