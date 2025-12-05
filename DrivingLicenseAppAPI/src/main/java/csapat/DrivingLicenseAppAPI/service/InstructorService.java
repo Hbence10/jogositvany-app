@@ -56,7 +56,13 @@ public class InstructorService {
     }
 
     public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
-        return null;
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            instructorRepository.deleteInstructor(instructorId);
+            return ResponseEntity.ok().build();
+        }
     }
 
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
