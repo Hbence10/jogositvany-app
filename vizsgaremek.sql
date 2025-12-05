@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 04, 2025 at 09:51 AM
+-- Generation Time: Dec 05, 2025 at 07:58 AM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -26,7 +26,7 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLesson` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson`.`id` = idIN;
+	UPDATE `driving_lesson` SET `is_cancelled`= 1 ,`cancelled_at`= CURRENT_DATE() WHERE `driving_lesson`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
@@ -353,15 +353,15 @@ CREATE TABLE `driving_lesson` (
   `instructor_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `is_end` tinyint(1) NOT NULL DEFAULT '0',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
+  `cancelled_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `driving_lesson`
 --
 
-INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_deleted`, `deleted_at`) VALUES
+INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
 (1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
