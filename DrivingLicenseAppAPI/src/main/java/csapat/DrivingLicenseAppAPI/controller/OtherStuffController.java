@@ -7,6 +7,7 @@ import csapat.DrivingLicenseAppAPI.entity.PaymentMethod;
 import csapat.DrivingLicenseAppAPI.service.OtherStuffService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,5 +49,15 @@ public class OtherStuffController {
     @GetMapping("/education")
     public ResponseEntity<List<Education>> getAllEducation(){
         return otherStuffService.getAllEducation();
+    }
+
+    @Operation(summary = "Városok megszerzése", description = "Az összes magyar város visszaszerzése")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés."),
+            @ApiResponse(responseCode = "500", description = "Hiba történt a városok kiolvasäsakor.")
+    })
+    @GetMapping("/town")
+    public ResponseEntity<List<String>> getAllTown(){
+        return otherStuffService.getAllTown();
     }
 }

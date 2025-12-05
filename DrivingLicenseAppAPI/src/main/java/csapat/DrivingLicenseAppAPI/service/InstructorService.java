@@ -84,6 +84,12 @@ public class InstructorService {
 
     public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId) {
         FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId);
+        if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            
+        }
+
         return null;
     }
 
