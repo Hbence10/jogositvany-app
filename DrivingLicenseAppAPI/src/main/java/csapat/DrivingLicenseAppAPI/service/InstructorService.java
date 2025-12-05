@@ -1,9 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
-import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
-import csapat.DrivingLicenseAppAPI.entity.Instructors;
-import csapat.DrivingLicenseAppAPI.entity.Students;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +83,11 @@ public class InstructorService {
     }
 
     public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId){
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId);
+        return null;
+    }
+
+    public ResponseEntity<Instructors> getInstructorById(Integer id){
         return null;
     }
 }

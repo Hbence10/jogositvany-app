@@ -92,4 +92,11 @@ public class InstructorController {
     private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId){
         return instructorService.getInstructorsBySearch(name, fuelTypeId);
     }
+
+    @Operation(summary = "", description = "")
+    @Parameter(name = "", description = "", required = true, in = ParameterIn.PATH)
+    @GetMapping("/{id}")
+    private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
+        return instructorService.getInstructorById(id);
+    }
 }

@@ -124,6 +124,7 @@ public class SchoolController {
         return schoolService.deleteSchool(id);
     }
 
+    //Kereso
     @Operation(summary = "Iskolák keresése", description = "")
     @Parameters({
 
@@ -134,5 +135,12 @@ public class SchoolController {
     @GetMapping("")
     private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "budapest") String name, @RequestParam(value = "town", defaultValue = "") String town){
         return schoolService.getSchoolBySearch(name, town);
+    }
+
+    @Operation(summary = "", description = "")
+    @Parameter(name = "", description = "", required = true, in = ParameterIn.PATH)
+    @GetMapping("/{id}")
+    private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id){
+        return schoolService.getSchoolById(id);
     }
 }

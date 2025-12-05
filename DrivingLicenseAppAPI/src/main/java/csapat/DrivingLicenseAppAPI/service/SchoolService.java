@@ -152,4 +152,8 @@ public class SchoolService {
     public ResponseEntity<List<School>> getSchoolBySearch(String name, String town){
         return null;
     }
+
+    public ResponseEntity<School> getSchoolById(Integer id) {
+        return null;
+    }
 }
