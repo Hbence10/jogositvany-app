@@ -148,4 +148,8 @@ public class SchoolService {
             return ResponseEntity.ok().build();
         }
     }
+
+    public ResponseEntity<List<School>> getSchoolBySearch(String name, String town){
+        return null;
+    }
 }

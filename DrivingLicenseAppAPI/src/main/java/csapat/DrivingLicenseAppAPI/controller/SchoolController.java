@@ -1,10 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
-import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
-import csapat.DrivingLicenseAppAPI.entity.School;
-import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -127,9 +124,15 @@ public class SchoolController {
         return schoolService.deleteSchool(id);
     }
 
-    //
-    @GetMapping("{id}")
-    public School getSchoolById(@PathVariable("id") Integer id) {
-        return schoolRepository.findById(id).get();
+    @Operation(summary = "Iskolák keresése", description = "")
+    @Parameters({
+
+    })
+    @ApiResponses({
+
+    })
+    @GetMapping("")
+    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "budapest") String name, @RequestParam(value = "town", defaultValue = "") String town){
+        return schoolService.getSchoolBySearch(name, town);
     }
 }

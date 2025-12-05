@@ -8,6 +8,7 @@ import csapat.DrivingLicenseAppAPI.service.InstructorService;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -78,5 +79,17 @@ public class InstructorController {
     @PostMapping("/handleDrivingLessonRequest")
     private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody){
         return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
+    }
+
+    @Operation(summary = "Oktatók keresése", description = "")
+    @Parameters({
+
+    })
+    @ApiResponses({
+
+    })
+    @GetMapping("")
+    private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId){
+        return instructorService.getInstructorsBySearch(name, fuelTypeId);
     }
 }

@@ -25,6 +25,7 @@ public class InstructorService {
     private final VehicleTypeRepository vehicleTypeRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final StudentRepository studentRepository;
+    private final FuelTypeRepository fuelTypeRepository;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
@@ -81,6 +82,10 @@ public class InstructorService {
     }
 
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
+        return null;
+    }
+
+    public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId){
         return null;
     }
 }
