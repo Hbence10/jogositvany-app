@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Users;
@@ -30,14 +33,14 @@ public class UserService {
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
+    private final ObjectMapper objectMapper;
 
-    public ResponseEntity<Users> login(String email, String password) {
+    public ResponseEntity<JsonNode> login(String email, String password) {
         Users loggedUser = userRepository.getUserByEmail(email);
 
         if (loggedUser == null) {
             return ResponseEntity.notFound().build();
         }
-
         boolean successFullLogin = passwordEncoder.matches(password, loggedUser.getPassword());
 
         if (!successFullLogin || loggedUser.getIsDeleted()) {
@@ -46,7 +49,8 @@ public class UserService {
         loggedUser.setLastLogin(LocalDateTime.now());
         userRepository.save(loggedUser);
 
-        return ResponseEntity.ok(loggedUser);
+        JsonNode homePageUser = createHomePageObject(loggedUser);
+        return ResponseEntity.ok(homePageUser);
     }
 
     public ResponseEntity<Object> register(Users newUser) {
@@ -193,7 +197,7 @@ public class UserService {
     }
 
     //egyeb:
-    public static String generateVerificationCode() {
+    public String generateVerificationCode() {
         String code = "";
         ArrayList<String> characters = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
 
@@ -209,5 +213,27 @@ public class UserService {
         return code;
     }
 
+    public JsonNode createHomePageObject(Users loggedUser) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("id", loggedUser.getId());
+        ((ObjectNode) returnObject).put("role", objectMapper.valueToTree(loggedUser.getRole()));
 
+        if (loggedUser.getRole().getName().equals("ROLE_student")) {
+            JsonNode instructor = objectMapper.createObjectNode();
+
+        } else if (loggedUser.getRole().getName().equals("ROLE_instructor")) {
+
+        } else if (loggedUser.getRole().getName().equals("ROLE_school_admin") || loggedUser.getRole().getName().equals("ROLE_school_owner")) {
+
+        }
+
+        if (loggedUser.getRole().getName().equals("ROLE_student") || loggedUser.getRole().getName().equals("ROLE_instructor")){
+            JsonNode school = objectMapper.createObjectNode();
+
+            ((ObjectNode) returnObject).put("school", school);
+        }
+
+//        System.out.println(returnObject);
+        return returnObject;
+    }
 }

@@ -56,6 +56,7 @@ public class Role {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
+    @JsonIgnore
     private List<Users> userList;
 
     //Constructorok

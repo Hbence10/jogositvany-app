@@ -45,9 +45,9 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private Integer minAge;
 
-    @Column(name = "description")
-    @NotNull
-    private String description;
+//    @Column(name = "description")
+//    @NotNull
+//    private String description;
 
     @Column(name = "is_deleted")
     @NotNull

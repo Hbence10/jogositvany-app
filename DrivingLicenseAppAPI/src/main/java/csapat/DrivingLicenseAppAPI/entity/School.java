@@ -22,7 +22,7 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllSchool", procedureName = "getAllSchool", resultClasses = School.class),
-        @NamedStoredProcedureQuery(name = "getSchool", procedureName = "", parameters = {
+        @NamedStoredProcedureQuery(name = "getSchool", procedureName = "getSchool", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = School.class),
         @NamedStoredProcedureQuery(name = "deleteSchool", procedureName = "deleteSchool", parameters = {

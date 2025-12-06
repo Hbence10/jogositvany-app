@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -35,7 +34,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Sikeres bejelentkezés", useReturnTypeSchema = true)
     })
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody JsonNode loginBody) {
+    public ResponseEntity<JsonNode> login(@RequestBody JsonNode loginBody) {
         return userService.login(loginBody.get("email").asText(), loginBody.get("password").asText());
     }
 

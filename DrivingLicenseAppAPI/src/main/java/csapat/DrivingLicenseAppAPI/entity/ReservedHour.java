@@ -50,7 +50,7 @@ public class ReservedHour {
     @NotNull
     private Integer endHour;
 
-    @Column(name = "end_minute")
+    @Column(name = "end_min")
     @Size(max = 2)
     @NotNull
     private Integer endMinute;

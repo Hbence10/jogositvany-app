@@ -66,7 +66,7 @@ public class Instructors {
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
@@ -74,12 +74,15 @@ public class Instructors {
     private List<Students> students;
 
     @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
     @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
     @OneToMany(
@@ -87,7 +90,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
     //Constructorok:
