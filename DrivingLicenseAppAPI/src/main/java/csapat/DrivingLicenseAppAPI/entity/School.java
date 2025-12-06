@@ -155,16 +155,4 @@ public class School {
 //    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
-
-    //Constructorok
-    public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.country = country;
-        this.town = town;
-        this.address = address;
-        this.promoText = promoText;
-        this.bannerImgPath = bannerImgPath;
-    }
 }

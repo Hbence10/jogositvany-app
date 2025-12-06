@@ -134,16 +134,5 @@ public class Users {
     )
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
-
-    //Constructorok:
-    public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.password = password;
-        this.pfpPath = pfpPath;
-    }
+    
 }

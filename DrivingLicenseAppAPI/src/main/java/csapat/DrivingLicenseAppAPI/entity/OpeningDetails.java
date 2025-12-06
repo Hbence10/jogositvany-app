@@ -60,6 +60,7 @@ public class OpeningDetails {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
+    @JsonIgnore
     private School schoolOpeningDetail;
 
     //Constructorok:

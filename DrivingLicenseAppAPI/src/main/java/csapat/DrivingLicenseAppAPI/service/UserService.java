@@ -3,10 +3,10 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
-import csapat.DrivingLicenseAppAPI.entity.Education;
-import csapat.DrivingLicenseAppAPI.entity.Users;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
@@ -214,26 +214,95 @@ public class UserService {
     }
 
     public JsonNode createHomePageObject(Users loggedUser) {
+
         JsonNode returnObject = objectMapper.createObjectNode();
         ((ObjectNode) returnObject).put("id", loggedUser.getId());
+        ((ObjectNode) returnObject).put("firstName", loggedUser.getFirstName());
+        ((ObjectNode) returnObject).put("lastName", loggedUser.getLastName());
+        ((ObjectNode) returnObject).put("pfpPath", loggedUser.getPfpPath());
         ((ObjectNode) returnObject).put("role", objectMapper.valueToTree(loggedUser.getRole()));
 
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
             JsonNode instructor = objectMapper.createObjectNode();
+            ((ObjectNode) instructor).put("id", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getId());
+            ((ObjectNode) instructor).put("firstName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getFirstName());
+            ((ObjectNode) instructor).put("lastName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getLastName());
+            ((ObjectNode) instructor).put("pfpPath", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getPfpPath());
+
+            JsonNode vehicle = objectMapper.createObjectNode();
+            ((ObjectNode) vehicle).put("id", loggedUser.getStudent().getStudentInstructor().getVehicle().getId());
+            ((ObjectNode) vehicle).put("name", loggedUser.getStudent().getStudentInstructor().getVehicle().getName());
+            ((ObjectNode) vehicle).put("type", loggedUser.getStudent().getStudentInstructor().getVehicle().getVehicleType().getName());
+            ((ObjectNode) vehicle).put("licensePlate", loggedUser.getStudent().getStudentInstructor().getVehicle().getLicensePlate());
+
+            ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getStudent().getStudentSchool()));
+            ((ObjectNode) returnObject).put("instructor", instructor);
+            ((ObjectNode) returnObject).put("vehicle", vehicle);
 
         } else if (loggedUser.getRole().getName().equals("ROLE_instructor")) {
+            ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getInstructor().getInstructorSchool()));
+            ArrayList<JsonNode> studentDetails = new ArrayList<>();
+
+            for (Students student : loggedUser.getInstructor().getStudents()) {
+                JsonNode studentNode = objectMapper.createObjectNode();
+                ((ObjectNode) studentNode).put("id", student.getId());
+                ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
+                ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
+                studentDetails.add(studentNode);
+            }
+
+            ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
+            ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
 
         } else if (loggedUser.getRole().getName().equals("ROLE_school_admin") || loggedUser.getRole().getName().equals("ROLE_school_owner")) {
+            School school = loggedUser.getAdminSchool();
+            ArrayList<JsonNode> studentDetails = new ArrayList<>();
 
+            for (Students student : school.getStudentsList()) {
+                JsonNode studentNode = objectMapper.createObjectNode();
+                ((ObjectNode) studentNode).put("id", student.getId());
+                ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
+                ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
+                studentDetails.add(studentNode);
+            }
+
+            ArrayList<JsonNode> instructorDetails = new ArrayList<>();
+            for (Instructors instructors : school.getInstructorsList()) {
+                JsonNode instructorNode = objectMapper.createObjectNode();
+                ((ObjectNode) instructorNode).put("id", instructors.getId());
+                ((ObjectNode) instructorNode).put("firstName", instructors.getInstructorUser().getFirstName());
+                ((ObjectNode) instructorNode).put("lastName", instructors.getInstructorUser().getLastName());
+                instructorDetails.add(instructorNode);
+            }
+
+
+            ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
+            ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
+            ArrayNode instructorNode = objectMapper.valueToTree(studentDetails);
+            ((ObjectNode) returnObject).putArray("instructors").addAll(instructorNode);
         }
 
-        if (loggedUser.getRole().getName().equals("ROLE_student") || loggedUser.getRole().getName().equals("ROLE_instructor")){
-            JsonNode school = objectMapper.createObjectNode();
-
-            ((ObjectNode) returnObject).put("school", school);
-        }
 
 //        System.out.println(returnObject);
         return returnObject;
     }
+
+    public JsonNode createSchoolJson(School schoolObject) {
+        JsonNode school = objectMapper.createObjectNode();
+        ((ObjectNode) school).put("id", schoolObject.getId());
+        ((ObjectNode) school).put("name", schoolObject.getName());
+        ((ObjectNode) school).put("email", schoolObject.getEmail());
+        ((ObjectNode) school).put("phone", schoolObject.getPhone());
+        ((ObjectNode) school).put("country", schoolObject.getCountry());
+        ((ObjectNode) school).put("town", schoolObject.getTown());
+        ((ObjectNode) school).put("address", schoolObject.getAddress());
+        ((ObjectNode) school).put("promoText", schoolObject.getPromoText());
+        ((ObjectNode) school).put("bannerImg", schoolObject.getBannerImgPath());
+//        nyitvatartas
+        ArrayNode oNode = objectMapper.valueToTree(schoolObject.getOpeningDetails());
+        ((ObjectNode) school).putArray("openingDetails").addAll(oNode);
+        return school;
+    }
+
+
 }
