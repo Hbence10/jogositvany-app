@@ -141,6 +141,6 @@ public class UserController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Users> getUserById(@PathVariable("id") Integer id) {
-        return null;
+        return userService.getUserById(id);
     }
 }

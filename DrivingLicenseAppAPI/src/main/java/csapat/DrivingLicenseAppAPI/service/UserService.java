@@ -223,6 +223,8 @@ public class UserService {
         ((ObjectNode) returnObject).put("role", objectMapper.valueToTree(loggedUser.getRole()));
 
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
+            ((ObjectNode) returnObject).put("studentId", loggedUser.getStudent().getId());
+
             JsonNode instructor = objectMapper.createObjectNode();
             ((ObjectNode) instructor).put("id", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getId());
             ((ObjectNode) instructor).put("firstName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getFirstName());
@@ -240,12 +242,14 @@ public class UserService {
             ((ObjectNode) returnObject).put("vehicle", vehicle);
 
         } else if (loggedUser.getRole().getName().equals("ROLE_instructor")) {
+            ((ObjectNode) returnObject).put("instructorId", loggedUser.getInstructor().getId());
+
             ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getInstructor().getInstructorSchool()));
             ArrayList<JsonNode> studentDetails = new ArrayList<>();
 
             for (Students student : loggedUser.getInstructor().getStudents()) {
                 JsonNode studentNode = objectMapper.createObjectNode();
-                ((ObjectNode) studentNode).put("id", student.getId());
+                ((ObjectNode) studentNode).put("id", student.getStudentUser().getId());
                 ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
                 ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
                 studentDetails.add(studentNode);
@@ -260,7 +264,7 @@ public class UserService {
 
             for (Students student : school.getStudentsList()) {
                 JsonNode studentNode = objectMapper.createObjectNode();
-                ((ObjectNode) studentNode).put("id", student.getId());
+                ((ObjectNode) studentNode).put("id", student.getStudentUser().getId());
                 ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
                 ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
                 studentDetails.add(studentNode);
@@ -269,7 +273,7 @@ public class UserService {
             ArrayList<JsonNode> instructorDetails = new ArrayList<>();
             for (Instructors instructors : school.getInstructorsList()) {
                 JsonNode instructorNode = objectMapper.createObjectNode();
-                ((ObjectNode) instructorNode).put("id", instructors.getId());
+                ((ObjectNode) instructorNode).put("id", instructors.getInstructorUser().getId());
                 ((ObjectNode) instructorNode).put("firstName", instructors.getInstructorUser().getFirstName());
                 ((ObjectNode) instructorNode).put("lastName", instructors.getInstructorUser().getLastName());
                 instructorDetails.add(instructorNode);
@@ -278,7 +282,7 @@ public class UserService {
 
             ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
             ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
-            ArrayNode instructorNode = objectMapper.valueToTree(studentDetails);
+            ArrayNode instructorNode = objectMapper.valueToTree(instructorDetails);
             ((ObjectNode) returnObject).putArray("instructors").addAll(instructorNode);
         }
 
