@@ -68,9 +68,9 @@ public class InstructorController {
     }
 
     @Operation(summary = "Tanuló felvétele", description = "Tanuló felvétele az oktatóhoz az által, hogy az oktató elfogadja-e a diák csatlakozási kérelmet.")
-    @PostMapping("/addStudent/{id}")
-    private ResponseEntity<Object> addStudent(@PathVariable("id") Integer joinRequestId) {
-        return instructorService.addStudent(joinRequestId);
+    @PostMapping("/addStudent")
+    private ResponseEntity<Object> addStudent(@RequestBody JsonNode requestBody) {
+        return instructorService.handleJoinRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")

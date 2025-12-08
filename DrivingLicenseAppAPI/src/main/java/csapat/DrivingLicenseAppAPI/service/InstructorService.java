@@ -67,14 +67,19 @@ public class InstructorService {
     }
 
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
-        return null;
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(searchedInstructor.getDrivingLessonRequestList());
+        }
     }
 
     public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
         return null;
     }
 
-    public ResponseEntity<Object> addStudent(Integer requestId) {
+    public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
         return null;
     }
 
@@ -83,14 +88,22 @@ public class InstructorService {
     }
 
     public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId) {
+        if (name == null || fuelTypeId == null) {
+            return ResponseEntity.status(422).build();
+        }
+
         FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId);
         if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
-            
-        }
+            List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(name, fuelTypeId);
+            List<Instructors> searchedInstructors = new ArrayList<>();
+            for (Integer id : searchedInstructorsId) {
+                searchedInstructors.add(instructorRepository.getInstructor(id));
+            }
 
-        return null;
+            return ResponseEntity.ok().body(searchedInstructors);
+        }
     }
 
     public ResponseEntity<Instructors> getInstructorById(Integer id) {

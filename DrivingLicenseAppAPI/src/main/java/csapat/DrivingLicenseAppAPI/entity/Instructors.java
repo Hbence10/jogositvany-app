@@ -26,7 +26,11 @@ import java.util.List;
         }, resultClasses = Instructors.class),
         @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
+                @StoredProcedureParameter(name = "nameIN", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)
 })
 public class Instructors {
 
