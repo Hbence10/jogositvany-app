@@ -80,7 +80,35 @@ public class InstructorService {
     }
 
     public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
-        return null;
+        if (requestId == null || status == null) {
+            return ResponseEntity.status(422).build();
+        }
+
+        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId);
+        if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            if (!status.equals("accept") && !status.equals("refuse")) {
+                return ResponseEntity.status(417).build();
+            } else {
+                if (status.equals("accept")) {
+                    searchedJoinRequest.setIsAccepted(true);
+                    searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
+
+                    Students newStudent = searchedJoinRequest.getInstructorJoinRequestStudent();
+                    newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
+                    studentRepository.save(newStudent);
+
+                } else if (status.equals("refuse")) {
+                    searchedJoinRequest.setIsAccepted(false);
+                } else {
+                    return ResponseEntity.internalServerError().build();
+                }
+            }
+
+            instructorJoinRequestRepository.save(searchedJoinRequest);
+            return ResponseEntity.ok().build();
+        }
     }
 
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
