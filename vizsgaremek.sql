@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 05, 2025 at 07:58 AM
+-- Generation Time: Dec 08, 2025 at 12:59 PM
 -- Server version: 5.7.24
 -- PHP Version: 8.1.0
 
@@ -261,6 +261,22 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructor` (IN `idIN` INT)   BE
 	SELECT*FROM `instructor` WHERE `instructor`.`id` = idIN AND `instructor`.`is_deleted` = 0;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `nameIN` VARCHAR(250), IN `fuelTypeIdIN` INT)   BEGIN 
+    SELECT *
+    FROM `instructor` i
+    INNER JOIN user u ON 
+    u.id = i.user_id
+    INNER JOIN vehicle v ON 
+    v.id = i.vehicle_id
+    INNER JOIN fuel_type ft ON 
+    ft.id = v.fuel_type_id
+    WHERE 
+    ft.id = fuelTypeIdIN
+    AND 
+    CONCAT(u.first_name, u.last_name) LIKE CONCAT(nameIN, "%")
+    ;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorJoinRequest` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `instructor_join_request` WHERE `instructor_join_request`.`id` = idIN AND `instructor_join_request`.`is_deleted` = 0;
 END$$
@@ -295,6 +311,10 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchool` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `school` WHERE `school`.`id` = idIN AND `school`.`is_deleted` = 0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolBySearch` (IN `name` VARCHAR(250), IN `townname` VARCHAR(250))   BEGIN
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolJoinRequest` (IN `idIN` INT)   BEGIN
@@ -540,7 +560,9 @@ CREATE TABLE `fuel_type` (
 --
 
 INSERT INTO `fuel_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Benzin', 1, '2025-12-01 00:00:00');
+(1, 'Benzin', 1, '2025-12-01 00:00:00'),
+(2, 'Dízel', 0, NULL),
+(3, 'Hibrid', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -563,7 +585,9 @@ CREATE TABLE `instructor` (
 --
 
 INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 'instructor promo text', 4, 1, '2025-12-01 00:00:00');
+(1, 1, 2, 'instructor promo text', 4, 1, '2025-12-01 00:00:00'),
+(2, 13, 2, 'promotext', 6, 0, NULL),
+(3, 14, 3, 'promo', 7, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -900,7 +924,9 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
 (7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, NULL, '2025-10-07 14:09:52', '2025-11-16 20:18:46', 0, NULL, 2, 1, NULL),
 (11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, NULL, '2025-11-16 10:34:22', NULL, 1, '2025-11-16 13:12:05', NULL, 1, NULL),
-(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'pfp_path', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL);
+(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'pfp_path', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
+(13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'A', '2000-01-01', 'gender', 'password', 3, NULL, '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
+(14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a', '1990-01-01', 'a', 'jelszo', 3, NULL, '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL);
 
 -- --------------------------------------------------------
 
@@ -925,7 +951,9 @@ CREATE TABLE `vehicle` (
 INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`, `is_deleted`, `deleted_at`) VALUES
 (3, 'AAAA000', 'car_name', 1, 1, 0, NULL),
 (4, 'aaa000', 'name', 1, 1, 0, NULL),
-(5, 'ABC123', 'Suzuki Ignis', 1, 1, 0, NULL);
+(5, 'ABC123', 'Suzuki Ignis', 1, 1, 0, NULL),
+(6, 'A', 'oktato_jarmu2', 1, 2, 0, NULL),
+(7, 'B', 'oktato_jarmu3', 1, 3, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1188,13 +1216,13 @@ ALTER TABLE `exam_request`
 -- AUTO_INCREMENT for table `fuel_type`
 --
 ALTER TABLE `fuel_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `instructor`
 --
 ALTER TABLE `instructor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `instructor_join_request`
@@ -1272,13 +1300,13 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `vehicle_type`
