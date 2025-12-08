@@ -7,21 +7,21 @@ import { Students } from './students.model';
 
 export class DrivingLessons {
   constructor(
-    private id: number,
-    private startKm: number,
-    private endKm: number,
-    private location: string,
-    private pickUpPlace: string,
-    private dropOffPlace: string,
-    private lessonHourNumber: number,
-    private isPaid: boolean,
-    private isEnd: boolean,
-    private drivingLessonStatus: Status,
-    private category: DrivingLicenseCategory,
-    private paymentMethod: PaymentMethod,
-    private reservedHour: ReservedHour,
-    private dStudent: Students,
-    private dInstructor: Instructors
+    public id: number,
+    public startKm: number,
+    public endKm: number,
+    public location: string,
+    public pickUpPlace: string,
+    public dropOffPlace: string,
+    public lessonHourNumber: number,
+    public isPaid: boolean,
+    public isEnd: boolean,
+    public drivingLessonStatus: Status,
+    public category: DrivingLicenseCategory,
+    public paymentMethod: PaymentMethod,
+    public reservedHour: ReservedHour,
+    public dStudent: Students,
+    public dInstructor: Instructors
   ) {}
 
   get getStartKm(): number {

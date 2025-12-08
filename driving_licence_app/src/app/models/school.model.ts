@@ -9,24 +9,24 @@ import { User } from './user.model';
 
 export class School {
   constructor(
-    private id: number,
-    private name: string,
-    private email: string,
-    private phone: string,
-    private country: string,
-    private town: string,
-    private address: string,
-    private promoText: string,
-    private bannerImgPath: string,
-    private adminList: User[],
-    private owner: User,
-    private instructorsList: Instructors[],
-    private openingDetails: OpeningDetails[],
-    private reviewList: Review[],
-    private studentsList: Students[],
-    private drivingLessonsList: DrivingLessonType[],
-    private examRequestList: ExamRequest[],
-    private schoolJoinRequestList: SchoolJoinRequest[]
+    public id: number,
+    public name: string,
+    public email: string,
+    public phone: string,
+    public country: string,
+    public town: string,
+    public address: string,
+    public promoText: string,
+    public bannerImgPath: string,
+    public adminList: User[],
+    public owner: User,
+    public instructorsList: Instructors[],
+    public openingDetails: OpeningDetails[],
+    public reviewList: Review[],
+    public studentsList: Students[],
+    public drivingLessonsList: DrivingLessonType[],
+    public examRequestList: ExamRequest[],
+    public schoolJoinRequestList: SchoolJoinRequest[]
   ) {}
 
   get getName(): string {

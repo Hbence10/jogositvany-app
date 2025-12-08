@@ -2,10 +2,10 @@ import { ReservedHour } from './reserved-hour.model';
 
 export class ReservedDate {
   constructor(
-    private id: number,
-    private date: Date,
-    private isFull: boolean = false,
-    private reservedHourList: ReservedHour[]
+    public id: number,
+    public date: Date,
+    public isFull: boolean = false,
+    public reservedHourList: ReservedHour[]
   ) {}
 
   get getDate(): Date {

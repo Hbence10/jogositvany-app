@@ -9,15 +9,15 @@ import { User } from './user.model';
 
 export class Students {
   constructor(
-    private id: number,
-    private studentSchool: School,
-    private studentInstructor: Instructors,
-    private studentUser: User,
-    private reviewList: Review[],
-    private requestList: DrivingLessonRequest[],
-    private drivingLessons: DrivingLessons[],
-    private examRequestList: ExamRequest[],
-    private intructorJoinRequestList: InstructorJoinRequest[]
+    public id: number,
+    public studentSchool: School,
+    public studentInstructor: Instructors,
+    public studentUser: User,
+    public reviewList: Review[],
+    public requestList: DrivingLessonRequest[],
+    public drivingLessons: DrivingLessons[],
+    public examRequestList: ExamRequest[],
+    public intructorJoinRequestList: InstructorJoinRequest[]
   ) {}
 
   get getStudentSchool(): School {

@@ -2,10 +2,10 @@ import { DrivingLessons } from './driving-lessons.model';
 
 export class DrivingLicenseCategory {
   constructor(
-    private id: number,
-    private name: string,
-    private minAge: number,
-    private description: string
+    public id: number,
+    public name: string,
+    public minAge: number,
+    public description: string
   ) {}
 
   get getName(): string {

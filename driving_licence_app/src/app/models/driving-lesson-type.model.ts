@@ -4,12 +4,12 @@ import { School } from './school.model';
 
 export class DrivingLessonType {
   constructor(
-    private id: number,
-    private name: string,
-    private price: number,
-    private instructorDrivingLessons: DrivingLessons[],
-    private dirivingLicenseCategory: DrivingLicenseCategory,
-    private drivingTypeSchool: School
+    public id: number,
+    public name: string,
+    public price: number,
+    public instructorDrivingLessons: DrivingLessons[],
+    public dirivingLicenseCategory: DrivingLicenseCategory,
+    public drivingTypeSchool: School
   ) {}
 
   get getName(): string {

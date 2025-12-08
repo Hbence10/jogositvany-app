@@ -4,11 +4,11 @@ import { Students } from './students.model';
 
 export class ExamRequest {
   constructor(
-    private id: number,
-    private requestedDate: Date,
-    private examRequesterInstructor: Instructors,
-    private examSchool: School,
-    private examStudent: Students
+    public id: number,
+    public requestedDate: Date,
+    public examRequesterInstructor: Instructors,
+    public examSchool: School,
+    public examStudent: Students
   ) {}
 
   get getRequestedDate(): Date {

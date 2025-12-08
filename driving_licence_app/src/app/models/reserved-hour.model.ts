@@ -3,13 +3,13 @@ import { ReservedDate } from './reserved-data.model';
 
 export class ReservedHour {
   constructor(
-    private id: number,
-    private startHour: number,
-    private startMin: number,
-    private endHour: number,
-    private endMin: number,
-    private drivingLessons: DrivingLessons,
-    private reservedDate: ReservedDate
+    public id: number,
+    public startHour: number,
+    public startMin: number,
+    public endHour: number,
+    public endMin: number,
+    public drivingLessons: DrivingLessons,
+    public reservedDate: ReservedDate
   ) {}
 
   get getStartHour(): number {

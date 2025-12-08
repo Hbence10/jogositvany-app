@@ -1,8 +1,8 @@
 export class Message {
   constructor(
-    private id: number,
-    private content: string,
-    private createdAt: Date
+    public id: number,
+    public content: string,
+    public createdAt: Date
   ) {}
 
   get getContent(): string {

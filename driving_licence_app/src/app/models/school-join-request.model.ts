@@ -3,13 +3,13 @@ import { User } from './user.model';
 
 export class SchoolJoinRequest {
   constructor(
-    private id: number,
-    private requestedRole: 'student' | 'instructor',
-    private isAccepted: boolean,
-    private accpetedat: Date,
-    private sentAt: Date,
-    private schoolJoinRequestUser: User,
-    private schoolJoinRequestShool: School
+    public id: number,
+    public requestedRole: 'student' | 'instructor',
+    public isAccepted: boolean,
+    public accpetedat: Date,
+    public sentAt: Date,
+    public schoolJoinRequestUser: User,
+    public schoolJoinRequestShool: School
   ) {}
 
   get getRequestedRole(): 'student' | 'instructor' {

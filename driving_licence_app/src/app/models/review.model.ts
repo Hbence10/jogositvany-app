@@ -4,13 +4,13 @@ import { Students } from './students.model';
 
 export class Review {
   constructor(
-    private id: number,
-    private text: string,
-    private createdAt: Date,
-    private rating: number,
-    private reviewAuthor: Students,
-    private aboutInstructor: Instructors,
-    private aboutSchool: School
+    public id: number,
+    public text: string,
+    public createdAt: Date,
+    public rating: number,
+    public reviewAuthor: Students,
+    public aboutInstructor: Instructors,
+    public aboutSchool: School
   ) {}
 
   get getText(): string {

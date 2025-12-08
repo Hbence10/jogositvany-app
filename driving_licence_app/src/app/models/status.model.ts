@@ -2,10 +2,10 @@ import { DrivingLessons } from './driving-lessons.model';
 
 export class Status {
   constructor(
-    private id: number,
-    private name: string,
-    private drivingLessonList: DrivingLessons[],
-    private requestList: Request[]
+    public id: number,
+    public name: string,
+    public drivingLessonList: DrivingLessons[],
+    public requestList: Request[]
   ) {}
   get getName(): string {
     return this.name;

@@ -2,9 +2,9 @@ import { Vehicle } from './vehicle.model';
 
 export class VehicleType {
   constructor(
-    private id: number,
-    private name: string,
-    private vehicleList: Vehicle[]
+    public id: number,
+    public name: string,
+    public vehicleList: Vehicle[]
   ) {}
 
   get getName(): string {

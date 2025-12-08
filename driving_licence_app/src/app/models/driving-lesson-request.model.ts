@@ -4,15 +4,15 @@ import { Students } from './students.model';
 
 export class DrivingLessonRequest {
   constructor(
-    private id: number,
-    private date: Date,
-    private startHour: number,
-    private startMin: number,
-    private endHour: number,
-    private endMin: number,
-    private dLessonRequestStudent: Students,
-    private dLessonInstructor: Instructors,
-    private dLessonStatus: Status
+    public id: number,
+    public date: Date,
+    public startHour: number,
+    public startMin: number,
+    public endHour: number,
+    public endMin: number,
+    public dLessonRequestStudent: Students,
+    public dLessonInstructor: Instructors,
+    public dLessonStatus: Status
   ) {}
 
   get getDate(): Date {

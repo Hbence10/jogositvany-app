@@ -2,9 +2,9 @@ import { DrivingLessons } from './driving-lessons.model';
 
 export class PaymentMethod {
   constructor(
-    private id: number,
-    private name: string,
-    private drivingLessonsList: DrivingLessons[]
+    public id: number,
+    public name: string,
+    public drivingLessonsList: DrivingLessons[]
   ) {}
 
   get getName(): string {

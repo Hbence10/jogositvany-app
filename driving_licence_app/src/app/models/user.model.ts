@@ -7,74 +7,80 @@ import { Students } from './students.model';
 
 export class User {
   constructor(
-    private id: number | null,
-    private firstName: string,
-    private lastName: string,
-    private email: string,
-    private phone: string,
-    private birthDate: string,
-    private gender: 'male' | 'female' | 'other',
-    private userEducation: Education,
-    private password: string,
-    private intructor?: Instructors,
-    private student?: Students,
-    private adminSchool?: School,
-    private schoolJoinRequestList?: SchoolJoinRequest[],
-    private pfpPath: string = '',
-    private role: Role = new Role(1, 'user')
-  ) {}
+    public id?: number | null,
+    public firstName?: string,
+    public lastName?: string,
+    public email?: string,
+    public phone?: string,
+    public birthDate?: string,
+    public gender?: 'male' | 'female' | 'other',
+    public userEducation?: Education,
+    public password?: string,
+    public intructor?: Instructors,
+    public student?: Students,
+    public adminSchool?: School,
+    public schoolJoinRequestList?: SchoolJoinRequest[],
+    public pfpPath: string = '',
+    public role?: Role
+  ) {
+    this.setAsd()
+  }
+
+  setAsd(){
+    console.log(this.role)
+  }
 
   get getFirstName(): string {
-    return this.firstName;
+    return this.firstName!;
   }
   set setFirstName(value: string) {
     this.firstName = value;
   }
 
   get getLastName(): string {
-    return this.lastName;
+    return this.lastName!;
   }
   set setLastName(value: string) {
     this.lastName = value;
   }
 
   get getEmail(): string {
-    return this.email;
+    return this.email!;
   }
   set setEmail(value: string) {
-    this.email = value;
+    this.email = value!;
   }
 
   get getPhone(): string {
-    return this.phone;
+    return this.phone!;
   }
   set setPhone(value: string) {
     this.phone = value;
   }
 
   get getBirthDate(): string {
-    return this.birthDate;
+    return this.birthDate!;
   }
   set setBirthDate(value: string) {
     this.birthDate = value;
   }
 
   get getGender(): 'male' | 'female' | 'other' {
-    return this.gender;
+    return this.gender!;
   }
   set setGender(value: 'male' | 'female' | 'other') {
     this.gender = value;
   }
 
   get getUserEducation(): Education {
-    return this.userEducation;
+    return this.userEducation!;
   }
   set setUserEducation(value: Education) {
     this.userEducation = value;
   }
 
   get getPassword(): string {
-    return this.password;
+    return this.password!;
   }
   set setPassword(value: string) {
     this.password = value;
@@ -116,7 +122,7 @@ export class User {
   }
 
   get getRole(): Role {
-    return this.role;
+    return this.role!;
   }
   set setRole(value: Role) {
     this.role = value;

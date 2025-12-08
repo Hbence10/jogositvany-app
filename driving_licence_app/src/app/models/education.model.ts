@@ -1,5 +1,5 @@
 export class Education {
-  constructor(private id?: number, private name?: string) {}
+  constructor(public id?: number, public name?: string) {}
 
   get getId(): number {
     return this.id!;

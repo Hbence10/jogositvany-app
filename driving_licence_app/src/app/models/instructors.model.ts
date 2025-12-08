@@ -7,14 +7,14 @@ import { Vehicle } from './vehicle.model';
 
 export class Instructors {
   constructor(
-    private id: number,
-    private promoText: string,
-    private instructorUser: User,
-    private instructorSchool: School,
-    private vehicle: Vehicle,
-    private reviewList: Review[],
-    private students: Students[],
-    private instructorDrivingLessons: DrivingLessons[]
+    public id: number,
+    public promoText: string,
+    public instructorUser: User,
+    public instructorSchool: School,
+    public vehicle: Vehicle,
+    public reviewList: Review[],
+    public students: Students[],
+    public instructorDrivingLessons: DrivingLessons[]
   ) {}
 
   get getPromoText(): string {

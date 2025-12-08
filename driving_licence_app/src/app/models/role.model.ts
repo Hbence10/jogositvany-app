@@ -1,12 +1,12 @@
 export class Role {
-  constructor(private id: number, private name: string) {}
+  constructor(public id?: number, public name?: string) { }
 
   get getId(): number {
-    return this.id;
+    return this.id!;
   }
 
   get getName(): string {
-    return this.name;
+    return this.name!;
   }
 
   set setName(newName: string) {

@@ -4,12 +4,12 @@ import { VehicleType } from './vehicle-type.model';
 
 export class Vehicle {
   constructor(
-    private id: number,
-    private licensePlate: string,
-    private name: string,
-    private vehicleType: VehicleType,
-    private fuelType: FuelType,
-    private instructor: Instructors
+    public id: number,
+    public licensePlate: string,
+    public name: string,
+    public vehicleType: VehicleType,
+    public fuelType: FuelType,
+    public instructor: Instructors
   ) {}
 
   get getLicensePlate(): string {

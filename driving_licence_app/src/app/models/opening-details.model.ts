@@ -2,11 +2,11 @@ import { School } from './school.model';
 
 export class OpeningDetails {
   constructor(
-    private id: number,
-    private openingTime: Date,
-    private closeTime: Date,
-    private day: string,
-    private schoolOpeningDetail: School
+    public id: number,
+    public openingTime: Date,
+    public closeTime: Date,
+    public day: string,
+    public schoolOpeningDetail: School
   ) {}
   get getOpeningTime(): Date {
     return this.openingTime;
