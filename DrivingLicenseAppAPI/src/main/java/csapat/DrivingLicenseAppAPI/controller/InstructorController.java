@@ -102,4 +102,10 @@ public class InstructorController {
     private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
         return instructorService.getInstructorById(id);
     }
+
+    @Operation(summary = "Jármű hozzáadása.", description = "Az oktató tud járművet magához adni")
+    @PostMapping("/{id}/vehicle")
+    private ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId){
+        return instructorService.addVehicle(addedVehicle, instructorId);
+    }
 }

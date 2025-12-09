@@ -165,4 +165,36 @@ public class InstructorService {
             return ResponseEntity.ok().body(searchedInstructor);
         }
     }
+
+    public ResponseEntity<Vehicle> addVehicle(Vehicle addedVehicle, Integer instructorId){
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        }else if (!validateVehicle(addedVehicle)){
+            return ResponseEntity.status(417).build();
+        } else {
+            Vehicle newVehicle = vehicleRepository.save(addedVehicle);
+            searchedInstructor.setVehicle(newVehicle);
+            instructorRepository.save(searchedInstructor);
+            return ResponseEntity.ok().body(newVehicle);
+        }
+    }
+
+    //
+    public Boolean validateVehicle(Vehicle wantedVehicle){
+        if (wantedVehicle.getLicensePlate().length() == 6 || wantedVehicle.getLicensePlate().length() == 8){
+            FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId());
+            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId());
+
+            if (searchedFuelType == null || searchedFuelType.getId() == null || searched.FuelType.getIsDeleted()){
+                return false;
+            } else if (searchedVehicleType == null || searchedVehicleType.getId() == null || searchedVehicleType.getIsDeleted()){
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
 }
