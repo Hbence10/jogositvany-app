@@ -23,6 +23,7 @@ public class InstructorService {
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final StudentRepository studentRepository;
     private final FuelTypeRepository fuelTypeRepository;
+    private final DrivingLessonRequestRepository drivingLessonRequestRepository;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
@@ -75,7 +76,11 @@ public class InstructorService {
         }
     }
 
+
+
     public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
+
+
         return null;
     }
 
@@ -112,6 +117,24 @@ public class InstructorService {
     }
 
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
+        if (requestId == null || status == null) {
+
+        } else {
+            DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId);
+            if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (!status.equals("accept") && !status.equals("refuse")){
+
+            } else {
+                if (status.equals("accept")){
+
+                } else if (status.equals("refuse")) {
+
+                }
+            }
+        }
         return null;
     }
 

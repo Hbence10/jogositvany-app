@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
+import csapat.DrivingLicenseAppAPI.entity.Vehicle;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
