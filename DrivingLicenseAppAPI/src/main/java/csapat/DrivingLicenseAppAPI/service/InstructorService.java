@@ -76,12 +76,14 @@ public class InstructorService {
         }
     }
 
-
-
     public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
-
-
-        return null;
+        if (updatedInstructor.getId() == null || updatedInstructor.getIsDeleted()){
+            return ResponseEntity.notFound().build();
+        } else if (!validateVehicle(updatedInstructor.getVehicle())){
+            return ResponseEntity.status(417).build();
+        } else {
+            return ResponseEntity.ok().body(instructorRepository.save(updatedInstructor));
+        }
     }
 
     public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
@@ -186,7 +188,7 @@ public class InstructorService {
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId());
             VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId());
 
-            if (searchedFuelType == null || searchedFuelType.getId() == null || searched.FuelType.getIsDeleted()){
+            if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()){
                 return false;
             } else if (searchedVehicleType == null || searchedVehicleType.getId() == null || searchedVehicleType.getIsDeleted()){
                 return false;
