@@ -150,7 +150,16 @@ public class SchoolService {
     }
 
     public ResponseEntity<List<School>> getSchoolBySearch(String name, String town){
-        return null;
+        if (name == null || town.equals("")){
+            return ResponseEntity.status(422).build();
+        } else  {
+            List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
+            List<School> searchedSchools = new ArrayList<>();
+            for (Integer i : searchedSchoolId){
+                searchedSchools.add(schoolRepository.getSchool(i));
+            }
+            return ResponseEntity.ok().body(searchedSchools);
+        }
     }
 
     public ResponseEntity<School> getSchoolById(Integer id) {

@@ -135,7 +135,7 @@ public class SchoolController {
 
     })
     @GetMapping("")
-    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "budapest") String name, @RequestParam(value = "town", defaultValue = "") String town) {
+    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "town", defaultValue = "Budapest") String town) {
         return schoolService.getSchoolBySearch(name, town);
     }
 

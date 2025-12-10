@@ -27,7 +27,11 @@ import java.util.List;
         }, resultClasses = School.class),
         @NamedStoredProcedureQuery(name = "deleteSchool", procedureName = "deleteSchool", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getSchoolBySearch", procedureName = "getSchoolBySearch", parameters = {
+                @StoredProcedureParameter(name = "nameIN", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "townnameIN", type = String.class, mode = ParameterMode.IN),
+        }, resultClasses = Integer.class)
 })
 public class School {
 
