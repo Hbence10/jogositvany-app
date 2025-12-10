@@ -24,6 +24,7 @@ public class ReviewController {
     @Parameter(name = "id", description = "A keresett iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező iskoláról való lekérdezés."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
     })
     @GetMapping("/school/{id}")
@@ -35,6 +36,7 @@ public class ReviewController {
     @Parameter(name = "id", description = "A keresett oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező oktatóról való lekérdezés."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
     })
     @GetMapping("/instructor/{id}")
@@ -47,6 +49,7 @@ public class ReviewController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új review object-e", required = true, useParameterTypeSchema = true)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező iskoláról lett készítve a review."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres review készítés")
     })
     @PostMapping("/school/{id}")
@@ -59,6 +62,7 @@ public class ReviewController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új review object-e", required = true, useParameterTypeSchema = true)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező oktatóról lett készítve a review."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres review készítés")
     })
     @PostMapping("/instructor/{id}")
@@ -69,8 +73,9 @@ public class ReviewController {
     @Operation(summary = "Review frissitése", description = "Review frissitése")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "", required = true, useParameterTypeSchema = true)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres frissités"),
-            @ApiResponse(responseCode = "404", description = "Vagy nem létező review frissitése vagy nem létező diák tette a frissitést.")
+            @ApiResponse(responseCode = "404", description = "Vagy nem létező review frissitése vagy nem létező diák tette a frissitést."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres frissités")
     })
     @PutMapping("/updateReview")
     public ResponseEntity<Review> updateReview(@RequestBody Review updatedReview) {
@@ -81,6 +86,7 @@ public class ReviewController {
     @Parameter(name = "id", description = "A törlendő review-hoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező review törlése"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres törlés")
     })
     @DeleteMapping("/deleteReview/{id}")

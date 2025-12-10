@@ -27,79 +27,109 @@ public class ReviewService {
     private final InstructorRepository instructorRepository;
 
     public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId) {
-        School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-        if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            List<Review> reviewList = searchedSchool.getReviewList();
-            return ResponseEntity.ok().body(reviewList);
+        try {
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                List<Review> reviewList = searchedSchool.getReviewList();
+                return ResponseEntity.ok().body(reviewList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-        if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            List<Review> reviewList = searchedInstructor.getReviewList();
-            return ResponseEntity.ok().body(reviewList);
+        try {
+            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                List<Review> reviewList = searchedInstructor.getReviewList();
+                return ResponseEntity.ok().body(reviewList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<Review> createSchoolReview(Review newReview, Integer schoolId) {
-        Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
-        School searchedSchool = schoolRepository.findById(schoolId).get();
+        try {
+            Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
+            School searchedSchool = schoolRepository.findById(schoolId).get();
 
-        if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else if (newReview.getId() != null) {
-            return null;
-        } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-            return null;
-        } else {
-            newReview.setAboutSchool(searchedSchool);
-            newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
-            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+            if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (newReview.getId() != null) {
+                return null;
+            } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
+                return null;
+            } else {
+                newReview.setAboutSchool(searchedSchool);
+                newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+                return ResponseEntity.ok().body(reviewRepository.save(newReview));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<Review> createInstructorReview(Review newReview, Integer instructorId) {
-        Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
-        Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+        try {
+            Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
+            Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
 
-        if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else if (newReview.getId() != null) {
-            return null;
-        } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-            return null;
-        } else {
-            newReview.setAboutInstructor(searchedInstructor);
-            newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
-            return ResponseEntity.ok().body(reviewRepository.save(newReview));
+            if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (newReview.getId() != null) {
+                return null;
+            } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
+                return null;
+            } else {
+                newReview.setAboutInstructor(searchedInstructor);
+                newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+                return ResponseEntity.ok().body(reviewRepository.save(newReview));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<Review> updateReview(Review updatedReview) {
-        Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
-        if (searchedReview == null || searchedReview.getId() == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
+        try {
+            Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
+            if (searchedReview == null || searchedReview.getId() == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<Object> deleteReview(Integer id) {
-        Review searchedReview = reviewRepository.getReview(id).orElse(null);
-        if (searchedReview == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            reviewRepository.deleteReview(id);
-            return ResponseEntity.ok().build();
+        try {
+            Review searchedReview = reviewRepository.getReview(id).orElse(null);
+            if (searchedReview == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                reviewRepository.deleteReview(id);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

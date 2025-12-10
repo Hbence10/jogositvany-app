@@ -30,19 +30,39 @@ public class OtherStuffService {
     private final FuelTypeRepository fuelTypeRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
-        return ResponseEntity.ok().body(paymentMethodRepository.getAllPayMethod());
+        try {
+            return ResponseEntity.ok().body(paymentMethodRepository.getAllPayMethod());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok().build();
+        }
     }
 
     public ResponseEntity<List<DrivingLicenseCategory>> getAllCategory() {
-        return ResponseEntity.ok().body(drivingLicenseCategoryRepository.getAllDrivingLicenseCategory());
+        try {
+            return ResponseEntity.ok().body(drivingLicenseCategoryRepository.getAllDrivingLicenseCategory());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     public ResponseEntity<List<FuelType>> getAllFuelType() {
-        return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
+        try {
+            return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     public ResponseEntity<List<Education>> getAllEducation() {
-        return ResponseEntity.ok().body(educationRepository.getAllEducation());
+        try {
+            return ResponseEntity.ok().body(educationRepository.getAllEducation());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     public ResponseEntity<List<String>> getAllTown() {

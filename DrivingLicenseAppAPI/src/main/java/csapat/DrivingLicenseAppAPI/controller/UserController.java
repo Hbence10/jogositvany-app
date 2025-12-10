@@ -31,6 +31,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "A bejelentkezés sikertelen volt és nem talált olyan User-t az adatbázisban."),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet adott meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres bejelentkezés", useReturnTypeSchema = true)
     })
     @PostMapping("/login")
@@ -43,6 +44,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező education attributumnál."),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres regisztráció.", useReturnTypeSchema = true)
     })
     @PostMapping("/register")
@@ -58,6 +60,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező education attributumnál."),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres regisztráció.", useReturnTypeSchema = true)
     })
     @GetMapping("/getVerificationCode")
@@ -75,6 +78,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Ha a user által beírt hitelesitő kód nem megfelelő", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Helyes hitelesitő kód megadása.", useReturnTypeSchema = true)
     })
     @PostMapping("/checkVerificationCode")
@@ -90,6 +94,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan email címet adott meg a felhasználó, amelyhez nem tartozik egy fiók se.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet vagy jelszót adott meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres jelszó változtatás", useReturnTypeSchema = true)
     })
     @PatchMapping("/passwordReset")
@@ -103,6 +108,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet, jelszót vagy telefonszámot adott meg."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", useReturnTypeSchema = true)
     })
     @PutMapping("/update")
@@ -115,6 +121,11 @@ public class UserController {
             @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH),
             @Parameter(name = "pfpImg", description = "A fekhasználó által kiválasztott új profilkép fájla.", required = true)
     })
+    @ApiResponses({
+            @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", useReturnTypeSchema = true)
+    })
     @PatchMapping("/pfp/{id}")
     public ResponseEntity<Users> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file) {
         return userService.updatePfp(id, file);
@@ -125,6 +136,7 @@ public class UserController {
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne törölni, amely nem létzik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók törlés", useReturnTypeSchema = true)
     })
     @DeleteMapping("/delete/{id}")
@@ -132,11 +144,11 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    //Egyeb endpointok:
     @Operation(summary = "User id alapján", description = "User-t id alapján returnol.")
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne lekérni, amely nem létzik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók lekérés", useReturnTypeSchema = true)
     })
     @GetMapping("/{id}")

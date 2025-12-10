@@ -28,146 +28,196 @@ public class SchoolService {
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
-        SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId).orElse(null);
+        try {
+            SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId).orElse(null);
 
-        if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else if (!status.equals("accept") || !status.equals("refuse")) {
-            return null;
-        } else {
-            if (status.equals("accept")) {
-                if (searchedSchoolJoinRequest.getRequestedRole().equals("student")) {
-                    Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
-                    studentRepository.save(newStudent);
-                } else {
-                    Instructors newInstructor = new Instructors(searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getSchoolJoinRequestUser());
-                    instructorRepository.save(newInstructor);
-                }
-                searchedSchoolJoinRequest.setIsAccepted(true);
+            if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (!status.equals("accept") || !status.equals("refuse")) {
+                return null;
             } else {
-                searchedSchoolJoinRequest.setIsAccepted(false);
+                if (status.equals("accept")) {
+                    if (searchedSchoolJoinRequest.getRequestedRole().equals("student")) {
+                        Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
+                        studentRepository.save(newStudent);
+                    } else {
+                        Instructors newInstructor = new Instructors(searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getSchoolJoinRequestUser());
+                        instructorRepository.save(newInstructor);
+                    }
+                    searchedSchoolJoinRequest.setIsAccepted(true);
+                } else {
+                    searchedSchoolJoinRequest.setIsAccepted(false);
+                }
+                return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedSchoolJoinRequest));
             }
-            return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedSchoolJoinRequest));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
         }
     }
 
     public ResponseEntity<School> updateSchool(School updatedSchool) {
-        if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
-            return ResponseEntity.notFound().build();
-        } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail())) {
-            return ResponseEntity.status(417).build();
-        } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone())) {
-            return ResponseEntity.status(417).build();
-        } else {
-            return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
+        try {
+            if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
+                return ResponseEntity.notFound().build();
+            } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail())) {
+                return ResponseEntity.status(417).build();
+            } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone())) {
+                return ResponseEntity.status(417).build();
+            } else {
+                return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<School> changeCoverImg(Integer id, MultipartFile bannerImg) {
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            String filePath = "" + File.separator + bannerImg.getOriginalFilename();
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                String filePath = "" + File.separator + bannerImg.getOriginalFilename();
 
-            try {
-                FileOutputStream fout = new FileOutputStream(filePath);
-                fout.write(bannerImg.getBytes());
-                fout.close();
+                try {
+                    FileOutputStream fout = new FileOutputStream(filePath);
+                    fout.write(bannerImg.getBytes());
+                    fout.close();
 
-                searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().build();
+                    searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().build();
+                }
+
+                return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
             }
-
-            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<School> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else if (newOpeningDetails.getId() != null){
-            return null;
-        } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()){
-            return ResponseEntity.status(417).build();
-        } else if (!dayNames.contains(newOpeningDetails.getDay())) {
-            return ResponseEntity.status(417).build();
-        } else {
-            List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
-            openingDetailsList.add(newOpeningDetails);
-            searchedSchool.setOpeningDetails(openingDetailsList);
-            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (newOpeningDetails.getId() != null) {
+                return null;
+            } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()) {
+                return ResponseEntity.status(417).build();
+            } else if (!dayNames.contains(newOpeningDetails.getDay())) {
+                return ResponseEntity.status(417).build();
+            } else {
+                List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
+                openingDetailsList.add(newOpeningDetails);
+                searchedSchool.setOpeningDetails(openingDetailsList);
+                return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<School> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else if (updatedOpeningDetails.getId() != null){
-            return null;
-        } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()){
-            return ResponseEntity.status(417).build();
-        } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
-            return ResponseEntity.status(417).build();
-        } else {
-            openingDetailRepository.save(updatedOpeningDetails);
-            return ResponseEntity.ok().body(schoolRepository.getSchool(id).orElse(null));
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (updatedOpeningDetails.getId() != null) {
+                return null;
+            } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()) {
+                return ResponseEntity.status(417).build();
+            } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
+                return ResponseEntity.status(417).build();
+            } else {
+                openingDetailRepository.save(updatedOpeningDetails);
+                return ResponseEntity.ok().body(schoolRepository.getSchool(id).orElse(null));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id) {
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<List<ExamRequest>> getAllExamRequest(Integer id) {
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-        if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
-        }
-    }
-
-    public ResponseEntity<Object> deleteSchool(Integer id){
-        School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-        if(searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            schoolRepository.deleteSchool(id);
-            return ResponseEntity.ok().build();
-        }
-    }
-
-    public ResponseEntity<List<School>> getSchoolBySearch(String name, String town){
-        if (name == null || town.equals("")){
-            return ResponseEntity.status(422).build();
-        } else  {
-            List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
-            List<School> searchedSchools = new ArrayList<>();
-            for (Integer i : searchedSchoolId){
-                searchedSchools.add(schoolRepository.getSchool(i).orElse(null));
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
             }
-            return ResponseEntity.ok().body(searchedSchools);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> deleteSchool(Integer id) {
+        try {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                schoolRepository.deleteSchool(id);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<List<School>> getSchoolBySearch(String name, String town) {
+        try {
+            if (name == null || town.equals("")) {
+                return ResponseEntity.status(422).build();
+            } else {
+                List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
+                List<School> searchedSchools = new ArrayList<>();
+                for (Integer i : searchedSchoolId) {
+                    searchedSchools.add(schoolRepository.getSchool(i).orElse(null));
+                }
+                return ResponseEntity.ok().body(searchedSchools);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<School> getSchoolById(Integer id) {
-        School searchedShcool = schoolRepository.getSchool(id).orElse(null);
-        if (searchedShcool == null || searchedShcool.getId() == null || searchedShcool.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedShcool);
+        try {
+            School searchedShcool = schoolRepository.getSchool(id).orElse(null);
+            if (searchedShcool == null || searchedShcool.getId() == null || searchedShcool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedShcool);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

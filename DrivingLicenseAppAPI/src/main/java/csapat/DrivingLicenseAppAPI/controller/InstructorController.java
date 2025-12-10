@@ -29,6 +29,7 @@ public class InstructorController {
     @PostMapping("/handleRequest")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az adott kérelem id-át (requestId) és a kérelemre adott választ (status) tartalmazza. A válasz lehet accept (elfogadva) vagy refuse (elutasitott).")
     @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
             @ApiResponse(responseCode = "404", description = "Nem létező kérelem elfogadása vagy nem megfelelő válasz adása.")
     })
@@ -39,6 +40,7 @@ public class InstructorController {
     @Operation(summary = "Oktatóhoz tartozó csatlakozási kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
     @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "404", description = "Egy nem létező oktatóhoz tartozó kérelmek lekérdezése"),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
@@ -49,6 +51,9 @@ public class InstructorController {
 
     @Operation(summary = "Oktató törlése", description = "Az oktató törlése id alapján.")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @DeleteMapping("/{id}")
     private ResponseEntity<Object> deleteInstructor(@PathVariable("id") Integer instructorId) {
         return instructorService.deleteInstructor(instructorId);
@@ -56,6 +61,9 @@ public class InstructorController {
 
     @Operation(summary = "Óra kérelmek lekérdezése", description = "Az adott oktatóhoz tartozó órakérelmek megszerzése")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @GetMapping("/{id}/drivingLessonRequest")
     private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId) {
         return instructorService.getDrivingLessonRequestByInstructor(instructorId);
@@ -63,18 +71,27 @@ public class InstructorController {
 
     @Operation(summary = "Oktató frissitése", description = "Oktató adatainak frissitése.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PutMapping("")
     private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor) {
         return instructorService.updateInstructor(updatedInstructor);
     }
 
     @Operation(summary = "Tanuló felvétele", description = "Tanuló felvétele az oktatóhoz az által, hogy az oktató elfogadja-e a diák csatlakozási kérelmet.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PostMapping("/addStudent")
     private ResponseEntity<Object> addStudent(@RequestBody JsonNode requestBody) {
         return instructorService.handleJoinRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PostMapping("/handleDrivingLessonRequest")
     private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody) {
         return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
@@ -85,7 +102,7 @@ public class InstructorController {
 
     })
     @ApiResponses({
-
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")
     private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId) {
@@ -95,6 +112,7 @@ public class InstructorController {
     @Operation(summary = "Oktató id alapján.", description = "Oktató lekérdezése id alapján.")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "404", description = "Egy nem létező oktató lekérése."),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
     })
@@ -104,6 +122,9 @@ public class InstructorController {
     }
 
     @Operation(summary = "Jármű hozzáadása.", description = "Az oktató tud járművet magához adni")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PostMapping("/{id}/vehicle")
     private ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId){
         return instructorService.addVehicle(addedVehicle, instructorId);

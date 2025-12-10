@@ -23,6 +23,7 @@ public class StudentController {
     @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező diák adatainak a lekérése."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérés", useReturnTypeSchema = true)
     })
     @GetMapping("/lessonDetails/{id}")
@@ -34,6 +35,7 @@ public class StudentController {
     @Parameter(name = "id", description = "A tanulóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező diák törlése."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres törlés", useReturnTypeSchema = true)
     })
     @DeleteMapping("/{id}")

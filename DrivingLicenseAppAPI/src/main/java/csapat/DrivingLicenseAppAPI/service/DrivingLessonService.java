@@ -22,22 +22,32 @@ public class DrivingLessonService {
     private final StudentRepository studentRepository;
 
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId){
-        Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
+        try {
+            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
 
-        if(searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(searchedStudent.getDrivingLessons());
+            if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedStudent.getDrivingLessons());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
     public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
-        DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId).orElse(null);
-        if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
-            return ResponseEntity.ok().build();
+        try {
+            DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId).orElse(null);
+            if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
+                return ResponseEntity.notFound().build();
+            } else {
+                drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

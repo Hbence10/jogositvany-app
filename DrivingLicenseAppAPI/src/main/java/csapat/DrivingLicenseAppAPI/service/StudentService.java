@@ -17,31 +17,37 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<Object> getInfo(int id) {
-        return null;
-    }
-
     public ResponseEntity<Map<String, Integer>> getLessonDetails(int id) {
-        Students searchedStudent = studentRepository.getStudent(id).orElse(null);
+        try {
+            Students searchedStudent = studentRepository.getStudent(id).orElse(null);
 
-        if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            Map<String, Integer> responseBody = new HashMap<>();
-            responseBody.put("paidLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
-            responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
-            responseBody.put("totalLessonNumber", searchedStudent.getDrivingLessons().size());
-            return ResponseEntity.ok().body(responseBody);
+            if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                Map<String, Integer> responseBody = new HashMap<>();
+                responseBody.put("paidLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
+                responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
+                responseBody.put("totalLessonNumber", searchedStudent.getDrivingLessons().size());
+                return ResponseEntity.ok().body(responseBody);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
-    public ResponseEntity<Object> deleteStudent(Integer id){
-        Students searchedStudent = studentRepository.getStudent(id).orElse(null);
-        if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()){
-            return ResponseEntity.notFound().build();
-        } else {
-            studentRepository.deleteStudent(id);
-            return ResponseEntity.ok().build();
+    public ResponseEntity<Object> deleteStudent(Integer id) {
+        try {
+            Students searchedStudent = studentRepository.getStudent(id).orElse(null);
+            if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                studentRepository.deleteStudent(id);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

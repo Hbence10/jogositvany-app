@@ -29,6 +29,7 @@ public class RequestController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "3db attributuma van a body-nak. A schoolId a kivánt iskolához tartozó id, a userId az adott felhasználóhoz tartozó id, a requestedRole meg a kivánt szerep (student vagy instructor).")
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező iskola/felhasználó vagy rossz role-t add meg a felhasználó"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @PostMapping("/school")
@@ -40,6 +41,7 @@ public class RequestController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "2db attributuma van. A studentId az adott tanulóhoz tartozó id, az instructorId az adott instructorhoz (oktatóhoz) tartozó id.")
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező student küldi a kérelmet vagy egy nem létező instructor-hoz szeretne csatlakozni a student."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @PostMapping("/instructor")
@@ -51,6 +53,7 @@ public class RequestController {
     @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @DeleteMapping("/school/{id}")
@@ -62,6 +65,7 @@ public class RequestController {
     @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @DeleteMapping("/instructor/{id}")
@@ -70,12 +74,18 @@ public class RequestController {
     }
 
     @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PostMapping("/drivingLesson")
     private ResponseEntity<Object> addDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest){
         return requestService.addDrivingLessonRequest(addedDrivingLessonRequest);
     }
 
     @Operation(summary = "Vizsga kérelem küldése", description = "")
+    @ApiResponses({
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+    })
     @PostMapping("/exam")
     private ResponseEntity<Object> addExamRequest(@RequestBody ExamRequest addedExamRequest){
         return requestService.addExamRequest(addedExamRequest);
@@ -85,6 +95,7 @@ public class RequestController {
     @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.")
     })
     @DeleteMapping("/drivingLesson/{id}")
@@ -96,6 +107,7 @@ public class RequestController {
     @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.")
     })
     @DeleteMapping("/exam/{id}")
