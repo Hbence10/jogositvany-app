@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Integer> {
 
@@ -13,7 +14,7 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     List<Role> getAllRole();
 
     @Procedure(name = "getRole", procedureName = "getRole")
-    Role getRole(@Param("idIN") Integer id);
+    Optional<Role> getRole(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteRole", procedureName = "deleteRole")
     String deleteRole(@Param("idIN") Integer id);

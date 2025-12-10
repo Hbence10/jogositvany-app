@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLessonRequest, Integer> {
 
@@ -13,7 +14,7 @@ public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLes
     List<DrivingLessonRequest> getAllDrivingLessonRequest();
 
     @Procedure(name = "getDrivingLessonRequest", procedureName = "getDrivingLessonRequest")
-    DrivingLessonRequest getDrivingLessonRequest(@Param("idIN") Integer id);
+    Optional<DrivingLessonRequest> getDrivingLessonRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteDrivingLessonRequest", procedureName = "deleteDrivingLessonRequest")
     String deleteDrivingLessonRequest(@Param("idIN") Integer id);

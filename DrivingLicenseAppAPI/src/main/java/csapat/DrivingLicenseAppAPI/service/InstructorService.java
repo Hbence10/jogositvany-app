@@ -27,7 +27,7 @@ public class InstructorService {
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
-        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId);
+        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
 
         if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -49,7 +49,7 @@ public class InstructorService {
     }
 
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(id);
+        Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -58,7 +58,7 @@ public class InstructorService {
     }
 
     public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -68,7 +68,7 @@ public class InstructorService {
     }
 
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -91,7 +91,7 @@ public class InstructorService {
             return ResponseEntity.status(422).build();
         }
 
-        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId);
+        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
         if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -122,7 +122,7 @@ public class InstructorService {
         if (requestId == null || status == null) {
 
         } else {
-            DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId);
+            DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
             if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
@@ -145,14 +145,14 @@ public class InstructorService {
             return ResponseEntity.status(422).build();
         }
 
-        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId);
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
         if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
             List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(name, fuelTypeId);
             List<Instructors> searchedInstructors = new ArrayList<>();
             for (Integer id : searchedInstructorsId) {
-                searchedInstructors.add(instructorRepository.getInstructor(id));
+                searchedInstructors.add(instructorRepository.getInstructor(id).orElse(null));
             }
 
             return ResponseEntity.ok().body(searchedInstructors);
@@ -160,7 +160,7 @@ public class InstructorService {
     }
 
     public ResponseEntity<Instructors> getInstructorById(Integer id) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(id);
+        Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
@@ -169,7 +169,7 @@ public class InstructorService {
     }
 
     public ResponseEntity<Vehicle> addVehicle(Vehicle addedVehicle, Integer instructorId){
-        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId);
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()){
             return ResponseEntity.notFound().build();
         }else if (!validateVehicle(addedVehicle)){
@@ -185,8 +185,8 @@ public class InstructorService {
     //
     public Boolean validateVehicle(Vehicle wantedVehicle){
         if (wantedVehicle.getLicensePlate().length() == 6 || wantedVehicle.getLicensePlate().length() == 8){
-            FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId());
-            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId());
+            FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId()).orElse(null);
+            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId()).orElse(null);
 
             if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()){
                 return false;

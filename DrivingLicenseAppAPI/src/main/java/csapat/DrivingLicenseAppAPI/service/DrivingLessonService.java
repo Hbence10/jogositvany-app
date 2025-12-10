@@ -22,7 +22,7 @@ public class DrivingLessonService {
     private final StudentRepository studentRepository;
 
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId){
-        Students searchedStudent = studentRepository.getStudent(studentId);
+        Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
 
         if(searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()){
             return ResponseEntity.notFound().build();
@@ -32,7 +32,7 @@ public class DrivingLessonService {
     }
 
     public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
-        DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId);
+        DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId).orElse(null);
         if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
             return ResponseEntity.notFound().build();
         } else {

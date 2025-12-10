@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OpeningDetailRepository extends JpaRepository<OpeningDetails, Integer> {
 
@@ -13,7 +14,7 @@ public interface OpeningDetailRepository extends JpaRepository<OpeningDetails, I
     List<OpeningDetails> getAllOpeningDetail();
 
     @Procedure(name = "getOpeningDetail", procedureName = "getOpeningDetail")
-    OpeningDetails getOpeningDetail(@Param("idIN") Integer id);
+    Optional<OpeningDetails> getOpeningDetail(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteOpeningDetail", procedureName = "deleteOpeningDetail")
     String deleteOpeningDetail(@Param("idIN") Integer id);

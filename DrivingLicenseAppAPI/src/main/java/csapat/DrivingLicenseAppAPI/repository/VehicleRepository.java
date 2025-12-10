@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
@@ -13,7 +14,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     List<Vehicle> getAllVehicle();
 
     @Procedure(name = "getVehicle", procedureName = "getVehicle")
-    Vehicle getVehicle(@Param("idIN") Integer id);
+    Optional<Vehicle> getVehicle(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteVehicle", procedureName = "deleteVehicle")
     String deleteVehicle(@Param("idIN") Integer id);

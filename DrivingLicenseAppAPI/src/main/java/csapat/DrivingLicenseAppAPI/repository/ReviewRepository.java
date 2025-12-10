@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
@@ -13,7 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     List<Review> getAllReview();
 
     @Procedure(name = "getReview", procedureName = "getReview")
-    Review getReview(@Param("idIN") Integer id);
+    Optional<Review> getReview(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReview", procedureName = "deleteReview")
     String deleteReview(@Param("idIN") Integer id);

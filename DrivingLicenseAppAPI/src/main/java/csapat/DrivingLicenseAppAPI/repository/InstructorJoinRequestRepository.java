@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InstructorJoinRequestRepository extends JpaRepository<InstructorJoinRequest, Integer> {
 
@@ -13,7 +14,7 @@ public interface InstructorJoinRequestRepository extends JpaRepository<Instructo
     List<InstructorJoinRequest> getAllInstructorJoinRequest();
 
     @Procedure(name = "getInstructorJoinRequest", procedureName = "getInstructorJoinRequest")
-    InstructorJoinRequest getInstructorJoinRequest(@Param("idIN") Integer id);
+    Optional<InstructorJoinRequest> getInstructorJoinRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteInstructorJoinRequest", procedureName = "deleteInstructorJoinRequest")
     String deleteInstructorJoinRequest(@Param("idIN") Integer id);

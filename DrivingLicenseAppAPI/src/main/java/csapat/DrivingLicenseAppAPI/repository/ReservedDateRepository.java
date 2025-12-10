@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservedDateRepository extends JpaRepository<ReservedDate, Integer> {
 
@@ -13,7 +14,7 @@ public interface ReservedDateRepository extends JpaRepository<ReservedDate, Inte
     List<ReservedDate> getAllReservedDate();
 
     @Procedure(name = "getReservedDate", procedureName = "getReservedDate")
-    ReservedDate getReservedDate(@Param("idIN") Integer id);
+    Optional<ReservedDate> getReservedDate(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReservedDate", procedureName = "deleteReservedDate")
     String deleteReservedDate(@Param("idIN") Integer id);

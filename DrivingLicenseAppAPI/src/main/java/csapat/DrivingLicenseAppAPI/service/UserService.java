@@ -36,7 +36,7 @@ public class UserService {
     private final ObjectMapper objectMapper;
 
     public ResponseEntity<JsonNode> login(String email, String password) {
-        Users loggedUser = userRepository.getUserByEmail(email);
+        Users loggedUser = userRepository.getUserByEmail(email).orElse(null);
 
         if (loggedUser == null) {
             return ResponseEntity.notFound().build();
@@ -84,7 +84,7 @@ public class UserService {
         } else if (!emailList.contains(email.trim())) {
             return ResponseEntity.notFound().build();
         } else {
-            Users searchedUser = userRepository.getUserByEmail(email);
+            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
 
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -104,7 +104,7 @@ public class UserService {
         } else if (!ValidatorCollection.emailValidator(email)) {
             return ResponseEntity.status(417).body("InvalidEmail");
         } else {
-            Users searchedUser = userRepository.getUserByEmail(email);
+            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
@@ -115,7 +115,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
-        Users user = userRepository.getUserByEmail(email);
+        Users user = userRepository.getUserByEmail(email).orElse(null);
 
         if (!ValidatorCollection.emailValidator(email)) {
             return ResponseEntity.status(417).body("InvalidEmail");
@@ -152,7 +152,7 @@ public class UserService {
     }
 
     public ResponseEntity<Users> updatePfp(Integer id, MultipartFile pfpFile) {
-        Users searchedUser = userRepository.getUser(id);
+        Users searchedUser = userRepository.getUser(id).orElse(null);
 
         if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -175,7 +175,7 @@ public class UserService {
 
     // delete:
     public ResponseEntity<String> deleteUser(Integer id) {
-        Users searchedUser = userRepository.getUser(id);
+        Users searchedUser = userRepository.getUser(id).orElse(null);
         if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         }
@@ -187,7 +187,7 @@ public class UserService {
 
     //egyeb endpointok:
     public ResponseEntity<Users> getUserById(Integer id) {
-        Users searchedUser = userRepository.getUser(id);
+        Users searchedUser = userRepository.getUser(id).orElse(null);
 
         if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
             return ResponseEntity.notFound().build();

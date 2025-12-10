@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Integer> {
 
@@ -13,7 +14,7 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, In
     List<PaymentMethod> getAllPayMethod();
 
     @Procedure(name = "getPaymentMethod", procedureName = "getPaymentMethod")
-    PaymentMethod getPaymentMethod(@Param("idIN") Integer id);
+    Optional<PaymentMethod> getPaymentMethod(@Param("idIN") Integer id);
 
     @Procedure(name = "deletePaymentMethod", procedureName = "deletePaymentMethod")
     String deletePaymentMethod(@Param("idIN") Integer id);

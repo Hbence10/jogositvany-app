@@ -60,7 +60,7 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
-        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id);
+        SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id).orElse(null);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -70,7 +70,7 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteInstructorJoinRequest(Integer id) {
-        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id);
+        InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id).orElse(null);
 
         if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -83,8 +83,8 @@ public class RequestService {
         if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartHour(), addedDrivingLessonRequest.getStartMin(), addedDrivingLessonRequest.getEndHour(), addedDrivingLessonRequest.getEndMin())) {
             return ResponseEntity.status(417).build();
         } else {
-            Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId());
-            Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId());
+            Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
+            Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
 
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -98,9 +98,9 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> addExamRequest(ExamRequest addedExamRequest) {
-        Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId());
-        Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId());
-        School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId());
+        Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId()).orElse(null);
+        Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
+        School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
 
         if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -113,7 +113,7 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId) {
-        DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId);
+        DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
 
         if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
@@ -124,7 +124,7 @@ public class RequestService {
     }
 
     public ResponseEntity<Object> deleteExamRequest(Integer requestId) {
-        ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId);
+        ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId).orElse(null);
         if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
             return ResponseEntity.notFound().build();
         } else {
