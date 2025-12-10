@@ -25,6 +25,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező iskoláról való lekérdezés."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
     })
     @GetMapping("/school/{id}")
@@ -37,6 +38,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező oktatóról való lekérdezés."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés")
     })
     @GetMapping("/instructor/{id}")
@@ -50,6 +52,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező iskoláról lett készítve a review."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres review készítés")
     })
     @PostMapping("/school/{id}")
@@ -63,6 +66,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező oktatóról lett készítve a review."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres review készítés")
     })
     @PostMapping("/instructor/{id}")
@@ -75,6 +79,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Vagy nem létező review frissitése vagy nem létező diák tette a frissitést."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres frissités")
     })
     @PutMapping("/updateReview")
@@ -87,6 +92,7 @@ public class ReviewController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező review törlése"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres törlés")
     })
     @DeleteMapping("/deleteReview/{id}")

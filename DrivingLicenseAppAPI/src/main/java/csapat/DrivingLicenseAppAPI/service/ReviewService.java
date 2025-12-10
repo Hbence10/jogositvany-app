@@ -10,6 +10,7 @@ import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ public class ReviewService {
 
     public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId) {
         try {
+            if (schoolId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -43,6 +48,10 @@ public class ReviewService {
 
     public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId) {
         try {
+            if (instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -58,6 +67,10 @@ public class ReviewService {
 
     public ResponseEntity<Review> createSchoolReview(Review newReview, Integer schoolId) {
         try {
+            if (newReview == null || schoolId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
             School searchedSchool = schoolRepository.findById(schoolId).get();
 
@@ -82,6 +95,10 @@ public class ReviewService {
 
     public ResponseEntity<Review> createInstructorReview(Review newReview, Integer instructorId) {
         try {
+            if (newReview == null || instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
             Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
 
@@ -106,6 +123,10 @@ public class ReviewService {
 
     public ResponseEntity<Review> updateReview(Review updatedReview) {
         try {
+            if (updatedReview == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
             if (searchedReview == null || searchedReview.getId() == null) {
                 return ResponseEntity.notFound().build();
@@ -120,6 +141,10 @@ public class ReviewService {
 
     public ResponseEntity<Object> deleteReview(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Review searchedReview = reviewRepository.getReview(id).orElse(null);
             if (searchedReview == null) {
                 return ResponseEntity.notFound().build();

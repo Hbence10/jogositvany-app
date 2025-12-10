@@ -25,6 +25,7 @@ public class DrivingLessonController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan diák adatait szeretné lekérni, amely nem létzik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres adat lekérés", useReturnTypeSchema = true)
     })
     @GetMapping("/student/{id}")
@@ -37,6 +38,7 @@ public class DrivingLessonController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan diák adatait szeretné lekérni, amely nem létzik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres óra lemondás", useReturnTypeSchema = true)
     })
     @DeleteMapping("/cancel/{id}")

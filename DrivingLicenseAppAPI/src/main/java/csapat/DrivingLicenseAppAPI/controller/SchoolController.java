@@ -33,8 +33,9 @@ public class SchoolController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kérelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
     })
     @PostMapping("/request/{id}")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
@@ -46,8 +47,9 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni."),
+            @ApiResponse(responseCode = "417", description = "Felépitésben nem megfelelő email cím vagy telefonszám."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "417", description = "Felépitésben nem megfelelő email cím vagy telefonszám.")
     })
     @PutMapping("")
     public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool) {
@@ -63,6 +65,7 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres boritókép csere."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.")
     })
     public ResponseEntity<School> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg) {
@@ -75,8 +78,9 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás hozzáadás."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás hozzáadás."),
+            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció.")
     })
     @PostMapping("/{id}/openingDetails")
     public ResponseEntity<School> addOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails newOpeningDetails) {
@@ -89,8 +93,9 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás frissités."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás frissités."),
+            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció.")
     })
     @PutMapping("/{id}/openingDetails")
     public ResponseEntity<School> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails updatedOpeningDetails) {
@@ -101,6 +106,7 @@ public class SchoolController {
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
@@ -113,6 +119,7 @@ public class SchoolController {
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
@@ -125,6 +132,7 @@ public class SchoolController {
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskola törlése"),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres iskola törlés"),
     })
@@ -139,7 +147,9 @@ public class SchoolController {
 
     })
     @ApiResponses({
-
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")
     private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "town", defaultValue = "Budapest") String town) {
@@ -150,6 +160,7 @@ public class SchoolController {
     @Parameter(name = "id", description = "Az iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskola lekérdezése"),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés")
     })

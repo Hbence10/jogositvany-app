@@ -23,6 +23,10 @@ public class DrivingLessonService {
 
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId){
         try {
+            if (studentId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
 
             if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
@@ -38,6 +42,10 @@ public class DrivingLessonService {
 
     public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
         try {
+            if (drivingLessonId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId).orElse(null);
             if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
                 return ResponseEntity.notFound().build();

@@ -28,6 +28,10 @@ public class RequestService {
 
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
         try {
+            if (schoolId == null || userId == null || requestedRole == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.findById(schoolId).get();
             Users searchedUser = userRepository.findById(userId).get();
             ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
@@ -51,6 +55,10 @@ public class RequestService {
 
     public ResponseEntity<Object> sendInstructorJoinRequest(Integer studentId, Integer instructorId) {
         try {
+            if (studentId == null || instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students searchedStudent = studentRepository.findById(studentId).get();
             Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
 
@@ -71,6 +79,10 @@ public class RequestService {
 
     public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id).orElse(null);
 
             if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
@@ -86,6 +98,10 @@ public class RequestService {
 
     public ResponseEntity<Object> deleteInstructorJoinRequest(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id).orElse(null);
 
             if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
@@ -101,6 +117,10 @@ public class RequestService {
 
     public ResponseEntity<Object> addDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
         try {
+            if (addedDrivingLessonRequest == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartHour(), addedDrivingLessonRequest.getStartMin(), addedDrivingLessonRequest.getEndHour(), addedDrivingLessonRequest.getEndMin())) {
                 return ResponseEntity.status(417).build();
             } else {
@@ -124,6 +144,10 @@ public class RequestService {
 
     public ResponseEntity<Object> addExamRequest(ExamRequest addedExamRequest) {
         try {
+            if (addedExamRequest == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId()).orElse(null);
             Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
             School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
@@ -143,6 +167,10 @@ public class RequestService {
 
     public ResponseEntity<Object> deleteDrivingLessonRequest(Integer requestId) {
         try {
+            if (requestId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
 
             if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
@@ -159,6 +187,10 @@ public class RequestService {
 
     public ResponseEntity<Object> deleteExamRequest(Integer requestId) {
         try {
+            if (requestId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId).orElse(null);
             if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();

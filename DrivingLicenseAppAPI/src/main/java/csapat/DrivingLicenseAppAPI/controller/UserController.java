@@ -32,6 +32,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "A bejelentkezés sikertelen volt és nem talált olyan User-t az adatbázisban."),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet adott meg."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "200", description = "Sikeres bejelentkezés", useReturnTypeSchema = true)
     })
     @PostMapping("/login")
@@ -44,6 +45,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező education attributumnál."),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres regisztráció.", useReturnTypeSchema = true)
     })
@@ -60,6 +62,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Nem létező education attributumnál."),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres regisztráció.", useReturnTypeSchema = true)
     })
@@ -78,6 +81,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Ha a user által beírt hitelesitő kód nem megfelelő", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Helyes hitelesitő kód megadása.", useReturnTypeSchema = true)
     })
@@ -94,6 +98,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan email címet adott meg a felhasználó, amelyhez nem tartozik egy fiók se.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet vagy jelszót adott meg."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres jelszó változtatás", useReturnTypeSchema = true)
     })
@@ -108,6 +113,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.", useReturnTypeSchema = false),
             @ApiResponse(responseCode = "417", description = "A felhasználó felépítésében helytelen email címet, jelszót vagy telefonszámot adott meg."),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", useReturnTypeSchema = true)
     })
@@ -123,6 +129,7 @@ public class UserController {
     })
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", useReturnTypeSchema = true)
     })
@@ -136,6 +143,7 @@ public class UserController {
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne törölni, amely nem létzik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók törlés", useReturnTypeSchema = true)
     })
@@ -148,6 +156,7 @@ public class UserController {
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne lekérni, amely nem létzik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "200", description = "Sikeres fiók lekérés", useReturnTypeSchema = true)
     })

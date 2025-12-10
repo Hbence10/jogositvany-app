@@ -37,6 +37,10 @@ public class UserService {
 
     public ResponseEntity<JsonNode> login(String email, String password) {
         try {
+            if (email == null || password == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Users loggedUser = userRepository.getUserByEmail(email).orElse(null);
 
             if (loggedUser == null) {
@@ -60,6 +64,10 @@ public class UserService {
 
     public ResponseEntity<Object> register(Users newUser) {
         try {
+            if (newUser == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getId() == null) {
                 return ResponseEntity.notFound().build();
@@ -88,6 +96,10 @@ public class UserService {
     //password reset
     public ResponseEntity<String> getVerificationCode(String email) {
         try {
+            if (email == null){
+                return ResponseEntity.status(422).build();
+            }
+
             List<String> emailList = userRepository.getAllEmail();
 
             if (!ValidatorCollection.emailValidator(email.trim())) {
@@ -115,6 +127,10 @@ public class UserService {
 
     public ResponseEntity<Object> checkVCode(String userVCode, String email) {
         try {
+            if (userVCode == null || email == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             if (userVCode.length() != 10) {
                 return ResponseEntity.status(417).body("InvalidVerificationCode");
             } else if (!ValidatorCollection.emailValidator(email)) {
@@ -136,6 +152,10 @@ public class UserService {
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
         try {
+            if (email == null || newPassword == null){
+                return ResponseEntity.status(422).build();
+            }
+
             Users user = userRepository.getUserByEmail(email).orElse(null);
 
             if (!ValidatorCollection.emailValidator(email)) {
@@ -158,6 +178,10 @@ public class UserService {
     // update:
     public ResponseEntity<Object> updateUser(Users updatedUser) {
         try {
+            if (updatedUser == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             if (updatedUser.getId() == null) {
                 return ResponseEntity.notFound().build();
             } else {
@@ -182,6 +206,10 @@ public class UserService {
 
     public ResponseEntity<Users> updatePfp(Integer id, MultipartFile pfpFile) {
         try {
+            if (id == null || pfpFile == null){
+                return ResponseEntity.status(422).build();
+            }
+
             Users searchedUser = userRepository.getUser(id).orElse(null);
 
             if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
@@ -211,6 +239,10 @@ public class UserService {
     // delete:
     public ResponseEntity<String> deleteUser(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Users searchedUser = userRepository.getUser(id).orElse(null);
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -227,6 +259,10 @@ public class UserService {
 
     public ResponseEntity<Users> getUserById(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Users searchedUser = userRepository.getUser(id).orElse(null);
 
             if (searchedUser == null || searchedUser.getId() == null || searchedUser.getIsDeleted()) {
@@ -240,7 +276,7 @@ public class UserService {
         }
     }
 
-    //egyeb:
+    //Nem Endpoint:
     public String generateVerificationCode() {
         String code = "";
         ArrayList<String> characters = new ArrayList<String>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));

@@ -29,6 +29,10 @@ public class SchoolService {
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
         try {
+            if (joinRequestId == null || status == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId).orElse(null);
 
             if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
@@ -58,6 +62,10 @@ public class SchoolService {
 
     public ResponseEntity<School> updateSchool(School updatedSchool) {
         try {
+            if (updatedSchool == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
                 return ResponseEntity.notFound().build();
             } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail())) {
@@ -75,6 +83,10 @@ public class SchoolService {
 
     public ResponseEntity<School> changeCoverImg(Integer id, MultipartFile bannerImg) {
         try {
+            if (id == null || bannerImg == null){
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
@@ -102,6 +114,10 @@ public class SchoolService {
 
     public ResponseEntity<School> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
         try {
+            if (id == null || newOpeningDetails == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
@@ -126,6 +142,10 @@ public class SchoolService {
 
     public ResponseEntity<School> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
         try {
+            if (id == null || updatedOpeningDetails == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
@@ -148,6 +168,10 @@ public class SchoolService {
 
     public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -162,6 +186,10 @@ public class SchoolService {
 
     public ResponseEntity<List<ExamRequest>> getAllExamRequest(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -176,6 +204,10 @@ public class SchoolService {
 
     public ResponseEntity<Object> deleteSchool(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
             if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -209,6 +241,10 @@ public class SchoolService {
 
     public ResponseEntity<School> getSchoolById(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             School searchedShcool = schoolRepository.getSchool(id).orElse(null);
             if (searchedShcool == null || searchedShcool.getId() == null || searchedShcool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();

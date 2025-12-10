@@ -17,8 +17,12 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<Map<String, Integer>> getLessonDetails(int id) {
+    public ResponseEntity<Map<String, Integer>> getLessonDetails(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students searchedStudent = studentRepository.getStudent(id).orElse(null);
 
             if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
@@ -38,6 +42,10 @@ public class StudentService {
 
     public ResponseEntity<Object> deleteStudent(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Students searchedStudent = studentRepository.getStudent(id).orElse(null);
             if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();

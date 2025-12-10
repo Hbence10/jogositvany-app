@@ -27,6 +27,10 @@ public class InstructorService {
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         try {
+            if (requestId == null || status == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
             InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
 
@@ -55,6 +59,10 @@ public class InstructorService {
 
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -69,6 +77,10 @@ public class InstructorService {
 
     public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
         try {
+            if (instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -84,6 +96,10 @@ public class InstructorService {
 
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
         try {
+            if (instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -98,6 +114,10 @@ public class InstructorService {
 
     public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
         try {
+            if (updatedInstructor == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             if (updatedInstructor.getId() == null || updatedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (!validateVehicle(updatedInstructor.getVehicle())) {
@@ -151,7 +171,7 @@ public class InstructorService {
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         try {
             if (requestId == null || status == null) {
-
+                return ResponseEntity.status(422).build();
             } else {
                 DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
                 if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
@@ -201,6 +221,10 @@ public class InstructorService {
 
     public ResponseEntity<Instructors> getInstructorById(Integer id) {
         try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -215,6 +239,10 @@ public class InstructorService {
 
     public ResponseEntity<Vehicle> addVehicle(Vehicle addedVehicle, Integer instructorId){
         try {
+            if (addedVehicle == null || instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
             if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
