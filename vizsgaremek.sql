@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 13. 10:24
+-- Létrehozás ideje: 2025. Dec 13. 08:58
 -- Kiszolgáló verziója: 5.7.24
--- PHP verzió: 8.1.0
+-- PHP verzió: 8.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `vizsgaremek_6.0`
+-- Adatbázis: `vizsgaremek`
 --
 
 DELIMITER $$
@@ -262,7 +262,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructor` (IN `idIN` INT)   BE
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `nameIN` VARCHAR(250), IN `fuelTypeIdIN` INT)   BEGIN 
-    SELECT *
+    SELECT i.id
     FROM `instructor` i
     INNER JOIN user u ON 
     u.id = i.user_id
@@ -313,8 +313,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchool` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `school` WHERE `school`.`id` = idIN AND `school`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolBySearch` (IN `name` VARCHAR(250), IN `townnameIN` VARCHAR(250))   BEGIN
-    SELECT s.id FROM `school` s
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchoolBySearch` (IN `nameIN` VARCHAR(250), IN `townnameIN` VARCHAR(250))   BEGIN
+	SELECT s.id FROM school s
     WHERE 
     s.name LIKE CONCAT(name, "%") 
     AND 
@@ -378,7 +378,7 @@ CREATE TABLE `driving_lesson` (
   `student_id` int(11) NOT NULL,
   `is_end` tinyint(1) NOT NULL DEFAULT '0',
   `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
-  `cancelled_at` datetime DEFAULT NULL
+  `cancelled_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -386,7 +386,7 @@ CREATE TABLE `driving_lesson` (
 --
 
 INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
-(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 1, '2025-12-01 00:00:00');
+(1, 0, 40, 'Dombóvár', 'Dombvóvár, Gyöngyvirág krt. 29', 'Dombvóvár, Gyöngyvirág krt. 29', 1, 1, 2, 1, 1, 1, 1, 5, 1, 1, '2025-11-30 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -399,7 +399,7 @@ CREATE TABLE `driving_lesson_instructor` (
   `instructor_id` int(11) NOT NULL,
   `driving_lesson_type_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -407,7 +407,7 @@ CREATE TABLE `driving_lesson_instructor` (
 --
 
 INSERT INTO `driving_lesson_instructor` (`id`, `instructor_id`, `driving_lesson_type_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 1, 1, '2025-12-01 00:00:00');
+(1, 1, 1, 1, '2025-11-30 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -421,21 +421,12 @@ CREATE TABLE `driving_lesson_request` (
   `instructor_id` int(11) NOT NULL,
   `msg` longtext,
   `date` date NOT NULL,
-  `start_hour` int(2) NOT NULL,
-  `start_min` int(2) NOT NULL,
-  `end_hour` int(2) NOT NULL,
-  `end_min` int(2) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
   `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- A tábla adatainak kiíratása `driving_lesson_request`
---
-
-INSERT INTO `driving_lesson_request` (`id`, `student_id`, `instructor_id`, `msg`, `date`, `start_hour`, `start_min`, `end_hour`, `end_min`, `status_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 1, 'Szia ', '2025-10-14', 14, 0, 0, 0, 1, 1, '2025-12-01 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -450,7 +441,7 @@ CREATE TABLE `driving_lesson_type` (
   `license_category_id` int(11) NOT NULL,
   `school_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime NOT NULL
+  `deleted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -458,8 +449,8 @@ CREATE TABLE `driving_lesson_type` (
 --
 
 INSERT INTO `driving_lesson_type` (`id`, `name`, `price`, `license_category_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 1, '2025-12-01 00:00:00'),
-(2, 'alapoktatas', 10000, 6, 3, 0, '2025-12-04 09:50:48');
+(1, 'Vezetési kategória teszt tipus', 6000, 4, 2, 1, '2025-11-30 23:00:00'),
+(2, 'alapoktatas', 10000, 6, 3, 0, '2025-12-04 08:50:48');
 
 -- --------------------------------------------------------
 
@@ -472,7 +463,7 @@ CREATE TABLE `driving_license_category` (
   `name` varchar(100) NOT NULL,
   `min_age` int(2) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -480,7 +471,7 @@ CREATE TABLE `driving_license_category` (
 --
 
 INSERT INTO `driving_license_category` (`id`, `name`, `min_age`, `is_deleted`, `deleted_at`) VALUES
-(1, 'AM', 14, 1, '2025-12-01 00:00:00'),
+(1, 'AM', 14, 1, '2025-11-30 23:00:00'),
 (2, 'A1', 16, 0, NULL),
 (3, 'A2', 18, 0, NULL),
 (4, 'A', 24, 0, NULL),
@@ -506,7 +497,7 @@ CREATE TABLE `education` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -514,7 +505,7 @@ CREATE TABLE `education` (
 --
 
 INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Általános Iskola', 1, '2025-12-01 00:00:00'),
+(1, 'Általános Iskola', 1, '2025-11-30 23:00:00'),
 (2, 'Szakiskola / Szakképző iskola', 0, NULL),
 (3, 'Szakközépiskola', 0, NULL),
 (4, 'Gimnázium', 0, NULL),
@@ -536,7 +527,7 @@ CREATE TABLE `exam_request` (
   `requested_date` date NOT NULL,
   `student_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -544,7 +535,7 @@ CREATE TABLE `exam_request` (
 --
 
 INSERT INTO `exam_request` (`id`, `instructor_id`, `school_id`, `requested_date`, `student_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, '2025-10-14', 5, 1, '2025-12-01 00:00:00');
+(1, 1, 2, '2025-10-14', 5, 1, '2025-11-30 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -556,7 +547,7 @@ CREATE TABLE `fuel_type` (
   `id` int(11) NOT NULL,
   `name` varchar(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -564,7 +555,7 @@ CREATE TABLE `fuel_type` (
 --
 
 INSERT INTO `fuel_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Benzin', 1, '2025-12-01 00:00:00'),
+(1, 'Benzin', 1, '2025-11-30 23:00:00'),
 (2, 'Dízel', 0, NULL),
 (3, 'Hibrid', 0, NULL);
 
@@ -581,7 +572,7 @@ CREATE TABLE `instructor` (
   `promo_text` longtext NOT NULL,
   `vehicle_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -589,7 +580,7 @@ CREATE TABLE `instructor` (
 --
 
 INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 'instructor promo text', 4, 1, '2025-12-01 00:00:00'),
+(1, 1, 2, 'instructor promo text', 4, 1, '2025-11-30 23:00:00'),
 (2, 13, 2, 'promotext', 6, 0, NULL),
 (3, 14, 3, 'promo', 7, 0, NULL);
 
@@ -603,11 +594,11 @@ CREATE TABLE `instructor_join_request` (
   `id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
-  `is_accepted` tinyint(1) NOT NULL DEFAULT '0',
-  `accepted_at` datetime DEFAULT NULL,
+  `is_accepted` tinyint(1) DEFAULT '0',
+  `accepted_at` timestamp NULL DEFAULT NULL,
   `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -615,7 +606,7 @@ CREATE TABLE `instructor_join_request` (
 --
 
 INSERT INTO `instructor_join_request` (`id`, `student_id`, `instructor_id`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 1, 0, '2025-11-20 14:49:05', '2025-11-16 13:49:13', 1, '2025-12-01 00:00:00');
+(1, 5, 1, NULL, NULL, '2025-11-16 13:49:13', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -653,7 +644,7 @@ CREATE TABLE `opening_detail` (
   `day` varchar(100) NOT NULL,
   `school_id` int(10) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -673,7 +664,7 @@ CREATE TABLE `payment_method` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -681,7 +672,7 @@ CREATE TABLE `payment_method` (
 --
 
 INSERT INTO `payment_method` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Kártya', 1, '2025-12-01 00:00:00'),
+(1, 'Kártya', 1, '2025-11-30 23:00:00'),
 (2, 'Készpénz', 0, NULL),
 (3, 'Revolut', 0, NULL);
 
@@ -696,7 +687,7 @@ CREATE TABLE `reserved_date` (
   `date` date NOT NULL,
   `is_full` tinyint(1) NOT NULL DEFAULT '0',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -704,11 +695,11 @@ CREATE TABLE `reserved_date` (
 --
 
 INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
-(1, '2025-10-14', 0, 1, '2025-12-01 00:00:00'),
-(2, '2025-12-04', 0, 0, '2025-12-04 12:24:12'),
-(3, '2025-12-03', 0, 0, '2025-12-03 10:34:20'),
-(4, '2025-12-02', 0, 0, '2025-12-02 06:34:37'),
-(5, '2025-12-01', 0, 0, '2025-12-01 15:34:53');
+(1, '2025-10-14', 0, 1, '2025-11-30 23:00:00'),
+(2, '2025-12-04', 0, 0, '2025-12-04 11:24:12'),
+(3, '2025-12-03', 0, 0, '2025-12-03 09:34:20'),
+(4, '2025-12-02', 0, 0, '2025-12-02 05:34:37'),
+(5, '2025-12-01', 0, 0, '2025-12-01 14:34:53');
 
 -- --------------------------------------------------------
 
@@ -718,25 +709,23 @@ INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`
 
 CREATE TABLE `reserved_hour` (
   `id` int(11) NOT NULL,
-  `start_hour` int(2) NOT NULL,
-  `start_min` int(2) NOT NULL,
-  `end_hour` int(2) NOT NULL,
-  `end_min` int(2) NOT NULL,
   `date_id` int(11) NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `reserved_hour`
 --
 
-INSERT INTO `reserved_hour` (`id`, `start_hour`, `start_min`, `end_hour`, `end_min`, `date_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 10, 0, 12, 0, 1, 1, '2025-12-01 00:00:00'),
-(2, 1, 1, 2, 2, 2, 0, '2025-12-04 13:35:30'),
-(3, 1, 1, 2, 2, 2, 0, '2025-12-03 10:35:30'),
-(4, 1, 1, 2, 2, 4, 0, '2025-12-02 10:36:47'),
-(5, 1, 1, 2, 2, 5, 0, '2025-12-01 10:36:47');
+INSERT INTO `reserved_hour` (`id`, `date_id`, `start_time`, `end_time`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, '00:00:00', '00:00:00', 1, '2025-11-30 23:00:00'),
+(2, 2, '00:00:00', '00:00:00', 0, '2025-12-04 12:35:30'),
+(3, 2, '00:00:00', '00:00:00', 0, '2025-12-03 09:35:30'),
+(4, 4, '00:00:00', '00:00:00', 0, '2025-12-02 09:36:47'),
+(5, 5, '00:00:00', '00:00:00', 0, '2025-12-01 09:36:47');
 
 -- --------------------------------------------------------
 
@@ -753,7 +742,7 @@ CREATE TABLE `review` (
   `instructor_id` int(10) DEFAULT NULL,
   `school_id` int(11) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -761,7 +750,7 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`id`, `author_id`, `text`, `created_at`, `rating`, `instructor_id`, `school_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 5, 'Oktató1-ről való tesztadat vélemény', '2025-12-01 09:17:26', 4, 1, NULL, 1, '2025-12-01 00:00:00'),
+(1, 5, 'Oktató1-ről való tesztadat vélemény', '2025-12-01 09:17:26', 4, 1, NULL, 1, '2025-11-30 23:00:00'),
 (2, 5, 'Autósiskola1-ről való teszt vélemény', '2025-10-13 18:24:38', 1, NULL, 2, 0, NULL);
 
 -- --------------------------------------------------------
@@ -774,7 +763,7 @@ CREATE TABLE `role` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -782,7 +771,7 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'ROLE_user', 1, '2025-12-01 00:00:00'),
+(1, 'ROLE_user', 1, '2025-11-30 23:00:00'),
 (2, 'ROLE_student', 0, NULL),
 (3, 'ROLE_instructor', 0, NULL),
 (4, 'ROLE_school_admin', 0, NULL),
@@ -807,7 +796,7 @@ CREATE TABLE `school` (
   `banner_img_path` longtext NOT NULL,
   `owner_id` int(10) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -830,10 +819,10 @@ CREATE TABLE `school_join_request` (
   `school_id` int(11) NOT NULL,
   `requested_role` varchar(10) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL,
-  `accepted_at` datetime DEFAULT NULL,
+  `accepted_at` timestamp NULL DEFAULT NULL,
   `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -841,7 +830,7 @@ CREATE TABLE `school_join_request` (
 --
 
 INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `requested_role`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 2, 'student', 0, '2025-11-17 14:43:41', '2025-11-16 13:44:19', 1, '2025-12-01 00:00:00');
+(1, 1, 2, 'student', 0, '2025-11-17 13:43:41', '2025-11-16 13:44:19', 1, '2025-11-30 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -853,7 +842,7 @@ CREATE TABLE `status` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -861,7 +850,7 @@ CREATE TABLE `status` (
 --
 
 INSERT INTO `status` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'státusz_tipus1', 1, '2025-12-01 00:00:00'),
+(1, 'státusz_tipus1', 1, '2025-11-30 23:00:00'),
 (2, 'státusz_tipus2', 0, NULL);
 
 -- --------------------------------------------------------
@@ -876,7 +865,7 @@ CREATE TABLE `student` (
   `instructor_id` int(10) DEFAULT NULL,
   `user_id` int(10) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -905,11 +894,11 @@ CREATE TABLE `user` (
   `gender` varchar(50) NOT NULL,
   `password` longtext NOT NULL,
   `role_id` int(11) DEFAULT '1',
-  `pfp_path` longtext,
+  `pfp_path` varchar(255) NOT NULL DEFAULT 'assets/icons/defaultProfileImg.svg',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_login` datetime DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   `school_administrator_id` int(11) DEFAULT NULL,
   `education_id` int(11) NOT NULL,
   `verification_code` longtext
@@ -920,17 +909,17 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`, `verification_code`) VALUES
-(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, NULL, '2025-10-07 14:06:32', '2025-11-16 20:34:58', 1, '2025-12-01 00:00:00', NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
-(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, NULL, '2025-10-07 14:06:59', '2025-11-16 20:49:42', 0, NULL, NULL, 1, NULL),
-(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, NULL, '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
-(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, NULL, '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
-(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, NULL, '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
-(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, NULL, '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
-(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, NULL, '2025-10-07 14:09:52', '2025-11-16 20:18:46', 0, NULL, 2, 1, NULL),
-(11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, NULL, '2025-11-16 10:34:22', NULL, 1, '2025-11-16 13:12:05', NULL, 1, NULL),
-(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'pfp_path', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
-(13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'A', '2000-01-01', 'gender', 'password', 3, NULL, '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
-(14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a', '1990-01-01', 'a', 'jelszo', 3, NULL, '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL);
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:32', '2025-11-16 19:34:58', 1, '2025-11-30 23:00:00', NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
+(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:59', '2025-11-16 19:49:42', 0, NULL, NULL, 1, NULL),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
+(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
+(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
+(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:52', '2025-11-16 19:18:46', 0, NULL, 2, 1, NULL),
+(11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, 'assets/icons/defaultProfileImg.svg', '2025-11-16 10:34:22', NULL, 1, '2025-11-16 12:12:05', NULL, 1, NULL),
+(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'assets/icons/defaultProfileImg.svg', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
+(13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'A', '2000-01-01', 'gender', 'password', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
+(14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a', '1990-01-01', 'a', 'jelszo', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL);
 
 -- --------------------------------------------------------
 
@@ -945,7 +934,7 @@ CREATE TABLE `vehicle` (
   `type_id` int(10) NOT NULL,
   `fuel_type_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -969,7 +958,7 @@ CREATE TABLE `vehicle_type` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -977,7 +966,7 @@ CREATE TABLE `vehicle_type` (
 --
 
 INSERT INTO `vehicle_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'Auto', 1, '2025-12-01 00:00:00'),
+(1, 'Auto', 1, '2025-11-30 23:00:00'),
 (2, 'Robogó', 0, NULL),
 (3, 'Nagy motor', 0, NULL),
 (4, 'Busz', 0, NULL),
