@@ -3,7 +3,7 @@
   color: white;
   padding: 15px;
   width: 120px;
-  height: 100%;
+  height: 100vh;
 }
 
 #navbar:hover {
@@ -11,7 +11,7 @@
   color: white;
   padding: 25px;
   width: 360px;
-  height: 100%;
+  height: 100vh;
 }
 /*------------------*/
 
