@@ -31,22 +31,23 @@ public class InstructorService {
                 return ResponseEntity.status(422).build();
             }
 
-            ArrayList<String> statusTypes = new ArrayList<>(Arrays.asList("accept", "refuse"));
             InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
 
-            if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
+            if (searchedJoinRequest == null ||  searchedJoinRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!statusTypes.contains(status)) {
-                return null;
+            } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
+                return ResponseEntity.status(415).build();
             } else {
-                if (status.equals("accept")) {
+                if (status.trim().equals("accept")) {
                     Students student = searchedJoinRequest.getInstructorJoinRequestStudent();
                     student.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
 
                     studentRepository.save(student);
                     searchedJoinRequest.setIsAccepted(true);
-                } else {
+                } else if (status.trim().equals("refuse")) {
                     searchedJoinRequest.setIsAccepted(false);
+                } else {
+                    return ResponseEntity.internalServerError().build();
                 }
                 searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
@@ -64,7 +65,7 @@ public class InstructorService {
             }
 
             Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
@@ -82,7 +83,7 @@ public class InstructorService {
             }
 
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 instructorRepository.deleteInstructor(instructorId);
@@ -101,7 +102,7 @@ public class InstructorService {
             }
 
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedInstructor.getDrivingLessonRequestList());
@@ -121,7 +122,7 @@ public class InstructorService {
             if (updatedInstructor.getId() == null || updatedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (!validateVehicle(updatedInstructor.getVehicle())) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
             } else {
                 return ResponseEntity.ok().body(instructorRepository.save(updatedInstructor));
             }
@@ -138,13 +139,13 @@ public class InstructorService {
             }
 
             InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
-            if (searchedJoinRequest == null || searchedJoinRequest.getId() == null || searchedJoinRequest.getIsDeleted()) {
+            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                if (!status.equals("accept") && !status.equals("refuse")) {
-                    return ResponseEntity.status(417).build();
+                if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
+                    return ResponseEntity.status(415).build();
                 } else {
-                    if (status.equals("accept")) {
+                    if (status.trim().equals("accept")) {
                         searchedJoinRequest.setIsAccepted(true);
                         searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
 
@@ -152,7 +153,7 @@ public class InstructorService {
                         newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
                         studentRepository.save(newStudent);
 
-                    } else if (status.equals("refuse")) {
+                    } else if (status.trim().equals("refuse")) {
                         searchedJoinRequest.setIsAccepted(false);
                     } else {
                         return ResponseEntity.internalServerError().build();
@@ -174,12 +175,12 @@ public class InstructorService {
                 return ResponseEntity.status(422).build();
             } else {
                 DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
-                if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+                if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                     return ResponseEntity.notFound().build();
                 }
 
                 if (!status.equals("accept") && !status.equals("refuse")) {
-
+                    return ResponseEntity.status(415).build();
                 } else {
                     if (status.equals("accept")) {
 
@@ -202,7 +203,7 @@ public class InstructorService {
             }
 
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
-            if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
+            if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(name, fuelTypeId);
@@ -226,7 +227,7 @@ public class InstructorService {
             }
 
             Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedInstructor);
@@ -244,10 +245,10 @@ public class InstructorService {
             }
 
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (!validateVehicle(addedVehicle)) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
             } else {
                 Vehicle newVehicle = vehicleRepository.save(addedVehicle);
                 searchedInstructor.setVehicle(newVehicle);
@@ -278,3 +279,13 @@ public class InstructorService {
         }
     }
 }
+
+/*
+ * HTTP STATUS KODOK:
+ *   - 200: Sikeres muvelet
+ *   - 404: Not Found
+ *   - 409: Mar foglalt nev
+ *   - 415: Unsupported Media Type --> Ha az adott adat invalid
+ *   - 422: Hianyzo parameter/response body
+ *   - 500: Internal Server Error
+ * */

@@ -32,18 +32,18 @@ public class RequestService {
                 return ResponseEntity.status(422).build();
             }
 
-            School searchedSchool = schoolRepository.findById(schoolId).get();
-            Users searchedUser = userRepository.findById(userId).get();
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+            Users searchedUser = userRepository.getUser(userId).orElse(null);
             ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
 
             if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!roleList.contains(requestedRole)) {
+            } else if (!roleList.contains(requestedRole.trim())) {
                 return ResponseEntity.notFound().build();
             } else {
-                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(requestedRole, searchedUser, searchedSchool);
+                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(requestedRole.trim(), searchedUser, searchedSchool);
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }
@@ -59,12 +59,12 @@ public class RequestService {
                 return ResponseEntity.status(422).build();
             }
 
-            Students searchedStudent = studentRepository.findById(studentId).get();
-            Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
+            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
-            if (searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
@@ -85,7 +85,7 @@ public class RequestService {
 
             SchoolJoinRequest searchedRequest = schoolJoinRequestRepository.getSchoolJoinRequest(id).orElse(null);
 
-            if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(schoolJoinRequestRepository.deleteSchoolJoinRequest(id));
@@ -104,7 +104,7 @@ public class RequestService {
 
             InstructorJoinRequest searchedRequest = instructorJoinRequestRepository.getInstructorJoinRequest(id).orElse(null);
 
-            if (searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.deleteInstructorJoinRequest(id));
@@ -122,14 +122,14 @@ public class RequestService {
             }
 
             if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartHour(), addedDrivingLessonRequest.getStartMin(), addedDrivingLessonRequest.getEndHour(), addedDrivingLessonRequest.getEndMin())) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
             } else {
                 Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
                 Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
 
-                if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+                if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                     return ResponseEntity.notFound().build();
-                } else if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+                } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                     return ResponseEntity.notFound().build();
                 } else {
                     drivingLessonRequestRepository.save(addedDrivingLessonRequest);
@@ -152,9 +152,11 @@ public class RequestService {
             Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
             School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
 
-            if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 examRequestRepository.save(addedExamRequest);
@@ -173,7 +175,7 @@ public class RequestService {
 
             DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
 
-            if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 drivingLessonRequestRepository.deleteDrivingLessonRequest(requestId);
@@ -192,7 +194,7 @@ public class RequestService {
             }
 
             ExamRequest searchedRequest = examRequestRepository.getExamRequest(requestId).orElse(null);
-            if (searchedRequest == null || searchedRequest.getId() == null || searchedRequest.getIsDeleted()) {
+            if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 examRequestRepository.deleteExamRequest(requestId);
@@ -204,3 +206,13 @@ public class RequestService {
         }
     }
 }
+
+/*
+ * HTTP STATUS KODOK:
+ *   - 200: Sikeres muvelet
+ *   - 404: Not Found
+ *   - 409: Mar foglalt nev
+ *   - 415: Unsupported Media Type --> Ha az adott adat invalid
+ *   - 422: Hianyzo parameter/response body
+ *   - 500: Internal Server Error
+ * */

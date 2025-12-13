@@ -29,7 +29,7 @@ public class DrivingLessonService {
 
             Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
 
-            if (searchedStudent == null || searchedStudent.getId() == null || searchedStudent.getIsDeleted()) {
+            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedStudent.getDrivingLessons());
@@ -47,7 +47,7 @@ public class DrivingLessonService {
             }
 
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLessonByID(drivingLessonId).orElse(null);
-            if (searchedDrivingLesson == null || searchedDrivingLesson.getId() == null) {
+            if (searchedDrivingLesson == null || searchedDrivingLesson.getIsCancelled()) {
                 return ResponseEntity.notFound().build();
             } else {
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
@@ -59,3 +59,13 @@ public class DrivingLessonService {
         }
     }
 }
+
+/*
+ * HTTP STATUS KODOK:
+ *   - 200: Sikeres muvelet
+ *   - 404: Not Found
+ *   - 409: Mar foglalt nev
+ *   - 415: Unsupported Media Type --> Ha az adott adat invalid
+ *   - 422: Hianyzo parameter/response body
+ *   - 500: Internal Server Error
+ * */

@@ -35,12 +35,12 @@ public class SchoolService {
 
             SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId).orElse(null);
 
-            if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getId() == null || searchedSchoolJoinRequest.getIsDeleted()) {
+            if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!status.equals("accept") || !status.equals("refuse")) {
-                return null;
+            } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
+                return ResponseEntity.status(415).build();
             } else {
-                if (status.equals("accept")) {
+                if (status.trim().equals("accept")) {
                     if (searchedSchoolJoinRequest.getRequestedRole().equals("student")) {
                         Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
                         studentRepository.save(newStudent);
@@ -66,12 +66,12 @@ public class SchoolService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (schoolRepository.getSchool(updatedSchool.getId()) == null) {
+            if (schoolRepository.getSchool(updatedSchool.getId()).orElse(null) == null) {
                 return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail())) {
-                return ResponseEntity.status(417).build();
-            } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone())) {
-                return ResponseEntity.status(417).build();
+            } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail().trim())) {
+                return ResponseEntity.status(415).build();
+            } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone().trim())) {
+                return ResponseEntity.status(415).build();
             } else {
                 return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
             }
@@ -89,7 +89,7 @@ public class SchoolService {
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 String filePath = "" + File.separator + bannerImg.getOriginalFilename();
@@ -120,16 +120,17 @@ public class SchoolService {
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (newOpeningDetails.getId() != null) {
                 return null;
             } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(417).build();
-            } else if (!dayNames.contains(newOpeningDetails.getDay())) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
+            } else if (!dayNames.contains(newOpeningDetails.getDay().trim())) {
+                return ResponseEntity.status(415).build();
             } else {
                 List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
+                newOpeningDetails.setDay(newOpeningDetails.getDay().trim());
                 openingDetailsList.add(newOpeningDetails);
                 searchedSchool.setOpeningDetails(openingDetailsList);
                 return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
@@ -148,15 +149,16 @@ public class SchoolService {
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
 
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (updatedOpeningDetails.getId() != null) {
                 return null;
             } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
             } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
-                return ResponseEntity.status(417).build();
+                return ResponseEntity.status(415).build();
             } else {
+                updatedOpeningDetails.setDay(updatedOpeningDetails.getDay().trim());
                 openingDetailRepository.save(updatedOpeningDetails);
                 return ResponseEntity.ok().body(schoolRepository.getSchool(id).orElse(null));
             }
@@ -173,7 +175,7 @@ public class SchoolService {
             }
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
@@ -191,7 +193,7 @@ public class SchoolService {
             }
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
@@ -209,7 +211,7 @@ public class SchoolService {
             }
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-            if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 schoolRepository.deleteSchool(id);
@@ -223,7 +225,7 @@ public class SchoolService {
 
     public ResponseEntity<List<School>> getSchoolBySearch(String name, String town) {
         try {
-            if (name == null || town.equals("")) {
+            if (name == null || town.trim().equals("")) {
                 return ResponseEntity.status(422).build();
             } else {
                 List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
@@ -245,11 +247,11 @@ public class SchoolService {
                 return ResponseEntity.status(422).build();
             }
 
-            School searchedShcool = schoolRepository.getSchool(id).orElse(null);
-            if (searchedShcool == null || searchedShcool.getId() == null || searchedShcool.getIsDeleted()) {
+            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedShcool);
+                return ResponseEntity.ok().body(searchedSchool);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,3 +259,13 @@ public class SchoolService {
         }
     }
 }
+
+/*
+ * HTTP STATUS KODOK:
+ *   - 200: Sikeres muvelet
+ *   - 404: Not Found
+ *   - 409: Mar foglalt nev
+ *   - 415: Unsupported Media Type --> Ha az adott adat invalid
+ *   - 422: Hianyzo parameter/response body
+ *   - 500: Internal Server Error
+ * */

@@ -71,20 +71,20 @@ public class ReviewService {
                 return ResponseEntity.status(422).build();
             }
 
-            Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
-            School searchedSchool = schoolRepository.findById(schoolId).get();
+            Students authorStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
 
-            if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
+            if (authorStudent == null || authorStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (searchedSchool == null || searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (newReview.getId() != null) {
-                return null;
+                return ResponseEntity.status(415).build();
             } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-                return null;
+                return ResponseEntity.status(415).build();
             } else {
                 newReview.setAboutSchool(searchedSchool);
-                newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+                newReview.setReviewAuthor(authorStudent);
                 return ResponseEntity.ok().body(reviewRepository.save(newReview));
             }
         } catch (Exception e) {
@@ -99,12 +99,12 @@ public class ReviewService {
                 return ResponseEntity.status(422).build();
             }
 
-            Students authorStudent = studentRepository.findById(newReview.getReviewAuthor().getId()).get();
-            Instructors searchedInstructor = instructorRepository.findById(instructorId).get();
+            Students authorStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
+            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
-            if (authorStudent == null || authorStudent.getId() == null || authorStudent.getIsDeleted()) {
+            if (authorStudent == null || authorStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (searchedInstructor == null || searchedInstructor.getId() == null || searchedInstructor.getIsDeleted()) {
+            } else if (searchedInstructor == null|| searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (newReview.getId() != null) {
                 return null;
@@ -112,7 +112,7 @@ public class ReviewService {
                 return null;
             } else {
                 newReview.setAboutInstructor(searchedInstructor);
-                newReview.setReviewAuthor(studentRepository.findById(newReview.getReviewAuthor().getId()).get());
+                newReview.setReviewAuthor(authorStudent);
                 return ResponseEntity.ok().body(reviewRepository.save(newReview));
             }
         } catch (Exception e) {
@@ -127,8 +127,8 @@ public class ReviewService {
                 return ResponseEntity.status(422).build();
             }
 
-            Review searchedReview = reviewRepository.findById(updatedReview.getId()).get();
-            if (searchedReview == null || searchedReview.getId() == null) {
+            Review searchedReview = reviewRepository.getReview(updatedReview.getId()).orElse(null);
+            if (searchedReview == null || searchedReview.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
@@ -146,7 +146,7 @@ public class ReviewService {
             }
 
             Review searchedReview = reviewRepository.getReview(id).orElse(null);
-            if (searchedReview == null) {
+            if (searchedReview == null || searchedReview.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
                 reviewRepository.deleteReview(id);
@@ -158,3 +158,13 @@ public class ReviewService {
         }
     }
 }
+
+/*
+ * HTTP STATUS KODOK:
+ *   - 200: Sikeres muvelet
+ *   - 404: Not Found
+ *   - 409: Mar foglalt nev
+ *   - 415: Unsupported Media Type --> Ha az adott adat invalid
+ *   - 422: Hianyzo parameter/response body
+ *   - 500: Internal Server Error
+ * */
