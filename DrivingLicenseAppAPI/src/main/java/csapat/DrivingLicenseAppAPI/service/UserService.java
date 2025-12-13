@@ -20,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Transactional
 @Service
@@ -55,7 +52,7 @@ public class UserService {
             if (!successFullLogin || loggedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
-            loggedUser.setLastLogin(LocalDateTime.now());
+            loggedUser.setLastLogin(new Date());
             userRepository.save(loggedUser);
 
             JsonNode homePageUser = createHomePageObject(loggedUser);

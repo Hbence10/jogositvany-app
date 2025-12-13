@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -49,7 +50,7 @@ public class InstructorService {
                 } else {
                     return ResponseEntity.internalServerError().build();
                 }
-                searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
+                searchedJoinRequest.setAcceptedAt(new Date());
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
             }
         } catch (Exception e) {
@@ -147,7 +148,7 @@ public class InstructorService {
                 } else {
                     if (status.trim().equals("accept")) {
                         searchedJoinRequest.setIsAccepted(true);
-                        searchedJoinRequest.setAcceptedAt(LocalDateTime.now());
+                        searchedJoinRequest.setAcceptedAt(new Date());
 
                         Students newStudent = searchedJoinRequest.getInstructorJoinRequestStudent();
                         newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());

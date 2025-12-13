@@ -121,7 +121,7 @@ public class RequestService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartHour(), addedDrivingLessonRequest.getStartMin(), addedDrivingLessonRequest.getEndHour(), addedDrivingLessonRequest.getEndMin())) {
+            if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
                 return ResponseEntity.status(415).build();
             } else {
                 Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
