@@ -10,7 +10,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "opening_detail")
@@ -55,7 +55,8 @@ public class OpeningDetails {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
@@ -64,7 +65,7 @@ public class OpeningDetails {
     private School schoolOpeningDetail;
 
     //Constructorok:
-    public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, LocalDateTime deletedAt) {
+    public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, Date deletedAt) {
         this.openingTime = openingTime;
         this.closeTime = closeTime;
         this.day = day;

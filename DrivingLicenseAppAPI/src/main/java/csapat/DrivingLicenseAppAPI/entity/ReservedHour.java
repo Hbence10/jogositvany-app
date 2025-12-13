@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "reserved_hour")
@@ -35,25 +35,17 @@ public class ReservedHour {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "start_hour")
-    @Size(max = 2)
+    @Column(name = "start_time")
     @NotNull
-    private Integer startHour;
+    @Size(max = 2)
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
 
-    @Column(name = "start_minute")
-    @Size(max = 2)
+    @Column(name = "end_time")
     @NotNull
-    private Integer startMinute;
-
-    @Column(name = "end_hour")
     @Size(max = 2)
-    @NotNull
-    private Integer endHour;
-
-    @Column(name = "end_min")
-    @Size(max = 2)
-    @NotNull
-    private Integer endMinute;
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -63,7 +55,8 @@ public class ReservedHour {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})

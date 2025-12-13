@@ -11,7 +11,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -86,7 +85,8 @@ public class Users {
     @Column(name = "last_login")
     @Null
     @JsonIgnore
-    private LocalDateTime lastLogin;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
 
     @Column(name = "is_deleted")
     @JsonIgnore
@@ -133,5 +133,5 @@ public class Users {
     )
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
-    
+
 }

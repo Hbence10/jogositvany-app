@@ -11,7 +11,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -40,25 +39,17 @@ public class DrivingLessonRequest {
     @NotNull
     private Date date;
 
-    @Column(name = "start_hour")
+    @Column(name = "start_time")
     @NotNull
     @Size(max = 2)
-    private Integer startHour;
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
 
-    @Column(name = "start_min")
+    @Column(name = "end_time")
     @NotNull
     @Size(max = 2)
-    private Integer startMin;
-
-    @Column(name = "end_hour")
-    @NotNull
-    @Size(max = 2)
-    private Integer endHour;
-
-    @Column(name = "end_min")
-    @NotNull
-    @Size(max = 2)
-    private Integer endMin;
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -68,7 +59,8 @@ public class DrivingLessonRequest {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})

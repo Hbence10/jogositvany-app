@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "driving_lesson")
@@ -80,7 +80,8 @@ public class DrivingLessons {
     @Column(name = "cancelled_at")
     @Null
     @JsonIgnore
-    private LocalDateTime cancelledAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cancelledAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
