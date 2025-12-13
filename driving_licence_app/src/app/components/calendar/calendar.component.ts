@@ -7,5 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-  hours: number[]=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+  // days: string[] = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
+  // day: any = { monday: [1] , tuesday: [1, 2, 3], wednesday: [1, 2], thursday: [1, 2], friday: [1, 2], saturday: [1, 2], sunday: [1, 2] };
+  days: {name: string, lessons: number[]}[] = [
+    { name: 'Hétfő', lessons: [1] },
+    { name: 'Kedd', lessons: [1, 2, 3] },
+    { name: 'Szerda', lessons: [1, 2] },
+    { name: 'Csütörtök', lessons: [1, 2] },
+    { name: 'Péntek', lessons: [1, 2] },
+    { name: 'Szombat', lessons: [1, 2] },
+    { name: 'Vasárnap', lessons: [1, 2] }
+  ]
 }

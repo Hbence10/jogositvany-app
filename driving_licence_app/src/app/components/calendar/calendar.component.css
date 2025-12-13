@@ -2,30 +2,29 @@
   width: 425px;
 }
 
-.day {
-  width: 200px;
-  height: 80px;
+.lessonBox {
+  width: 220px;
+  height: 500px;
+  margin: 0px;
+  background-color: #626C99;
+  overflow-y: auto;
+  overflow: hidden;
+}
+
+.lessonItem {
+  width: 170px;
+  height: 90px;
+  margin: 30px 15px 0px 15px;
   background-color: #22354f;
-  margin: 25px;
-  text-align: center;
+  border-radius: 10px;
 }
 
-.lesson {
-  width: 200px;
-  height: 60px;
-  margin: 25px;
-  background-color: #626c99;
-  text-align: center;
+.lessons {
+  margin: 15px;
 }
 
-div {
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-}
-
-.box {
-  width: 200px;
+.request {
+  width: 220px;
   height: 60px;
   background-color: #0ACF83;
   margin: 15px;
@@ -33,7 +32,7 @@ div {
 }
 
 .days {
-  width: 200px;
+  width: 220px;
   height: 80px;
   background-color: #22354F;
   margin: 15px;
