@@ -41,7 +41,7 @@ public class StudentController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer id){
+    private ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer id) {
         return studentService.deleteStudent(id);
     }
 }

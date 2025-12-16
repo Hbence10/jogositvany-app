@@ -2,7 +2,6 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -155,7 +154,7 @@ public class DrivingLessonService {
             }
 
             DrivingLessons searchedDLesson = drivingLessonRepository.getDrivingLessonByID(id).orElse(null);
-            if (searchedDLesson == null || searchedDLesson.getIsCancelled()){
+            if (searchedDLesson == null || searchedDLesson.getIsCancelled()) {
                 return ResponseEntity.notFound().build();
             } else {
                 searchedDLesson.setIsEnd(true);

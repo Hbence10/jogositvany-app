@@ -65,7 +65,7 @@ public class DrivingLessonController {
 
     @Operation(summary = "Vezetési óra kérelem elfogadása")
     @Parameters({
-            @Parameter(name ="id",description ="A vezetési óra kérelemhez tartozó id",in =ParameterIn.PATH,required =true),
+            @Parameter(name = "id", description = "A vezetési óra kérelemhez tartozó id", in = ParameterIn.PATH, required = true),
             @Parameter(name = "status", description = "")
     })
     @ApiResponses({
@@ -105,8 +105,8 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "")
     })
     @PutMapping("/{id}/reschedule")
-    public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("lessonId") Integer lessonId ,@RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
-        return drivingLessonService.rescheduleDrivingLesson(lessonId,newDateText, newStartHour, newEndHour);
+    public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("lessonId") Integer lessonId, @RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
+        return drivingLessonService.rescheduleDrivingLesson(lessonId, newDateText, newStartHour, newEndHour);
     }
 
     @Operation(summary = "Befejezetté jelölés", description = "")

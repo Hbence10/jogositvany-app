@@ -3,8 +3,6 @@ package csapat.DrivingLicenseAppAPI.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
-import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
-import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,9 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/request")
@@ -34,7 +29,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/school")
-    private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody){
+    private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody) {
         return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asInt(), requestBody.get("userId").asInt(), requestBody.get("requestedRole").asText());
     }
 
@@ -47,7 +42,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/instructor")
-    private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody JsonNode requestBody){
+    private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody JsonNode requestBody) {
         return requestService.sendInstructorJoinRequest(requestBody.get("studentId").asInt(), requestBody.get("instructorId").asInt());
     }
 
@@ -60,7 +55,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/school/{id}")
-    private ResponseEntity<Object> deleteSchoolJoinRequest(@PathVariable("id") Integer id){
+    private ResponseEntity<Object> deleteSchoolJoinRequest(@PathVariable("id") Integer id) {
         return requestService.deleteSchoolJoinRequest(id);
     }
 
@@ -73,7 +68,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/instructor/{id}")
-    private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id){
+    private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id) {
         return requestService.deleteInstructorJoinRequest(id);
     }
 
@@ -86,7 +81,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> addDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest){
+    private ResponseEntity<Object> addDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
         return requestService.addDrivingLessonRequest(addedDrivingLessonRequest);
     }
 
@@ -99,7 +94,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/exam")
-    private ResponseEntity<Object> addExamRequest(@RequestBody ExamRequest addedExamRequest){
+    private ResponseEntity<Object> addExamRequest(@RequestBody ExamRequest addedExamRequest) {
         return requestService.addExamRequest(addedExamRequest);
     }
 
@@ -112,7 +107,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/drivingLesson/{id}")
-    private ResponseEntity<Object> deleteDrivingLessonRequest(@PathVariable("id") Integer id){
+    private ResponseEntity<Object> deleteDrivingLessonRequest(@PathVariable("id") Integer id) {
         return requestService.deleteDrivingLessonRequest(id);
     }
 
@@ -125,7 +120,7 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/exam/{id}")
-    private ResponseEntity<Object> deleteExamRequest(@PathVariable("id") Integer id){
+    private ResponseEntity<Object> deleteExamRequest(@PathVariable("id") Integer id) {
         return requestService.deleteExamRequest(id);
     }
 }

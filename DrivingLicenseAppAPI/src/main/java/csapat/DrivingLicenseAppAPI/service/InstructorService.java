@@ -271,7 +271,8 @@ public class InstructorService {
 
             if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
                 return false;
-            } else return searchedVehicleType != null && searchedVehicleType.getId() != null && !searchedVehicleType.getIsDeleted();
+            } else
+                return searchedVehicleType != null && searchedVehicleType.getId() != null && !searchedVehicleType.getIsDeleted();
         } else {
             return false;
         }

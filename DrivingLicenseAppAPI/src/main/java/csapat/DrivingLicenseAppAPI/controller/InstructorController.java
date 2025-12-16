@@ -108,8 +108,8 @@ public class InstructorController {
 
     @Operation(summary = "Oktatók keresése", description = "")
     @Parameters({
-        @Parameter(name = "name", description = "Az oktató neve", required = false, in = ParameterIn.QUERY),
-        @Parameter(name = "vehicle", description = "Az oktatóhoz tartozó autó tankolási tipusának az id-ja", required = false, in = ParameterIn.QUERY)
+            @Parameter(name = "name", description = "Az oktató neve", required = false, in = ParameterIn.QUERY),
+            @Parameter(name = "vehicle", description = "Az oktatóhoz tartozó autó tankolási tipusának az id-ja", required = false, in = ParameterIn.QUERY)
     })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = ""),
@@ -145,7 +145,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/{id}/vehicle")
-    private ResponseEntity<Object> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId){
+    private ResponseEntity<Object> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId) {
         return instructorService.addVehicle(addedVehicle, instructorId);
     }
 }
