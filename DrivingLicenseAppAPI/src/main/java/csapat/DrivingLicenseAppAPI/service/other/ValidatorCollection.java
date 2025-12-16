@@ -48,14 +48,10 @@ public class ValidatorCollection {
         return phoneServiceCodes.contains(phoneNumber.substring(0, 2)) && phoneNumber.length() == 9;
     }
 
-    public static Boolean startEndValidator(int startHour, int startMinute, int endHour, int endMinute         ) {
+    public static Boolean startEndValidator(int startHour, int startMinute, int endHour, int endMinute) {
         startMinute += (startHour * 60);
         endMinute += (endHour * 60);
 
-        if (startMinute < endMinute){
-            return true;
-        } else {
-            return false;
-        }
+        return startMinute < endMinute;
     }
 }

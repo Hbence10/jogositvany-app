@@ -76,7 +76,7 @@ public class School {
 
     @Column(name = "banner_img_path")
     @NotNull
-    private String bannerImgPath;
+    private String bannerImgPath = "";
 
     @Column(name = "is_deleted")
     @NotNull
@@ -99,7 +99,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-//    @JsonIgnoreProperties({"adminSchool"})
     @JsonIgnore
     private List<Users> adminList;
 

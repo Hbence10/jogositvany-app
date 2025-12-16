@@ -5,7 +5,6 @@ import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
-import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +25,6 @@ import java.util.List;
 public class SchoolController {
 
     private final SchoolService schoolService;
-    private final SchoolRepository schoolRepository;
 
     @Operation(summary = "Iskolához való jelentkezés", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
     @Parameter(name = "id", description = "Az adott csatlakozási kérelemhez tartozó id.", in = ParameterIn.PATH)
@@ -169,5 +167,17 @@ public class SchoolController {
     @GetMapping("/{id}")
     private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id) {
         return schoolService.getSchoolById(id);
+    }
+
+    @Operation(summary = "Iskola létrehozása", description = "")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "", required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres iskola létrehozás"),
+            @ApiResponse(responseCode = "422", description = "Endpoint meghívása requestBody nélkul"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
+    })
+    @PostMapping("")
+    private ResponseEntity<Object> createSchool(@RequestBody School addedSchool) {
+        return null;
     }
 }

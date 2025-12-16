@@ -94,6 +94,7 @@ public class DrivingLessonController {
 
     @Operation(summary = "Időpont módositása", description = "")
     @Parameters({
+            @Parameter(name = "lessonId", description = "", required = true, in = ParameterIn.QUERY),
             @Parameter(name = "newDate", description = "", required = true, in = ParameterIn.QUERY),
             @Parameter(name = "newStart", description = "", required = true, in = ParameterIn.QUERY),
             @Parameter(name = "newEnd", description = "", required = true, in = ParameterIn.QUERY),
@@ -105,7 +106,7 @@ public class DrivingLessonController {
     })
     @PutMapping("/{id}/reschedule")
     public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("lessonId") Integer lessonId ,@RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
-        return drivingLessonService.rescheduleDrivingLesson(Integer lessonId,newDateText, newStartHour, newEndHour);
+        return drivingLessonService.rescheduleDrivingLesson(lessonId,newDateText, newStartHour, newEndHour);
     }
 
     @Operation(summary = "Befejezetté jelölés", description = "")

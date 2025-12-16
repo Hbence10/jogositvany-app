@@ -30,6 +30,7 @@ public class SchoolService {
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
+    private final UserRepository userRepository;
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
@@ -259,6 +260,19 @@ public class SchoolService {
             } else {
                 return ResponseEntity.ok().body(searchedSchool);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> createSchool(School addedSchool) {
+        try {
+            if (addedSchool == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

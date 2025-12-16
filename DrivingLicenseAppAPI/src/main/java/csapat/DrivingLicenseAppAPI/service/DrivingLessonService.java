@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,7 @@ public class DrivingLessonService {
             if (searchedDrivingLesson == null || searchedDrivingLesson.getIsCancelled()) {
                 return ResponseEntity.notFound().build();
             } else {
+                reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
                 return ResponseEntity.ok().build();
             }
@@ -135,6 +137,7 @@ public class DrivingLessonService {
                 return ResponseEntity.notFound().build();
             } else {
                 reservedHourRepository.deleteReservedHour(searchedLesson.getReservedHour().getId());
+
 
             }
 
