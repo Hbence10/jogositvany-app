@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 13. 08:58
+-- Létrehozás ideje: 2025. Dec 16. 11:43
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -363,12 +363,12 @@ DELIMITER ;
 
 CREATE TABLE `driving_lesson` (
   `id` int(11) NOT NULL,
-  `start_km` int(7) NOT NULL,
-  `end_km` int(7) NOT NULL,
-  `location` varchar(100) NOT NULL,
-  `pick_up_place` varchar(100) NOT NULL,
-  `drop_off_place` varchar(100) NOT NULL,
-  `lesson_hour_number` int(1) NOT NULL,
+  `start_km` int(7) DEFAULT NULL,
+  `end_km` int(7) DEFAULT NULL,
+  `location` varchar(100) DEFAULT NULL,
+  `pick_up_place` varchar(100) DEFAULT NULL,
+  `drop_off_place` varchar(100) DEFAULT NULL,
+  `lesson_hour_number` int(1) DEFAULT NULL,
   `is_paid` tinyint(1) NOT NULL DEFAULT '0',
   `payment_method_id` int(10) NOT NULL,
   `hour_id` int(11) NOT NULL,
@@ -804,8 +804,8 @@ CREATE TABLE `school` (
 --
 
 INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
-(2, 'AutosIskola1', 'iskola@gmail.com', 'a', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL),
-(3, 'Iskola2', 'iskola2@gmail.com', 'A', 'Orszag', 'Varos', 'Cim', 'promo', 'banner', 12, 0, NULL);
+(2, 'AutosIskola1', 'iskola@gmail.com', 'a1', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL),
+(3, 'Iskola2', 'iskola2@gmail.com', 'a2', 'Orszag', 'Varos', 'Cim', 'promo', 'banner', 12, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -889,12 +889,12 @@ CREATE TABLE `user` (
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `phone` varchar(50) NOT NULL,
+  `phone` varchar(11) NOT NULL,
   `birth_date` date NOT NULL,
-  `gender` varchar(50) NOT NULL,
+  `gender` varchar(6) NOT NULL,
   `password` longtext NOT NULL,
   `role_id` int(11) DEFAULT '1',
-  `pfp_path` varchar(255) NOT NULL DEFAULT 'assets/icons/defaultProfileImg.svg',
+  `pfp_path` longtext NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_login` timestamp NULL DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
@@ -910,16 +910,16 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_administrator_id`, `education_id`, `verification_code`) VALUES
 (1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:32', '2025-11-16 19:34:58', 1, '2025-11-30 23:00:00', NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
-(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:59', '2025-11-16 19:49:42', 0, NULL, NULL, 1, NULL),
-(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
-(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
-(5, 'Tanuló4', 'Tanuló4', 'bzhalmai3@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
-(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
-(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:52', '2025-11-16 19:18:46', 0, NULL, 2, 1, NULL),
+(2, 'Tanuló2', 'Tanuló2', 'bzhalmai2@gmail.com', 'a2', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:59', '2025-11-16 19:49:42', 0, NULL, NULL, 1, NULL),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a3', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:04', NULL, 0, NULL, NULL, 1, NULL),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a4', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:09', NULL, 0, NULL, NULL, 1, NULL),
+(5, 'Tanuló4', 'Tanuló4', 'bzhalmai6@gmail.com', 'a5', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
+(6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a6', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
+(7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a7', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:52', '2025-11-16 19:18:46', 0, NULL, 2, 1, NULL),
 (11, 'firstName', 'lastName', 'sulisdolgok8@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 1, 'assets/icons/defaultProfileImg.svg', '2025-11-16 10:34:22', NULL, 1, '2025-11-16 12:12:05', NULL, 1, NULL),
-(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'A', '2000-01-01', 'Gender', 'jelszo', 6, 'assets/icons/defaultProfileImg.svg', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
-(13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'A', '2000-01-01', 'gender', 'password', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
-(14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a', '1990-01-01', 'a', 'jelszo', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL);
+(12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'a8', '2000-01-01', 'Gender', 'jelszo', 6, 'assets/icons/defaultProfileImg.svg', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
+(13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'a9', '2000-01-01', 'gender', 'password', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
+(14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a10', '1990-01-01', 'a', 'jelszo', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL);
 
 -- --------------------------------------------------------
 
@@ -929,9 +929,9 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 
 CREATE TABLE `vehicle` (
   `id` int(11) NOT NULL,
-  `license_plate` varchar(10) NOT NULL,
+  `license_plate` varchar(9) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `type_id` int(10) NOT NULL,
+  `type_id` int(11) NOT NULL,
   `fuel_type_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1045,6 +1045,7 @@ ALTER TABLE `fuel_type`
 --
 ALTER TABLE `instructor`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `vehicle_id` (`vehicle_id`),
   ADD KEY `instructor` (`user_id`),
   ADD KEY `school` (`school_id`),
   ADD KEY `vehicle` (`vehicle_id`);
@@ -1111,6 +1112,8 @@ ALTER TABLE `role`
 --
 ALTER TABLE `school`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `phone` (`phone`),
   ADD KEY `admin` (`owner_id`);
 
 --
@@ -1141,6 +1144,8 @@ ALTER TABLE `student`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `phone` (`phone`),
   ADD KEY `role` (`role_id`),
   ADD KEY `school_admin` (`school_administrator_id`),
   ADD KEY `education` (`education_id`);
@@ -1150,6 +1155,7 @@ ALTER TABLE `user`
 --
 ALTER TABLE `vehicle`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `license_plate` (`license_plate`),
   ADD KEY `type` (`type_id`),
   ADD KEY `fuel` (`fuel_type_id`);
 
@@ -1179,7 +1185,7 @@ ALTER TABLE `driving_lesson_instructor`
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_type`
