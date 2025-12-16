@@ -48,6 +48,7 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni."),
+            @ApiResponse(responseCode = "409", description = ""),
             @ApiResponse(responseCode = "415", description = "Felépitésben nem megfelelő email cím vagy telefonszám."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),

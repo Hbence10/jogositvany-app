@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class InstructorService {
 
             InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
 
-            if (searchedJoinRequest == null ||  searchedJoinRequest.getIsDeleted()) {
+            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
                 return ResponseEntity.status(415).build();
@@ -116,7 +114,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Instructors> updateInstructor(Instructors updatedInstructor) {
+    public ResponseEntity<Object> updateInstructor(Instructors updatedInstructor) {
         try {
             if (updatedInstructor == null) {
                 return ResponseEntity.status(422).build();
@@ -129,6 +127,8 @@ public class InstructorService {
             } else {
                 return ResponseEntity.ok().body(instructorRepository.save(updatedInstructor));
             }
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(409).body("duplicateLicensePlate");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -238,7 +238,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Vehicle> addVehicle(Vehicle addedVehicle, Integer instructorId){
+    public ResponseEntity<Object> addVehicle(Vehicle addedVehicle, Integer instructorId) {
         try {
             if (addedVehicle == null || instructorId == null) {
                 return ResponseEntity.status(422).build();
@@ -255,6 +255,8 @@ public class InstructorService {
                 instructorRepository.save(searchedInstructor);
                 return ResponseEntity.ok().body(newVehicle);
             }
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(409).body("duplicateLicensePlate");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -262,18 +264,14 @@ public class InstructorService {
     }
 
     //
-    public Boolean validateVehicle(Vehicle wantedVehicle){
-        if (wantedVehicle.getLicensePlate().length() == 6 || wantedVehicle.getLicensePlate().length() == 8){
+    public Boolean validateVehicle(Vehicle wantedVehicle) {
+        if (wantedVehicle.getLicensePlate().length() == 7 || wantedVehicle.getLicensePlate().length() == 9) {
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId()).orElse(null);
             VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId()).orElse(null);
 
-            if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()){
+            if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
                 return false;
-            } else if (searchedVehicleType == null || searchedVehicleType.getId() == null || searchedVehicleType.getIsDeleted()){
-                return false;
-            } else {
-                return true;
-            }
+            } else return searchedVehicleType != null && searchedVehicleType.getId() != null && !searchedVehicleType.getIsDeleted();
         } else {
             return false;
         }

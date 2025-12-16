@@ -111,6 +111,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", useReturnTypeSchema = true),
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.", useReturnTypeSchema = false),
+            @ApiResponse(responseCode = "409", description = ""),
             @ApiResponse(responseCode = "415", description = "A felhasználó felépítésében helytelen email címet, jelszót vagy telefonszámot adott meg."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),

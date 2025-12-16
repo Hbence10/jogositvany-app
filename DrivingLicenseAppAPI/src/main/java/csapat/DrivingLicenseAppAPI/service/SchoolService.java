@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
@@ -79,6 +80,10 @@ public class SchoolService {
             } else {
                 return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
             }
+        } catch (DataIntegrityViolationException e) {
+            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return ResponseEntity.status(409).body(errorMsg);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

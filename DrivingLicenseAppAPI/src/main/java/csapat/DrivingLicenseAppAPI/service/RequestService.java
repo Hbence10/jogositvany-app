@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service

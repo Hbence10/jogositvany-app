@@ -83,12 +83,13 @@ public class InstructorController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = ""),
             @ApiResponse(responseCode = "404", description = ""),
+            @ApiResponse(responseCode = "409", description = ""),
             @ApiResponse(responseCode = "415", description = ""),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PutMapping("")
-    private ResponseEntity<Instructors> updateInstructor(@RequestBody Instructors updatedInstructor) {
+    private ResponseEntity<Object> updateInstructor(@RequestBody Instructors updatedInstructor) {
         return instructorService.updateInstructor(updatedInstructor);
     }
 
@@ -138,12 +139,13 @@ public class InstructorController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = ""),
             @ApiResponse(responseCode = "404", description = ""),
+            @ApiResponse(responseCode = "409", description = ""),
             @ApiResponse(responseCode = "415", description = ""),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/{id}/vehicle")
-    private ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId){
+    private ResponseEntity<Object> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId){
         return instructorService.addVehicle(addedVehicle, instructorId);
     }
 }

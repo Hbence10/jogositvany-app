@@ -36,7 +36,7 @@ public class Vehicle {
     private Integer id;
 
     @Column(name = "license_plate")
-    @Size(max = 10)
+    @Size(max = 9)
     @NotNull
     private String licensePlate;
 

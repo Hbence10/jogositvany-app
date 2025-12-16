@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -77,8 +76,8 @@ public class UserService {
             Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")){
-              return ResponseEntity.status(415).body("invalidGender");
+            } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")) {
+                return ResponseEntity.status(415).body("invalidGender");
             } else if (!ValidatorCollection.emailValidator(newUser.getEmail().trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(newUser.getPhone().trim())) {
@@ -86,7 +85,7 @@ public class UserService {
             } else if (!ValidatorCollection.passwordValidator(newUser.getPassword().trim())) {
                 return ResponseEntity.status(415).body("invalidPassword");
             } else if (newUser.getId() != null) {
-              return ResponseEntity.status(415).body("invalidObject");
+                return ResponseEntity.status(415).body("invalidObject");
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
                 try {
@@ -110,7 +109,7 @@ public class UserService {
     //password reset
     public ResponseEntity<String> getVerificationCode(String email) {
         try {
-            if (email == null){
+            if (email == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -170,7 +169,7 @@ public class UserService {
 
     public ResponseEntity<String> updatePassword(String email, String newPassword) {
         try {
-            if (email == null || newPassword == null){
+            if (email == null || newPassword == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -178,8 +177,7 @@ public class UserService {
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            }
-            else  if (!ValidatorCollection.emailValidator(email.trim())) {
+            } else if (!ValidatorCollection.emailValidator(email.trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.passwordValidator(newPassword.trim())) {
                 return ResponseEntity.status(415).body("invalidPassword");
@@ -217,6 +215,10 @@ public class UserService {
                     return ResponseEntity.ok(result);
                 }
             }
+        } catch (DataIntegrityViolationException e) {
+            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return ResponseEntity.status(409).body(errorMsg);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -225,7 +227,7 @@ public class UserService {
 
     public ResponseEntity<Object> updatePfp(Integer id, MultipartFile pfpFile) {
         try {
-            if (id == null || pfpFile == null){
+            if (id == null || pfpFile == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -234,7 +236,7 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = "" + File.separator + pfpFile.getOriginalFilename();
+                String filePath = File.separator + pfpFile.getOriginalFilename();
 
                 try {
                     FileOutputStream fout = new FileOutputStream(filePath);

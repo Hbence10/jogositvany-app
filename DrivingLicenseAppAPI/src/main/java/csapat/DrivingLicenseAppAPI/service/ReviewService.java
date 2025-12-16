@@ -10,7 +10,6 @@ import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -109,7 +107,7 @@ public class ReviewService {
 
             if (authorStudent == null || authorStudent.getIsDeleted()) {
                 return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedInstructor == null|| searchedInstructor.getIsDeleted()) {
+            } else if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.status(404).body("instructorNotFound");
             } else if (newReview.getId() != null) {
                 return ResponseEntity.status(415).body("invalidObject");

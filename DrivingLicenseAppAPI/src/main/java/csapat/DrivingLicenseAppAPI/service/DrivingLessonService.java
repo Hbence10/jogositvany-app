@@ -25,7 +25,7 @@ public class DrivingLessonService {
     private final ReservedHourRepository reservedHourRepository;
     private final StudentRepository studentRepository;
 
-    public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId){
+    public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId) {
         try {
             if (studentId == null) {
                 return ResponseEntity.status(422).build();
@@ -44,7 +44,7 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId){
+    public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId) {
         try {
             if (drivingLessonId == null) {
                 return ResponseEntity.status(422).build();
