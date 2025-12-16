@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 16. 11:43
+-- Létrehozás ideje: 2025. Dec 16. 11:46
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -295,6 +295,12 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDate` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `reserved_date` WHERE `reserved_date`.`id` = idIN AND `reserved_date`.`is_deleted` = 0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDateByDate` (IN `wantedDateIN` DATE)   BEGIN 
+	SELECT * FROM reserved_date rd
+    WHERE 
+    rd.date = wantedDateIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHour` (IN `idIN` INT)   BEGIN
