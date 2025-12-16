@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 16. 11:46
+-- Létrehozás ideje: 2025. Dec 16. 11:58
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -429,6 +429,7 @@ CREATE TABLE `driving_lesson_request` (
   `date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
+  `lesson_type_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -1009,7 +1010,8 @@ ALTER TABLE `driving_lesson_request`
   ADD PRIMARY KEY (`id`),
   ADD KEY `d_request_student` (`student_id`),
   ADD KEY `d_request_instructor` (`instructor_id`),
-  ADD KEY `d_status` (`status_id`);
+  ADD KEY `d_status` (`status_id`),
+  ADD KEY `d_lesson_type` (`lesson_type_id`);
 
 --
 -- A tábla indexei `driving_lesson_type`
@@ -1345,6 +1347,7 @@ ALTER TABLE `driving_lesson_instructor`
 -- Megkötések a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
+  ADD CONSTRAINT `d_lesson_type` FOREIGN KEY (`lesson_type_id`) REFERENCES `driving_lesson_type` (`id`),
   ADD CONSTRAINT `d_request_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `d_request_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `d_status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
