@@ -4,6 +4,7 @@ import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -44,5 +45,74 @@ public class DrivingLessonController {
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
         return drivingLessonService.cancelDrivingLesson(id);
+    }
+
+    @Operation(summary = "Az órák visszaszerzése két dátum között.", description = "")
+    @Parameters({
+            @Parameter(name = "startDate", description = "", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "endDate", description = "", in = ParameterIn.QUERY, required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés"),
+            @ApiResponse(responseCode = "422", description = "Az endpoint meghivása parameterek nélkul"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
+
+    })
+    @GetMapping("")
+    public ResponseEntity<Object> getDrivingLessonInformationsBetweenTwoDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        return drivingLessonService.getDrivingLessonInformationBetweenTwoDate(startDate, endDate);
+    }
+
+    @Operation(summary = "Vezetési óra kérelem elfogadása")
+    @Parameter(name = "id", description = "A vezetési óra kérelemhez tartozó id", in = ParameterIn.PATH, required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = ""),
+            @ApiResponse(responseCode = "404", description = ""),
+            @ApiResponse(responseCode = "422", description = ""),
+            @ApiResponse(responseCode = "500", description = "")
+    })
+    @PostMapping("/request/{id}")
+    public ResponseEntity<Object> handleDrivingLessonRequest(@PathVariable("id") Integer id) {
+        return drivingLessonService.handleDrivingLessonRequest(id);
+    }
+
+    @Operation(summary = "A vezetési óra frissitése", description = "A vezetési óra adatainak a frissitése, kivétel az időpont frissitése.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "", required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
+            @ApiResponse(responseCode = "422", description = "Az endpoint meghivása requestBody nélkül."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
+    })
+    @PutMapping("/data")
+    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody DrivingLessons updatedDrivingLesson) {
+        return drivingLessonService.updateDrivingLessonRequest(updatedDrivingLesson);
+    }
+
+    @Operation(summary = "Időpont módositása", description = "")
+    @Parameters({
+            @Parameter(name = "newDate", description = "", required = true, in = ParameterIn.QUERY),
+            @Parameter(name = "newStart", description = "", required = true, in = ParameterIn.QUERY),
+            @Parameter(name = "newEnd", description = "", required = true, in = ParameterIn.QUERY),
+    })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = ""),
+            @ApiResponse(responseCode = "422", description = ""),
+            @ApiResponse(responseCode = "500", description = "")
+    })
+    @PutMapping("/{id}/reschedule")
+    public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
+        return drivingLessonService.rescheduleDrivingLesson(newDateText, newStartHour, newEndHour);
+    }
+
+    @Operation(summary = "Befejezetté jelölés", description = "")
+    @Parameter(name = "id", description = "", in = ParameterIn.PATH, required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = ""),
+            @ApiResponse(responseCode = "422", description = ""),
+            @ApiResponse(responseCode = "500", description = "")
+    })
+    @PatchMapping("/{id}/setEnd")
+    public ResponseEntity<Object> setDrivingLessonEnd(@PathVariable("id") Integer id) {
+        return null;
     }
 }

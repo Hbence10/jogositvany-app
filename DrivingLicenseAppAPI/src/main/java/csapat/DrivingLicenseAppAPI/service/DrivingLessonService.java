@@ -62,6 +62,71 @@ public class DrivingLessonService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> getDrivingLessonInformationBetweenTwoDate(String startDateText, String endDateText) {
+        try {
+            if (startDateText == null || endDateText == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId) {
+        try {
+            if (requestId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> updateDrivingLessonRequest(DrivingLessons updatedDrivingLesson) {
+        try {
+            if (updatedDrivingLesson == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> rescheduleDrivingLesson(String newDateText, Integer newStart, Integer newEnd) {
+        try {
+            if (newDateText == null || newStart == null || newEnd == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> setDrivingLessonEnd(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*
