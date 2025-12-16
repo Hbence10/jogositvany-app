@@ -60,7 +60,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> updateSchool(School updatedSchool) {
+    public ResponseEntity<Object> updateSchool(School updatedSchool) {
         try {
             if (updatedSchool == null) {
                 return ResponseEntity.status(422).build();
@@ -69,9 +69,9 @@ public class SchoolService {
             if (schoolRepository.getSchool(updatedSchool.getId()).orElse(null) == null) {
                 return ResponseEntity.notFound().build();
             } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail().trim())) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone().trim())) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidPhone");
             } else {
                 return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
             }
@@ -81,7 +81,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> changeCoverImg(Integer id, MultipartFile bannerImg) {
+    public ResponseEntity<Object> changeCoverImg(Integer id, MultipartFile bannerImg) {
         try {
             if (id == null || bannerImg == null){
                 return ResponseEntity.status(422).build();
@@ -101,18 +101,18 @@ public class SchoolService {
 
                     searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
                 } catch (Exception e) {
-                    return ResponseEntity.internalServerError().build();
+                    return ResponseEntity.internalServerError().body("fileUploadingError");
                 }
 
                 return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("serverError");
         }
     }
 
-    public ResponseEntity<School> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
+    public ResponseEntity<Object> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
         try {
             if (id == null || newOpeningDetails == null) {
                 return ResponseEntity.status(422).build();
@@ -123,11 +123,11 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (newOpeningDetails.getId() != null) {
-                return null;
+                return ResponseEntity.status(415).body("invalidObject");
             } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidOpeningTimeRange");
             } else if (!dayNames.contains(newOpeningDetails.getDay().trim())) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidDay");
             } else {
                 List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
                 newOpeningDetails.setDay(newOpeningDetails.getDay().trim());
@@ -141,7 +141,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<School> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
+    public ResponseEntity<Object> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
         try {
             if (id == null || updatedOpeningDetails == null) {
                 return ResponseEntity.status(422).build();
@@ -152,11 +152,11 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (updatedOpeningDetails.getId() != null) {
-                return null;
+                return ResponseEntity.status(415).body("");
             } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("");
             } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("");
             } else {
                 updatedOpeningDetails.setDay(updatedOpeningDetails.getDay().trim());
                 openingDetailRepository.save(updatedOpeningDetails);

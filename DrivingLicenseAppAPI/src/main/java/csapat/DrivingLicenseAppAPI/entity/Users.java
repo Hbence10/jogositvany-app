@@ -56,7 +56,7 @@ public class Users {
 
     @Column(name = "phone")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 11)
     private String phone;
 
     @Column(name = "birth_date")
@@ -65,7 +65,7 @@ public class Users {
 
     @Column(name = "gender")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 6)
     private String gender;
 
     @Column(name = "password")
@@ -74,8 +74,7 @@ public class Users {
 
     @Column(name = "pfp_path")
     @NotNull
-    @Size(max = 64)
-    private String pfpPath;
+    private String pfpPath = "assets/icons/defaultProfileImg.svg";
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)

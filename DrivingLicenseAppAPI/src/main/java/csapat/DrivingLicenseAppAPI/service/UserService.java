@@ -10,19 +10,24 @@ import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -69,22 +74,33 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Education searchedEducation = educationRepository.findById(newUser.getUserEducation().getId()).orElse(null);
+            Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
+            } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")){
+              return ResponseEntity.status(415).body("invalidGender");
             } else if (!ValidatorCollection.emailValidator(newUser.getEmail().trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(newUser.getPhone().trim())) {
                 return ResponseEntity.status(415).body("invalidPhone");
             } else if (!ValidatorCollection.passwordValidator(newUser.getPassword().trim())) {
                 return ResponseEntity.status(415).body("invalidPassword");
+            } else if (newUser.getId() != null) {
+              return ResponseEntity.status(415).body("invalidObject");
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
-//            emailSender.sendEmailAboutRegistration(newUser.getEmail()); //Itt majd le kell kezelni, ha a user egy nem letezo emailt ad meg
+                try {
+                    emailSender.sendEmailAboutRegistration(newUser.getEmail());
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("emailSenderError");
+                }
                 userRepository.save(newUser);
             }
-
             return ResponseEntity.ok().build();
+        } catch (DataIntegrityViolationException e) {
+            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return ResponseEntity.status(409).body(errorMsg);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -101,20 +117,24 @@ public class UserService {
             List<String> emailList = userRepository.getAllEmail();
 
             if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("InvalidEmail");
+                return ResponseEntity.status(415).body("invalidEmail");
             } else if (!emailList.contains(email.trim())) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("emailNotFound");
             } else {
                 Users searchedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
 
                 if (searchedUser == null || searchedUser.getIsDeleted()) {
-                    return ResponseEntity.notFound().build();
+                    return ResponseEntity.status(404).body("userNotFound");
                 }
 
                 String vCode = generateVerificationCode();
                 searchedUser.setVCode(passwordEncoder.encode(vCode));
                 userRepository.save(searchedUser);
-                emailSender.sendVerificationCodeEmail(email, vCode);
+                try {
+                    emailSender.sendVerificationCodeEmail(email, vCode);
+                } catch (Exception e) {
+                    return ResponseEntity.internalServerError().body("emailSenderError");
+                }
                 return ResponseEntity.ok().body("success");
             }
         } catch (Exception e) {
@@ -130,9 +150,9 @@ public class UserService {
             }
 
             if (userVCode.trim().length() != 10) {
-                return ResponseEntity.status(415).body("InvalidVerificationCode");
+                return ResponseEntity.status(415).body("invalidVerificationCode");
             } else if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("InvalidEmail");
+                return ResponseEntity.status(415).body("invalidEmail");
             } else {
                 Users searchedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
                 if (searchedUser == null || searchedUser.getIsDeleted()) {
@@ -154,17 +174,18 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Users user = userRepository.getUserByEmail(email.trim()).orElse(null);
+            Users searchedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
 
-            if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("InvalidEmail");
-            } else if (!ValidatorCollection.passwordValidator(newPassword.trim())) {
-                return ResponseEntity.status(415).body("InvalidPassword");
-            } else if (user == null || user.getIsDeleted()) {
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
+            }
+            else  if (!ValidatorCollection.emailValidator(email.trim())) {
+                return ResponseEntity.status(415).body("invalidEmail");
+            } else if (!ValidatorCollection.passwordValidator(newPassword.trim())) {
+                return ResponseEntity.status(415).body("invalidPassword");
             } else {
-                user.setPassword(passwordEncoder.encode(newPassword.trim()));
-                userRepository.save(user);
+                searchedUser.setPassword(passwordEncoder.encode(newPassword.trim()));
+                userRepository.save(searchedUser);
                 return ResponseEntity.ok("success");
             }
         } catch (Exception e) {
@@ -181,16 +202,16 @@ public class UserService {
             }
 
             if (updatedUser.getId() == null) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(415).body("invalidObject");
             } else {
                 List<Education> allEducation = educationRepository.getAllEducation();
 
                 if (!ValidatorCollection.phoneValidator(updatedUser.getPhone().trim())) {
-                    return ResponseEntity.status(415).body("InvalidPhone");
+                    return ResponseEntity.status(415).body("invalidPhone");
                 } else if (!ValidatorCollection.emailValidator(updatedUser.getEmail().trim())) {
-                    return ResponseEntity.status(415).body("InvalidEmail");
+                    return ResponseEntity.status(415).body("invalidEmail");
                 } else if (!allEducation.contains(updatedUser.getUserEducation())) {
-                    return ResponseEntity.status(415).body("InvalidEducation");
+                    return ResponseEntity.status(415).body("invalidEducation");
                 } else {
                     Users result = userRepository.save(updatedUser);
                     return ResponseEntity.ok(result);
@@ -202,7 +223,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Users> updatePfp(Integer id, MultipartFile pfpFile) {
+    public ResponseEntity<Object> updatePfp(Integer id, MultipartFile pfpFile) {
         try {
             if (id == null || pfpFile == null){
                 return ResponseEntity.status(422).build();
@@ -223,14 +244,14 @@ public class UserService {
                     searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename());
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return ResponseEntity.internalServerError().build();
+                    return ResponseEntity.internalServerError().body("fileUploadingError");
                 }
 
                 return ResponseEntity.ok().body(userRepository.save(searchedUser));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body("serverError");
         }
     }
 

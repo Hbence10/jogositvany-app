@@ -34,6 +34,7 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való borítókép felöltés."),
+            @ApiResponse(responseCode = "415", description = ""),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
     })
@@ -47,12 +48,12 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolát szeretett volna a felhasználó frissiteni."),
-            @ApiResponse(responseCode = "417", description = "Felépitésben nem megfelelő email cím vagy telefonszám."),
+            @ApiResponse(responseCode = "415", description = "Felépitésben nem megfelelő email cím vagy telefonszám."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PutMapping("")
-    public ResponseEntity<School> updateSchool(@RequestBody School updatedSchool) {
+    public ResponseEntity<Object> updateSchool(@RequestBody School updatedSchool) {
         return schoolService.updateSchool(updatedSchool);
     }
 
@@ -68,7 +69,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.")
     })
-    public ResponseEntity<School> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg) {
+    public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
 
@@ -78,12 +79,12 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás hozzáadás."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás hozzáadás."),
-            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció."),
+            @ApiResponse(responseCode = "415", description = "Érvénytelen nyitás és zárás óra kombináció."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/{id}/openingDetails")
-    public ResponseEntity<School> addOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails newOpeningDetails) {
+    public ResponseEntity<Object> addOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails newOpeningDetails) {
         return schoolService.addOpeningDetails(id, newOpeningDetails);
     }
 
