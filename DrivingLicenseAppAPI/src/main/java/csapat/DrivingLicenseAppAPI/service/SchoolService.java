@@ -3,19 +3,23 @@ package csapat.DrivingLicenseAppAPI.service;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
 @RequiredArgsConstructor
 public class SchoolService {
@@ -83,7 +87,7 @@ public class SchoolService {
 
     public ResponseEntity<Object> changeCoverImg(Integer id, MultipartFile bannerImg) {
         try {
-            if (id == null || bannerImg == null){
+            if (id == null || bannerImg == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -92,7 +96,7 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = "" + File.separator + bannerImg.getOriginalFilename();
+                String filePath = File.separator + bannerImg.getOriginalFilename();
 
                 try {
                     FileOutputStream fout = new FileOutputStream(filePath);
@@ -152,11 +156,11 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (updatedOpeningDetails.getId() != null) {
-                return ResponseEntity.status(415).body("");
+                return ResponseEntity.status(415).body("invalidObject");
             } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(415).body("");
-            } else if (!dayNames.contains(updatedOpeningDetails.getDay())) {
-                return ResponseEntity.status(415).body("");
+                return ResponseEntity.status(415).body("invalidOpeningTimeRange");
+            } else if (!dayNames.contains(updatedOpeningDetails.getDay().trim())) {
+                return ResponseEntity.status(415).body("invalidDay");
             } else {
                 updatedOpeningDetails.setDay(updatedOpeningDetails.getDay().trim());
                 openingDetailRepository.save(updatedOpeningDetails);
@@ -225,16 +229,13 @@ public class SchoolService {
 
     public ResponseEntity<List<School>> getSchoolBySearch(String name, String town) {
         try {
-            if (name == null || town.trim().equals("")) {
-                return ResponseEntity.status(422).build();
-            } else {
-                List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
-                List<School> searchedSchools = new ArrayList<>();
-                for (Integer i : searchedSchoolId) {
-                    searchedSchools.add(schoolRepository.getSchool(i).orElse(null));
-                }
-                return ResponseEntity.ok().body(searchedSchools);
+            List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
+            List<School> searchedSchools = new ArrayList<School>();
+            for (Integer i : searchedSchoolId) {
+                searchedSchools.add(schoolRepository.getSchool(i).orElse(null));
             }
+            return ResponseEntity.ok().body(searchedSchools);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

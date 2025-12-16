@@ -94,22 +94,22 @@ public class SchoolController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás frissités."),
             @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás frissités."),
-            @ApiResponse(responseCode = "417", description = "Érvénytelen nyitás és zárás óra kombináció."),
+            @ApiResponse(responseCode = "415", description = "Érvénytelen nyitás és zárás óra kombináció."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PutMapping("/{id}/openingDetails")
-    public ResponseEntity<School> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails updatedOpeningDetails) {
+    public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails updatedOpeningDetails) {
         return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
     }
 
     @Operation(summary = "Iskalához tartozó csatlakozási kérelmek", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
     })
     @GetMapping("/{id}/joinRequests")
     private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id) {
@@ -119,10 +119,10 @@ public class SchoolController {
     @Operation(summary = "Iskalához tartozó vizsga kérelmek", description = "Az adott iskolához tartozó vizsga kérelmek lekérdezése")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése"),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
     })
     @GetMapping("/{id}/examRequest")
     private ResponseEntity<List<ExamRequest>> getAllExamRequest(@PathVariable("id") Integer id) {
@@ -132,10 +132,10 @@ public class SchoolController {
     @Operation(summary = "Iskola törlése", description = "Az adott iskola törlése id alapján.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres iskola törlés"),
             @ApiResponse(responseCode = "404", description = "Egy nem létező iskola törlése"),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "200", description = "Sikeres iskola törlés"),
     })
     @DeleteMapping("/{id}")
     private ResponseEntity<Object> deleteSchool(@PathVariable("id") Integer id) {
@@ -143,13 +143,13 @@ public class SchoolController {
     }
 
     //Kereso
-    @Operation(summary = "Iskolák keresése", description = "")
+    @Operation(summary = "Iskolák keresése", description = "Iskola keresése város és név alapján")
     @Parameters({
-
+            @Parameter(name = "name", description = "A keresett iskola neve.", in = ParameterIn.QUERY),
+            @Parameter(name = "town", description = "A keresett iskolához tartozó város.", in = ParameterIn.QUERY),
     })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")

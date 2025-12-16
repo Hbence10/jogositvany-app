@@ -3,15 +3,19 @@ package csapat.DrivingLicenseAppAPI.service;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
 @RequiredArgsConstructor
 public class RequestService {
@@ -34,14 +38,13 @@ public class RequestService {
 
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             Users searchedUser = userRepository.getUser(userId).orElse(null);
-            ArrayList<String> roleList = new ArrayList<String>(Arrays.asList("student", "instructor"));
 
             if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("schoolNotFound");
             } else if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (!roleList.contains(requestedRole.trim())) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("userNotFound");
+            } else if (!requestedRole.trim().equals("student") && !requestedRole.trim().equals("instructor")) {
+                return ResponseEntity.status(415).body("invalidRole");
             } else {
                 SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(requestedRole.trim(), searchedUser, searchedSchool);
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
@@ -63,9 +66,9 @@ public class RequestService {
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("instructorNotFound");
             } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("studentNotFound");
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
                 instructorJoinRequestRepository.save(instructorJoinRequest);
@@ -128,9 +131,9 @@ public class RequestService {
                 Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
 
                 if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                    return ResponseEntity.notFound().build();
+                    return ResponseEntity.status(404).body("instructorNotFound");
                 } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                    return ResponseEntity.notFound().build();
+                    return ResponseEntity.status(404).body("studentNotFound");
                 } else {
                     drivingLessonRequestRepository.save(addedDrivingLessonRequest);
                     return ResponseEntity.ok().build();
@@ -153,11 +156,11 @@ public class RequestService {
             School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
 
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("instructorNotFound");
             } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("studentNotFound");
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("schoolNotFound");
             } else {
                 examRequestRepository.save(addedExamRequest);
                 return ResponseEntity.ok().build();

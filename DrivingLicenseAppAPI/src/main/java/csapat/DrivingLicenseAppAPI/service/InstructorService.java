@@ -2,18 +2,22 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
 @RequiredArgsConstructor
 public class InstructorService {
@@ -47,8 +51,6 @@ public class InstructorService {
                     searchedJoinRequest.setIsAccepted(true);
                 } else if (status.trim().equals("refuse")) {
                     searchedJoinRequest.setIsAccepted(false);
-                } else {
-                    return ResponseEntity.internalServerError().build();
                 }
                 searchedJoinRequest.setAcceptedAt(new Date());
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
@@ -133,42 +135,43 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
-        try {
-            if (requestId == null || status == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
-            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
-                    return ResponseEntity.status(415).build();
-                } else {
-                    if (status.trim().equals("accept")) {
-                        searchedJoinRequest.setIsAccepted(true);
-                        searchedJoinRequest.setAcceptedAt(new Date());
-
-                        Students newStudent = searchedJoinRequest.getInstructorJoinRequestStudent();
-                        newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
-                        studentRepository.save(newStudent);
-
-                    } else if (status.trim().equals("refuse")) {
-                        searchedJoinRequest.setIsAccepted(false);
-                    } else {
-                        return ResponseEntity.internalServerError().build();
-                    }
-                }
-
-                instructorJoinRequestRepository.save(searchedJoinRequest);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+    //
+//    public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
+//        try {
+//            if (requestId == null || status == null) {
+//                return ResponseEntity.status(422).build();
+//            }
+//
+//            InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
+//            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
+//                return ResponseEntity.notFound().build();
+//            } else {
+//                if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
+//                    return ResponseEntity.status(415).build();
+//                } else {
+//                    if (status.trim().equals("accept")) {
+//                        searchedJoinRequest.setIsAccepted(true);
+//                        searchedJoinRequest.setAcceptedAt(new Date());
+//
+//                        Students newStudent = searchedJoinRequest.getInstructorJoinRequestStudent();
+//                        newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
+//                        studentRepository.save(newStudent);
+//
+//                    } else if (status.trim().equals("refuse")) {
+//                        searchedJoinRequest.setIsAccepted(false);
+//                    } else {
+//                        return ResponseEntity.internalServerError().build();
+//                    }
+//                }
+//
+//                instructorJoinRequestRepository.save(searchedJoinRequest);
+//                return ResponseEntity.ok().build();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.internalServerError().build();
+//        }
+//    }
 
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         try {
@@ -199,10 +202,6 @@ public class InstructorService {
 
     public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId) {
         try {
-            if (name == null || fuelTypeId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
             if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
                 return ResponseEntity.notFound().build();

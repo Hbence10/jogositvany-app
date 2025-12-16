@@ -8,16 +8,20 @@ import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.ReviewRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Transactional
+@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -65,7 +69,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> createSchoolReview(Review newReview, Integer schoolId) {
+    public ResponseEntity<Object> createSchoolReview(Review newReview, Integer schoolId) {
         try {
             if (newReview == null || schoolId == null) {
                 return ResponseEntity.status(422).build();
@@ -75,14 +79,15 @@ public class ReviewService {
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
 
             if (authorStudent == null || authorStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("studentNotFound");
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("schoolNotFound");
             } else if (newReview.getId() != null) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidObject");
             } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidRatingNumber");
             } else {
+                newReview.setText(newReview.getText().trim());
                 newReview.setAboutSchool(searchedSchool);
                 newReview.setReviewAuthor(authorStudent);
                 return ResponseEntity.ok().body(reviewRepository.save(newReview));
@@ -93,7 +98,7 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> createInstructorReview(Review newReview, Integer instructorId) {
+    public ResponseEntity<Object> createInstructorReview(Review newReview, Integer instructorId) {
         try {
             if (newReview == null || instructorId == null) {
                 return ResponseEntity.status(422).build();
@@ -103,13 +108,13 @@ public class ReviewService {
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
             if (authorStudent == null || authorStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("studentNotFound");
             } else if (searchedInstructor == null|| searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("instructorNotFound");
             } else if (newReview.getId() != null) {
-                return null;
+                return ResponseEntity.status(415).body("invalidObject");
             } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-                return null;
+                return ResponseEntity.status(415).body("invalidRatingNumber");
             } else {
                 newReview.setAboutInstructor(searchedInstructor);
                 newReview.setReviewAuthor(authorStudent);
@@ -131,6 +136,7 @@ public class ReviewService {
             if (searchedReview == null || searchedReview.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
+                searchedReview.setText(searchedReview.getText().trim());
                 return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
             }
         } catch (Exception e) {

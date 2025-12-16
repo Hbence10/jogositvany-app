@@ -23,10 +23,10 @@ public class DrivingLessonController {
     @Operation(summary = "Diák óráinak a megszerzése", description = "Kikeressi az összes vezetési órát amely az adott diákhoz tartozik")
     @Parameter(name = "id", description = "A diákhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres adat lekérés", useReturnTypeSchema = true),
             @ApiResponse(responseCode = "404", description = "Olyan diák adatait szeretné lekérni, amely nem létzik.", useReturnTypeSchema = false),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "200", description = "Sikeres adat lekérés", useReturnTypeSchema = true)
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("/student/{id}")
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(@PathVariable("id") Integer studentId) {
@@ -36,10 +36,10 @@ public class DrivingLessonController {
     @Operation(summary = "Óra lemondása", description = "")
     @Parameter(name = "id", description = "A vezetés órához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres óra lemondás", useReturnTypeSchema = true),
             @ApiResponse(responseCode = "404", description = "Olyan diák adatait szeretné lekérni, amely nem létzik.", useReturnTypeSchema = false),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "200", description = "Sikeres óra lemondás", useReturnTypeSchema = true)
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
