@@ -75,4 +75,8 @@ public class DrivingLessonType {
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({})
     private School drivingTypeSchool;
+
+    @OneToMany(mappedBy = "dLessonRequestType", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<DrivingLessonRequest> drivingLessonRequestList;
 }

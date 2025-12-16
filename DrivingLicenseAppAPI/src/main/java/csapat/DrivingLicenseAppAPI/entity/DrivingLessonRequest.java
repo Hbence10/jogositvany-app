@@ -51,6 +51,15 @@ public class DrivingLessonRequest {
     @Temporal(TemporalType.TIME)
     private Date endTime;
 
+    @Column(name = "is_accepted")
+    @Null
+    private Boolean isAccepted;
+
+    @Column(name = "accepted_at")
+    @Null
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date acceptedAt;
+
     @Column(name = "is_deleted")
     @NotNull
     @JsonIgnore
@@ -74,8 +83,7 @@ public class DrivingLessonRequest {
     private Instructors dLessonInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "lesson_type_id")
     @JsonIgnoreProperties({})
-    private Status dLessonStatus;
-
+    private DrivingLessonType dLessonRequestType;
 }

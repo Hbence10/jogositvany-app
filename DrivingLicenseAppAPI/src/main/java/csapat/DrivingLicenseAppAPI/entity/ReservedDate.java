@@ -25,7 +25,10 @@ import java.util.List;
         }, resultClasses = ReservedDate.class),
         @NamedStoredProcedureQuery(name = "deleteReservedDate", procedureName = "deleteReservedDate", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getReservedDateByDate", procedureName = "getReservedDateByDate", parameters = {
+                @StoredProcedureParameter(name = "wantedDateIN", type = Date.class, mode = ParameterMode.IN)
+        })
 })
 public class ReservedDate {
 
@@ -57,13 +60,12 @@ public class ReservedDate {
     @OneToMany(
             mappedBy = "reservedDate",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            cascade = {}
     )
     private List<ReservedHour> reservedHourList;
 
     //Constructorok:
-    public ReservedDate(Date date, boolean isFull) {
+    public ReservedDate(Date date) {
         this.date = date;
-        this.isFull = isFull;
     }
 }

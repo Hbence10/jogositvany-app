@@ -64,7 +64,10 @@ public class DrivingLessonController {
     }
 
     @Operation(summary = "Vezetési óra kérelem elfogadása")
-    @Parameter(name = "id", description = "A vezetési óra kérelemhez tartozó id", in = ParameterIn.PATH, required = true)
+    @Parameters({
+            @Parameter(name ="id",description ="A vezetési óra kérelemhez tartozó id",in =ParameterIn.PATH,required =true),
+            @Parameter(name = "status", description = "")
+    })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = ""),
             @ApiResponse(responseCode = "404", description = ""),
@@ -72,8 +75,8 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "")
     })
     @PostMapping("/request/{id}")
-    public ResponseEntity<Object> handleDrivingLessonRequest(@PathVariable("id") Integer id) {
-        return drivingLessonService.handleDrivingLessonRequest(id);
+    public ResponseEntity<Object> handleDrivingLessonRequest(@PathVariable("id") Integer id, @RequestParam("status") String status) {
+        return drivingLessonService.handleDrivingLessonRequest(id, status);
     }
 
     @Operation(summary = "A vezetési óra frissitése", description = "A vezetési óra adatainak a frissitése, kivétel az időpont frissitése.")
@@ -113,6 +116,6 @@ public class DrivingLessonController {
     })
     @PatchMapping("/{id}/setEnd")
     public ResponseEntity<Object> setDrivingLessonEnd(@PathVariable("id") Integer id) {
-        return null;
+        return drivingLessonService.setDrivingLessonEnd(id);
     }
 }

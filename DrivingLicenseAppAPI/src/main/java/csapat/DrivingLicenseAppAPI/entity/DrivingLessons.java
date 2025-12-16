@@ -36,32 +36,32 @@ public class DrivingLessons {
     private Integer id;
 
     @Column(name = "start_km")
-    @NotNull
+    @Null
     @Size(max = 7)
     private Integer startKm;
 
     @Column(name = "end_km")
-    @NotNull
+    @Null
     @Size(max = 7)
     private Integer endKm;
 
     @Column(name = "location")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String location;
 
     @Column(name = "pick_up_place")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String pickUpPlace;
 
     @Column(name = "drop_off_place")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String dropOffPlace;
 
     @Column(name = "lesson_hour_number")
-    @NotNull
+    @Null
     private Integer lessonHourNumber;
 
     @Column(name = "is_paid")
@@ -111,13 +111,12 @@ public class DrivingLessons {
     @JsonIgnoreProperties({})
     private DrivingLessonType drivingLessonType;
 
-    public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
-        this.startKm = startKm;
-        this.endKm = endKm;
-        this.location = location;
-        this.pickUpPlace = pickUpPlace;
-        this.dropOffPlace = dropOffPlace;
-        this.lessonHourNumber = lessonHourNumber;
-        this.isPaid = isPaid;
+    //Constructorok:
+
+    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor, DrivingLessonType drivingLessonType) {
+        this.reservedHour = reservedHour;
+        this.dstudent = dstudent;
+        this.dinstructor = dinstructor;
+        this.drivingLessonType = drivingLessonType;
     }
 }

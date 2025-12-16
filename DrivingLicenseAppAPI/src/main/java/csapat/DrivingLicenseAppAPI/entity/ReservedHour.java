@@ -62,8 +62,14 @@ public class ReservedHour {
     @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private DrivingLessons drivingLessons;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "date_id")
     @JsonIgnoreProperties({})
     private ReservedDate reservedDate;
+
+    //Constructorok
+    public ReservedHour(Date startTime, Date endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }

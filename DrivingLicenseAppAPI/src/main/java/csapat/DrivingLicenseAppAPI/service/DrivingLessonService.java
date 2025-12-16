@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
-import csapat.DrivingLicenseAppAPI.entity.Students;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -20,6 +20,7 @@ import java.util.List;
 public class DrivingLessonService {
 
     private final DrivingLessonRepository drivingLessonRepository;
+    private final DrivingLessonRequestRepository drivingLessonRequestRepository;
     private final DrivingLessonTypeRepository drivingLessonTypeRepository;
     private final ReservedDateRepository reservedDateRepository;
     private final ReservedHourRepository reservedHourRepository;
@@ -76,13 +77,34 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId) {
+    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         try {
-            if (requestId == null) {
+            if (requestId == null || status == null) {
                 return ResponseEntity.status(422).build();
+            } else if (!status.trim().equals("accepted") && !status.trim().equals("refuse")) {
+                return ResponseEntity.status(415).build();
             }
 
-            return ResponseEntity.ok().build();
+            DrivingLessonRequest searchedDRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
+            if (searchedDRequest == null || searchedDRequest.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                searchedDRequest.setAcceptedAt(new Date());
+                if (status.trim().equals("accepted")) {
+                    ReservedHour newReservedHour = new ReservedHour(searchedDRequest.getStartTime(), searchedDRequest.getEndTime());
+                    ReservedDate searchedReservedDate = reservedDateRepository.getReservedDateByDate(searchedDRequest.getDate()).orElse(new ReservedDate(searchedDRequest.getDate()));
+                    newReservedHour.setReservedDate(searchedReservedDate);
+
+                    DrivingLessons newDrivingLesson = new DrivingLessons(newReservedHour, searchedDRequest.getDLessonRequestStudent(), searchedDRequest.getDLessonInstructor(), searchedDRequest.getDLessonRequestType());
+                    drivingLessonRepository.save(newDrivingLesson);
+                    searchedDRequest.setIsAccepted(true);
+                } else {
+                    searchedDRequest.setIsAccepted(false);
+                }
+
+                drivingLessonRequestRepository.save(searchedDRequest);
+                return ResponseEntity.ok().build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
