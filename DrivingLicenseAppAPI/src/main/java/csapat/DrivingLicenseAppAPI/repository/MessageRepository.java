@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
@@ -13,7 +14,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     List<Message> getAllMessage();
 
     @Procedure(name = "getMessage", procedureName = "getMessage")
-    Message getMessage(@Param("idIN") Integer id);
+    Optional<Message> getMessage(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteMessage", procedureName = "deleteMessage")
     String deleteMessage(@Param("idIN") Integer id);

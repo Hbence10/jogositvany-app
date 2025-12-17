@@ -10,7 +10,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,7 +26,11 @@ import java.util.List;
         }, resultClasses = Instructors.class),
         @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
+                @StoredProcedureParameter(name = "nameIN", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)
 })
 public class Instructors {
 
@@ -36,7 +40,7 @@ public class Instructors {
     private Integer id;
 
     @Column(name = "promo_text")
-    @NotNull
+    @Null
     private String promoText;
 
     @Column(name = "is_deleted")
@@ -47,7 +51,8 @@ public class Instructors {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
@@ -63,10 +68,11 @@ public class Instructors {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     @JsonIgnoreProperties({"instructor"})
+    @Null
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
@@ -74,12 +80,15 @@ public class Instructors {
     private List<Students> students;
 
     @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
     @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
     @OneToMany(
@@ -87,7 +96,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
     //Constructorok:

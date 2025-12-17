@@ -40,8 +40,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) ->
                         requests.anyRequest().permitAll()
                 )
-                .addFilterAfter(new JWTGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class)
+//                .addFilterAfter(new JWTGeneratorFilter(), BasicAuthenticationFilter.class)
+//                .addFilterBefore(new JWTValidatorFilter(), BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());

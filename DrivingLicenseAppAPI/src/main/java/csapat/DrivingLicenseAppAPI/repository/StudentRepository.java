@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Students, Integer> {
 
@@ -13,7 +14,7 @@ public interface StudentRepository extends JpaRepository<Students, Integer> {
     List<Students> getAllStudent();
 
     @Procedure(name = "getStudent", procedureName = "getStudent")
-    Students getStudent(@Param("idIN") Integer id);
+    Optional<Students> getStudent(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteStudent", procedureName = "deleteStudent")
     String deleteStudent(@Param("idIN") Integer id);

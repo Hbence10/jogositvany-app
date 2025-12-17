@@ -11,7 +11,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class Users {
 
     @Column(name = "phone")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 11)
     private String phone;
 
     @Column(name = "birth_date")
@@ -66,18 +65,16 @@ public class Users {
 
     @Column(name = "gender")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 6)
     private String gender;
 
     @Column(name = "password")
     @NotNull
-    @JsonIgnore
     private String password;
 
     @Column(name = "pfp_path")
     @NotNull
-    @Size(max = 64)
-    private String pfpPath;
+    private String pfpPath = "assets/icons/defaultProfileImg.svg";
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -87,7 +84,8 @@ public class Users {
     @Column(name = "last_login")
     @Null
     @JsonIgnore
-    private LocalDateTime lastLogin;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
 
     @Column(name = "is_deleted")
     @JsonIgnore
@@ -116,7 +114,7 @@ public class Users {
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
-    private Students students;
+    private Students student;
 
     @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
@@ -135,15 +133,4 @@ public class Users {
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    //Constructorok:
-    public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.password = password;
-        this.pfpPath = pfpPath;
-    }
 }

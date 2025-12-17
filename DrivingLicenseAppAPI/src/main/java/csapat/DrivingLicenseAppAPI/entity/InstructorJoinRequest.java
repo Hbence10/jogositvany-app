@@ -9,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -40,11 +39,12 @@ public class InstructorJoinRequest {
 
     @Column(name = "accepted_at")
     @Null
-    private LocalDateTime acceptedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date acceptedAt;
 
     @Column(name = "sended_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date sendedAt;
+    private Date sentAt;
 
     @Column(name = "is_deleted")
     @Null
@@ -54,7 +54,8 @@ public class InstructorJoinRequest {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok
     @ManyToOne(cascade = {})

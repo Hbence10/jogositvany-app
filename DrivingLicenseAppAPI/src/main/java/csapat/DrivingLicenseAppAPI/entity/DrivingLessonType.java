@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,7 +34,7 @@ public class DrivingLessonType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -44,7 +44,7 @@ public class DrivingLessonType {
     @Column(name = "price")
     @NotNull
     @Size(max = 5)
-    private int price;
+    private Integer price;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -54,7 +54,8 @@ public class DrivingLessonType {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToMany(
@@ -74,4 +75,8 @@ public class DrivingLessonType {
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({})
     private School drivingTypeSchool;
+
+    @OneToMany(mappedBy = "dLessonRequestType", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<DrivingLessonRequest> drivingLessonRequestList;
 }

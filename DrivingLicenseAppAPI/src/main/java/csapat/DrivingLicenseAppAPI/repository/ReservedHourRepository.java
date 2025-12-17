@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservedHourRepository extends JpaRepository<ReservedHour, Integer> {
 
@@ -13,7 +14,7 @@ public interface ReservedHourRepository extends JpaRepository<ReservedHour, Inte
     List<ReservedHour> getAllReservedHour();
 
     @Procedure(name = "getReservedHour", procedureName = "getReservedHour")
-    ReservedHour getReservedHour(@Param("idIN") Integer id);
+    Optional<ReservedHour> getReservedHour(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReservedHour", procedureName = "deleteReservedHour")
     String deleteReservedHour(@Param("idIN") Integer id);
