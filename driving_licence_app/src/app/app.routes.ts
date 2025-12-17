@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'registration', component: RegistrationPageComponent },
   { path: 'calendar', component: CalendarComponent },
-  { path: 'profil', component: ProfilPageComponent },
+  { path: 'profil/:type/:id', component: ProfilPageComponent },
   { path: 'about', component: AboutComponent },
   { path: 'faq', component: FaqComponent },
   { path: 'for-schools', component: ForSchoolsComponent },

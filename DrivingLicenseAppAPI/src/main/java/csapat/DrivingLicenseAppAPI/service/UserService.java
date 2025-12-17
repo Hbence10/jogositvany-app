@@ -147,8 +147,11 @@ public class UserService {
             if (userVCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
+            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
             System.out.println(passwordEncoder.matches(userVCode, searchedUser.getVCode()));
             return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }

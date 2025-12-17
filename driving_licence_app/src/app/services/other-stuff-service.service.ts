@@ -14,7 +14,7 @@ export class OtherStuffServiceService {
   constructor() { }
 
   getAllEducation(): Observable<Education[]>{
-    return this.http.get<Education[]>(`http://localhost:8080/education`)
+    return this.http.get<Education[]>(`${this.baseUrl}/education`)
   }
 
   getAllFuelType(): Observable<FuelType[]> {
