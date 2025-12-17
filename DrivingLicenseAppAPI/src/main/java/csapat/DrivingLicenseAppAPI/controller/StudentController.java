@@ -37,6 +37,7 @@ public class StudentController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres törlés", useReturnTypeSchema = true),
             @ApiResponse(responseCode = "404", description = "Nem létező diák törlése."),
+            @ApiResponse(responseCode = "415", description = ""),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })

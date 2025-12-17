@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import com.opencsv.CSVReader;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -271,8 +273,32 @@ public class SchoolService {
             if (addedSchool == null) {
                 return ResponseEntity.status(422).build();
             }
+            List<String> townName = new ArrayList<String>();
+            try {
+                FileReader fileReader = new FileReader(new File("src/main/java/csapat/DrivingLicenseAppAPI/service/other/townList.csv"));
+                CSVReader reader = new CSVReader(fileReader);
 
-            return ResponseEntity.ok().build();
+                List<String[]> allRecords = reader.readAll();
+                for (int i = 1; i < allRecords.size(); i++) {
+                    townName.add(allRecords.get(i)[0]);
+                }
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError().body("fileHandlingError");
+            }
+
+            Users ownerUser  = userRepository.getUser(addedSchool.getOwner().getId()).orElse(null);
+            if (ownerUser == null || ownerUser.getId() != addedSchool.getOwner().getId()) {
+                return ResponseEntity.notFound().build();
+            } else if (!ValidatorCollection.emailValidator(addedSchool.getEmail().trim())){
+                return ResponseEntity.status(415).body("invalidEmail");
+            } else if (!ValidatorCollection.phoneValidator(addedSchool.getPhone().trim())){
+                return ResponseEntity.status(415).body("invalidPhone");
+            } else if (!townName.contains(addedSchool.getTown())){
+                return ResponseEntity.status(415).body("invalidTown");
+            } else {
+                schoolRepository.save(addedSchool);
+                return ResponseEntity.ok().build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
