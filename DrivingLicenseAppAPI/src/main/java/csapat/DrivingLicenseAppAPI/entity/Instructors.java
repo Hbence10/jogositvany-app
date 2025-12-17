@@ -40,7 +40,7 @@ public class Instructors {
     private Integer id;
 
     @Column(name = "promo_text")
-    @NotNull
+    @Null
     private String promoText;
 
     @Column(name = "is_deleted")
@@ -68,6 +68,7 @@ public class Instructors {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     @JsonIgnoreProperties({"instructor"})
+    @Null
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})

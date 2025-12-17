@@ -25,6 +25,8 @@ public class DrivingLessonService {
     private final ReservedDateRepository reservedDateRepository;
     private final ReservedHourRepository reservedHourRepository;
     private final StudentRepository studentRepository;
+    private final StatusRepository statusRepository;
+    private final PaymentMethodRepository paymentMethodRepository;
 
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId) {
         try {
@@ -118,7 +120,23 @@ public class DrivingLessonService {
                 return ResponseEntity.status(422).build();
             }
 
-            return ResponseEntity.ok().build();
+            List<PaymentMethod> allPaymentMethod = paymentMethodRepository.getAllPayMethod();
+            List<Status> allStatus = statusRepository.getAllStatus();
+
+            if (updatedDrivingLesson.getId() == null) {
+              return ResponseEntity.status(415).body("invalidObject");
+            } else if (updatedDrivingLesson.getEndKm() <= updatedDrivingLesson.getStartKm()) {
+                return ResponseEntity.status(415).body("invalidStartEndKm");
+            } else if (updatedDrivingLesson.getLessonHourNumber() <= 0) {
+                return ResponseEntity.status(415).body("invalidLessonHourNumber");
+            } else if (!allPaymentMethod.contains(updatedDrivingLesson.getPaymentMethod())){
+                return ResponseEntity.notFound().build();
+            } else if (!allStatus.contains(updatedDrivingLesson.getDrivingLessonStatus())) {
+                return ResponseEntity.notFound().build();
+            } else {
+                drivingLessonRepository.save(updatedDrivingLesson);
+                return ResponseEntity.ok().build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
