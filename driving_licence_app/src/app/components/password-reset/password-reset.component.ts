@@ -46,7 +46,7 @@ export class PasswordResetComponent implements OnInit {
   isShowPassword = signal<boolean>(false)
   isShowPasswordAgain = signal<boolean>(false)
 
-  isCorrectVCode = signal<boolean>(false)
+  isCorrectVCode = signal<boolean>(true)
   isSuccessfullReset = signal<boolean>(false)
   form!: FormGroup
 

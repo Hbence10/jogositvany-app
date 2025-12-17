@@ -1,20 +1,15 @@
 export class Role {
-  constructor(
-    private id: number,
-    private name: string
-  ){}
+  constructor(public id?: number, public name?: string) { }
 
-  //Getterek
-  get getId(): number{
-    return this.id;
+  get getId(): number {
+    return this.id!;
   }
 
-  get getName(): string{
-    return this.name;
+  get getName(): string {
+    return this.name!;
   }
 
-  //Setterek:
-  set setName(newName: string){
+  set setName(newName: string) {
     this.name = newName;
   }
 }

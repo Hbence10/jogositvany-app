@@ -1,108 +1,61 @@
-<div class="row">
-  <input type="date" id="date" />
-</div>
-
-<div class="col" style="height: 100vh">
-  <div class="container">
-    <div class="row">
-      <p class="col"></p>
-      <p class="day col">Hétfő</p>
-      <p class="day col">Kedd</p>
-      <p class="day col">Szerda</p>
-      <p class="day col">Csütörtök</p>
-      <p class="day col">Péntek</p>
-      <p class="day col">Szombat</p>
-      <p class="day col">Vasárnap</p>
-      <p class="col"></p>
-    </div>
-
-    <div class="row">
-      <p class="col">8</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">9</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">10</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">11</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">12</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">13</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">14</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
-    </div>
-    <div class="row">
-      <p class="col">15</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="lesson col">+</p>
-      <p class="col"></p>
+<div class="container-fluid d-flex flex-column justify-content-center align-items-start mainFont" >
+  <div class="row">
+    <div class="col d-flex justify-content-start">
+      <input type="date" />
     </div>
   </div>
+  <div class="row m-0">
+    <div class="col p-0" style="width: 200px;">
+      <p>⬅️</p>
+    </div>
+    <div class="col  p-0 d-flex align-items-center justify-content-center days">
+      <p>Hétfő</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Kedd</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Szerda</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Csütörtök</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Péntek</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Szombat</p>
+    </div>
+    <div class="col p-0 d-flex days">
+      <p>Vasárnap</p>
+    </div>
+  </div>
+  @for (hour of hours; track $index) {
+  <div class="row m-0">
+    <div class="col" style="width: 200px;">
+      <p>{{ hour }}</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+    <div class="col d-flex box">
+      <p>➕</p>
+    </div>
+  </div>
+  }
 </div>

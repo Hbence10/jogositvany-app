@@ -1,40 +1,56 @@
-import { DrivingLessons } from "./driving-lessons.model";
-import { ReservedDate } from "./reserved-data.model";
+import { DrivingLessons } from './driving-lessons.model';
+import { ReservedDate } from './reserved-data.model';
 
-export class ReservedHour{
+export class ReservedHour {
   constructor(
-    private id:number,
-    private start: number,
-    private end: number,
-    private drivingLessons: DrivingLessons,
-    private reservedDate: ReservedDate,
-  ){}
+    public id: number,
+    public startHour: number,
+    public startMin: number,
+    public endHour: number,
+    public endMin: number,
+    public drivingLessons: DrivingLessons,
+    public reservedDate: ReservedDate
+  ) {}
 
-  get getStart(): number {
-    return this.start;
+  get getStartHour(): number {
+    return this.startHour;
   }
-  set setStart(value: number){
-    this.start = value;
+  set setStartHour(value: number) {
+    this.startHour = value;
   }
 
-  get getEnd(): number {
-    return this.end;
+  get getStartMin(): number {
+    return this.startMin;
   }
-  set setEnd(value: number){
-    this.end = value;
+  set setStartMin(value: number) {
+    this.startMin = value;
+  }
+
+  get getEndHour(): number {
+    return this.endHour;
+  }
+  set setEndHour(value: number) {
+    this.endHour = value;
+  }
+
+  get getEndMin(): number {
+    return this.endMin;
+  }
+  set setEndMin(value: number) {
+    this.endMin = value;
   }
 
   get getDrivingLessons(): DrivingLessons {
     return this.drivingLessons;
   }
-  set setDrivingLessons(value: DrivingLessons){
+  set setDrivingLessons(value: DrivingLessons) {
     this.drivingLessons = value;
   }
 
   get getReservedDate(): ReservedDate {
     return this.reservedDate;
   }
-  set setReservedDate(value: ReservedDate){
+  set setReservedDate(value: ReservedDate) {
     this.reservedDate = value;
   }
 }

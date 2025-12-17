@@ -8,24 +8,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
-export class HomepageComponent implements OnInit{
+export class HomepageComponent{
   private userService = inject(UsersService);
-  view = signal<string>("")
-
-  ngOnInit(): void {
-    let role = this.userService.loggedUser()!.role.getName;
-
-    if (role === "students"){
-
-    } else if (role === "instructor"){
-
-    } else if (role === "schoolAdmin" || role === "schoolOwner"){
-
-    } else if (role === "admin"){
-
-    }
-  }
-
 
 
 }

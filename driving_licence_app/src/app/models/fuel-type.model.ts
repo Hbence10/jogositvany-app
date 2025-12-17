@@ -2,21 +2,26 @@ import { Vehicle } from './vehicle.model';
 
 export class FuelType {
   constructor(
-    private id: number,
-    private name: string,
-    private vehicles: Vehicle[]
+    public id?: number,
+    public name?: string,
+    public vehicles?: Vehicle[]
   ) {}
-  get getName(): string {
-    return this.name;
+
+  get getId(): number {
+    return this.id!
   }
-  set setName(value: string){
+
+  get getName(): string {
+    return this.name!;
+  }
+  set setName(value: string) {
     this.name = value;
   }
 
   get getVehicles(): Vehicle[] {
-    return this.vehicles;
+    return this.vehicles!;
   }
-  set setVehicles(value: Vehicle[]){
+  set setVehicles(value: Vehicle[]) {
     this.vehicles = value;
   }
 }
