@@ -1,9 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.entity.DrivingLicenseCategory;
-import csapat.DrivingLicenseAppAPI.entity.Education;
-import csapat.DrivingLicenseAppAPI.entity.FuelType;
-import csapat.DrivingLicenseAppAPI.entity.PaymentMethod;
+import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.service.OtherStuffService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -70,5 +67,15 @@ public class OtherStuffController {
     @GetMapping("/town")
     public ResponseEntity<List<String>> getAllTown() {
         return otherStuffService.getAllTown();
+    }
+
+    @Operation(summary = "Státuszok visszaszerzése", description = "Az összes státusz visszaszerzése.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés."),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba")
+    })
+    @GetMapping("/status")
+    public ResponseEntity<List<Status>> getAllStatus() {
+        return otherStuffService.getAllStatus();
     }
 }

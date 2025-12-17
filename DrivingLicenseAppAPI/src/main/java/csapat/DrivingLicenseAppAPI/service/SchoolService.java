@@ -293,7 +293,7 @@ public class SchoolService {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(addedSchool.getPhone().trim())){
                 return ResponseEntity.status(415).body("invalidPhone");
-            } else if (!townName.contains(addedSchool.getTown())){
+            } else if (!townName.contains(addedSchool.getTown().trim())){
                 return ResponseEntity.status(415).body("invalidTown");
             } else {
                 schoolRepository.save(addedSchool);

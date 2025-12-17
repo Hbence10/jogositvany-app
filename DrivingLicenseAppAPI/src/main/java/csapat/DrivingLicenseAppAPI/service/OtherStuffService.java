@@ -1,14 +1,8 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import com.opencsv.CSVReader;
-import csapat.DrivingLicenseAppAPI.entity.DrivingLicenseCategory;
-import csapat.DrivingLicenseAppAPI.entity.Education;
-import csapat.DrivingLicenseAppAPI.entity.FuelType;
-import csapat.DrivingLicenseAppAPI.entity.PaymentMethod;
-import csapat.DrivingLicenseAppAPI.repository.DrivingLicenseCategoryRepository;
-import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
-import csapat.DrivingLicenseAppAPI.repository.FuelTypeRepository;
-import csapat.DrivingLicenseAppAPI.repository.PaymentMethodRepository;
+import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +26,7 @@ public class OtherStuffService {
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
     private final EducationRepository educationRepository;
     private final FuelTypeRepository fuelTypeRepository;
+    private final StatusRepository statusRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         try {
@@ -63,6 +58,15 @@ public class OtherStuffService {
     public ResponseEntity<List<Education>> getAllEducation() {
         try {
             return ResponseEntity.ok().body(educationRepository.getAllEducation());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<List<Status>> getAllStatus() {
+        try {
+            return ResponseEntity.ok().body(statusRepository.getAllStatus());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
