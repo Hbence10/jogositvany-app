@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -19,6 +19,15 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllSchoolJoinRequest", procedureName = "getAllSchoolJoinRequest", resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "getSchoolJoinRequest", procedureName = "getSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = SchoolJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class SchoolJoinRequest {
 
     @Id
@@ -37,32 +46,35 @@ public class SchoolJoinRequest {
 
     @Column(name = "accepted_at")
     @Null
-    private LocalDateTime acceptedAt;
+    private Date acceptedAt;
 
     @Column(name = "sended_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date sendedAt;
+    private Date sentAt;
 
     @Column(name = "is_deleted")
     @Null
+    @JsonIgnore
     private Boolean isDeleted;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({})
-    private User schoolJoinRequestUser;
+    private Users schoolJoinRequestUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School schoolJoinRequestSchool;
 
-    public SchoolJoinRequest(String requestedRole, User user, School school) {
+    public SchoolJoinRequest(String requestedRole, Users user, School school) {
         this.requestedRole = requestedRole;
     }
 }

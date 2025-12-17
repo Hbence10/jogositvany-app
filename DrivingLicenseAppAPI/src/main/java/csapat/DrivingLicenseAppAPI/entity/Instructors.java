@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,19 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
+                @StoredProcedureParameter(name = "nameIN", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)
+})
 public class Instructors {
 
     @Id
@@ -26,35 +40,39 @@ public class Instructors {
     private Integer id;
 
     @Column(name = "promo_text")
-    @NotNull
+    @Null
     private String promoText;
 
     @Column(name = "is_deleted")
     @NotNull
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor"})
-    private User instructorUser;
+    private Users instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "instructorsList", "adminList" , "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @JsonIgnoreProperties({"owner", "instructorsList", "adminList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     @JsonIgnoreProperties({"instructor"})
+    @Null
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
@@ -62,12 +80,15 @@ public class Instructors {
     private List<Students> students;
 
     @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
     @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
     @OneToMany(
@@ -75,7 +96,7 @@ public class Instructors {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
     //Constructorok:
@@ -83,7 +104,7 @@ public class Instructors {
         this.promoText = promoText;
     }
 
-    public Instructors(School instructorSchool, User instructorUser) {
+    public Instructors(School instructorSchool, Users instructorUser) {
         this.instructorSchool = instructorSchool;
         this.instructorUser = instructorUser;
     }

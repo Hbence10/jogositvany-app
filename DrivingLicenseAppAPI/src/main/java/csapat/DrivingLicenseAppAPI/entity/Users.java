@@ -11,7 +11,6 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -20,15 +19,21 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
                 @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
-        }, resultClasses = User.class),
-
+        }, resultClasses = Users.class),
         @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
 })
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -51,7 +56,7 @@ public class User {
 
     @Column(name = "phone")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 11)
     private String phone;
 
     @Column(name = "birth_date")
@@ -60,7 +65,7 @@ public class User {
 
     @Column(name = "gender")
     @NotNull
-    @Size(max = 50)
+    @Size(max = 6)
     private String gender;
 
     @Column(name = "password")
@@ -69,8 +74,7 @@ public class User {
 
     @Column(name = "pfp_path")
     @NotNull
-    @Size(max = 64)
-    private String pfpPath;
+    private String pfpPath = "assets/icons/defaultProfileImg.svg";
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -80,7 +84,8 @@ public class User {
     @Column(name = "last_login")
     @Null
     @JsonIgnore
-    private LocalDateTime lastLogin;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLogin;
 
     @Column(name = "is_deleted")
     @JsonIgnore
@@ -109,7 +114,7 @@ public class User {
 
     @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
-    private Students students;
+    private Students student;
 
     @OneToOne(cascade = {})
     @JoinColumn(name = "school_administrator_id")
@@ -128,15 +133,4 @@ public class User {
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    //Constructorok:
-    public User(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.password = password;
-        this.pfpPath = pfpPath;
-    }
 }

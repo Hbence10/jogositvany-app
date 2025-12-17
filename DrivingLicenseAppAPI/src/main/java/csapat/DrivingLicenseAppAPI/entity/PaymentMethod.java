@@ -10,7 +10,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,6 +19,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllPayMethod", procedureName = "getAllPayMethod", resultClasses = PaymentMethod.class),
+        @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = PaymentMethod.class),
+        @NamedStoredProcedureQuery(name = "deletePaymentMethod", procedureName = "deletePaymentMethod", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class PaymentMethod {
 
     @Id
@@ -39,7 +48,8 @@ public class PaymentMethod {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToMany(

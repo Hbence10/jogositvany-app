@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,12 +20,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllDrivingLessonType", procedureName = "getAllDrivingLessonType", resultClasses = DrivingLessonType.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonType", procedureName = "getDrivingLessonType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLessonType", procedureName = "deleteDrivingLessonType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class DrivingLessonType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -34,15 +44,18 @@ public class DrivingLessonType {
     @Column(name = "price")
     @NotNull
     @Size(max = 5)
-    private int price;
+    private Integer price;
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToMany(
@@ -62,4 +75,8 @@ public class DrivingLessonType {
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({})
     private School drivingTypeSchool;
+
+    @OneToMany(mappedBy = "dLessonRequestType", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<DrivingLessonRequest> drivingLessonRequestList;
 }

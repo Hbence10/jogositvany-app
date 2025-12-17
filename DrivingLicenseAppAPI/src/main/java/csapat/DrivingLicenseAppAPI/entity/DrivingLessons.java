@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "driving_lesson")
@@ -19,57 +19,69 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson", resultClasses = DrivingLessons.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonByID", procedureName = "getDrivingLessonByID", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLessons.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class DrivingLessons {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "start_km")
-    @NotNull
+    @Null
     @Size(max = 7)
-    private int startKm;
+    private Integer startKm;
 
     @Column(name = "end_km")
-    @NotNull
+    @Null
     @Size(max = 7)
-    private int endKm;
+    private Integer endKm;
 
     @Column(name = "location")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String location;
 
     @Column(name = "pick_up_place")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String pickUpPlace;
 
     @Column(name = "drop_off_place")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String dropOffPlace;
 
     @Column(name = "lesson_hour_number")
-    @NotNull
-    private int lessonHourNumber;
+    @Null
+    private Integer lessonHourNumber;
 
     @Column(name = "is_paid")
     @NotNull
-    private boolean isPaid = false;
+    private Boolean isPaid = false;
 
     @Column(name = "is_end")
     @NotNull
-    private boolean isEnd = false;
+    private Boolean isEnd = false;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_cancelled")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isCancelled = false;
 
-    @Column(name = "deleted_at")
+    @Column(name = "cancelled_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date cancelledAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
@@ -99,13 +111,12 @@ public class DrivingLessons {
     @JsonIgnoreProperties({})
     private DrivingLessonType drivingLessonType;
 
-    public DrivingLessons(int startKm, int endKm, String location, String pickUpPlace, String dropOffPlace, int lessonHourNumber, boolean isPaid) {
-        this.startKm = startKm;
-        this.endKm = endKm;
-        this.location = location;
-        this.pickUpPlace = pickUpPlace;
-        this.dropOffPlace = dropOffPlace;
-        this.lessonHourNumber = lessonHourNumber;
-        this.isPaid = isPaid;
+    //Constructorok:
+
+    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor, DrivingLessonType drivingLessonType) {
+        this.reservedHour = reservedHour;
+        this.dstudent = dstudent;
+        this.dinstructor = dinstructor;
+        this.drivingLessonType = drivingLessonType;
     }
 }

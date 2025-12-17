@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +18,24 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllReservedDate", procedureName = "getAllReservedDate", resultClasses = ReservedDate.class),
+        @NamedStoredProcedureQuery(name = "getReservedDate", procedureName = "getReservedDate", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = ReservedDate.class),
+        @NamedStoredProcedureQuery(name = "deleteReservedDate", procedureName = "deleteReservedDate", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getReservedDateByDate", procedureName = "getReservedDateByDate", parameters = {
+                @StoredProcedureParameter(name = "wantedDateIN", type = Date.class, mode = ParameterMode.IN)
+        })
+})
 public class ReservedDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "date")
     @NotNull
@@ -31,27 +43,29 @@ public class ReservedDate {
 
     @Column(name = "is_full")
     @NotNull
-    private boolean isFull = false;
+    private Boolean isFull = false;
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToMany(
             mappedBy = "reservedDate",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            cascade = {}
     )
     private List<ReservedHour> reservedHourList;
 
     //Constructorok:
-    public ReservedDate(Date date, boolean isFull) {
+    public ReservedDate(Date date) {
         this.date = date;
-        this.isFull = isFull;
     }
 }

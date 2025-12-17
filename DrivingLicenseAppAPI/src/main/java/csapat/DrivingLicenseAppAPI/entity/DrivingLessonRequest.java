@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,9 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "driving_lesson_request")
@@ -20,35 +19,63 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllDrivingLessonRequest", procedureName = "getAllDrivingLessonRequest", resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonRequest", procedureName = "getDrivingLessonRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLessonRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteDrivingLessonRequest", procedureName = "", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class DrivingLessonRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "date")
     @NotNull
     private Date date;
 
-    @Column(name = "start_hour")
+    @Column(name = "start_time")
     @NotNull
     @Size(max = 2)
-    private int startHour;
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
+
+    @Column(name = "end_time")
+    @NotNull
+    @Size(max = 2)
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
+
+    @Column(name = "is_accepted")
+    @Null
+    private Boolean isAccepted;
+
+    @Column(name = "accepted_at")
+    @Null
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date acceptedAt;
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
     @JsonIgnoreProperties({})
-    private Students dlessonRequestStudent;
+    private Students dLessonRequestStudent;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
@@ -56,8 +83,7 @@ public class DrivingLessonRequest {
     private Instructors dLessonInstructor;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "lesson_type_id")
     @JsonIgnoreProperties({})
-    private Status dLessonStatus;
-
+    private DrivingLessonType dLessonRequestType;
 }

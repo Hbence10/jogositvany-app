@@ -10,8 +10,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "opening_detail")
@@ -19,12 +18,21 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllOpeningDetail", procedureName = "getAllOpeningDetail", resultClasses = OpeningDetails.class),
+        @NamedStoredProcedureQuery(name = "getOpeningDetail", procedureName = "getOpeningDetail", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = OpeningDetails.class),
+        @NamedStoredProcedureQuery(name = "deleteOpeningDetail", procedureName = "deleteOpeningDetail", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class OpeningDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "opening_time")
     @NotNull
@@ -41,19 +49,23 @@ public class OpeningDetails {
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
+    @JsonIgnore
     private School schoolOpeningDetail;
 
     //Constructorok:
-    public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, LocalDateTime deletedAt) {
+    public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, Date deletedAt) {
         this.openingTime = openingTime;
         this.closeTime = closeTime;
         this.day = day;

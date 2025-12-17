@@ -1,19 +1,179 @@
-<div class="container-fluid">
+<div class="container-fluid p-0 mainFont">
   <div class="row">
-    <div class="col-lg-8">
-      <div class="container-fluid">
+    <div class="col-lg-12 p-0">
+      <div class="container-fluid" id="mainContainer">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="container-fluid h-100">
+              @if(loggedUser.role.name == "ROLE_student"){
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="container-fluid box" id="school">
 
-      </div>
-    </div>
-    <div class="col-lg-4">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12"></div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <img src="" alt="" class="img-fluid" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
+                        <p class="text-center">{{ loggedUser.school?.name }}</p>
+                        <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
+                        <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
+                        <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="container-fluid d-flex flex-column align-items-center">
+                          <div class="info-field m-0"><p>nyitvatartás</p></div>
+                          <div class="container-fluid d-flex flex-column days text-start">
+                            <div class="day">
+                              <p>hétfő</p>
+                            </div>
+                            <div class="day isSelected">
+                              <p>kedd</p>
+                            </div>
+                            <div class="day">
+                              <p>szerda</p>
+                            </div>
+                            <div class="day">
+                              <p>csütörtök</p>
+                            </div>
+                            <div class="day text-start">
+                              <p>péntek</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
+                        <div class="box d-flex flex-column justify-content-center align-items-center" id="instructor">
+                          <h1>{{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}</h1>
+                          <div>
+                            <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" class="img-fluid"/>
+                          </div>
+                          <div>
+                            <a routerLink="/profil/user/{{loggedUser.instructor?.id}}"><button>profil</button></a>
+                            <button>üzenet</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+                        <div class="box d-flex flex-column justify-content-center align-items-center" id="license-category">
+                          <p>Jogosítvány Kategória:</p>
+                          <h1>B</h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Levezetett órák -->
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
+                        <div class="d-flex flex-column align-items-start box" id="progressbar-driven">
+                          <input id="bar" type="range" min="0" max="30" value="9" disabled/>
+                          <div class="d-flex">
+                            <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
+                            <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
+                          </div>
+                          <div>
+                            <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Befizetett órák -->
+                    <div class="row">
+                      <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
+                        <div class="d-flex flex-column align-items-start box" id="progressbar-payed">
+                          <input id="bar" type="range" min="0" max="30" value="9" disabled/>
+                          <div class="d-flex">
+                            <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              } @else{
+                <div class="row h-50">
+                  <div class="col-lg-12">
+                    <h1 class="text-center">Diákok</h1>
+                    <div>
+                      @for (student of loggedUser.students; track $index) {
+                        <app-profil-card [profilCardData]="student" [role]="'student'"/>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                @if (loggedUser.role.name == "ROLE_instructor"){
+                  <div class="row" style="height: 50vh;">
+                    <div class="col-lg-12">
+                      <h1 class="text-center">Iskola</h1>
+                      <div>
+                        <!-- Oktato iskola nezete -->
+                      </div>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="row" style="height: 50vh;">
+                    <div class="col-lg-12">
+                      <h1 class="text-center">Oktatók</h1>
+                      <div>
+                      @for (instructor of loggedUser.instructors; track $index) {
+                        <app-profil-card [profilCardData]="instructor" [role]="'instructor'"/>
+                      }
+                    </div>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="box" id="calendar"></div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="box" id="car">
+                    <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
+                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
+                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Típus:</p>
+                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Rendszám:</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <div class="col-lg-12"></div>
-        </div>
       </div>
+
     </div>
   </div>
 </div>

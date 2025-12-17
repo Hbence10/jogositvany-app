@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "reserved_hour")
@@ -18,43 +19,57 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllReservedHour", procedureName = "getAllReservedHour", resultClasses = ReservedHour.class),
+        @NamedStoredProcedureQuery(name = "getReservedHour", procedureName = "getReservedHour", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = ReservedHour.class),
+        @NamedStoredProcedureQuery(name = "deleteReservedHour", procedureName = "deleteReservedHour", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class ReservedHour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @Column(name = "start")
-    @Size(max = 2)
+    @Column(name = "start_time")
     @NotNull
-    private int start;
+    @Size(max = 2)
+    @Temporal(TemporalType.TIME)
+    private Date startTime;
 
-    @Column(name = "end")
-    @Size(max = 2)
+    @Column(name = "end_time")
     @NotNull
-    private int end;
+    @Size(max = 2)
+    @Temporal(TemporalType.TIME)
+    private Date endTime;
 
     @Column(name = "is_deleted")
     @NotNull
-    private boolean isDeleted = false;
+    @JsonIgnore
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private DrivingLessons drivingLessons;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "date_id")
     @JsonIgnoreProperties({})
     private ReservedDate reservedDate;
 
-    //Constructorok:
-    public ReservedHour(int start, int end) {
-        this.start = start;
-        this.end = end;
+    //Constructorok
+    public ReservedHour(Date startTime, Date endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 }

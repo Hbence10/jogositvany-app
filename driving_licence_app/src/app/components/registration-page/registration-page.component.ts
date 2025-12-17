@@ -1,4 +1,4 @@
-import { UsersService } from './../../services/users.service';
+import { UsersService } from '../../services/users.service';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -7,8 +7,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
+import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
+import { Education } from '../../models/education.model';
 
 function validatePassword(
   control: AbstractControl
@@ -39,15 +41,18 @@ function validatePassword(
 }
 
 @Component({
-  selector: 'app-registartion-page',
+  selector: 'app-registration-page',
   imports: [ReactiveFormsModule, RouterModule],
-  templateUrl: './registartion-page.component.html',
-  styleUrl: './registartion-page.component.css',
+  templateUrl: './registration-page.component.html',
+  styleUrl: './registration-page.component.css',
 })
-export class RegistartionPageComponent implements OnInit {
+export class RegistrationPageComponent implements OnInit {
   private usersService = inject(UsersService);
+  private otherService = inject(OtherStuffServiceService);
+  private router = inject(Router)
 
   registrationForm!: FormGroup;
+  educationList: Education[] = []
 
   samePasswordValidator = (
     control: AbstractControl
@@ -75,22 +80,31 @@ export class RegistartionPageComponent implements OnInit {
     this.registrationForm.controls['confirmPassword'].addValidators(
       this.samePasswordValidator
     );
+
+    const subscription = this.otherService.getAllEducation().subscribe({
+      next: response => this.educationList = response.map(edu => Object.assign(new Education(), edu)),
+      complete: () => {console.log(this.educationList)}
+    })
   }
 
   registration() {
     const newUser: User = new User(
-      0,
+      null,
       this.registrationForm.controls['firstName'].value!,
       this.registrationForm.controls['lastName'].value!,
       this.registrationForm.controls['email'].value!,
       this.registrationForm.controls['phone'].value!,
       this.registrationForm.controls['birthDate'].value!,
       this.registrationForm.controls['gender'].value!,
-      this.registrationForm.controls['education'].value!,
+      this.educationList[+this.registrationForm.controls['education'].value],
       this.registrationForm.controls['password'].value!
     );
+
     this.usersService.registration(newUser).subscribe({
-      next: (user) => console.log(user),
+      next: response => console.log(response),
+      complete: () => {
+        this.router.navigate(['/login']);
+      }
     });
   }
 }

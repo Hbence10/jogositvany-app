@@ -1,0 +1,37 @@
+<div
+  class="container-fluid d-flex flex-column justify-content-center align-items-start mainFont"
+  style="height: 100vh"
+>
+  <div class="row">
+    <div class="col d-flex justify-content-start">
+      <input type="date" />
+    </div>
+  </div>
+  <div class="row gx-0">
+    @for (day of days ; track $index) {
+    <div class="col p-0 d-flex justify-content-center align-items-center">
+      <div class="container-fluid d-flex flex-column">
+        <div class="row gx-0 align-items-center text-center days">
+          <p>{{ day.name }}</p>
+        </div>
+        <div class="row gx-0 align-items-center text-center request">
+          <p>request</p>
+        </div>
+        <div class="row gx-0">
+          <div class="col p-0 d-flex justify-content-center align-items-center lessons">
+            <div
+              class="container-fluid d-flex flex-column align-items-center lessonBox"
+            >
+              @for (lesson of day.lessons; track $index) {
+                    <div class="row gx-0">
+                      <div class="col-lg-12 lessonItem"></div>
+                    </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>

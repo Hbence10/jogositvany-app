@@ -1,6 +1,12 @@
 #footer {
   height: 260px !important  ;
-  background-color: #22354F;
+  background-color: #22354f;
+}
+
+.linkText {
+  text-decoration: none;
+  color: #168cf7;
+  font-size: 24px;
 }
 
 #icons {

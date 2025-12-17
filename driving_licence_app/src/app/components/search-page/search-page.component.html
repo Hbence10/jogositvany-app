@@ -1,1 +1,106 @@
-<p>search-page works!</p>
+<div
+  class="container-fluid d-flex flex-column justify-content-center align-items-center mainFont"
+  id="searchPage"
+>
+  <div class="row">
+    <div class="col-lg-6 p-0">
+      <div class="container-fluid">
+      @if(selectedType == "instructor"){
+        <div class="row">
+          <div class="col-lg-12">
+            @for (fuelType of fuelTypeList; track $index) {
+            <div>
+              <input type="checkbox" [value]="fuelType.id" [name]="fuelType.name">
+              <label [for]="fuelType.name">{{fuelType.name}}</label>
+            </div>
+          }
+          </div>
+        </div>
+      } @else {
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="box searchCol">
+              <input type="text" placeholder="Város"/>
+
+            </div>
+          </div>
+        </div>
+      }
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="box searchCol">
+            <input type="text" [placeholder]="selectedType == 'instructor' ? 'Az oktató neve' : 'Az iskola neve'" />
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-6 p-0">
+      <div class="container-fluid">
+        <div class="row">
+            <div class="box col-lg-12 d-flex flex-column justify-content-between" id="description">
+                  @if (selectedType == "school") {
+                    <div class="row">
+                      <div class="col-lg-12 p-0">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-lg-12 p-0">
+                              <img src="" class="img-fluid" alt="" />
+                            </div>
+                          </div>
+                          <div class="row my-3">
+                            <div class="col-lg-4">
+                              <h1 class="m-0">Név</h1>
+                              <h4>titulus</h4>
+                            </div>
+                            <div class="col-lg-8">
+                              <div class="col-lg-6" id="reviewDiv">
+                                <p>értékelés</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  } @else if (selectedType == "instructor"){
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <img src="" alt="" class="img-fluid">
+                      </div>
+                      <div class="col-lg-8">
+                        <h1 class="m-0">Név</h1>
+                        <h4>titulus</h4>
+                        <div class="col-lg-6" id="reviewDiv">
+                          <p>értékelés</p>
+                        </div>
+                      </div>
+                    </div>
+                  }
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p id="descriptionText">leirás</p>
+                    <p class="infoText">telefonszám</p>
+                    <p class="infoText">email</p>
+                  </div>
+                </div>
+
+                <div class="row gx-0">
+                  <div class="col-lg-12 d-flex align-items-end justify-content-end p-0">
+                    <button class="profileBtn">
+                      <img src="assets/icons/defaultProfileImg.svg" alt="">
+                    </button>
+                    <button class="signBtn">jelentkezés</button>
+                  </div>
+                </div>
+
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

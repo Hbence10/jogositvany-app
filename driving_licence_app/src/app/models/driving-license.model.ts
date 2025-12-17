@@ -1,33 +1,31 @@
-import { DrivingLessons } from "./driving-lessons.model";
+import { DrivingLessons } from './driving-lessons.model';
 
 export class DrivingLicenseCategory {
   constructor(
-    private id: number,
-    private name: string,
-    private minAge: number,
-    private drivingLessonsList: DrivingLessons[],
-
-  ){}
+    public id: number,
+    public name: string,
+    public minAge: number,
+    public description: string
+  ) {}
 
   get getName(): string {
     return this.name;
   }
-  set setName(value: string){
+  set setName(value: string) {
     this.name = value;
   }
 
   get getMinAge(): number {
     return this.minAge;
   }
-  set setMinAge(value: number){
+  set setMinAge(value: number) {
     this.minAge = value;
   }
 
-  get getDrivingLessonsList(): DrivingLessons[] {
-    return this.drivingLessonsList;
+  get getDescription(): string {
+    return this.description;
   }
-  set setDrivingLessonsList(value: DrivingLessons[]){
-    this.drivingLessonsList = value;
+  set setDescription(newDescription: string) {
+    this.description = newDescription;
   }
-
 }

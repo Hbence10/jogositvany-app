@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,6 +17,15 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllInstructorJoinRequest", procedureName = "getAllInstructorJoinRequest", resultClasses = InstructorJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "getInstructorJoinRequest", procedureName = "getInstructorJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = InstructorJoinRequest.class),
+        @NamedStoredProcedureQuery(name = "deleteInstructorJoinRequest", procedureName = "deleteInstructorJoinRequest", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = String.class)
+})
 public class InstructorJoinRequest {
 
     @Id
@@ -30,19 +39,23 @@ public class InstructorJoinRequest {
 
     @Column(name = "accepted_at")
     @Null
-    private LocalDateTime acceptedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date acceptedAt;
 
     @Column(name = "sended_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date sendedAt;
+    private Date sentAt;
 
     @Column(name = "is_deleted")
     @Null
+    @JsonIgnore
     private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
-    private LocalDateTime deletedAt;
+    @JsonIgnore
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok
     @ManyToOne(cascade = {})
