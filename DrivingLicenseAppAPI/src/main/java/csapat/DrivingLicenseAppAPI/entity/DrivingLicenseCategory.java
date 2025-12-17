@@ -10,7 +10,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -33,7 +33,7 @@ public class DrivingLicenseCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     @NotNull
@@ -43,11 +43,11 @@ public class DrivingLicenseCategory {
     @Column(name = "min_age")
     @NotNull
     @Size(max = 2)
-    private int minAge;
+    private Integer minAge;
 
-    @Column(name = "description")
-    @NotNull
-    private String description;
+//    @Column(name = "description")
+//    @NotNull
+//    private String description;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -57,7 +57,8 @@ public class DrivingLicenseCategory {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToMany(

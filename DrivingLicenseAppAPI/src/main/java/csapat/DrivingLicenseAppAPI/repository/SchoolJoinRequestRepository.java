@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinRequest, Integer> {
 
@@ -13,7 +14,7 @@ public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinReq
     List<SchoolJoinRequest> getAllSchoolJoinRequest();
 
     @Procedure(name = "getSchoolJoinRequest", procedureName = "getSchoolJoinRequest")
-    SchoolJoinRequest getSchoolJoinRequest(@Param("idIN") Integer id);
+    Optional<SchoolJoinRequest> getSchoolJoinRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest")
     String deleteSchoolJoinRequest(@Param("idIN") Integer id);

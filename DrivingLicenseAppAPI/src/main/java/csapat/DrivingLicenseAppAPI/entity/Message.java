@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "message")
@@ -30,7 +30,7 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "content")
     @NotNull
@@ -48,7 +48,8 @@ public class Message {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
 //    private User messageTo;

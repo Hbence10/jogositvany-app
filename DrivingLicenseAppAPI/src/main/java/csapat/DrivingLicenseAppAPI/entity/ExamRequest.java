@@ -10,7 +10,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -33,7 +32,7 @@ public class ExamRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "requested_date")
     @NotNull
@@ -47,7 +46,8 @@ public class ExamRequest {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})

@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "review")
@@ -46,7 +46,7 @@ public class Review {
 
     @Column(name = "rating")
     @NotNull
-    private float rating;
+    private Float rating;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -56,7 +56,8 @@ public class Review {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @ManyToOne(cascade = {})

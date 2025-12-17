@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface InstructorRepository extends JpaRepository<Instructors, Integer> {
 
@@ -13,8 +14,11 @@ public interface InstructorRepository extends JpaRepository<Instructors, Integer
     List<Instructors> getAllInstructor();
 
     @Procedure(name = "getInstructor", procedureName = "getInstructor")
-    Instructors getInstructor(@Param("idIN") Integer id);
+    Optional<Instructors> getInstructor(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteInstructor", procedureName = "deleteInstructor")
     String deleteInstructor(@Param("idIN") Integer id);
+
+    @Procedure(name = "getInstructorBySearch", procedureName = "getInstructorBySearch")
+    List<Integer> getInstructorBySearch(@Param("nameIN") String name, @Param("fuelTypeIdIN") Integer fuelTypeId);
 }

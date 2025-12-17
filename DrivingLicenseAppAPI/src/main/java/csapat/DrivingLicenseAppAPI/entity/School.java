@@ -11,7 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,12 +22,16 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllSchool", procedureName = "getAllSchool", resultClasses = School.class),
-        @NamedStoredProcedureQuery(name = "getSchool", procedureName = "", parameters = {
+        @NamedStoredProcedureQuery(name = "getSchool", procedureName = "getSchool", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = School.class),
         @NamedStoredProcedureQuery(name = "deleteSchool", procedureName = "deleteSchool", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getSchoolBySearch", procedureName = "getSchoolBySearch", parameters = {
+                @StoredProcedureParameter(name = "nameIN", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "townnameIN", type = String.class, mode = ParameterMode.IN),
+        }, resultClasses = Integer.class)
 })
 public class School {
 
@@ -72,7 +76,7 @@ public class School {
 
     @Column(name = "banner_img_path")
     @NotNull
-    private String bannerImgPath;
+    private String bannerImgPath = "";
 
     @Column(name = "is_deleted")
     @NotNull
@@ -82,7 +86,8 @@ public class School {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
@@ -94,7 +99,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-//    @JsonIgnoreProperties({"adminSchool"})
     @JsonIgnore
     private List<Users> adminList;
 
@@ -155,16 +159,4 @@ public class School {
 //    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
-
-    //Constructorok
-    public School(String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.country = country;
-        this.town = town;
-        this.address = address;
-        this.promoText = promoText;
-        this.bannerImgPath = bannerImgPath;
-    }
 }

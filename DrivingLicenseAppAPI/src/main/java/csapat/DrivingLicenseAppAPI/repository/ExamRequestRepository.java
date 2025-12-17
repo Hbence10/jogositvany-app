@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ExamRequestRepository extends JpaRepository<ExamRequest, Integer> {
 
@@ -13,7 +14,7 @@ public interface ExamRequestRepository extends JpaRepository<ExamRequest, Intege
     List<ExamRequest> getAllExamRequest();
 
     @Procedure(name = "getExamRequest", procedureName = "getExamRequest")
-    ExamRequest getExamRequest(@Param("idIN") Integer id);
+    Optional<ExamRequest> getExamRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteExamRequest", procedureName = "deleteExamRequest")
     String deleteExamRequest(@Param("idIN") Integer id);

@@ -10,7 +10,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "student")
@@ -46,7 +46,8 @@ public class Students {
     @Column(name = "deleted_at")
     @Null
     @JsonIgnore
-    private LocalDateTime deletedAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
 
     //Kapcsolatok
     @ManyToOne(cascade = {})
@@ -74,7 +75,7 @@ public class Students {
     private List<Review> reviewList;
 
     @OneToMany(
-            mappedBy = "dlessonRequestStudent",
+            mappedBy = "dLessonRequestStudent",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )

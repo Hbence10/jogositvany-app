@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StatusRepository extends JpaRepository<Status, Integer> {
 
@@ -13,7 +14,7 @@ public interface StatusRepository extends JpaRepository<Status, Integer> {
     List<Status> getAllStatus();
 
     @Procedure(name = "getStatus", procedureName = "getStatus")
-    Status getStatus(@Param("idIN") Integer id);
+    Optional<Status> getStatus(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteStatus", procedureName = "deleteStatus")
     String deleteStatus(@Param("idIN") Integer id);
