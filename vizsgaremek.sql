@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2025. Dec 17. 09:04
+-- Létrehozás ideje: 2025. Dec 17. 09:33
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -577,8 +577,8 @@ CREATE TABLE `instructor` (
   `id` int(11) NOT NULL,
   `user_id` int(10) NOT NULL,
   `school_id` int(10) NOT NULL,
-  `promo_text` longtext NOT NULL,
-  `vehicle_id` int(11) NOT NULL,
+  `promo_text` longtext,
+  `vehicle_id` int(11) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -590,7 +590,44 @@ CREATE TABLE `instructor` (
 INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_id`, `is_deleted`, `deleted_at`) VALUES
 (1, 1, 2, 'instructor promo text', 4, 1, '2025-11-30 23:00:00'),
 (2, 13, 2, 'promotext', 6, 0, NULL),
-(3, 14, 3, 'promo', 7, 0, NULL);
+(3, 14, 3, 'promo', 7, 0, NULL),
+(4, 30, 6, NULL, NULL, 0, NULL),
+(5, 31, 6, NULL, NULL, 0, NULL),
+(6, 32, 6, NULL, NULL, 0, NULL),
+(7, 33, 6, NULL, NULL, 0, NULL),
+(8, 34, 6, NULL, NULL, 0, NULL),
+(9, 35, 6, NULL, NULL, 0, NULL),
+(10, 36, 6, NULL, NULL, 0, NULL),
+(11, 37, 7, NULL, NULL, 0, NULL),
+(12, 38, 7, NULL, NULL, 0, NULL),
+(13, 40, 7, NULL, NULL, 0, NULL),
+(14, 41, 6, NULL, NULL, 0, NULL),
+(15, 42, 7, NULL, NULL, 0, NULL),
+(16, 43, 7, NULL, NULL, 0, NULL),
+(17, 44, 7, NULL, NULL, 0, NULL),
+(18, 45, 8, NULL, NULL, 0, NULL),
+(19, 46, 8, NULL, NULL, 0, NULL),
+(20, 47, 8, NULL, NULL, 0, NULL),
+(21, 48, 8, NULL, NULL, 0, NULL),
+(22, 46, 8, NULL, NULL, 0, NULL),
+(23, 47, 8, NULL, NULL, 0, NULL),
+(24, 48, 8, NULL, NULL, 0, NULL),
+(25, 49, 9, NULL, NULL, 0, NULL),
+(28, 50, 9, NULL, NULL, 0, NULL),
+(29, 51, 9, NULL, NULL, 0, NULL),
+(30, 52, 9, NULL, NULL, 0, NULL),
+(31, 53, 9, NULL, NULL, 0, NULL),
+(32, 54, 9, NULL, NULL, 0, NULL),
+(33, 55, 9, NULL, NULL, 0, NULL),
+(35, 56, 9, NULL, NULL, 0, NULL),
+(36, 57, 9, NULL, NULL, 0, NULL),
+(37, 59, 10, NULL, NULL, 0, NULL),
+(38, 60, 10, NULL, NULL, 0, NULL),
+(39, 61, 10, NULL, NULL, 0, NULL),
+(40, 62, 10, NULL, NULL, 0, NULL),
+(41, 63, 10, NULL, NULL, 0, NULL),
+(42, 64, 10, NULL, NULL, 0, NULL),
+(43, 65, 10, NULL, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -813,7 +850,12 @@ CREATE TABLE `school` (
 
 INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
 (2, 'AutosIskola1', 'iskola@gmail.com', 'a1', 'Tolna', 'Dombóvár', 'Cim', 'a', 'a', 6, 0, NULL),
-(3, 'Iskola2', 'iskola2@gmail.com', 'a2', 'Orszag', 'Varos', 'Cim', 'promo', 'banner', 12, 0, NULL);
+(3, 'Iskola2', 'iskola2@gmail.com', 'a2', 'Orszag', 'Varos', 'Cim', 'promo', 'banner', 12, 0, NULL),
+(6, 'school1', 'school1@gmail.com', '0000001', 'Baranya', 'Pécs', 'address1', 'a', 'a', 25, 0, NULL),
+(7, 'school2', 'school2@gmail.com', '0000002', 'Somogy', 'Kaposvár', 'address2', 'a', 'a', 26, 0, NULL),
+(8, 'school3', 'school3@gmail.com', '0000003', 'Fejér', 'Székesfehérvár', 'address3', 'a', 'a', 27, 0, NULL),
+(9, 'school4', 'school4@gmail.com', '0000004', 'Buda', 'Budapest', 'address4', 'a', 'a', 28, 0, NULL),
+(10, 'school5', 'school5@gmail.com', '0000005', 'Zala', 'Zalaegerszeg', 'address5', 'a', 'a', 29, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -884,7 +926,17 @@ INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `is_delete
 (5, 2, 1, 2, 0, NULL),
 (6, 2, 1, 3, 0, NULL),
 (7, 2, 1, 4, 0, NULL),
-(8, 2, 1, 5, 0, NULL);
+(8, 2, 1, 5, 0, NULL),
+(9, 6, 4, 15, 0, NULL),
+(10, 6, 4, 16, 0, NULL),
+(11, 6, 4, 17, 0, NULL),
+(12, 6, 4, 18, 0, NULL),
+(13, 6, 4, 19, 0, NULL),
+(14, 6, 4, 20, 0, NULL),
+(15, 6, 4, 21, 0, NULL),
+(16, 6, 4, 22, 0, NULL),
+(17, 6, 4, 23, 0, NULL),
+(18, 6, 4, 24, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1280,7 +1332,7 @@ ALTER TABLE `fuel_type`
 -- AUTO_INCREMENT a táblához `instructor`
 --
 ALTER TABLE `instructor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT a táblához `instructor_join_request`
@@ -1334,7 +1386,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT a táblához `school`
 --
 ALTER TABLE `school`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `school_join_request`
@@ -1352,7 +1404,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT a táblához `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT a táblához `user`
