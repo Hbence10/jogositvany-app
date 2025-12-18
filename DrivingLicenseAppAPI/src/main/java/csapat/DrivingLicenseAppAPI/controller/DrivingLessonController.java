@@ -75,7 +75,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = ""),
             @ApiResponse(responseCode = "500", description = "")
     })
-    @PostMapping("/request/{id}")
+    @PostMapping("/handleRequest/{id}")
     public ResponseEntity<Object> handleDrivingLessonRequest(@PathVariable("id") Integer id, @RequestParam("status") String status) {
         return drivingLessonService.handleDrivingLessonRequest(id, status);
     }
@@ -87,7 +87,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása requestBody nélkül."),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
     })
-    @PutMapping("/data")
+    @PutMapping("")
     public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody DrivingLessons updatedDrivingLesson) {
         return drivingLessonService.updateDrivingLessonRequest(updatedDrivingLesson);
     }

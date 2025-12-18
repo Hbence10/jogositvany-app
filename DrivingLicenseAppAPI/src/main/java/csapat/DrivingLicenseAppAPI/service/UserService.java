@@ -42,7 +42,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (ValidatorCollection.emailValidator(email.trim())) {
+            if (!ValidatorCollection.emailValidator(email.trim())) {
                 return ResponseEntity.status(415).build();
             }
 
@@ -379,8 +379,7 @@ public class UserService {
                 ((ObjectNode) instructorNode).put("lastName", instructors.getInstructorUser().getLastName());
                 instructorDetails.add(instructorNode);
             }
-
-
+            ((ObjectNode) returnObject).put("schoolId", loggedUser.getRole().getName().equals("ROLE_school_admin") ? loggedUser.getAdminSchool().getId() : loggedUser.getOwnedSchool().getId());
             ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
             ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
             ArrayNode instructorNode = objectMapper.valueToTree(instructorDetails);

@@ -26,7 +26,6 @@ public class InstructorController {
     private final InstructorService instructorService;
 
     @Operation(summary = "Oktatóhoz való jelentkezés", description = "Az oktatóhoz való jelentkezési kérelem eldöntése, hogy elfogadja-e a diák jelentkezését vagy nem.")
-    @PostMapping("/handleRequest")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az adott kérelem id-át (requestId) és a kérelemre adott választ (status) tartalmazza. A válasz lehet accept (elfogadva) vagy refuse (elutasitott).")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem kezelés."),
@@ -35,6 +34,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
+    @PostMapping("/handleJoinRequest")
     private ResponseEntity<Object> handleJoinRequest(@RequestBody JsonNode requestBody) {
         return instructorService.handleRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
     }

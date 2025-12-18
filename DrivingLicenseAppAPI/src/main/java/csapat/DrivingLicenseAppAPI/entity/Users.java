@@ -133,4 +133,7 @@ public class Users {
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
+    @OneToOne(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    private School ownedSchool;
+
 }

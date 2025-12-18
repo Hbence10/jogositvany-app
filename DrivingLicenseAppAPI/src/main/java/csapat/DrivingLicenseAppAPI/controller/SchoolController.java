@@ -36,7 +36,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.")
     })
-    @PostMapping("/request/{id}")
+    @PostMapping("/joinRequest/{id}")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status").asText());
     }
@@ -178,6 +178,6 @@ public class SchoolController {
     })
     @PostMapping("")
     private ResponseEntity<Object> createSchool(@RequestBody School addedSchool) {
-        return null;
+        return schoolService.createSchool(addedSchool);
     }
 }
