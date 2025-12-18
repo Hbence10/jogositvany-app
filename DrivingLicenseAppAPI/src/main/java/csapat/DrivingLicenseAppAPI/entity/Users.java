@@ -97,9 +97,9 @@ public class Users {
     @JsonIgnore
     private Date deletedAt;
 
-    @JsonIgnore
     @Column(name = "verification_code")
     @Null
+    @JsonIgnore
     private String vCode;
 
     //Kapcsolatok:

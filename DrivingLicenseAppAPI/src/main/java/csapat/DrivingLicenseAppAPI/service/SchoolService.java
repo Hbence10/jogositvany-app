@@ -190,7 +190,7 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+                return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> request.getIsAccepted() == null && !request.getIsDeleted()).toList());
             }
         } catch (Exception e) {
             e.printStackTrace();

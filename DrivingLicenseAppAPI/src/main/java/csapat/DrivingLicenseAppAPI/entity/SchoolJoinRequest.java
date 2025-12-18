@@ -65,12 +65,12 @@ public class SchoolJoinRequest {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"instructor", "student", "adminSchool", "ownedSchool"})
     private Users schoolJoinRequestUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @JsonIgnore
     private School schoolJoinRequestSchool;
 
     public SchoolJoinRequest(String requestedRole, Users user, School school) {
