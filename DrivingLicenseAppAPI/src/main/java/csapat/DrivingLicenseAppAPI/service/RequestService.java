@@ -37,9 +37,9 @@ public class RequestService {
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             Users searchedUser = userRepository.getUser(userId).orElse(null);
 
-            if (searchedSchool.getId() == null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool== null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
-            } else if (searchedUser.getId() == null || searchedUser.getIsDeleted()) {
+            } else if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
             } else if (!requestedRole.trim().equals("student") && !requestedRole.trim().equals("instructor")) {
                 return ResponseEntity.status(415).body("invalidRole");

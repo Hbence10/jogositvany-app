@@ -53,9 +53,8 @@ public class SchoolJoinRequest {
     private Date sentAt;
 
     @Column(name = "is_deleted")
-    @Null
     @JsonIgnore
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @Column(name = "deleted_at")
     @Null
@@ -76,5 +75,7 @@ public class SchoolJoinRequest {
 
     public SchoolJoinRequest(String requestedRole, Users user, School school) {
         this.requestedRole = requestedRole;
+        this.schoolJoinRequestUser = user;
+        this.schoolJoinRequestSchool = school;
     }
 }
