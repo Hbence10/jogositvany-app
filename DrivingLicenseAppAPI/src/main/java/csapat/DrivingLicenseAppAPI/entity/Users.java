@@ -116,8 +116,10 @@ public class Users {
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students student;
 
-    @OneToOne(cascade = {})
-    @JoinColumn(name = "school_administrator_id")
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "school_admin_id ")
+    @Null
+    @JsonIgnore
     private School adminSchool;
 
     @ManyToOne(cascade = {})

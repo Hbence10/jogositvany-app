@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -43,23 +44,26 @@ public class SchoolService {
 
             SchoolJoinRequest searchedSchoolJoinRequest = schoolJoinRequestRepository.getSchoolJoinRequest(joinRequestId).orElse(null);
 
-            if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getIsDeleted()) {
+            if (searchedSchoolJoinRequest == null || searchedSchoolJoinRequest.getIsDeleted() || searchedSchoolJoinRequest.getIsAccepted() != null) {
                 return ResponseEntity.notFound().build();
             } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidStatus");
             } else {
                 if (status.trim().equals("accept")) {
                     if (searchedSchoolJoinRequest.getRequestedRole().equals("student")) {
                         Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
+                        newStudent.getStudentUser().setRole(new Role(2, "ROLE_student"));
                         studentRepository.save(newStudent);
                     } else {
                         Instructors newInstructor = new Instructors(searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getSchoolJoinRequestUser());
+                        newInstructor.getInstructorUser().setRole(new Role(3, "ROLE_instructor"));
                         instructorRepository.save(newInstructor);
                     }
                     searchedSchoolJoinRequest.setIsAccepted(true);
                 } else {
                     searchedSchoolJoinRequest.setIsAccepted(false);
                 }
+                searchedSchoolJoinRequest.setAcceptedAt(new Date());
                 return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedSchoolJoinRequest));
             }
         } catch (Exception e) {

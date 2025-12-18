@@ -96,10 +96,10 @@ public class School {
 
     @OneToMany(
             mappedBy = "adminSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            cascade = {}
     )
     @JsonIgnore
+    @Null
     private List<Users> adminList;
 
     @OneToMany(
@@ -131,7 +131,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-//    @JsonIgnore
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
@@ -156,7 +155,6 @@ public class School {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-//    @JsonIgnoreProperties({"owner", "adminList", "instructorList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 }

@@ -61,9 +61,10 @@ public class Students {
     @Null
     private Instructors studentInstructor;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"students", "instructor"})
+//    @JsonIgnoreProperties({"students", "instructor", "adminSchool"})
+    @JsonIgnore
     private Users studentUser;
 
     @OneToMany(
