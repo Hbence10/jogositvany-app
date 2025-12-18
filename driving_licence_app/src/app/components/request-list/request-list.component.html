@@ -1,0 +1,41 @@
+<p>request-list works!</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <button
+        (click)="
+          changeRequestList(
+            ownerType == 'instructor' ? 'instructorJoin' : 'schoolJoin'
+          )
+        "
+      >
+        Csatlakozási kérelmek
+      </button>
+      <button
+        (click)="
+          changeRequestList(
+            ownerType == 'instructor' ? 'drivingLesson' : 'exam'
+          )
+        "
+      >
+        {{ ownerType == "instructor" ? "Óra kérelmek" : "Vizsga kérelmek" }}
+      </button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container-fluid">
+        @for (requestRow of requestList; track $index) {
+        <div class="row">
+          @for (request of requestRow; track $index) {
+          <div class="col-lg-6">
+            <app-request-card [requestDetail]="request" />
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

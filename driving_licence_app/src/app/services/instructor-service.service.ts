@@ -1,9 +1,35 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DrivingLessonRequest } from '../models/driving-lesson-request.model';
+import { InstructorJoinRequest } from '../models/instructor-join-request.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InstructorServiceService {
 
-  constructor() { }
+  private http = inject(HttpClient);
+
+  constructor() {}
+
+  handleJoinRequest(requestId: number, status: 'accept' | 'refuse') {
+    return this.http.post('', {});
+  }
+
+  handleDrivingLessonRequest(requestId: number, status: 'accept' | 'refuse') {
+    return this.http.post('', {});
+  }
+
+  getAllJoinRequestByInstructor(
+    id: number
+  ): Observable<InstructorJoinRequest[]> {
+    return this.http.get<InstructorJoinRequest[]>('');
+  }
+
+  getDrivingLessonRequestByInstructor(
+    id: number
+  ): Observable<DrivingLessonRequest[]> {
+    return this.http.get<DrivingLessonRequest[]>('');
+  }
 }

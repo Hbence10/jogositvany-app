@@ -13,6 +13,7 @@ import { SchoolRegistrationComponent } from './components/school-registration/sc
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { RequestListComponent } from './components/request-list/request-list.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -28,7 +29,7 @@ export const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
   { path: 'school-registration', component: SchoolRegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'search-page', component: SearchPageComponent },
+  { path: 'searchPage/:type/:typeId', component: SearchPageComponent },
   { path: 'password-reset', component: PasswordResetComponent },
-
+  { path: 'request/:owner', component: RequestListComponent },
 ];
