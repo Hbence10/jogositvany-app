@@ -2,23 +2,23 @@ import { School } from './school.model';
 
 export class OpeningDetails {
   constructor(
-    private id: number,
-    private openingTime: Date,
-    private closeTime: Date,
-    private day: string,
-    private schoolOpeningDetail: School
+    public id: number,
+    public openingTime: Date,
+    public closeTime: Date,
+    public day: string,
+    public schoolOpeningDetail: School
   ) {}
   get getOpeningTime(): Date {
     return this.openingTime;
   }
-  set setOpeningTime(value: Date){
+  set setOpeningTime(value: Date) {
     this.openingTime = value;
   }
 
   get getCloseTime(): Date {
     return this.closeTime;
   }
-  set setCloseTime(value: Date){
+  set setCloseTime(value: Date) {
     this.closeTime = value;
   }
 
@@ -32,7 +32,7 @@ export class OpeningDetails {
   get getSchoolOpeningDetail(): School {
     return this.schoolOpeningDetail;
   }
-  set setSchoolOpeningDetail(value: School){
+  set setSchoolOpeningDetail(value: School) {
     this.schoolOpeningDetail = value;
   }
 }

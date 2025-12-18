@@ -1,57 +1,57 @@
-import { Instructors } from "./instructors.model";
-import { School } from "./school.model";
-import { Students } from "./students.model";
+import { Instructors } from './instructors.model';
+import { School } from './school.model';
+import { Students } from './students.model';
 
-export class Review{
+export class Review {
   constructor(
-    private id: number,
-    private text: string,
-    private createdAt: Date,
-    private rating: number,
-    private reviewAuthor: Students,
-    private aboutInstructor: Instructors,
-    private aboutSchool: School,
-  ){}
+    public id: number,
+    public text: string,
+    public createdAt: Date,
+    public rating: number,
+    public reviewAuthor: Students,
+    public aboutInstructor: Instructors,
+    public aboutSchool: School
+  ) {}
 
   get getText(): string {
     return this.text;
   }
-  set setText(value: string){
+  set setText(value: string) {
     this.text = value;
   }
 
   get getCreatedAt(): Date {
     return this.createdAt;
   }
-  set setCreatedAt(value: Date){
+  set setCreatedAt(value: Date) {
     this.createdAt = value;
   }
 
   get getRating(): number {
     return this.rating;
   }
-  set setRating(value: number){
+  set setRating(value: number) {
     this.rating = value;
   }
 
   get getReviewAuthor(): Students {
     return this.reviewAuthor;
   }
-  set setReviewAuthor(value: Students){
+  set setReviewAuthor(value: Students) {
     this.reviewAuthor = value;
   }
 
   get getAboutInstructor(): Instructors {
     return this.aboutInstructor;
   }
-  set setAboutInstructor(value: Instructors){
+  set setAboutInstructor(value: Instructors) {
     this.aboutInstructor = value;
   }
 
   get getAboutSchool(): School {
     return this.aboutSchool;
   }
-  set setAboutSchool(value: School){
+  set setAboutSchool(value: School) {
     this.aboutSchool = value;
   }
 }

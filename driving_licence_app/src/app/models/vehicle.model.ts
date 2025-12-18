@@ -1,17 +1,16 @@
-import { FuelType } from "./fuel-type.model";
-import { Instructors } from "./instructors.model";
-import { VehicleType } from "./vehicle-type.model";
+import { FuelType } from './fuel-type.model';
+import { Instructors } from './instructors.model';
+import { VehicleType } from './vehicle-type.model';
 
 export class Vehicle {
   constructor(
-    private id: number,
-    private licensePlate: string,
-    private name: string,
-    private vehicleType: VehicleType,
-    private fuelType: FuelType,
-    private instructor: Instructors,
-  ){}
-
+    public id: number,
+    public licensePlate: string,
+    public name: string,
+    public vehicleType: VehicleType,
+    public fuelType: FuelType,
+    public instructor: Instructors
+  ) {}
 
   get getLicensePlate(): string {
     return this.licensePlate;
@@ -37,14 +36,14 @@ export class Vehicle {
   get getFuelType(): FuelType {
     return this.fuelType;
   }
-  set setFuelType(value: FuelType){
+  set setFuelType(value: FuelType) {
     this.fuelType = value;
   }
 
   get getInstructor(): Instructors {
     return this.instructor;
   }
-  set setInstructor(value: Instructors){
+  set setInstructor(value: Instructors) {
     this.instructor = value;
   }
 }

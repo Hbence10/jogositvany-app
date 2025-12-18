@@ -1,0 +1,27 @@
+.container-fluid {
+  height: 100vh;
+  padding: 30px;
+
+}
+
+h1{
+  font-size: 64px;
+  color: #D7E4FF;
+}
+
+p{
+  font-size: 24px;
+  color: #D7E4FF;
+  padding-left: 30px;
+}
+
+h2 {
+  font-size: 48px;
+  color: #1A99FE;
+}
+
+h4 {
+  font-size: 32px;
+  color: #93BEFF;
+  padding-left: 30px;
+}

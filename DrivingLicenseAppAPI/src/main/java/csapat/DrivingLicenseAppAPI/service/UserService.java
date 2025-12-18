@@ -147,22 +147,8 @@ public class UserService {
             if (userVCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
-
-            if (userVCode.trim().length() != 10) {
-                return ResponseEntity.status(415).body("invalidVerificationCode");
-            } else if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else {
-                Users searchedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
-                if (searchedUser == null || searchedUser.getIsDeleted()) {
-                    return ResponseEntity.notFound().build();
-                }
-
-                return ResponseEntity.ok().body(passwordEncoder.matches(userVCode.trim(), searchedUser.getVCode()) ? "success" : "failed");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            System.out.println(passwordEncoder.matches(userVCode, searchedUser.getVCode()));
+            return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
         }
 
     }

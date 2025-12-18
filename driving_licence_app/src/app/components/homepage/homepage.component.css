@@ -1,8 +1,13 @@
-
+.fullPage {
+  height: 100vh;
+}
 .box{
-  margin: 0px 25px 25px 0px;
+  margin: 15px !important;
   background-color: #22354F;
   border-radius: 15px;
+  padding: 15px;
+  align-items: center;
+  justify-content: center;
 }
 
 #school {
@@ -10,14 +15,42 @@
   height: 600px;
 }
 
+
 #instructor {
   width: 350px;
-  height: 400px;
+  height: 405px;
+}
+#instructor h1 {
+  font-size: 30px;
+}
+#instructor button {
+  background-color: #626C99;
+  border: none;
+  margin: 15px;
+  width: 80px;
+  height: 40px;
+  border-radius: 20px;
+}
+#instructor img {
+  background-color: #626C99;
+  margin-bottom: 15px;
+  width: 200px;
+  height: 200px;
+  border-radius: 15px;
 }
 
 #license-category {
   width: 351px;
-  height: 160px;
+  height: 165px;
+}
+#license-category h1 {
+  font-size: 96px;
+  color: #1A99FE;
+  margin: 0px;
+}
+#license-category p {
+  font-size: 24px;
+  margin: 0px;
 }
 
 #calendar {
@@ -27,14 +60,145 @@
 
 #car {
   width: 435px;
-  height: 250px;
+  height: 270px;
+}
+#car div {
+  width: 405px;
+  height: 40px;
+  background-color: #626C99;
+  margin-bottom: 15px;
+  padding: 5px;
+  border-radius: 5px;
+}
+#car img{
+  width: 75px;
+  height: 75px;
 }
 
-.progressbar-driven {
-  width: 900px;
+#progressbar-driven {
   height: 140px;
 }
-.progressbar-payed {
-  width: 900px;
+#progress-driven div {
+  font-size: 30px;
+}
+
+
+#progressbar-payed {
   height: 100px;
+}
+
+.info-field{
+  width: 450px;
+  height: 40px;
+  background-color: #636da1;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  padding: 0px  15px;
+}
+
+.info-field P {
+  margin: 0px;
+  font-size: 24px;
+}
+
+.isSelected {
+  background-color: #434A6B;
+}
+.day {
+    padding: 5px;
+}
+.day p {
+  margin: 0px;
+}
+
+.days{
+  width: 425px;
+  background-color: #636da1;
+  padding: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+
+
+#bar {
+  width: 850px;
+  height: 20px;
+  margin: 0px;
+}
+
+#progressBar {
+  background-color: #636da1;
+  padding: 25px;
+  border-radius: 16px;
+  width: 900px;
+  color: white;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  border-radius: 20px;
+  background: linear-gradient(to right, #349eff 30.5%, #b8bdd2 30%);
+  outline: none;
+  overflow: hidden;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #349eff;
+}
+
+input[type="range"]::-moz-range-progress {
+  background-color: #349eff;
+  height: 20px;
+  border-radius: 9999px;
+}
+input[type="range"]::-moz-range-track {
+  background-color: #b8bdd2;
+  height: 20px;
+  border-radius: 9999px;
+}
+
+.lesson-info-item {
+  position: relative;
+  padding-left: 20px;
+  color: #dee0eb;
+  font-size: 30px;
+  margin: 0px;
+}
+
+.lesson-info-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #349eff;
+}
+
+.lesson-info-driven::before {
+  background-color: #4b9cfb;
+}
+
+.lesson-info-extra::before {
+  background-color: #7BB4C7;
+}
+
+.lesson-info-required::before {
+  background-color: #b3b8d1;
 }
