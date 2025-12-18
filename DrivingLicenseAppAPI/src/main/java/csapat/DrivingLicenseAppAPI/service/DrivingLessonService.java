@@ -120,7 +120,7 @@ public class DrivingLessonService {
                 return ResponseEntity.status(422).build();
             }
 
-            List<PaymentMethod> allPaymentMethod = paymentMethodRepository.getAllPayMethod();
+            List<PaymentMethod> allPaymentMethod = paymentMethodRepository.getAllPaymentMethod();
             List<Status> allStatus = statusRepository.getAllStatus();
 
             if (updatedDrivingLesson.getId() == null) {

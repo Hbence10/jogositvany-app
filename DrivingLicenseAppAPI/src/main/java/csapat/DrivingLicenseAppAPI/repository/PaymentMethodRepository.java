@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Integer> {
 
-    @Procedure(name = "getAllPayMethod", procedureName = "getAllPayMethod")
-    List<PaymentMethod> getAllPayMethod();
+    @Procedure(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod")
+    List<PaymentMethod> getAllPaymentMethod();
 
     @Procedure(name = "getPaymentMethod", procedureName = "getPaymentMethod")
     Optional<PaymentMethod> getPaymentMethod(@Param("idIN") Integer id);

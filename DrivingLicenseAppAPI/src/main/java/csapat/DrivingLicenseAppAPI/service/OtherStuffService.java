@@ -30,7 +30,7 @@ public class OtherStuffService {
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         try {
-            return ResponseEntity.ok().body(paymentMethodRepository.getAllPayMethod());
+            return ResponseEntity.ok().body(paymentMethodRepository.getAllPaymentMethod());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.ok().build();

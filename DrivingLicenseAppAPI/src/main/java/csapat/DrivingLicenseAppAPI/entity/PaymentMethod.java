@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllPayMethod", procedureName = "getAllPayMethod", resultClasses = PaymentMethod.class),
+        @NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class),
         @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = PaymentMethod.class),

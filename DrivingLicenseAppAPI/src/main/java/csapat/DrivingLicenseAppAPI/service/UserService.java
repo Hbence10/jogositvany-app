@@ -147,8 +147,15 @@ public class UserService {
             if (userVCode == null || email == null) {
                 return ResponseEntity.status(422).build();
             }
-            System.out.println(passwordEncoder.matches(userVCode, searchedUser.getVCode()));
+
+            Users searchedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
             return ResponseEntity.ok().body(passwordEncoder.matches(userVCode, searchedUser.getVCode()) ? "success" : "failed");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
