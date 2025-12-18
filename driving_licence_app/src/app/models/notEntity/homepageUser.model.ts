@@ -13,6 +13,8 @@ export class HomePageUser {
     public studentId?: number,
     public school?: School,
     public instructor?: {id:number, firstName:string, lastName: string, pfpPath:string},
+    public instructorId?: number,
+    public schoolId?: number,
     public vehicle?: Vehicle,
     public students?: ProfileCard[],
     public instructors?: ProfileCard[],

@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
-import { Router } from 'express';
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profil-card',
