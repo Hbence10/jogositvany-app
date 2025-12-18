@@ -42,7 +42,7 @@ public class InstructorJoinRequest {
     @Temporal(TemporalType.TIMESTAMP)
     private Date acceptedAt;
 
-    @Column(name = "sended_at")
+    @Column(name = "sent_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sentAt;
 

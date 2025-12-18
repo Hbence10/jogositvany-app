@@ -67,6 +67,8 @@ public class RequestService {
                 return ResponseEntity.status(404).body("instructorNotFound");
             } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.status(404).body("studentNotFound");
+            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()){
+                return ResponseEntity.status(415).body("invalidInstructor");
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
                 instructorJoinRequestRepository.save(instructorJoinRequest);

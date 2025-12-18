@@ -39,4 +39,8 @@ public class EmailSender {
 
     public void sendEmailAboutStudentRequest(String toEmail){
     }
+
+    public void sendEmailAboutRequestResult(String toEmail){
+
+    }
 }

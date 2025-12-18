@@ -37,9 +37,9 @@ public class InstructorService {
             InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
 
             if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("requestNotFound");
             } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
-                return ResponseEntity.status(415).build();
+                return ResponseEntity.status(415).body("invalidStatus");
             } else {
                 if (status.trim().equals("accept")) {
                     Students student = searchedJoinRequest.getInstructorJoinRequestStudent();
@@ -69,7 +69,7 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() != null).toList());
+                return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() == null).toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,7 +106,7 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedInstructor.getDrivingLessonRequestList());
+                return ResponseEntity.ok().body(searchedInstructor.getDrivingLessonRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() == null).toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
