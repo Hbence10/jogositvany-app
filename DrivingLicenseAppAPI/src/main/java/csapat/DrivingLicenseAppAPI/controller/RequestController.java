@@ -81,8 +81,8 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> addDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
-        return requestService.addDrivingLessonRequest(addedDrivingLessonRequest);
+    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
+        return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
     }
 
     @Operation(summary = "Vizsga kérelem küldése", description = "")
@@ -94,8 +94,8 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @PostMapping("/exam")
-    private ResponseEntity<Object> addExamRequest(@RequestBody ExamRequest addedExamRequest) {
-        return requestService.addExamRequest(addedExamRequest);
+    private ResponseEntity<Object> sendExamRequest(@RequestBody ExamRequest addedExamRequest) {
+        return requestService.sendExamRequest(addedExamRequest);
     }
 
     @Operation(summary = "Órához való kérelem törlése", description = "Vezetési óra törlése id alapján.")

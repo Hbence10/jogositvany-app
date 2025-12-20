@@ -22,7 +22,6 @@ public class RequestService {
     private final ExamRequestRepository examRequestRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
-
     private final SchoolRepository schoolRepository;
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
@@ -80,6 +79,62 @@ public class RequestService {
         }
     }
 
+    public ResponseEntity<Object> sendDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
+        try {
+            if (addedDrivingLessonRequest == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
+                return ResponseEntity.status(415).body("invalidStartEndRange");
+            } else {
+                Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
+                Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
+
+                if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                    return ResponseEntity.status(404).body("instructorNotFound");
+                } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                    return ResponseEntity.status(404).body("studentNotFound");
+                } else if (searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()){
+                    return ResponseEntity.status(415).body("invalidInstructor");
+                } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()){
+                    return ResponseEntity.status(415).body("invalidInstructor");
+                } else {
+                    drivingLessonRequestRepository.save(addedDrivingLessonRequest);
+                    return ResponseEntity.ok().build();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> sendExamRequest(ExamRequest addedExamRequest) {
+        try {
+            if (addedExamRequest == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId()).orElse(null);
+            Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
+            School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
+
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.status(404).body("instructorNotFound");
+            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.status(404).body("studentNotFound");
+            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.status(404).body("schoolNotFound");
+            } else {
+                examRequestRepository.save(addedExamRequest);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     public ResponseEntity<Object> deleteSchoolJoinRequest(Integer id) {
         try {
             if (id == null) {
@@ -114,58 +169,6 @@ public class RequestService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> addDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
-        try {
-            if (addedDrivingLessonRequest == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
-                return ResponseEntity.status(415).build();
-            } else {
-                Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
-                Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
-
-                if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("instructorNotFound");
-                } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("studentNotFound");
-                } else {
-                    drivingLessonRequestRepository.save(addedDrivingLessonRequest);
-                    return ResponseEntity.ok().build();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> addExamRequest(ExamRequest addedExamRequest) {
-        try {
-            if (addedExamRequest == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId()).orElse(null);
-            Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
-            School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
-
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.status(404).body("schoolNotFound");
-            } else {
-                examRequestRepository.save(addedExamRequest);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
