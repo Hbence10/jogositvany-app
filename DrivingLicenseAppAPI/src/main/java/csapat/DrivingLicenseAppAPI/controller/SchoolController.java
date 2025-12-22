@@ -152,7 +152,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")
-    private ResponseEntity<List<School>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "town", defaultValue = "Budapest") String town) {
+    private ResponseEntity<List<JsonNode>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "town", defaultValue = "Budapest") String town) {
         return schoolService.getSchoolBySearch(name, town);
     }
 

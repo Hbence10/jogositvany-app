@@ -92,6 +92,7 @@ public class School {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
+    @JsonIgnoreProperties({"ownedSchool"})
     private Users owner;
 
     @OneToMany(
@@ -142,12 +143,12 @@ public class School {
     @JsonIgnore
     private List<DrivingLessonType> drivingLessonsType;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "examSchool",
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            cascade = {}
     )
-    @JsonIgnore
     private List<ExamRequest> examRequestList;
 
     @OneToMany(

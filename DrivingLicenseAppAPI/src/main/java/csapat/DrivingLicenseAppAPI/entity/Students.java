@@ -63,7 +63,7 @@ public class Students {
 
     @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "user_id")
-    @JsonIgnore
+    @JsonIgnoreProperties({"student"})
     private Users studentUser;
 
     @OneToMany(

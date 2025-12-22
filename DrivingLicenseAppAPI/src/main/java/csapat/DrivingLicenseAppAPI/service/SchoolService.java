@@ -1,5 +1,8 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVReader;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
@@ -34,6 +37,7 @@ public class SchoolService {
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
+    private final ObjectMapper objectMapper;
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
@@ -209,6 +213,7 @@ public class SchoolService {
             }
 
             School searchedSchool = schoolRepository.getSchool(id).orElse(null);
+            System.out.println(searchedSchool.getName());
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
@@ -239,12 +244,18 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<List<School>> getSchoolBySearch(String name, String town) {
+    public ResponseEntity<List<JsonNode>> getSchoolBySearch(String name, String town) {
         try {
             List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
-            List<School> searchedSchools = new ArrayList<School>();
+            List<JsonNode> searchedSchools = new ArrayList<JsonNode>();
             for (Integer i : searchedSchoolId) {
-                searchedSchools.add(schoolRepository.getSchool(i).orElse(null));
+                School searchedSchool = schoolRepository.getSchool(i).orElse(null);
+                if (searchedSchool != null) {
+                    JsonNode schoolNode = objectMapper.createObjectNode();
+                    ((ObjectNode) schoolNode).put("id", searchedSchool.getId());
+                    ((ObjectNode) schoolNode).put("name", searchedSchool.getName());
+                    searchedSchools.add(schoolNode);
+                }
             }
             return ResponseEntity.ok().body(searchedSchools);
 

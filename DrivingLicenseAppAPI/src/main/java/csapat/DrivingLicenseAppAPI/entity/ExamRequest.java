@@ -13,7 +13,7 @@ import javax.validation.constraints.Null;
 import java.util.Date;
 
 @Entity
-@Table(name = "driving_lesson_request")
+@Table(name = "exam_request")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -52,15 +52,16 @@ public class ExamRequest {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
+    @JsonIgnoreProperties({"instructorSchool", "vehicle", "students"})
     private Instructors examRequesterInstructor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private School examSchool;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private Students examStudent;
 }
