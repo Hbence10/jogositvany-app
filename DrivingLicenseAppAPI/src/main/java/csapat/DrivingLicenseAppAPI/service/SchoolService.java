@@ -244,9 +244,9 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<List<JsonNode>> getSchoolBySearch(String name, String town) {
+    public ResponseEntity<List<JsonNode>> getSchoolBySearch(String town) {
         try {
-            List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(name, town);
+            List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(town);
             List<JsonNode> searchedSchools = new ArrayList<JsonNode>();
             for (Integer i : searchedSchoolId) {
                 School searchedSchool = schoolRepository.getSchool(i).orElse(null);

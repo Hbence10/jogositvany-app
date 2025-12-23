@@ -20,5 +20,5 @@ public interface SchoolRepository extends JpaRepository<School, Integer> {
     String deleteSchool(@Param("idIN") Integer id);
 
     @Procedure(name = "getSchoolBySearch", procedureName = "getSchoolBySearch")
-    List<Integer> getSchoolBySearch(@Param("nameIN") String name, @Param("townnameIN") String townName);
+    List<Integer> getSchoolBySearch( @Param("townnameIN") String townName);
 }

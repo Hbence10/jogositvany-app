@@ -108,8 +108,8 @@ public class InstructorController {
 
     @Operation(summary = "Oktatók keresése", description = "")
     @Parameters({
-            @Parameter(name = "name", description = "Az oktató neve", required = false, in = ParameterIn.QUERY),
-            @Parameter(name = "vehicle", description = "Az oktatóhoz tartozó autó tankolási tipusának az id-ja", required = false, in = ParameterIn.QUERY)
+            @Parameter(name = "fuelTypeId", description = "A keresett tankolási tipusnak az id-ja", required = false, in = ParameterIn.QUERY),
+            @Parameter(name = "schoolId", description = "A keresett oktatóhoz tartozó iskolának az id-ja", required = false, in = ParameterIn.QUERY),
     })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = ""),
@@ -118,8 +118,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")
-    private ResponseEntity<List<Instructors>> getInstructorsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "fuelTypeId", defaultValue = "1") Integer fuelTypeId) {
-        return instructorService.getInstructorsBySearch(name, fuelTypeId);
+    private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Integer fuelTypeId, @RequestParam("school") Integer schoolId) {
+        return instructorService.getInstructorsBySearch(fuelTypeId, schoolId);
     }
 
     @Operation(summary = "Oktató id alapján.", description = "Oktató lekérdezése id alapján.")

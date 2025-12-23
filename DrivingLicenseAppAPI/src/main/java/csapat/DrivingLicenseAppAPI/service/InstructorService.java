@@ -1,5 +1,8 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -27,6 +31,8 @@ public class InstructorService {
     private final StudentRepository studentRepository;
     private final FuelTypeRepository fuelTypeRepository;
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
+    private final SchoolRepository schoolRepository;
+    private final ObjectMapper objectMapper;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         try {
@@ -200,19 +206,33 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<List<Instructors>> getInstructorsBySearch(String name, Integer fuelTypeId) {
+    public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId) {
         try {
+            if (fuelTypeId == null || schoolId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("fuelTypeNotFound");
+            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+              return ResponseEntity.status(404).body("schoolNotFound");
             } else {
-                List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(name, fuelTypeId);
-                List<Instructors> searchedInstructors = new ArrayList<>();
+                List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId);
+                List<JsonNode> searchedInstructors = new ArrayList<>();
+
                 for (Integer id : searchedInstructorsId) {
-                    searchedInstructors.add(instructorRepository.getInstructor(id).orElse(null));
+                    Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
+                    if (searchedInstructor != null) {
+                        JsonNode instructorNode = objectMapper.createObjectNode();
+                        ((ObjectNode) instructorNode).put("id", searchedInstructor.getId());
+                        ((ObjectNode) instructorNode).put("name", searchedInstructor.getInstructorUser().getFirstName() + " " + searchedInstructor.getInstructorUser().getLastName());
+                        searchedInstructors.add(instructorNode);
+                    }
                 }
 
-                return ResponseEntity.ok().body(searchedInstructors);
+                return ResponseEntity.ok().body(searchedInstructors.stream().filter(Objects::nonNull).toList());
             }
         } catch (RuntimeException e) {
             e.printStackTrace();

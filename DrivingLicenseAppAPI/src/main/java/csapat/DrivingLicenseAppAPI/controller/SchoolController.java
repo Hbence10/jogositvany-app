@@ -152,8 +152,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
     })
     @GetMapping("")
-    private ResponseEntity<List<JsonNode>> getSchoolsBySearch(@RequestParam(value = "name", defaultValue = "") String name, @RequestParam(value = "town", defaultValue = "Budapest") String town) {
-        return schoolService.getSchoolBySearch(name, town);
+    private ResponseEntity<List<JsonNode>> getSchoolsBySearch(@RequestParam(value = "town", defaultValue = "Budapest") String town) {
+        return schoolService.getSchoolBySearch(town);
     }
 
     @Operation(summary = "Iskola id alapján", description = "Iskola lekérdezése id alapján.")
