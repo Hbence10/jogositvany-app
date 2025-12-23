@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -28,44 +29,6 @@ public class ReviewService {
     private final StudentRepository studentRepository;
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
-
-    public ResponseEntity<List<Review>> getReviewsAboutSchool(Integer schoolId) {
-        try {
-            if (schoolId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                List<Review> reviewList = searchedSchool.getReviewList();
-                return ResponseEntity.ok().body(reviewList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<List<Review>> getReviewsAboutInstructor(Integer instructorId) {
-        try {
-            if (instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                List<Review> reviewList = searchedInstructor.getReviewList();
-                return ResponseEntity.ok().body(reviewList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
 
     public ResponseEntity<Object> createSchoolReview(Review newReview, Integer schoolId) {
         try {
@@ -156,6 +119,40 @@ public class ReviewService {
                 reviewRepository.deleteReview(id);
                 return ResponseEntity.ok().build();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getReviews(String about, Integer aboutId){
+        try {
+            if (about == null || aboutId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            if (!about.equals("school") && !about.equals("instructor")) {
+                return ResponseEntity.status(415).body("invalidAbout");
+            } else {
+                List<Review> returnList = new ArrayList<>();
+                if (about.equals("instructor")) {
+                    Instructors searchedInstructor = instructorRepository.getInstructor(aboutId).orElse(null);
+                    if (searchedInstructor == null) {
+                        return ResponseEntity.notFound().build();
+                    } else {
+                        returnList = searchedInstructor.getReviewList();
+                    }
+                } else if (about.equals("school")) {
+                    School searchedSchool = schoolRepository.getSchool(aboutId).orElse(null);
+                    if (searchedSchool == null) {
+                        return ResponseEntity.notFound().build();
+                    } else {
+                        returnList = searchedSchool.getReviewList();
+                    }
+                }
+                return ResponseEntity.ok().body(returnList);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

@@ -20,30 +20,9 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @Operation(summary = "Iskoláról a review-ek", description = "Visszaadja a keresett iskoláról az összes review-t.")
-    @Parameter(name = "id", description = "A keresett iskolához tartozó id.", required = true, in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés"),
-            @ApiResponse(responseCode = "404", description = "Nem létező iskoláról való lekérdezés."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-    })
-    @GetMapping("/school/{id}")
-    public ResponseEntity<List<Review>> getReviewsAboutSchool(@PathVariable("id") Integer schoolId) {
-        return reviewService.getReviewsAboutSchool(schoolId);
-    }
-
-    @Operation(summary = "Oktatóról a review-ek", description = "Visszaadja a keresett oktatóról az összes review-t.")
-    @Parameter(name = "id", description = "A keresett oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés"),
-            @ApiResponse(responseCode = "404", description = "Nem létező oktatóról való lekérdezés."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-    })
-    @GetMapping("/instructor/{id}")
-    public ResponseEntity<List<Review>> getReviewsAboutInstructor(@PathVariable("id") Integer instructorId) {
-        return reviewService.getReviewsAboutInstructor(instructorId);
+    @GetMapping("")
+    public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Integer aboutId) {
+        return reviewService.getReviews(about, aboutId);
     }
 
     @Operation(summary = "Review létrezohása (iskola)", description = "Review létrehozása egy iskoláról")
