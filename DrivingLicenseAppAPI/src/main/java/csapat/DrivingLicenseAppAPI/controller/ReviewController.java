@@ -4,6 +4,7 @@ import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,38 +21,35 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    @Operation(summary = "", description = "")
+    @Parameters({
+            @Parameter(name = "about", description = "", required = true, in = ParameterIn.QUERY),
+            @Parameter(name = "aboutId", description = "", required = true, in = ParameterIn.QUERY)
+    })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = ""),
+            @ApiResponse(responseCode = "404", description = ""),
+            @ApiResponse(responseCode = "415", description = ""),
+            @ApiResponse(responseCode = "422", description = ""),
+            @ApiResponse(responseCode = "500", description = ""),
+    })
     @GetMapping("")
     public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Integer aboutId) {
         return reviewService.getReviews(about, aboutId);
     }
 
-    @Operation(summary = "Review létrezohása (iskola)", description = "Review létrehozása egy iskoláról")
-    @Parameter(name = "id", description = "A keresett iskolához tartozó id.", required = true, in = ParameterIn.PATH)
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új review object-e", required = true, useParameterTypeSchema = true)
+    @Operation(summary = "", description = "")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "", required = true)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres review készítés"),
-            @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező iskoláról lett készítve a review."),
+            @ApiResponse(responseCode = "200", description = ""),
+            @ApiResponse(responseCode = "404", description = ""),
             @ApiResponse(responseCode = "415", description = ""),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "422", description = ""),
+            @ApiResponse(responseCode = "500", description = ""),
     })
-    @PostMapping("/school/{id}")
-    public ResponseEntity<Object> createSchoolReview(@RequestBody Review newReview, @PathVariable("id") Integer schoolId) {
-        return reviewService.createSchoolReview(newReview, schoolId);
-    }
-
-    @Operation(summary = "Review létrezohása (oktató)", description = "Review létrehozása egy oktatóról")
-    @Parameter(name = "id", description = "A keresett oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új review object-e", required = true, useParameterTypeSchema = true)
-    @ApiResponses({
-            @ApiResponse(responseCode = "404", description = "Vagy nem létező diák hozta létre a review-t vagy nem létező oktatóról lett készítve a review."),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "200", description = "Sikeres review készítés")
-    })
-    @PostMapping("/instructor/{id}")
-    public ResponseEntity<Object> createInstructorReview(@RequestBody Review newReview, @PathVariable("id") Integer instructorId) {
-        return reviewService.createInstructorReview(newReview, instructorId);
+    @PostMapping("")
+    public ResponseEntity<Object> addReview(@RequestBody Review newReview) {
+        return reviewService.addReview(newReview);
     }
 
     @Operation(summary = "Review frissitése", description = "Review frissitése")

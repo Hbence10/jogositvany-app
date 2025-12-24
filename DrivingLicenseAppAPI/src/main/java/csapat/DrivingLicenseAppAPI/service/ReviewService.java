@@ -10,6 +10,7 @@ import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,57 +31,73 @@ public class ReviewService {
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
 
-    public ResponseEntity<Object> createSchoolReview(Review newReview, Integer schoolId) {
+    public ResponseEntity<Object> addReview(Review newReview) {
         try {
-            if (newReview == null || schoolId == null) {
+            if (newReview == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            Students authorStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
-            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-
-            if (authorStudent == null || authorStudent.getIsDeleted()) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.status(404).body("schoolNotFound");
-            } else if (newReview.getId() != null) {
+            if (newReview.getId() != null || (newReview.getAboutSchool() == null && newReview.getAboutInstructor() == null)) {
                 return ResponseEntity.status(415).body("invalidObject");
-            } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-                return ResponseEntity.status(415).body("invalidRatingNumber");
             } else {
-                newReview.setText(newReview.getText().trim());
-                newReview.setAboutSchool(searchedSchool);
-                newReview.setReviewAuthor(authorStudent);
-                return ResponseEntity.ok().body(reviewRepository.save(newReview));
+                if (newReview.getAboutInstructor() == null && newReview.getAboutSchool() != null) {
+                    School searchedSchool = schoolRepository.getSchool(newReview.getAboutSchool().getId()).orElse(null);
+                    if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("schoolNotFound");
+                    }
+                } else if (newReview.getAboutInstructor() != null && newReview.getAboutSchool() == null) {
+                    Instructors searchedInstructor = instructorRepository.getInstructor(newReview.getAboutInstructor().getId()).orElse(null);
+                    if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("instructorNotFound");
+                    }
+                }
+
+                Students searchedStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
+                if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("studentNotFound");
+                }
+
+                if (newReview.getRating() < 1 || newReview.getRating() > 5) {
+                    return ResponseEntity.status(415).body("invalidRating");
+                } else {
+                    return ResponseEntity.ok().body(reviewRepository.save(newReview));
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    public ResponseEntity<Object> createInstructorReview(Review newReview, Integer instructorId) {
+    public ResponseEntity<Object> getReviews(String about, Integer aboutId) {
         try {
-            if (newReview == null || instructorId == null) {
+            if (about == null || aboutId == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            Students authorStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-
-            if (authorStudent == null || authorStudent.getIsDeleted()) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (newReview.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (newReview.getRating() > 5.0 || newReview.getRating() < 0) {
-                return ResponseEntity.status(415).body("invalidRatingNumber");
+            if (!about.equals("school") && !about.equals("instructor")) {
+                return ResponseEntity.status(415).body("invalidAbout");
             } else {
-                newReview.setAboutInstructor(searchedInstructor);
-                newReview.setReviewAuthor(authorStudent);
-                return ResponseEntity.ok().body(reviewRepository.save(newReview));
+                List<Review> returnList = new ArrayList<>();
+                if (about.equals("instructor")) {
+                    Instructors searchedInstructor = instructorRepository.getInstructor(aboutId).orElse(null);
+                    if (searchedInstructor == null) {
+                        return ResponseEntity.notFound().build();
+                    } else {
+                        returnList = searchedInstructor.getReviewList();
+                    }
+                } else if (about.equals("school")) {
+                    School searchedSchool = schoolRepository.getSchool(aboutId).orElse(null);
+                    if (searchedSchool == null) {
+                        return ResponseEntity.notFound().build();
+                    } else {
+                        returnList = searchedSchool.getReviewList();
+                    }
+                }
+                return ResponseEntity.ok().body(returnList);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -119,40 +136,6 @@ public class ReviewService {
                 reviewRepository.deleteReview(id);
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> getReviews(String about, Integer aboutId){
-        try {
-            if (about == null || aboutId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            if (!about.equals("school") && !about.equals("instructor")) {
-                return ResponseEntity.status(415).body("invalidAbout");
-            } else {
-                List<Review> returnList = new ArrayList<>();
-                if (about.equals("instructor")) {
-                    Instructors searchedInstructor = instructorRepository.getInstructor(aboutId).orElse(null);
-                    if (searchedInstructor == null) {
-                        return ResponseEntity.notFound().build();
-                    } else {
-                        returnList = searchedInstructor.getReviewList();
-                    }
-                } else if (about.equals("school")) {
-                    School searchedSchool = schoolRepository.getSchool(aboutId).orElse(null);
-                    if (searchedSchool == null) {
-                        return ResponseEntity.notFound().build();
-                    } else {
-                        returnList = searchedSchool.getReviewList();
-                    }
-                }
-                return ResponseEntity.ok().body(returnList);
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
