@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,8 +49,8 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = ""),
     })
     @PostMapping("")
-    public ResponseEntity<Object> addReview(@RequestBody Review newReview) {
-        return reviewService.addReview(newReview);
+    public ResponseEntity<Object> addReview(@RequestBody JsonNode requestBody) {
+        return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asInt(), requestBody.get("instructorId").asInt(), requestBody.get("schoolId").asInt());
     }
 
     @Operation(summary = "Review frissitése", description = "Review frissitése")

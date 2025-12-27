@@ -46,7 +46,7 @@ public class Review {
 
     @Column(name = "rating")
     @NotNull
-    private Float rating;
+    private Double rating;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -62,25 +62,25 @@ public class Review {
     //Kapcsolatok:
     @ManyToOne(cascade = {})
     @JoinColumn(name = "author_id")
-    @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
+    @JsonIgnoreProperties(value = {"studentSchool", "studentInstructor", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"}, allowSetters = true)
     private Students reviewAuthor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
     @Null
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"instructorUser", "instructorSchool", "vehicle", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"}, allowSetters = true)
     private Instructors aboutInstructor;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     @Null
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"owner", "adminList", "instructorsList", "openingDetails", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"}, allowSetters = true)
     private School aboutSchool;
 
     //Constructorok
-    public Review(String text, LocalDate createdAt, float rating) {
+    public Review(String text, Double rating, Students author) {
         this.text = text;
-        this.createdAt = createdAt;
         this.rating = rating;
+        this.reviewAuthor = author;
     }
 }

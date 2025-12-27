@@ -31,39 +31,33 @@ public class ReviewService {
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
 
-    public ResponseEntity<Object> addReview(Review newReview) {
+    public ResponseEntity<Object> addReview(String reviewText, Double rating, Integer studentId, Integer instructorId, Integer schoolId) {
         try {
-            if (newReview == null) {
+            if (reviewText == null || rating == null || studentId == null || (instructorId == 0 && schoolId == 0)) {
                 return ResponseEntity.status(422).build();
             }
 
-            if (newReview.getId() != null || (newReview.getAboutSchool() == null && newReview.getAboutInstructor() == null)) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else {
-                if (newReview.getAboutInstructor() == null && newReview.getAboutSchool() != null) {
-                    School searchedSchool = schoolRepository.getSchool(newReview.getAboutSchool().getId()).orElse(null);
-                    if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("schoolNotFound");
-                    }
-                } else if (newReview.getAboutInstructor() != null && newReview.getAboutSchool() == null) {
-                    Instructors searchedInstructor = instructorRepository.getInstructor(newReview.getAboutInstructor().getId()).orElse(null);
-                    if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("instructorNotFound");
-                    }
-                }
-
-                Students searchedStudent = studentRepository.getStudent(newReview.getReviewAuthor().getId()).orElse(null);
-                if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("studentNotFound");
-                }
-
-                if (newReview.getRating() < 1 || newReview.getRating() > 5) {
-                    return ResponseEntity.status(415).body("invalidRating");
-                } else {
-                    return ResponseEntity.ok().body(reviewRepository.save(newReview));
-                }
+            Students author = studentRepository.getStudent(studentId).orElse(null);
+            if (author == null || author.getIsDeleted()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("studentNotFound");
             }
 
+            Review newReview = new Review(reviewText, rating, author);
+            if (schoolId == 0 && instructorId != 0) {
+                Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+                if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("instructorNotFound");
+                }
+                newReview.setAboutInstructor(searchedInstructor);
+            } else if (instructorId == 0 && schoolId != 0) {
+                School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+                if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("schoolNotFound");
+                }
+                newReview.setAboutSchool(searchedSchool);
+            }
+
+            return ResponseEntity.ok().body(reviewRepository.save(newReview));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
