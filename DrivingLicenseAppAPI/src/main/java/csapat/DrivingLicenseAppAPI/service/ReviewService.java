@@ -31,7 +31,7 @@ public class ReviewService {
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
 
-    public ResponseEntity<Object> addReview(String reviewText, Double rating, Integer studentId, Integer instructorId, Integer schoolId) {
+    public ResponseEntity<Object> addReview(String reviewText, Double rating, Integer studentId, Boolean isAnonymous , Integer instructorId, Integer schoolId) {
         try {
             if (reviewText == null || rating == null || studentId == null || (instructorId == 0 && schoolId == 0)) {
                 return ResponseEntity.status(422).build();
@@ -56,7 +56,7 @@ public class ReviewService {
                 }
                 newReview.setAboutSchool(searchedSchool);
             }
-
+            newReview.setIsAnonymous(isAnonymous);
             return ResponseEntity.ok().body(reviewRepository.save(newReview));
         } catch (Exception e) {
             e.printStackTrace();

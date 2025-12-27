@@ -48,6 +48,10 @@ public class Review {
     @NotNull
     private Double rating;
 
+    @Column(name = "is_anonymous")
+    @NotNull
+    private Boolean isAnonymous = false;
+
     @Column(name = "is_deleted")
     @NotNull
     @JsonIgnore
