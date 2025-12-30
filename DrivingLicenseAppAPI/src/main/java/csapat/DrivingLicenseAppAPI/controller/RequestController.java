@@ -7,6 +7,9 @@ import csapat.DrivingLicenseAppAPI.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +24,19 @@ public class RequestController {
     private final RequestService requestService;
 
     @Operation(summary = "Iskolához való csatlakozás", description = "Az iskolához való csatlakozási kérelem küldése.")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "3db attributuma van a body-nak. A schoolId a kivánt iskolához tartozó id, a userId az adott felhasználóhoz tartozó id, a requestedRole meg a kivánt szerep (student vagy instructor).")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "3db attributuma van a body-nak. A schoolId a kivánt iskolához tartozó id, a userId az adott felhasználóhoz tartozó id, a requestedRole meg a kivánt szerep (student vagy instructor).", content = @Content(
+            mediaType = "application/json",
+            schemaProperties = {
+                    @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "A csatlakozandó iskola id-ja")),
+                    @SchemaProperty(name = "userId", schema = @Schema(implementation = Integer.class, description = "A felhasználóhoz tartozó id.")),
+                    @SchemaProperty(name = "requestedRole", schema = @Schema(implementation = String.class, description = "A kért pozició, csak student vagy instructor lehet")),
+            }
+    ))
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-            @ApiResponse(responseCode = "404", description = "Nem létező iskola/felhasználó vagy rossz role-t add meg a felhasználó"),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskola/felhasználó vagy rossz role-t add meg a felhasználó", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/school")
     private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody) {
@@ -34,25 +44,64 @@ public class RequestController {
     }
 
     @Operation(summary = "Oktatóhoz való csatlakozás", description = "Az oktatóhoz való csatlakozási kérelem küldése.")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "2db attributuma van. A studentId az adott tanulóhoz tartozó id, az instructorId az adott instructorhoz (oktatóhoz) tartozó id.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "2db attributuma van. A studentId az adott tanulóhoz tartozó id, az instructorId az adott instructorhoz (oktatóhoz) tartozó id.", content = @Content(
+            mediaType = "application/json",
+            schemaProperties = {
+                    @SchemaProperty(name = "studentId", schema = @Schema(implementation = Integer.class, description = "A diákhoz tartozó id")),
+                    @SchemaProperty(name = "instructorId", schema = @Schema(implementation = Integer.class, description = "Az oktatóhoz tartozó id"))
+            }
+    ))
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-            @ApiResponse(responseCode = "404", description = "Nem létező student küldi a kérelmet vagy egy nem létező instructor-hoz szeretne csatlakozni a student."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező student küldi a kérelmet vagy egy nem létező instructor-hoz szeretne csatlakozni a student.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/instructor")
     private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody JsonNode requestBody) {
         return requestService.sendInstructorJoinRequest(requestBody.get("studentId").asInt(), requestBody.get("instructorId").asInt());
     }
 
+    @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kérelem object-je", required = true, content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = DrivingLessonRequest.class)
+    ))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldése", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező oktató vagy diák megadása", content = @Content),
+            @ApiResponse(responseCode = "415", description = "Vagy a küldött object id-ja null, vagy rossz a kezdő és a vég idő, vagy rossz oktató megadása.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
+    })
+    @PostMapping("/drivingLesson")
+    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
+        return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
+    }
+
+    @Operation(summary = "Vizsga kérelem küldése", description = "")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A küldött kérelem objectje", required = true, content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = ExamRequest.class)
+    ))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldése", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező oktató, diák vagy iskola", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
+    })
+    @PostMapping("/exam")
+    private ResponseEntity<Object> sendExamRequest(@RequestBody ExamRequest addedExamRequest) {
+        return requestService.sendExamRequest(addedExamRequest);
+    }
+
     @Operation(summary = "Iskolai csatlakozás törlése", description = "Az iskolához való csatlakozási kérelem törlése")
     @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-            @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés", content = @Content),
+            @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/school/{id}")
     private ResponseEntity<Object> deleteSchoolJoinRequest(@PathVariable("id") Integer id) {
@@ -62,49 +111,23 @@ public class RequestController {
     @Operation(summary = "Oktatói csatlakozás törlése", description = "")
     @Parameter(name = "id", description = "Az adott kérelemhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés"),
-            @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldés", content = @Content),
+            @ApiResponse(responseCode = "404", description = "A diák egy nem létező kérelmet szeretne törölni.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/instructor/{id}")
     private ResponseEntity<Object> deleteInstructorJoinRequest(@PathVariable("id") Integer id) {
         return requestService.deleteInstructorJoinRequest(id);
     }
 
-    @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = ""),
-            @ApiResponse(responseCode = "404", description = ""),
-            @ApiResponse(responseCode = "415", description = ""),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-    })
-    @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
-        return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
-    }
-
-    @Operation(summary = "Vizsga kérelem küldése", description = "")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = ""),
-            @ApiResponse(responseCode = "404", description = ""),
-            @ApiResponse(responseCode = "415", description = ""),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-    })
-    @PostMapping("/exam")
-    private ResponseEntity<Object> sendExamRequest(@RequestBody ExamRequest addedExamRequest) {
-        return requestService.sendExamRequest(addedExamRequest);
-    }
-
     @Operation(summary = "Órához való kérelem törlése", description = "Vezetési óra törlése id alapján.")
     @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
-            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres törlés.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/drivingLesson/{id}")
     private ResponseEntity<Object> deleteDrivingLessonRequest(@PathVariable("id") Integer id) {
@@ -114,10 +137,10 @@ public class RequestController {
     @Operation(summary = "Vizsga kérelem törlése", description = "Vizsga kérelem törlése id alapján.")
     @Parameter(name = "id", description = "A kérelem object-éhez tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres törlés."),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése."),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
+            @ApiResponse(responseCode = "200", description = "Sikeres törlés.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező kérelem törlése.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/exam/{id}")
     private ResponseEntity<Object> deleteExamRequest(@PathVariable("id") Integer id) {
