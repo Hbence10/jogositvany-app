@@ -85,7 +85,10 @@ public class RequestService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
+
+            if (addedDrivingLessonRequest.getId() != null) {
+                return ResponseEntity.status(415).body("invalidObject");
+            } else if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
                 return ResponseEntity.status(415).body("invalidStartEndRange");
             } else {
                 Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
