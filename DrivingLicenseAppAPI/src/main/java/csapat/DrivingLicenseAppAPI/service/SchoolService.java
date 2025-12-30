@@ -68,7 +68,8 @@ public class SchoolService {
                     searchedSchoolJoinRequest.setIsAccepted(false);
                 }
                 searchedSchoolJoinRequest.setAcceptedAt(new Date());
-                return ResponseEntity.ok().body(schoolJoinRequestRepository.save(searchedSchoolJoinRequest));
+                schoolJoinRequestRepository.save(searchedSchoolJoinRequest);
+                return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,7 +162,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<Object> updateOpeningDetails(Integer id, OpeningDetails updatedOpeningDetails) {
+    public ResponseEntity<Object> updateOpeningDetails(Integer id, List<OpeningDetails> updatedOpeningDetails) {
         try {
             if (id == null || updatedOpeningDetails == null) {
                 return ResponseEntity.status(422).build();
@@ -171,17 +172,21 @@ public class SchoolService {
 
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (updatedOpeningDetails.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (updatedOpeningDetails.getOpeningTime() > updatedOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(415).body("invalidOpeningTimeRange");
-            } else if (!dayNames.contains(updatedOpeningDetails.getDay().trim())) {
-                return ResponseEntity.status(415).body("invalidDay");
-            } else {
-                updatedOpeningDetails.setDay(updatedOpeningDetails.getDay().trim());
-                openingDetailRepository.save(updatedOpeningDetails);
-                return ResponseEntity.ok().body(schoolRepository.getSchool(id).orElse(null));
             }
+
+            for (int i = 0; i < updatedOpeningDetails.size(); i++) {
+                if (updatedOpeningDetails.get(i).getId() == null) {
+                    return ResponseEntity.status(415).body("invalidObject");
+                } else if (updatedOpeningDetails.get(i).getOpeningTime() > updatedOpeningDetails.get(i).getCloseTime()) {
+                    return ResponseEntity.status(415).body("invalidOpeningTimeRange");
+                } else if (!dayNames.contains(updatedOpeningDetails.get(i).getDay().trim())) {
+                    return ResponseEntity.status(415).body("invalidDay");
+                } else {
+                    openingDetailRepository.save(updatedOpeningDetails.get(i));
+                }
+            }
+
+            return ResponseEntity.ok().body(schoolRepository.getSchool(id).get());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
