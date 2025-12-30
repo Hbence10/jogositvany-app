@@ -24,7 +24,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Random;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -190,26 +193,34 @@ public class UserService {
     }
 
     // update:
-    public ResponseEntity<Object> updateUser(Users updatedUser) {
+    public ResponseEntity<Object> updateUser(Integer id, String firstName, String lastName, String email, String phone, String birthDateText, String gender, Integer educationId) {
         try {
-            if (updatedUser == null) {
+            if (id == null || firstName == null || lastName == null || email == null || phone == null || birthDateText == null || gender == null || educationId == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            if (updatedUser.getId() == null) {
-                return ResponseEntity.status(415).body("invalidObject");
+            Users searchedUser = userRepository.getUser(id).orElse(null);
+            if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.status(404).body("userNotFound");
             } else {
-                List<Education> allEducation = educationRepository.getAllEducation();
-
-                if (!ValidatorCollection.phoneValidator(updatedUser.getPhone().trim())) {
+                Education searchedEducation = educationRepository.getEducation(educationId).orElse(null);
+                if (searchedEducation == null) {
+                    return ResponseEntity.status(404).body("educationNotFound");
+                } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
                     return ResponseEntity.status(415).body("invalidPhone");
-                } else if (!ValidatorCollection.emailValidator(updatedUser.getEmail().trim())) {
+                } else if (!ValidatorCollection.emailValidator(email.trim())) {
                     return ResponseEntity.status(415).body("invalidEmail");
-                } else if (!allEducation.contains(updatedUser.getUserEducation())) {
-                    return ResponseEntity.status(415).body("invalidEducation");
+                } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")){
+                  return ResponseEntity.status(415).body("invalidGender");
                 } else {
-                    Users result = userRepository.save(updatedUser);
-                    return ResponseEntity.ok(result);
+                    searchedUser.setFirstName(firstName.trim());
+                    searchedUser.setLastName(lastName.trim());
+                    searchedUser.setEmail(email.trim());
+                    searchedUser.setPhone(phone.trim());
+                    searchedUser.setBirthDate(new Date(birthDateText));
+                    searchedUser.setGender(gender);
+                    searchedUser.setUserEducation(searchedEducation);
+                    return ResponseEntity.ok(userRepository.save(searchedUser));
                 }
             }
         } catch (DataIntegrityViolationException e) {
