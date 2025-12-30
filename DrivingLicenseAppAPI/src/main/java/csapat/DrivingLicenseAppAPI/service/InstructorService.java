@@ -258,30 +258,30 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> addVehicle(Vehicle addedVehicle, Integer instructorId) {
-        try {
-            if (addedVehicle == null || instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (!validateVehicle(addedVehicle)) {
-                return ResponseEntity.status(415).build();
-            } else {
-                Vehicle newVehicle = vehicleRepository.save(addedVehicle);
-                searchedInstructor.setVehicle(newVehicle);
-                instructorRepository.save(searchedInstructor);
-                return ResponseEntity.ok().body(newVehicle);
-            }
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(409).body("duplicateLicensePlate");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+//    public ResponseEntity<Object> addVehicle(Vehicle addedVehicle, Integer instructorId) {
+//        try {
+//            if (addedVehicle == null || instructorId == null) {
+//                return ResponseEntity.status(422).build();
+//            }
+//
+//            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+//            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+//                return ResponseEntity.notFound().build();
+//            } else if (!validateVehicle(addedVehicle)) {
+//                return ResponseEntity.status(415).build();
+//            } else {
+//                Vehicle newVehicle = vehicleRepository.save(addedVehicle);
+//                searchedInstructor.setVehicle(newVehicle);
+//                instructorRepository.save(searchedInstructor);
+//                return ResponseEntity.ok().body(newVehicle);
+//            }
+//        } catch (DataIntegrityViolationException e) {
+//            return ResponseEntity.status(409).body("duplicateLicensePlate");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.internalServerError().build();
+//        }
+//    }
 
     //
     public Boolean validateVehicle(Vehicle wantedVehicle) {
