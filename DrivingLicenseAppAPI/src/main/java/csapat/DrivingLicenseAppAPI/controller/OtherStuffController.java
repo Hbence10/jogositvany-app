@@ -98,4 +98,17 @@ public class OtherStuffController {
     public ResponseEntity<List<Status>> getAllStatus() {
         return otherStuffService.getAllStatus();
     }
+
+    @Operation(summary = "Jármű típusok lekérdezése", description = "Az összes jármű típus lekérdezése")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = VehicleType.class))
+            )),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
+    })
+    @GetMapping("/vehicleType")
+    public ResponseEntity<List<VehicleType>> getAllVehicleType() {
+        return otherStuffService.getAllVehicleType();
+    }
 }

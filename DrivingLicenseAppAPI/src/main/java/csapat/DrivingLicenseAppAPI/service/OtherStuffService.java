@@ -27,6 +27,7 @@ public class OtherStuffService {
     private final EducationRepository educationRepository;
     private final FuelTypeRepository fuelTypeRepository;
     private final StatusRepository statusRepository;
+    private final VehicleTypeRepository vehicleTypeRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         try {
@@ -86,6 +87,15 @@ public class OtherStuffService {
 
             return ResponseEntity.ok().body(townName);
         } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<List<VehicleType>> getAllVehicleType() {
+        try {
+            return ResponseEntity.ok().body(vehicleTypeRepository.getAllVehicleType());
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
