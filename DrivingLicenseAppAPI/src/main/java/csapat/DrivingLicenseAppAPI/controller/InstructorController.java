@@ -111,8 +111,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("")
-    private ResponseEntity<Object> updateInstructor(@RequestBody Instructors updatedInstructor) {
-        return instructorService.updateInstructor(updatedInstructor);
+    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody) {
+        return instructorService.updateInstructor(requestBody.get("instructorId").asInt(), requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
@@ -168,18 +168,4 @@ public class InstructorController {
     private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
         return instructorService.getInstructorById(id);
     }
-
-//    @Operation(summary = "Jármű hozzáadása.", description = "Az oktató tud járművet magához adni")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = ""),
-//            @ApiResponse(responseCode = "404", description = ""),
-//            @ApiResponse(responseCode = "409", description = ""),
-//            @ApiResponse(responseCode = "415", description = ""),
-//            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-//            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-//    })
-//    @PostMapping("/{id}/vehicle")
-//    private ResponseEntity<Object> addVehicle(@RequestBody Vehicle addedVehicle, @PathVariable("id") Integer instructorId) {
-//        return instructorService.addVehicle(addedVehicle, instructorId);
-//    }
 }

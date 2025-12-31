@@ -120,18 +120,35 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> updateInstructor(Instructors updatedInstructor) {
+    public ResponseEntity<Object> updateInstructor(Integer instructorId, String promoText, Integer vehicleId, String vehicleName, String licensePlate, Integer fuelTypeId, Integer vehicleTypeId) {
         try {
-            if (updatedInstructor == null) {
+            if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            if (updatedInstructor.getId() == null || updatedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (!validateVehicle(updatedInstructor.getVehicle())) {
+            Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElse(null);
+            Vehicle searchedVehicle = vehicleRepository.getVehicle(vehicleId).orElse(null);
+            FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
+            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(vehicleTypeId).orElse(null);
+
+            if (searchedInstructors == null || searchedInstructors.getIsDeleted()) {
+                return ResponseEntity.status(404).body("instructorNotFound");
+            } else if (searchedVehicle == null || searchedVehicle.getIsDeleted()) {
+                return ResponseEntity.status(404).body("vehicleNotFound");
+            } else if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
+                return ResponseEntity.status(404).body("fuelTypeNotFound");
+            } else if (searchedVehicleType == null || searchedVehicleType.getIsDeleted()) {
+                return ResponseEntity.status(404).body("vehicleTypeNotFound");
+            } else if (licensePlate.length() == 7 || licensePlate.length() == 9) {
                 return ResponseEntity.status(415).build();
             } else {
-                return ResponseEntity.ok().body(instructorRepository.save(updatedInstructor));
+                searchedInstructors.setPromoText(promoText.trim());
+                searchedVehicle.setLicensePlate(licensePlate);
+                searchedVehicle.setName(vehicleName);
+                searchedVehicle.setFuelType(searchedFuelType);
+                searchedVehicle.setVehicleType(searchedVehicleType);
+                searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));
+                return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors));
             }
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(409).body("duplicateLicensePlate");
@@ -179,7 +196,7 @@ public class InstructorService {
             if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-              return ResponseEntity.status(404).body("schoolNotFound");
+                return ResponseEntity.status(404).body("schoolNotFound");
             } else {
                 List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId);
                 List<JsonNode> searchedInstructors = new ArrayList<>();
@@ -217,21 +234,6 @@ public class InstructorService {
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    //
-    public Boolean validateVehicle(Vehicle wantedVehicle) {
-        if (wantedVehicle.getLicensePlate().length() == 7 || wantedVehicle.getLicensePlate().length() == 9) {
-            FuelType searchedFuelType = fuelTypeRepository.getFuelType(wantedVehicle.getFuelType().getId()).orElse(null);
-            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(wantedVehicle.getVehicleType().getId()).orElse(null);
-
-            if (searchedFuelType == null || searchedFuelType.getId() == null || searchedFuelType.getIsDeleted()) {
-                return false;
-            } else
-                return searchedVehicleType != null && searchedVehicleType.getId() != null && !searchedVehicleType.getIsDeleted();
-        } else {
-            return false;
         }
     }
 }
