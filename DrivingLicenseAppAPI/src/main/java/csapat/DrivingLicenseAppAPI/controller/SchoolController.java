@@ -53,7 +53,16 @@ public class SchoolController {
     @Operation(summary = "Iskola frissitése", description = "Az iskola adatainak a frissitése. Minden adat frissitése kivéve a boritókép és a nyitvatartás.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je", required = true, content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = School.class)
+            schemaProperties = {
+                    @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "")),
+                    @SchemaProperty(name = "name", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "country", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "town", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "address", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "")),
+            }
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités.", content = @Content(
@@ -67,8 +76,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("")
-    public ResponseEntity<Object> updateSchool(@RequestBody School updatedSchool) {
-        return schoolService.updateSchool(updatedSchool);
+    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody) {
+        return schoolService.updateSchool(requestBody.get("schoolId").asInt(), requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
     }
 
     @Operation(summary = "Iskola boritókép csere.")

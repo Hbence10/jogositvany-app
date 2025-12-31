@@ -77,21 +77,29 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<Object> updateSchool(School updatedSchool) {
+    public ResponseEntity<Object> updateSchool(Integer schoolId, String name, String email, String phone, String country, String town, String address, String promoText) {
         try {
-            if (updatedSchool == null) {
+            if (schoolId == null || name == null || email == null || phone == null || country == null || town == null || address == null || promoText == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            if (schoolRepository.getSchool(updatedSchool.getId()).orElse(null) == null) {
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(updatedSchool.getEmail().trim())) {
+            } else if (!ValidatorCollection.emailValidator(email.trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!ValidatorCollection.phoneValidator(updatedSchool.getPhone().trim())) {
+            } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
                 return ResponseEntity.status(415).body("invalidPhone");
-            } else {
-                return ResponseEntity.ok().body(schoolRepository.save(updatedSchool));
             }
+            searchedSchool.setName(name.trim());
+            searchedSchool.setEmail(email.trim());
+            searchedSchool.setPhone(phone.trim());
+            searchedSchool.setCountry(country.trim());
+            searchedSchool.setTown(town.trim());
+            searchedSchool.setAddress(address.trim());
+            searchedSchool.setPromoText(promoText.trim());
+            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
         } catch (DataIntegrityViolationException e) {
             String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -277,14 +285,14 @@ public class SchoolService {
                 return ResponseEntity.internalServerError().body("fileHandlingError");
             }
 
-            Users ownerUser  = userRepository.getUser(addedSchool.getOwner().getId()).orElse(null);
+            Users ownerUser = userRepository.getUser(addedSchool.getOwner().getId()).orElse(null);
             if (ownerUser == null || ownerUser.getId() != addedSchool.getOwner().getId()) {
                 return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(addedSchool.getEmail().trim())){
+            } else if (!ValidatorCollection.emailValidator(addedSchool.getEmail().trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!ValidatorCollection.phoneValidator(addedSchool.getPhone().trim())){
+            } else if (!ValidatorCollection.phoneValidator(addedSchool.getPhone().trim())) {
                 return ResponseEntity.status(415).body("invalidPhone");
-            } else if (!townName.contains(addedSchool.getTown().trim())){
+            } else if (!townName.contains(addedSchool.getTown().trim())) {
                 return ResponseEntity.status(415).body("invalidTown");
             } else {
                 schoolRepository.save(addedSchool);
