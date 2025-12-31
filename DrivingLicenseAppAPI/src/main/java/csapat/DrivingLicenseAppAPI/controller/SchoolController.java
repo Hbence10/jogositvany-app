@@ -90,21 +90,6 @@ public class SchoolController {
         return schoolService.changeCoverImg(id, coverImg);
     }
 
-//    @Operation(summary = "Nyitvatartás hozzáadása.")
-//    @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH)
-//    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az új nyitvatartásnak az objectje")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "Sikeres nyitvatartás hozzáadás."),
-//            @ApiResponse(responseCode = "404", description = "Nem létező iskolához való nyitvatartás hozzáadás."),
-//            @ApiResponse(responseCode = "415", description = "Érvénytelen nyitás és zárás óra kombináció."),
-//            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody"),
-//            @ApiResponse(responseCode = "500", description = "A server okozta hiba."),
-//    })
-//    @PostMapping("/{id}/openingDetails")
-//    public ResponseEntity<Object> addOpeningDetails(@PathVariable("id") Integer id, @RequestBody OpeningDetails newOpeningDetails) {
-//        return schoolService.addOpeningDetails(id, newOpeningDetails);
-//    }
-
     @Operation(summary = "Nyitvatartás modósitása.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az iskolához tartozó frissitetett nyitvatartási lista", required = true, content = @Content(

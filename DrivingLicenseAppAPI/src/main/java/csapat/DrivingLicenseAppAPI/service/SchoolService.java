@@ -133,35 +133,6 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<Object> addOpeningDetails(Integer id, OpeningDetails newOpeningDetails) {
-        try {
-            if (id == null || newOpeningDetails == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-
-            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (newOpeningDetails.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (newOpeningDetails.getOpeningTime() > newOpeningDetails.getCloseTime()) {
-                return ResponseEntity.status(415).body("invalidOpeningTimeRange");
-            } else if (!dayNames.contains(newOpeningDetails.getDay().trim())) {
-                return ResponseEntity.status(415).body("invalidDay");
-            } else {
-                List<OpeningDetails> openingDetailsList = searchedSchool.getOpeningDetails();
-                newOpeningDetails.setDay(newOpeningDetails.getDay().trim());
-                openingDetailsList.add(newOpeningDetails);
-                searchedSchool.setOpeningDetails(openingDetailsList);
-                return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<Object> updateOpeningDetails(Integer id, List<OpeningDetails> updatedOpeningDetails) {
         try {
             if (id == null || updatedOpeningDetails == null) {

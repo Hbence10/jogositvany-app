@@ -141,44 +141,6 @@ public class InstructorService {
         }
     }
 
-    //
-//    public ResponseEntity<Object> handleJoinRequest(Integer requestId, String status) {
-//        try {
-//            if (requestId == null || status == null) {
-//                return ResponseEntity.status(422).build();
-//            }
-//
-//            InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
-//            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
-//                return ResponseEntity.notFound().build();
-//            } else {
-//                if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
-//                    return ResponseEntity.status(415).build();
-//                } else {
-//                    if (status.trim().equals("accept")) {
-//                        searchedJoinRequest.setIsAccepted(true);
-//                        searchedJoinRequest.setAcceptedAt(new Date());
-//
-//                        Students newStudent = searchedJoinRequest.getInstructorJoinRequestStudent();
-//                        newStudent.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
-//                        studentRepository.save(newStudent);
-//
-//                    } else if (status.trim().equals("refuse")) {
-//                        searchedJoinRequest.setIsAccepted(false);
-//                    } else {
-//                        return ResponseEntity.internalServerError().build();
-//                    }
-//                }
-//
-//                instructorJoinRequestRepository.save(searchedJoinRequest);
-//                return ResponseEntity.ok().build();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.internalServerError().build();
-//        }
-//    }
-
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         try {
             if (requestId == null || status == null) {
@@ -257,31 +219,6 @@ public class InstructorService {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-//    public ResponseEntity<Object> addVehicle(Vehicle addedVehicle, Integer instructorId) {
-//        try {
-//            if (addedVehicle == null || instructorId == null) {
-//                return ResponseEntity.status(422).build();
-//            }
-//
-//            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-//            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-//                return ResponseEntity.notFound().build();
-//            } else if (!validateVehicle(addedVehicle)) {
-//                return ResponseEntity.status(415).build();
-//            } else {
-//                Vehicle newVehicle = vehicleRepository.save(addedVehicle);
-//                searchedInstructor.setVehicle(newVehicle);
-//                instructorRepository.save(searchedInstructor);
-//                return ResponseEntity.ok().body(newVehicle);
-//            }
-//        } catch (DataIntegrityViolationException e) {
-//            return ResponseEntity.status(409).body("duplicateLicensePlate");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.internalServerError().build();
-//        }
-//    }
 
     //
     public Boolean validateVehicle(Vehicle wantedVehicle) {

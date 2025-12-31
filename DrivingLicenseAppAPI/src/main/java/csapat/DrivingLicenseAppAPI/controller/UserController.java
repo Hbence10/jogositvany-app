@@ -127,10 +127,10 @@ public class UserController {
 
     //Frissitesek:
     @Operation(summary = "Profil frissitése", description = "Az adott profilnak az adatait változtatja meg.")
+    @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", in = ParameterIn.PATH, required = true)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frisstet fiók User object-je.", required = true, content = @Content(
             mediaType = "application/json",
             schemaProperties = {
-                    @SchemaProperty(name = "id", schema = @Schema(implementation = Integer.class, description = "")),
                     @SchemaProperty(name = "firstName", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "lastName", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
@@ -151,9 +151,9 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("/update")
-    public ResponseEntity<Object> updateUser(@RequestBody JsonNode requestBody) {
-        return userService.updateUser(requestBody.get("id").asInt(), requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDateText").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId ,@RequestBody JsonNode requestBody) {
+        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDateText").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
     }
 
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")
