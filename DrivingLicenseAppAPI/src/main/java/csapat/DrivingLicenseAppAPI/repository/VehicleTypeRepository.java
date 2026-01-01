@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface VehicleTypeRepository extends JpaRepository<VehicleType, Integer> {
 
-    @Procedure(name = "getAllVehichleType", procedureName = "getAllVehichleType")
+    @Procedure(name = "getAllVehicleType", procedureName = "getAllVehicleType")
     List<VehicleType> getAllVehicleType();
 
     @Procedure(name = "getVehicleType", procedureName = "getVehicleType")

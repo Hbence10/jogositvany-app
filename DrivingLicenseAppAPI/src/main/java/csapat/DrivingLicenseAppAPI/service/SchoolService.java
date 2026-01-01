@@ -88,8 +88,10 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else if (!ValidatorCollection.emailValidator(email.trim())) {
+                System.out.println("invalidEmail");
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
+                System.out.println("invalidPhone");
                 return ResponseEntity.status(415).body("invalidPhone");
             }
             searchedSchool.setName(name.trim());

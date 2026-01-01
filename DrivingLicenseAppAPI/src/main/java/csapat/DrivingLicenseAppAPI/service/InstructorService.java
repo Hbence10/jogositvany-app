@@ -148,7 +148,7 @@ public class InstructorService {
                 searchedVehicle.setFuelType(searchedFuelType);
                 searchedVehicle.setVehicleType(searchedVehicleType);
                 searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));
-                return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors));
+                return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors).getInstructorUser());
             }
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(409).body("duplicateLicensePlate");

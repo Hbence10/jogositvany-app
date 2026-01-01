@@ -95,9 +95,12 @@ public class InstructorController {
     }
 
     @Operation(summary = "Oktató frissitése", description = "Oktató adatainak frissitése.")
+    @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.", required = true, content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = Instructors.class)
+            schemaProperties = {
+
+            }
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités", content = @Content(
@@ -110,9 +113,9 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("")
-    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody) {
-        return instructorService.updateInstructor(requestBody.get("instructorId").asInt(), requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
+    @PutMapping("/update/{id}")
+    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Integer instructorId) {
+        return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")

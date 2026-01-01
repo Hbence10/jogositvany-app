@@ -51,10 +51,10 @@ public class SchoolController {
     }
 
     @Operation(summary = "Iskola frissitése", description = "Az iskola adatainak a frissitése. Minden adat frissitése kivéve a boritókép és a nyitvatartás.")
+    @Parameter(name = "id", description = "Az iskolához tartozó id.", in = ParameterIn.PATH, required = true)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je", required = true, content = @Content(
             mediaType = "application/json",
             schemaProperties = {
-                    @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "")),
                     @SchemaProperty(name = "name", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "")),
@@ -75,9 +75,9 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("")
-    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody) {
-        return schoolService.updateSchool(requestBody.get("schoolId").asInt(), requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Integer schoolId) {
+        return schoolService.updateSchool(schoolId, requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
     }
 
     @Operation(summary = "Iskola boritókép csere.")

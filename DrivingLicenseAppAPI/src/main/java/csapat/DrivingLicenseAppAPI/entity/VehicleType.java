@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllVehichleType", procedureName = "getAllVehichleType", resultClasses = VehicleType.class),
+        @NamedStoredProcedureQuery(name = "getAllVehicleType", procedureName = "getAllVehicleType", resultClasses = VehicleType.class),
         @NamedStoredProcedureQuery(name = "getVehicleType", procedureName = "getVehicleType", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = VehicleType.class),

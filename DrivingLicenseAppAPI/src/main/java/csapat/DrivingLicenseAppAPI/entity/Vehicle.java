@@ -37,11 +37,11 @@ public class Vehicle {
 
     @Column(name = "license_plate")
     @Size(max = 9)
-    @NotNull
+    @Null
     private String licensePlate;
 
     @Column(name = "name")
-    @NotNull
+    @Null
     @Size(max = 100)
     private String name;
 
@@ -60,11 +60,13 @@ public class Vehicle {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "type_id")
     @JsonIgnoreProperties({"vehicleList"})
+    @Null
     private VehicleType vehicleType;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "fuel_type_id")
     @JsonIgnoreProperties({"vehicles"})
+    @Null
     private FuelType fuelType;
 
     @OneToOne(mappedBy = "vehicle", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})

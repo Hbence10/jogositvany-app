@@ -20,7 +20,6 @@ import java.util.List;
 public class DrivingLessonService {
 
     private final DrivingLessonRepository drivingLessonRepository;
-    private final DrivingLessonRequestRepository drivingLessonRequestRepository;
     private final DrivingLessonTypeRepository drivingLessonTypeRepository;
     private final ReservedDateRepository reservedDateRepository;
     private final ReservedHourRepository reservedHourRepository;
@@ -59,7 +58,7 @@ public class DrivingLessonService {
             } else {
                 reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.ok().body(drivingLessonRepository.getDrivingLessonByID(drivingLessonId).get());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,41 +79,7 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
-        try {
-            if (requestId == null || status == null) {
-                return ResponseEntity.status(422).build();
-            } else if (!status.trim().equals("accepted") && !status.trim().equals("refuse")) {
-                return ResponseEntity.status(415).build();
-            }
-
-            DrivingLessonRequest searchedDRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
-            if (searchedDRequest == null || searchedDRequest.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                searchedDRequest.setAcceptedAt(new Date());
-                if (status.trim().equals("accepted")) {
-                    ReservedHour newReservedHour = new ReservedHour(searchedDRequest.getStartTime(), searchedDRequest.getEndTime());
-                    ReservedDate searchedReservedDate = reservedDateRepository.getReservedDateByDate(searchedDRequest.getDate()).orElse(new ReservedDate(searchedDRequest.getDate()));
-                    newReservedHour.setReservedDate(searchedReservedDate);
-
-                    DrivingLessons newDrivingLesson = new DrivingLessons(newReservedHour, searchedDRequest.getDLessonRequestStudent(), searchedDRequest.getDLessonInstructor(), searchedDRequest.getDLessonRequestType());
-                    drivingLessonRepository.save(newDrivingLesson);
-                    searchedDRequest.setIsAccepted(true);
-                } else {
-                    searchedDRequest.setIsAccepted(false);
-                }
-
-                drivingLessonRequestRepository.save(searchedDRequest);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> updateDrivingLessonRequest(DrivingLessons updatedDrivingLesson) {
+    public ResponseEntity<Object> updateDrivingLesson(DrivingLessons updatedDrivingLesson) {
         try {
             if (updatedDrivingLesson == null) {
                 return ResponseEntity.status(422).build();
@@ -134,8 +99,7 @@ public class DrivingLessonService {
             } else if (!allStatus.contains(updatedDrivingLesson.getDrivingLessonStatus())) {
                 return ResponseEntity.notFound().build();
             } else {
-                drivingLessonRepository.save(updatedDrivingLesson);
-                return ResponseEntity.ok().build();
+                return ResponseEntity.ok().body(drivingLessonRepository.save(updatedDrivingLesson));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,24 +129,6 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> setDrivingLessonEnd(Integer id) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            DrivingLessons searchedDLesson = drivingLessonRepository.getDrivingLessonByID(id).orElse(null);
-            if (searchedDLesson == null || searchedDLesson.getIsCancelled()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                searchedDLesson.setIsEnd(true);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
 }
 
 /*
