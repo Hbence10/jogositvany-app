@@ -41,13 +41,11 @@ public class DrivingLessonRequest {
 
     @Column(name = "start_time")
     @NotNull
-    @Size(max = 2)
     @Temporal(TemporalType.TIME)
     private Date startTime;
 
     @Column(name = "end_time")
     @NotNull
-    @Size(max = 2)
     @Temporal(TemporalType.TIME)
     private Date endTime;
 

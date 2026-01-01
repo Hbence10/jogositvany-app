@@ -84,7 +84,7 @@ public class SchoolController {
     @PatchMapping("/coverImg/{id}")
     @Parameters({
             @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH),
-            @Parameter(name = "bannerImg", description = "A feltöltött boritókép.")
+            @Parameter(name = "image", description = "A feltöltött boritókép.")
     })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres boritókép csere.", content = @Content(
@@ -95,7 +95,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.", content = @Content)
     })
-    public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("bannerImg") MultipartFile coverImg) {
+    public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
 
@@ -115,9 +115,12 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("/{id}/openingDetails")
+    @PatchMapping("/{id}/openingDetails")
     public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody List<OpeningDetails> updatedOpeningDetails) {
-        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
+//        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
+        System.out.println(id);
+        System.out.println(updatedOpeningDetails.size());
+        return null;
     }
 
     @Operation(summary = "Iskalához tartozó csatlakozási kérelmek lekérdezése", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")

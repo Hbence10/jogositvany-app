@@ -247,9 +247,9 @@ public class UserService {
                 String filePath = File.separator + pfpFile.getOriginalFilename();
 
                 try {
-                    FileOutputStream fout = new FileOutputStream(filePath);
-                    fout.write(pfpFile.getBytes());
-                    fout.close();
+//                    FileOutputStream fout = new FileOutputStream(filePath);
+//                    fout.write(pfpFile.getBytes());
+//                    fout.close();
 
                     searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename());
                 } catch (Exception e) {

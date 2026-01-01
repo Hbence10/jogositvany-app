@@ -159,7 +159,7 @@ public class UserController {
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")
     @Parameters({
             @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH),
-            @Parameter(name = "pfpImg", description = "A fekhasználó által kiválasztott új profilkép fájla.", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = MultipartFile.class))
+            @Parameter(name = "image", description = "A fekhasználó által kiválasztott új profilkép fájla.", required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = MultipartFile.class))
     })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", content = @Content(
@@ -171,7 +171,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PatchMapping("/pfp/{id}")
-    public ResponseEntity<Object> updatePfp(@PathVariable("id") Integer id, @RequestParam("pfpImg") MultipartFile file) {
+    public ResponseEntity<Object> updatePfp(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file) {
         return userService.updatePfp(id, file);
     }
 

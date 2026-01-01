@@ -126,9 +126,9 @@ public class SchoolService {
                 String filePath = File.separator + bannerImg.getOriginalFilename();
 
                 try {
-                    FileOutputStream fout = new FileOutputStream(filePath);
-                    fout.write(bannerImg.getBytes());
-                    fout.close();
+//                    FileOutputStream fout = new FileOutputStream(filePath);
+//                    fout.write(bannerImg.getBytes());
+//                    fout.close();
 
                     searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
                 } catch (Exception e) {
