@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -156,11 +155,16 @@ public class SchoolService {
             }
 
             for (int i = 0; i < updatedOpeningDetails.size(); i++) {
+                updatedOpeningDetails.get(i).setSchoolOpeningDetail(searchedSchool);
                 if (updatedOpeningDetails.get(i).getId() == null) {
                     return ResponseEntity.status(415).body("invalidObject");
-                } else if (updatedOpeningDetails.get(i).getOpeningTime() > updatedOpeningDetails.get(i).getCloseTime()) {
-                    return ResponseEntity.status(415).body("invalidOpeningTimeRange");
-                } else if (!dayNames.contains(updatedOpeningDetails.get(i).getDay().trim())) {
+                }
+//                else if (ValidatorCollection.startEndValidator(updatedOpeningDetails.get(i).getOpeningTime().getHours(), updatedOpeningDetails.get(i).getOpeningTime().getMinutes(), updatedOpeningDetails.get(i).getCloseTime().getHours(), updatedOpeningDetails.get(i).getCloseTime().getMinutes())) {
+//                    System.out.println("Invalid Opening Time Range");
+//
+//                    return ResponseEntity.status(415).body("invalidOpeningTimeRange");
+//                }
+                else if (!dayNames.contains(updatedOpeningDetails.get(i).getDay().trim())) {
                     return ResponseEntity.status(415).body("invalidDay");
                 } else {
                     openingDetailRepository.save(updatedOpeningDetails.get(i));

@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessonType;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,12 @@ import java.util.List;
 public class DrivingLessonController {
 
     private final DrivingLessonService drivingLessonService;
+
+    @Operation(summary = "Vezetési")
+    @GetMapping("/type")
+    public ResponseEntity<Object> getAllDrivingLessonType(@RequestParam("school") Integer schoolId) {
+        return drivingLessonService.getAllDrivingLessonType(schoolId);
+    }
 
     @Operation(summary = "Diák óráinak a megszerzése", description = "Kikeressi az összes vezetési órát amely az adott diákhoz tartozik")
     @Parameter(name = "id", description = "A diákhoz tartozó id.", required = true, in = ParameterIn.PATH)

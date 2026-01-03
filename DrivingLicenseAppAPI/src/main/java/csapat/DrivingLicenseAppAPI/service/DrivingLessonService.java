@@ -27,6 +27,15 @@ public class DrivingLessonService {
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
 
+    public ResponseEntity<Object> getAllDrivingLessonType(Integer schoolId) {
+        try {
+            return ResponseEntity.ok().body(drivingLessonTypeRepository.getAllDrivingLessonType());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId) {
         try {
             if (studentId == null) {

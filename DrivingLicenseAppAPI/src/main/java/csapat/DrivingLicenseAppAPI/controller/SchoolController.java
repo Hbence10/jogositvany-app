@@ -117,10 +117,7 @@ public class SchoolController {
     })
     @PatchMapping("/{id}/openingDetails")
     public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody List<OpeningDetails> updatedOpeningDetails) {
-//        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
-        System.out.println(id);
-        System.out.println(updatedOpeningDetails.size());
-        return null;
+        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
     }
 
     @Operation(summary = "Iskalához tartozó csatlakozási kérelmek lekérdezése", description = "Az adott iskolához tartozó csatlakozás kérelmek lekérdezése")

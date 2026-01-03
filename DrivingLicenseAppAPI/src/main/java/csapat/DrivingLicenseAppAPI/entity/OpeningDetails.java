@@ -35,17 +35,22 @@ public class OpeningDetails {
     private Integer id;
 
     @Column(name = "opening_time")
-    @NotNull
-    private Integer openingTime;
+    @Null
+    @Temporal(TemporalType.TIME)
+    private Date openingTime;
 
     @Column(name = "close_time")
-    @NotNull
-    private Integer closeTime;
+    @Null
+    @Temporal(TemporalType.TIME)
+    private Date closeTime;
 
     @Column(name = "day")
     @Size(max = 100)
     @NotNull
     private String day;
+
+    @Column(name = "is_closed")
+    private Boolean isClosed;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -63,13 +68,4 @@ public class OpeningDetails {
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolOpeningDetail;
-
-    //Constructorok:
-    public OpeningDetails(Integer openingTime, Integer closeTime, String day, boolean isDeleted, Date deletedAt) {
-        this.openingTime = openingTime;
-        this.closeTime = closeTime;
-        this.day = day;
-        this.isDeleted = isDeleted;
-        this.deletedAt = deletedAt;
-    }
 }

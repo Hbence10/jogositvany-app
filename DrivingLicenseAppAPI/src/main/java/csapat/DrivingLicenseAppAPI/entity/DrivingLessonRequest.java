@@ -35,6 +35,10 @@ public class DrivingLessonRequest {
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "msg")
+    @NotNull
+    private String msg;
+
     @Column(name = "date")
     @NotNull
     private Date date;
@@ -48,6 +52,10 @@ public class DrivingLessonRequest {
     @NotNull
     @Temporal(TemporalType.TIME)
     private Date endTime;
+
+    @Column(name = "sent_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date sentAt;
 
     @Column(name = "is_accepted")
     @Null
