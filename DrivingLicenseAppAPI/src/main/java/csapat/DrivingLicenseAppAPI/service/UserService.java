@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
+import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
+import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,8 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final InstructorRepository instructorRepository;
+    private final RoleRepository roleRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
@@ -70,12 +74,17 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> register(Users newUser) {
+    public ResponseEntity<Object> register(Users newUser, String registerAs) {
         try {
             if (newUser == null) {
                 return ResponseEntity.status(422).build();
             }
 
+            if (!registerAs.equals("student") && !registerAs.equals("instructor")) {
+                return ResponseEntity.status(415).body("invalidParameter");
+            }
+
+            System.out.println(newUser.getUserEducation().getName());
             Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -94,9 +103,17 @@ public class UserService {
                 try {
                     emailSender.sendEmailAboutRegistration(newUser.getEmail());
                 } catch (Exception e) {
-                    return ResponseEntity.internalServerError().body("emailSenderError");
+//                    return ResponseEntity.internalServerError().body("emailSenderError");
                 }
-                userRepository.save(newUser);
+
+                newUser = userRepository.save(newUser);
+
+                if (registerAs.equals("instructor")) {
+                    Instructors newInstructor = new Instructors();
+                    newInstructor.setVehicle(new Vehicle());
+                    newInstructor.setInstructorUser(newUser);
+                    instructorRepository.save(newInstructor);
+                }
             }
             return ResponseEntity.ok().build();
         } catch (DataIntegrityViolationException e) {

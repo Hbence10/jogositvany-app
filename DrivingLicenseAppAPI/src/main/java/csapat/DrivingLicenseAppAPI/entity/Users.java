@@ -108,7 +108,7 @@ public class Users {
     @JsonIgnoreProperties({"userList"})
     private Role role = new Role(1, "ROLE_user");
 
-    @OneToOne(mappedBy = "instructorUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "instructorUser", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private Instructors instructor;
 
@@ -117,9 +117,8 @@ public class Users {
     private Students student;
 
     @ManyToOne(cascade = {})
-    @JoinColumn(name = "school_admin_id ")
+    @JoinColumn(name = "school_admin_id")
     @Null
-    @JsonIgnore
     private School adminSchool;
 
     @ManyToOne(cascade = {})

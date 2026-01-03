@@ -57,18 +57,18 @@ public class Instructors {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties({"instructor"})
+    @JsonIgnoreProperties({"instructor", "adminSchool"})
     private Users instructorUser;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({"owner", "instructorsList", "adminList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
+    @Null
     private School instructorSchool;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     @JsonIgnoreProperties({"instructor"})
-    @Null
     private Vehicle vehicle;
 
     @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})

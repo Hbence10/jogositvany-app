@@ -48,6 +48,7 @@ public class UserController {
     }
 
     @Operation(summary = "Regisztráció", description = "Új profil létrehozása.")
+    @Parameter(name = "registerAs", description = "Megmutatja, hogy miként fog a felhasználó regisztrálni. Az értéke csak student vagy instructor lehet.", in = ParameterIn.PATH, required = true)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = "Az új felhasználó objectje. Az object id attributumának null-nak kell, hogy legyen.", content = @Content(
             mediaType = "application/json",
             schema = @Schema(implementation = Users.class)
@@ -60,9 +61,9 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody Users newUser) {
-        return userService.register(newUser);
+    @PostMapping("/register/{registerAs}")
+    public ResponseEntity<Object> register(@RequestBody Users newUser, @PathVariable("registerAs") String registerAs) {
+        return userService.register(newUser, registerAs);
     }
 
     //password reset
