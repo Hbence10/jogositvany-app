@@ -27,9 +27,9 @@ public class RequestService {
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
 
-    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, String requestedRole) {
+    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId) {
         try {
-            if (schoolId == null || userId == null || requestedRole == null) {
+            if (schoolId == null || userId == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -40,10 +40,8 @@ public class RequestService {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
-            } else if (!requestedRole.trim().equals("student") && !requestedRole.trim().equals("instructor")) {
-                return ResponseEntity.status(415).body("invalidRole");
-            } else {
-                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(requestedRole.trim(), searchedUser, searchedSchool);
+            }  else {
+                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }

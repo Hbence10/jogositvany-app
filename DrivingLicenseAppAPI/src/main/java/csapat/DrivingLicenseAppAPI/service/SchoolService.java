@@ -53,16 +53,20 @@ public class SchoolService {
                 return ResponseEntity.status(415).body("invalidStatus");
             } else {
                 if (status.trim().equals("accept")) {
-                    if (searchedSchoolJoinRequest.getRequestedRole().equals("student")) {
+                    if (searchedSchoolJoinRequest.getSchoolJoinRequestUser().getRole().getName().equals("student")) {
                         Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
                         newStudent.getStudentUser().setRole(new Role(2, "ROLE_student"));
                         studentRepository.save(newStudent);
                     } else {
-                        Instructors newInstructor = new Instructors(searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getSchoolJoinRequestUser());
-                        newInstructor.getInstructorUser().setRole(new Role(3, "ROLE_instructor"));
-                        instructorRepository.save(newInstructor);
+                        Instructors senderInstructor = searchedSchoolJoinRequest.getSchoolJoinRequestUser().getInstructor();
+                        senderInstructor.setInstructorSchool(searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
+                        instructorRepository.save(senderInstructor);
                     }
                     searchedSchoolJoinRequest.setIsAccepted(true);
+                    Users senderUser = searchedSchoolJoinRequest.getSchoolJoinRequestUser();
+                    for (int i = 0; i < senderUser.getSchoolJoinRequestList().size(); i++) {
+                        schoolJoinRequestRepository.deleteSchoolJoinRequest(senderUser.getSchoolJoinRequestList().get(i).getId());
+                    }
                 } else {
                     searchedSchoolJoinRequest.setIsAccepted(false);
                 }

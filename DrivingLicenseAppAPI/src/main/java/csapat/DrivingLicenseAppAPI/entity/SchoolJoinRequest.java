@@ -73,8 +73,7 @@ public class SchoolJoinRequest {
     @JsonIgnore
     private School schoolJoinRequestSchool;
 
-    public SchoolJoinRequest(String requestedRole, Users user, School school) {
-        this.requestedRole = requestedRole;
+    public SchoolJoinRequest(Users user, School school) {
         this.schoolJoinRequestUser = user;
         this.schoolJoinRequestSchool = school;
     }
