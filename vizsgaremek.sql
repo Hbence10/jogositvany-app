@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 04. 18:25
+-- Létrehozás ideje: 2026. Jan 04. 18:45
 -- Kiszolgáló verziója: 5.7.24
--- PHP verzió: 8.3.1
+-- PHP verzió: 8.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `vizsgaremek`
+-- Adatbázis: `vizsgaremek_10.0`
 --
 
 DELIMITER $$
@@ -633,6 +633,18 @@ INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_i
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `instructor_category`
+--
+
+CREATE TABLE `instructor_category` (
+  `id` int(11) NOT NULL,
+  `driving_license_category_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `instructor_join_request`
 --
 
@@ -886,6 +898,18 @@ INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `addres
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `school_category`
+--
+
+CREATE TABLE `school_category` (
+  `id` int(11) NOT NULL,
+  `driving_license_category_id` int(11) NOT NULL,
+  `shool_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `school_join_request`
 --
 
@@ -893,6 +917,7 @@ CREATE TABLE `school_join_request` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `school_id` int(11) NOT NULL,
+  `driving_license_category_id` int(11) NOT NULL,
   `is_accepted` tinyint(1) DEFAULT NULL,
   `accepted_at` timestamp NULL DEFAULT NULL,
   `sended_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -904,10 +929,10 @@ CREATE TABLE `school_join_request` (
 -- A tábla adatainak kiíratása `school_join_request`
 --
 
-INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
-(22, 15, 9, 1, '2026-01-04 11:21:52', '2026-01-04 11:14:03', 0, NULL),
-(23, 77, 9, 1, '2026-01-04 12:12:33', '2026-01-04 12:11:33', 0, NULL),
-(24, 77, 9, NULL, NULL, '2026-01-04 12:11:38', 1, '2026-01-03 23:00:00');
+INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `driving_license_category_id`, `is_accepted`, `accepted_at`, `sended_at`, `is_deleted`, `deleted_at`) VALUES
+(22, 15, 9, 1, 1, '2026-01-04 11:21:52', '2026-01-04 11:14:03', 0, NULL),
+(23, 77, 9, 1, 1, '2026-01-04 12:12:33', '2026-01-04 12:11:33', 0, NULL),
+(24, 77, 9, 1, NULL, NULL, '2026-01-04 12:11:38', 1, '2026-01-03 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -941,6 +966,7 @@ CREATE TABLE `student` (
   `school_id` int(10) NOT NULL,
   `instructor_id` int(10) DEFAULT NULL,
   `user_id` int(10) NOT NULL,
+  `driving_license_category_id` int(11) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -949,21 +975,21 @@ CREATE TABLE `student` (
 -- A tábla adatainak kiíratása `student`
 --
 
-INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `is_deleted`, `deleted_at`) VALUES
-(6, 9, 1, 3, 0, NULL),
-(7, 9, 1, 4, 0, NULL),
-(8, 9, 1, 5, 0, NULL),
-(10, 9, 4, 16, 0, NULL),
-(11, 9, 4, 17, 0, NULL),
-(12, 9, 4, 18, 0, NULL),
-(13, 9, 4, 19, 0, NULL),
-(14, 9, 4, 20, 0, NULL),
-(15, 9, 4, 21, 0, NULL),
-(16, 9, 4, 22, 0, NULL),
-(17, 9, 4, 23, 0, NULL),
-(18, 9, 4, 24, 0, NULL),
-(21, 9, 28, 66, 0, NULL),
-(23, 9, NULL, 77, 0, NULL);
+INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `driving_license_category_id`, `is_deleted`, `deleted_at`) VALUES
+(6, 9, 1, 3, 1, 0, NULL),
+(7, 9, 1, 4, 1, 0, NULL),
+(8, 9, 1, 5, 1, 0, NULL),
+(10, 9, 4, 16, 1, 0, NULL),
+(11, 9, 4, 17, 1, 0, NULL),
+(12, 9, 4, 18, 1, 0, NULL),
+(13, 9, 4, 19, 1, 0, NULL),
+(14, 9, 4, 20, 1, 0, NULL),
+(15, 9, 4, 21, 1, 0, NULL),
+(16, 9, 4, 22, 1, 0, NULL),
+(17, 9, 4, 23, 1, 0, NULL),
+(18, 9, 4, 24, 1, 0, NULL),
+(21, 9, 28, 66, 1, 0, NULL),
+(23, 9, NULL, 77, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1203,6 +1229,14 @@ ALTER TABLE `instructor`
   ADD KEY `vehicle` (`vehicle_id`);
 
 --
+-- A tábla indexei `instructor_category`
+--
+ALTER TABLE `instructor_category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `instructor` (`instructor_id`),
+  ADD KEY `category_id` (`driving_license_category_id`);
+
+--
 -- A tábla indexei `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
@@ -1269,12 +1303,21 @@ ALTER TABLE `school`
   ADD KEY `admin` (`owner_id`);
 
 --
+-- A tábla indexei `school_category`
+--
+ALTER TABLE `school_category`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `school_category_id` (`driving_license_category_id`),
+  ADD KEY `schoolasd` (`shool_id`);
+
+--
 -- A tábla indexei `school_join_request`
 --
 ALTER TABLE `school_join_request`
   ADD PRIMARY KEY (`id`),
   ADD KEY `student_join_user_id` (`user_id`),
-  ADD KEY `student_join_school_id` (`school_id`);
+  ADD KEY `student_join_school_id` (`school_id`),
+  ADD KEY `school_l_id` (`driving_license_category_id`);
 
 --
 -- A tábla indexei `status`
@@ -1289,7 +1332,8 @@ ALTER TABLE `student`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user` (`user_id`),
   ADD KEY `instructor_2_id` (`instructor_id`),
-  ADD KEY `school_3` (`school_id`);
+  ADD KEY `school_3` (`school_id`),
+  ADD KEY `student_license_id` (`driving_license_category_id`);
 
 --
 -- A tábla indexei `user`
@@ -1376,6 +1420,12 @@ ALTER TABLE `instructor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
+-- AUTO_INCREMENT a táblához `instructor_category`
+--
+ALTER TABLE `instructor_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
@@ -1428,6 +1478,12 @@ ALTER TABLE `role`
 --
 ALTER TABLE `school`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT a táblához `school_category`
+--
+ALTER TABLE `school_category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `school_join_request`
@@ -1519,6 +1575,13 @@ ALTER TABLE `instructor`
   ADD CONSTRAINT `vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`);
 
 --
+-- Megkötések a táblához `instructor_category`
+--
+ALTER TABLE `instructor_category`
+  ADD CONSTRAINT `category_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
+  ADD CONSTRAINT `instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`);
+
+--
 -- Megkötések a táblához `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
@@ -1559,9 +1622,17 @@ ALTER TABLE `school`
   ADD CONSTRAINT `admin` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`);
 
 --
+-- Megkötések a táblához `school_category`
+--
+ALTER TABLE `school_category`
+  ADD CONSTRAINT `school_category_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
+  ADD CONSTRAINT `schoolasd` FOREIGN KEY (`shool_id`) REFERENCES `school` (`id`);
+
+--
 -- Megkötések a táblához `school_join_request`
 --
 ALTER TABLE `school_join_request`
+  ADD CONSTRAINT `school_l_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
   ADD CONSTRAINT `student_join_school_id` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
   ADD CONSTRAINT `student_join_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -1571,6 +1642,7 @@ ALTER TABLE `school_join_request`
 ALTER TABLE `student`
   ADD CONSTRAINT `inst` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `school_3` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `student_license_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
   ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
