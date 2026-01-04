@@ -23,13 +23,21 @@ public class DrivingLessonService {
     private final DrivingLessonTypeRepository drivingLessonTypeRepository;
     private final ReservedDateRepository reservedDateRepository;
     private final ReservedHourRepository reservedHourRepository;
+    private final SchoolRepository schoolRepository;
     private final StudentRepository studentRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
 
     public ResponseEntity<Object> getAllDrivingLessonType(Integer schoolId) {
         try {
-            return ResponseEntity.ok().body(drivingLessonTypeRepository.getAllDrivingLessonType());
+            if (schoolId == null) {
+                return ResponseEntity.status(422).build();
+            }
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok().body(searchedSchool.getDrivingLessonsType());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

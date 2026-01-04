@@ -53,7 +53,7 @@ public class SchoolService {
                 return ResponseEntity.status(415).body("invalidStatus");
             } else {
                 if (status.trim().equals("accept")) {
-                    if (searchedSchoolJoinRequest.getSchoolJoinRequestUser().getRole().getName().equals("student")) {
+                    if (searchedSchoolJoinRequest.getSchoolJoinRequestUser().getRole().getName().equals("ROLE_user")) {
                         Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
                         newStudent.getStudentUser().setRole(new Role(2, "ROLE_student"));
                         studentRepository.save(newStudent);

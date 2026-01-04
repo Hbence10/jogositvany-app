@@ -35,11 +35,6 @@ public class SchoolJoinRequest {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "requested_role")
-    @NotNull
-    @Size(max = 10)
-    private String requestedRole;
-
     @Column(name = "is_accepted")
     @Null
     private Boolean isAccepted;

@@ -9,7 +9,6 @@ import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
-import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ import java.util.Random;
 public class UserService {
     private final UserRepository userRepository;
     private final InstructorRepository instructorRepository;
-    private final RoleRepository roleRepository;
+    //    private final RoleRepository roleRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
@@ -227,8 +225,8 @@ public class UserService {
                     return ResponseEntity.status(415).body("invalidPhone");
                 } else if (!ValidatorCollection.emailValidator(email.trim())) {
                     return ResponseEntity.status(415).body("invalidEmail");
-                } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")){
-                  return ResponseEntity.status(415).body("invalidGender");
+                } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")) {
+                    return ResponseEntity.status(415).body("invalidGender");
                 } else {
                     searchedUser.setFirstName(firstName.trim());
                     searchedUser.setLastName(lastName.trim());
@@ -351,21 +349,23 @@ public class UserService {
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
             ((ObjectNode) returnObject).put("studentId", loggedUser.getStudent().getId());
 
-            JsonNode instructor = objectMapper.createObjectNode();
-            ((ObjectNode) instructor).put("id", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getId());
-            ((ObjectNode) instructor).put("firstName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getFirstName());
-            ((ObjectNode) instructor).put("lastName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getLastName());
-            ((ObjectNode) instructor).put("pfpPath", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getPfpPath());
+            if (loggedUser.getStudent().getStudentInstructor() != null) {
+                JsonNode instructor = objectMapper.createObjectNode();
+                ((ObjectNode) instructor).put("id", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getId());
+                ((ObjectNode) instructor).put("firstName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getFirstName());
+                ((ObjectNode) instructor).put("lastName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getLastName());
+                ((ObjectNode) instructor).put("pfpPath", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getPfpPath());
 
-            JsonNode vehicle = objectMapper.createObjectNode();
-            ((ObjectNode) vehicle).put("id", loggedUser.getStudent().getStudentInstructor().getVehicle().getId());
-            ((ObjectNode) vehicle).put("name", loggedUser.getStudent().getStudentInstructor().getVehicle().getName());
-            ((ObjectNode) vehicle).put("type", loggedUser.getStudent().getStudentInstructor().getVehicle().getVehicleType().getName());
-            ((ObjectNode) vehicle).put("licensePlate", loggedUser.getStudent().getStudentInstructor().getVehicle().getLicensePlate());
+                JsonNode vehicle = objectMapper.createObjectNode();
+                ((ObjectNode) vehicle).put("id", loggedUser.getStudent().getStudentInstructor().getVehicle().getId());
+                ((ObjectNode) vehicle).put("name", loggedUser.getStudent().getStudentInstructor().getVehicle().getName());
+                ((ObjectNode) vehicle).put("type", loggedUser.getStudent().getStudentInstructor().getVehicle().getVehicleType().getName());
+                ((ObjectNode) vehicle).put("licensePlate", loggedUser.getStudent().getStudentInstructor().getVehicle().getLicensePlate());
 
+                ((ObjectNode) returnObject).put("instructor", instructor);
+                ((ObjectNode) returnObject).put("vehicle", vehicle);
+            }
             ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getStudent().getStudentSchool()));
-            ((ObjectNode) returnObject).put("instructor", instructor);
-            ((ObjectNode) returnObject).put("vehicle", vehicle);
 
         } else if (loggedUser.getRole().getName().equals("ROLE_instructor")) {
             ((ObjectNode) returnObject).put("instructorId", loggedUser.getInstructor().getId());
