@@ -45,9 +45,6 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private Integer minAge;
 
-//    @Column(name = "description")
-//    @NotNull
-//    private String description;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -68,6 +65,9 @@ public class DrivingLicenseCategory {
     )
     @JsonIgnore
     private List<DrivingLessonType> drivingLessonTypeList;
+
+
+
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {
