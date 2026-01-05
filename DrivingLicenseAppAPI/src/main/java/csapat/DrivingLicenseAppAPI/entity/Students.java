@@ -106,9 +106,15 @@ public class Students {
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    public Students(Users studentUser, School studentSchool) {
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "driving_license_category_id")
+    @Null
+    private DrivingLicenseCategory selectedCategory;
+
+    public Students(Users studentUser, School studentSchool, DrivingLicenseCategory selectedCategory) {
         this.studentUser = studentUser;
         this.studentSchool = studentSchool;
+        this.selectedCategory = selectedCategory;
     }
 
     public Students(Integer id) {

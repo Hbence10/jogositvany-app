@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,6 +92,10 @@ public class DrivingLicenseCategory {
     )
     @JsonIgnore
     private List<Instructors> instructorsList;
+
+    @OneToMany(mappedBy = "selectedCategory", fetch = FetchType.LAZY, cascade = {})
+    @JsonIgnore
+    private List<Students> studentsList;
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {

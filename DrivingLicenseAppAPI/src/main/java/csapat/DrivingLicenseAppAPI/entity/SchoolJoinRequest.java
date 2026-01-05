@@ -73,8 +73,9 @@ public class SchoolJoinRequest {
     @JsonIgnore
     private DrivingLicenseCategory joinRequestCategory;
 
-    public SchoolJoinRequest(Users user, School school) {
+    public SchoolJoinRequest(Users user, School school, DrivingLicenseCategory joinRequestCategory) {
         this.schoolJoinRequestUser = user;
         this.schoolJoinRequestSchool = school;
+        this.joinRequestCategory = joinRequestCategory;
     }
 }

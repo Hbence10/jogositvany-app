@@ -19,6 +19,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class RequestService {
 
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
+    private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
     private final ExamRequestRepository examRequestRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
@@ -27,21 +28,24 @@ public class RequestService {
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
 
-    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId) {
+    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, Integer categoryId) {
         try {
-            if (schoolId == null || userId == null) {
+            if (schoolId == null || userId == null || categoryId == null) {
                 return ResponseEntity.status(422).build();
             }
 
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             Users searchedUser = userRepository.getUser(userId).orElse(null);
+            DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
 
             if (searchedSchool== null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
-            }  else {
-                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
+            } else if (searchedCategory == null || searchedCategory.getIsDeleted()) {
+                return ResponseEntity.status(404).body("categoryNotFound");
+            } else {
+                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }

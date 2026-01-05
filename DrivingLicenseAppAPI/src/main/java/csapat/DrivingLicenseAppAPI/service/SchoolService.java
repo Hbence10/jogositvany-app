@@ -54,7 +54,7 @@ public class SchoolService {
             } else {
                 if (status.trim().equals("accept")) {
                     if (searchedSchoolJoinRequest.getSchoolJoinRequestUser().getRole().getName().equals("ROLE_user")) {
-                        Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
+                        Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getJoinRequestCategory());
                         newStudent.getStudentUser().setRole(new Role(2, "ROLE_student"));
                         studentRepository.save(newStudent);
                     } else {

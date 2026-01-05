@@ -29,6 +29,7 @@ public class RequestController {
             schemaProperties = {
                     @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "A csatlakozandó iskola id-ja")),
                     @SchemaProperty(name = "userId", schema = @Schema(implementation = Integer.class, description = "A felhasználóhoz tartozó id.")),
+                    @SchemaProperty(name = "categoryId", schema = @Schema(implementation = Integer.class, description = "A kiválasztott jogsi kategóriához tartozó id.")),
             }
     ))
     @ApiResponses({
@@ -39,7 +40,7 @@ public class RequestController {
     })
     @PostMapping("/school")
     private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody) {
-        return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asInt(), requestBody.get("userId").asInt());
+        return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asInt(), requestBody.get("userId").asInt(), requestBody.get("categoryId").asInt());
     }
 
     @Operation(summary = "Oktatóhoz való csatlakozás", description = "Az oktatóhoz való csatlakozási kérelem küldése.")
