@@ -157,4 +157,7 @@ public class School {
     )
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {}, mappedBy = "schoolList")
+    private List<DrivingLicenseCategory> licenseCategoryList;
 }

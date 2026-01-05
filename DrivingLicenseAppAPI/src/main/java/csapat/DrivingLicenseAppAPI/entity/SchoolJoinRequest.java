@@ -68,7 +68,10 @@ public class SchoolJoinRequest {
     @JsonIgnore
     private School schoolJoinRequestSchool;
 
-
+    @ManyToOne(cascade = {})
+    @JoinColumn(name = "driving_license_category_id")
+    @JsonIgnore
+    private DrivingLicenseCategory joinRequestCategory;
 
     public SchoolJoinRequest(Users user, School school) {
         this.schoolJoinRequestUser = user;

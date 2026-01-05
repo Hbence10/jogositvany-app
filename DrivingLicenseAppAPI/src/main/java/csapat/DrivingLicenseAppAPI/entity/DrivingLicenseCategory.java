@@ -66,8 +66,31 @@ public class DrivingLicenseCategory {
     @JsonIgnore
     private List<DrivingLessonType> drivingLessonTypeList;
 
+    @OneToMany(
+            mappedBy = "joinRequestCategory",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnore
+    private List<SchoolJoinRequest> schoolJoinRequestList;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {})
+    @JoinTable(
+            name = "school_category",
+            joinColumns = @JoinColumn(name = "school_id"),
+            inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
+    )
+    @JsonIgnore
+    private List<School> schoolList;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {})
+    @JoinTable(
+            name = "instructor_category",
+            joinColumns = @JoinColumn(name = "instructor_id"),
+            inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
+    )
+    @JsonIgnore
+    private List<Instructors> instructorsList;
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {
