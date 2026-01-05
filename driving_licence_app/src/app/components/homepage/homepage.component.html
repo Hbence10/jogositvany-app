@@ -178,10 +178,14 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="box" id="car">
+                  @if ((loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) || loggedUser.role.name == "ROLE_instructor") {
                     <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
                     <p class="w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
                     <p class="w-100 info-field d-flex align-items-center justify-content-between">Típus:</p>
                     <p class="w-100 info-field d-flex align-items-center justify-content-between">Rendszám:</p>
+                  } @else if (loggedUser.role.name == "ROLE_user" || loggedUser.instructorId == undefined) {
+                    <h2>Oktató nincs kiválasztva</h2>
+                  }
                   </div>
                 </div>
               </div>
