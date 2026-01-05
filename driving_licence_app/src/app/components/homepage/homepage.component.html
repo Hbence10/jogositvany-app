@@ -116,9 +116,13 @@
                       <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
                         <div class="d-flex flex-column align-items-start box" id="progressbar-payed">
                           <input id="bar" type="range" min="0" max="30" value="9" disabled/>
-                          <div class="d-flex">
-                            <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
-                          </div>
+                          @if (loggedUser.role.name == "ROLE_student") {
+                            <div class="d-flex">
+                              <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
+                            </div>
+                          } @else {
+                            <h1>Fizetési előzmény nem található</h1>
+                          }
                         </div>
                       </div>
                     </div>
