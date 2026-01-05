@@ -56,14 +56,18 @@
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
                         <div class="box d-flex flex-column justify-content-center align-items-center" id="instructor">
-                          <h1>{{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}</h1>
-                          <div>
-                            <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" class="img-fluid"/>
-                          </div>
-                          <div>
-                            <a routerLink="/profil/user/{{loggedUser.instructor?.id}}"><button>profil</button></a>
-                            <button>üzenet</button>
-                          </div>
+                          @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null){
+                            <h1>{{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}</h1>
+                            <div>
+                              <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" class="img-fluid"/>
+                            </div>
+                            <div>
+                              <a routerLink="/profil/user/{{loggedUser.instructor?.id}}"><button>profil</button></a>
+                              <button>üzenet</button>
+                            </div>
+                          } @else {
+                            <h4>Oktató nincs kiválasztva</h4>
+                          }
                         </div>
                       </div>
                     </div>
