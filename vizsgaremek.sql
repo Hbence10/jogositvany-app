@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 04. 18:45
+-- Létrehozás ideje: 2026. Jan 05. 13:41
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -390,6 +390,18 @@ CREATE TABLE `driving_lesson` (
   `is_cancelled` tinyint(1) NOT NULL DEFAULT '0',
   `cancelled_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `driving_lesson`
+--
+
+INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 2, 2, 1, 1, 6, 0, 0, NULL),
+(2, NULL, NULL, 'location1', 'p_u_p1', 'd_o_p1', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(3, NULL, NULL, 'location2', 'p_u_p2', 'd_o_p2', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(4, NULL, NULL, 'location3', 'p_u_p3', 'd_o_p3', NULL, 0, 3, 2, 1, 2, 1, 6, 0, 0, NULL),
+(5, NULL, NULL, 'location4', 'p_u_p4', 'd_o_p4', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(6, NULL, NULL, 'location5', 'p_u_p5', 'd_o_p5', NULL, 0, 1, 1, 2, 2, 1, 6, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1034,55 +1046,55 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'a9', '2000-01-01', 'gender', 'password', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
 (14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a10', '1990-01-01', 'a', 'jelszo', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL),
 (15, 'diak1.0', 'diak1.0', 'diak1.0@gmal.com', '706285100', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$0unA9iCWXaKiYoJiwAf6kA$0EqOpuRF28id329sTLbMXDAldYzdar6nOIxh5hZdv5I', 2, 'asd', '2025-12-16 12:15:38', '2026-01-04 12:18:13', 0, NULL, NULL, 1, NULL),
-(16, 'diak1.1', 'diak1.1', 'diak1.1@gmal.com', '706285101', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$EaFxZTf+lb6gy08EAULvgQ$KMoappjLlLadU2+NLT1/pI9YDETvhY3O9zU7gAX0Tow', 1, 'asd', '2025-12-16 12:15:49', NULL, 0, NULL, NULL, 1, NULL),
-(17, 'diak1.2', 'diak1.2', 'diak1.2@gmal.com', '706285102', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5FiW6ZO2pmWHvtQ8M/tpTw$OZEKPjCiyPJ068C38AzUo452JVN2Xev2C9PFGs8p/ys', 1, 'asd', '2025-12-16 12:15:59', NULL, 0, NULL, NULL, 1, NULL),
-(18, 'diak1.3', 'diak1.3', 'diak1.3@gmal.com', '706285103', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xwR1zm32Fl8J223HJAF0kg$Ut4ktIw+yfqeUH630VEGyblN68oTSfhK3k/IRb8oFnM', 1, 'asd', '2025-12-16 12:16:06', NULL, 0, NULL, NULL, 1, NULL),
-(19, 'diak1.4', 'diak1.4', 'diak1.4@gmal.com', '706285104', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oCP2iG4BL0XhUjDpYKi4Rw$8w+1MUDOp5ovKnCjqj0HrjtqXRbpqfYL4zYfNEH02so', 1, 'asd', '2025-12-16 12:16:15', NULL, 0, NULL, NULL, 1, NULL),
-(20, 'diak1.5', 'diak1.5', 'diak1.5@gmal.com', '706285105', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$JVhUaulm6pAldo1rZF54nA$fwWIt6E+a43RBE8d232hVGdub5x5NJfCn6btGNl5rd8', 1, 'asd', '2025-12-16 12:16:24', NULL, 0, NULL, NULL, 1, NULL),
-(21, 'diak1.6', 'diak1.6', 'diak1.6@gmal.com', '706285106', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$4UaUNXwecxF0JxjoH7ezXQ$mk2yttSACD3MNzYD4kgURTnWBrIpzZEWSlW0VZXLj9A', 1, 'asd', '2025-12-16 12:16:32', NULL, 0, NULL, NULL, 1, NULL),
-(22, 'diak1.7', 'diak1.7', 'diak1.7@gmal.com', '706285107', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$6A3WiBtchRQQb085yvwF5g$LSkNTxglWDFgvMih7MpCDtypTpheERP0MZWYEBszv9c', 1, 'asd', '2025-12-16 12:16:39', NULL, 0, NULL, NULL, 1, NULL),
-(23, 'diak1.8', 'diak1.8', 'diak1.8@gmal.com', '706285108', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$RA4e10YjJpRvjwgWKF+V5Q$v/O97QVpWszqo8HMb6uaDDnDLshvMDf8snkdFCmNqOI', 1, 'asd', '2025-12-16 12:16:48', NULL, 0, NULL, NULL, 1, NULL),
-(24, 'diak1.9', 'diak1.9', 'diak1.9@gmal.com', '706285109', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$ZVOHZSY412F2Rt/nTpk3tw$YKRI9kDk8evluEM4boXt6t12gmEF5mhcex8ha76nPkM', 1, 'asd', '2025-12-16 12:16:57', NULL, 0, NULL, NULL, 1, NULL),
+(16, 'diak1.1', 'diak1.1', 'diak1.1@gmal.com', '706285101', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$EaFxZTf+lb6gy08EAULvgQ$KMoappjLlLadU2+NLT1/pI9YDETvhY3O9zU7gAX0Tow', 2, 'asd', '2025-12-16 12:15:49', NULL, 0, NULL, NULL, 1, NULL),
+(17, 'diak1.2', 'diak1.2', 'diak1.2@gmal.com', '706285102', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5FiW6ZO2pmWHvtQ8M/tpTw$OZEKPjCiyPJ068C38AzUo452JVN2Xev2C9PFGs8p/ys', 2, 'asd', '2025-12-16 12:15:59', NULL, 0, NULL, NULL, 1, NULL),
+(18, 'diak1.3', 'diak1.3', 'diak1.3@gmal.com', '706285103', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xwR1zm32Fl8J223HJAF0kg$Ut4ktIw+yfqeUH630VEGyblN68oTSfhK3k/IRb8oFnM', 2, 'asd', '2025-12-16 12:16:06', NULL, 0, NULL, NULL, 1, NULL),
+(19, 'diak1.4', 'diak1.4', 'diak1.4@gmal.com', '706285104', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oCP2iG4BL0XhUjDpYKi4Rw$8w+1MUDOp5ovKnCjqj0HrjtqXRbpqfYL4zYfNEH02so', 2, 'asd', '2025-12-16 12:16:15', NULL, 0, NULL, NULL, 1, NULL),
+(20, 'diak1.5', 'diak1.5', 'diak1.5@gmal.com', '706285105', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$JVhUaulm6pAldo1rZF54nA$fwWIt6E+a43RBE8d232hVGdub5x5NJfCn6btGNl5rd8', 2, 'asd', '2025-12-16 12:16:24', NULL, 0, NULL, NULL, 1, NULL),
+(21, 'diak1.6', 'diak1.6', 'diak1.6@gmal.com', '706285106', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$4UaUNXwecxF0JxjoH7ezXQ$mk2yttSACD3MNzYD4kgURTnWBrIpzZEWSlW0VZXLj9A', 2, 'asd', '2025-12-16 12:16:32', NULL, 0, NULL, NULL, 1, NULL),
+(22, 'diak1.7', 'diak1.7', 'diak1.7@gmal.com', '706285107', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$6A3WiBtchRQQb085yvwF5g$LSkNTxglWDFgvMih7MpCDtypTpheERP0MZWYEBszv9c', 2, 'asd', '2025-12-16 12:16:39', NULL, 0, NULL, NULL, 1, NULL),
+(23, 'diak1.8', 'diak1.8', 'diak1.8@gmal.com', '706285108', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$RA4e10YjJpRvjwgWKF+V5Q$v/O97QVpWszqo8HMb6uaDDnDLshvMDf8snkdFCmNqOI', 2, 'asd', '2025-12-16 12:16:48', NULL, 0, NULL, NULL, 1, NULL),
+(24, 'diak1.9', 'diak1.9', 'diak1.9@gmal.com', '706285109', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$ZVOHZSY412F2Rt/nTpk3tw$YKRI9kDk8evluEM4boXt6t12gmEF5mhcex8ha76nPkM', 2, 'asd', '2025-12-16 12:16:57', NULL, 0, NULL, NULL, 1, NULL),
 (25, 'school_owner_1.0', 'school_owner_1.0', 'school_owner_1.0@gmal.com', '706281000', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$eyihnAPfbrWH2++pG3vhvg$0islaCsSneYg760RiYSKRvyvpzhMk6qtz5YOf2KJwmk', 6, 'asd', '2025-12-16 12:18:00', NULL, 0, NULL, NULL, 1, NULL),
-(26, 'school_owner_1.1', 'school_owner_1.1', 'school_owner_1.1@gmal.com', '706281001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$q49PUdh9mVdHQ10dS0gwug$5sWmV6WdQ4QdJZfdY7ftKt/U/E32ZZiCSTnl5w1QAbM', 1, 'asd', '2025-12-16 12:18:11', NULL, 0, NULL, NULL, 1, NULL),
-(27, 'school_owner_1.2', 'school_owner_1.2', 'school_owner_1.2@gmal.com', '706281002', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$rw1ESsDASrKfCfMv5q/O4g$JfJSd1OGyFD1+juOXiUQ6kx4R4bxBFG0zuK2O88GRaM', 1, 'asd', '2025-12-16 12:18:19', NULL, 0, NULL, NULL, 1, NULL),
-(28, 'school_owner_1.3', 'school_owner_1.3', 'school_owner_1.3@gmal.com', '706281003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oVs/UOVqKhPOin5TGV4CzQ$ui34Co11aj9RQNYCwAN5P63OBSnqKczVQhOUZcXLeUc', 1, 'asd', '2025-12-16 12:18:26', NULL, 0, NULL, NULL, 1, NULL),
-(29, 'school_owner_1.4', 'school_owner_1.4', 'school_owner_1.4@gmal.com', '706281004', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$u8Nbb09YOOHU07nA6lPQww$A6YUMs+Hwn8qq9HQxngXRaI4coBZJteh0CkwJhZ9TbI', 1, 'asd', '2025-12-16 12:18:34', NULL, 0, NULL, NULL, 1, NULL),
-(30, 'instructor1.0', 'instructor1.0', 'instructor1.0@gmal.com', '706280000', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$PNNmcm12ivaGlCwbjbYTnA$5oY7o5jGSKDDLxckZxr/Sn3H1+qQPWbKGkN0d7N7iy8', 1, 'asd', '2025-12-17 08:56:01', NULL, 0, NULL, NULL, 1, NULL),
-(31, 'instructor1.1', 'instructor1.1', 'instructor1.1@gmal.com', '706280001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Ru550cH183s3csg47XMpLQ$5zRDQERCeGJV5T1t70Cwci+W54D26yzSaSfKOwe4ieM', 1, 'asd', '2025-12-17 08:56:10', NULL, 0, NULL, NULL, 1, NULL),
-(32, 'instructor1.2', 'instructor1.2', 'instructor1.2@gmal.com', '706280002', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$XqbBEgx5BoBDrZM9LU9WnA$yYmux6Jl/Ysb7xPoZzja6clm4mrQGWmi7oH0Y4k99VM', 1, 'asd', '2025-12-17 08:56:18', NULL, 0, NULL, NULL, 1, NULL),
-(33, 'instructor1.3', 'instructor1.3', 'instructor1.3@gmal.com', '706280003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5GzlKKAslR3riWd+SrTTlA$gf2GoXZWYFxKlowKY6AM8P5mDa1ErmVeHd2tV3fJUMk', 1, 'asd', '2025-12-17 08:56:28', NULL, 0, NULL, NULL, 1, NULL),
-(34, 'instructor1.4', 'instructor1.4', 'instructor1.4@gmal.com', '706280004', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$cTSGLLTzBzi2ZAzZkzGR5w$UvMJS403mDFJUybCvfFVssa7Zou0FhIBhJid/C4qnrQ', 1, 'asd', '2025-12-17 08:56:37', NULL, 0, NULL, NULL, 1, NULL),
-(35, 'instructor1.5', 'instructor1.5', 'instructor1.5@gmal.com', '706280005', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xZ5IiLZGmyTQ8KbsSLaR+A$rGRL+yJNveAL2Skx5RAwnI8OuvL7NLOM6qi1RgUTB1I', 1, 'asd', '2025-12-17 08:56:45', NULL, 0, NULL, NULL, 1, NULL),
-(36, 'instructor1.6', 'instructor1.6', 'instructor1.6@gmal.com', '706280006', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$+OORfFOiJBIYVlC6jI2qtQ$joyVa3SoPlvytE4HAITT+RjFaAlSsWkhfZ7kPzm4v5w', 1, 'asd', '2025-12-17 08:57:00', NULL, 0, NULL, NULL, 1, NULL),
-(37, 'instructor1.7', 'instructor1.7', 'instructor1.7@gmal.com', '706280007', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$6qvrwrNkK31e/pvkLE1IlQ$f+C3ODRNVY4ZCE9f4oZBOn1pq4Naj2yVf1fcviWSfHg', 1, 'asd', '2025-12-17 08:57:11', NULL, 0, NULL, NULL, 1, NULL),
-(38, 'instructor1.8', 'instructor1.8', 'instructor1.8@gmal.com', '706280008', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$nHvUo2oZRLzTI0QxEQtmiw$H9AqL/SEv97S9F/1IeL6sWKp+llssYmtgHbUkGa+kvw', 1, 'asd', '2025-12-17 08:57:19', NULL, 0, NULL, NULL, 1, NULL),
-(40, 'instructor1.9', 'instructor1.9', 'instructor1.9@gmal.com', '706280009', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$PrzL0H/s3D8J0jSoDyQcqA$o5rAAtfIr9Z+aUQ/6vCg8f64Um0h+HX/ZRJieswrPf0', 1, 'asd', '2025-12-17 08:57:34', NULL, 0, NULL, NULL, 1, NULL),
-(41, 'instructor2.0', 'instructor2.0', 'instructor2.0@gmal.com', '706280010', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$tFvPpMhCy72zzEaD+EWBFQ$DCDoMcM7S+DZ8XucF7N/mBhSuL9ojL7B0tvYHxMwg7Q', 1, 'asd', '2025-12-17 08:57:51', NULL, 0, NULL, NULL, 1, NULL),
-(42, 'instructor2.1', 'instructor2.1', 'instructor2.1@gmal.com', '706280011', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$l/HFOOPntlHN+GOXEvwVSw$avT+6QvAvTjwcP3f9sFE9/rvre7zYgDRMGatPP5UUUw', 1, 'asd', '2025-12-17 08:57:58', NULL, 0, NULL, NULL, 1, NULL),
-(43, 'instructor2.2', 'instructor2.2', 'instructor2.2@gmal.com', '706280012', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$m9D3EF27BrW2mtuS6WgaNA$EUYFHXrlEjsRvb9d89r39dvAy1SkoXu+/M1GJMnLTKA', 1, 'asd', '2025-12-17 08:58:09', NULL, 0, NULL, NULL, 1, NULL),
-(44, 'instructor2.3', 'instructor2.3', 'instructor2.3@gmal.com', '706280013', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$mlMbjXa4CWoP7GU21wGdxQ$kixWD7SeJjHo3iXRtiDAtVebnW2KNsweQuX9trO+//g', 1, 'asd', '2025-12-17 08:58:17', NULL, 0, NULL, NULL, 1, NULL),
-(45, 'instructor2.4', 'instructor2.4', 'instructor2.4@gmal.com', '706280014', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$coa7GB3N6yohUkbKEqcjjA$sHjaWf5q2F009BmA9R+fAwyTZcbi0YQpjTf+YqJd1xk', 1, 'asd', '2025-12-17 08:58:25', NULL, 0, NULL, NULL, 1, NULL),
-(46, 'instructor2.5', 'instructor2.5', 'instructor2.5@gmal.com', '706280015', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$ZoT/Lgq0Yt/3xy/Jc5es2Q$52aG2gnVmZ7roN43lp1eU862Xzo2mnuPrWwdL1+Bx0s', 1, 'asd', '2025-12-17 08:58:33', NULL, 0, NULL, NULL, 1, NULL),
-(47, 'instructor2.6', 'instructor2.6', 'instructor2.6@gmal.com', '706280016', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$D2I0QEa4v5HOOdDErqy6Ew$n5aj7HySZTLwNV00NgXwUR/j2+gWySYOjSVoXsAShj0', 1, 'asd', '2025-12-17 08:58:41', NULL, 0, NULL, NULL, 1, NULL),
-(48, 'instructor2.7', 'instructor2.7', 'instructor2.7@gmal.com', '706280017', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$h21eN6/cGKInyBhMg9OdJA$JbnBVped+Fnp/3TZY2VSBLHmfD/iX9evJGJycTStW4s', 1, 'asd', '2025-12-17 08:58:53', NULL, 0, NULL, NULL, 1, NULL),
-(49, 'instructor2.8', 'instructor2.8', 'instructor2.8@gmal.com', '706280018', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jtifWw3Zt9sjUBOTwTNGOg$UKoHL6ckrhmfd2dk+tigH4NpNHC+Z2JD4jReWjB3z/Q', 1, 'asd', '2025-12-17 08:59:01', NULL, 0, NULL, NULL, 1, NULL),
+(26, 'school_owner_1.1', 'school_owner_1.1', 'school_owner_1.1@gmal.com', '706281001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$q49PUdh9mVdHQ10dS0gwug$5sWmV6WdQ4QdJZfdY7ftKt/U/E32ZZiCSTnl5w1QAbM', 6, 'asd', '2025-12-16 12:18:11', NULL, 0, NULL, NULL, 1, NULL),
+(27, 'school_owner_1.2', 'school_owner_1.2', 'school_owner_1.2@gmal.com', '706281002', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$rw1ESsDASrKfCfMv5q/O4g$JfJSd1OGyFD1+juOXiUQ6kx4R4bxBFG0zuK2O88GRaM', 6, 'asd', '2025-12-16 12:18:19', NULL, 0, NULL, NULL, 1, NULL),
+(28, 'school_owner_1.3', 'school_owner_1.3', 'school_owner_1.3@gmal.com', '706281003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oVs/UOVqKhPOin5TGV4CzQ$ui34Co11aj9RQNYCwAN5P63OBSnqKczVQhOUZcXLeUc', 6, 'asd', '2025-12-16 12:18:26', NULL, 0, NULL, NULL, 1, NULL),
+(29, 'school_owner_1.4', 'school_owner_1.4', 'school_owner_1.4@gmal.com', '706281004', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$u8Nbb09YOOHU07nA6lPQww$A6YUMs+Hwn8qq9HQxngXRaI4coBZJteh0CkwJhZ9TbI', 6, 'asd', '2025-12-16 12:18:34', NULL, 0, NULL, NULL, 1, NULL),
+(30, 'instructor1.0', 'instructor1.0', 'instructor1.0@gmal.com', '706280000', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$PNNmcm12ivaGlCwbjbYTnA$5oY7o5jGSKDDLxckZxr/Sn3H1+qQPWbKGkN0d7N7iy8', 3, 'asd', '2025-12-17 08:56:01', NULL, 0, NULL, NULL, 1, NULL),
+(31, 'instructor1.1', 'instructor1.1', 'instructor1.1@gmal.com', '706280001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Ru550cH183s3csg47XMpLQ$5zRDQERCeGJV5T1t70Cwci+W54D26yzSaSfKOwe4ieM', 3, 'asd', '2025-12-17 08:56:10', NULL, 0, NULL, NULL, 1, NULL),
+(32, 'instructor1.2', 'instructor1.2', 'instructor1.2@gmal.com', '706280002', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$XqbBEgx5BoBDrZM9LU9WnA$yYmux6Jl/Ysb7xPoZzja6clm4mrQGWmi7oH0Y4k99VM', 3, 'asd', '2025-12-17 08:56:18', NULL, 0, NULL, NULL, 1, NULL),
+(33, 'instructor1.3', 'instructor1.3', 'instructor1.3@gmal.com', '706280003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5GzlKKAslR3riWd+SrTTlA$gf2GoXZWYFxKlowKY6AM8P5mDa1ErmVeHd2tV3fJUMk', 3, 'asd', '2025-12-17 08:56:28', NULL, 0, NULL, NULL, 1, NULL),
+(34, 'instructor1.4', 'instructor1.4', 'instructor1.4@gmal.com', '706280004', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$cTSGLLTzBzi2ZAzZkzGR5w$UvMJS403mDFJUybCvfFVssa7Zou0FhIBhJid/C4qnrQ', 3, 'asd', '2025-12-17 08:56:37', NULL, 0, NULL, NULL, 1, NULL),
+(35, 'instructor1.5', 'instructor1.5', 'instructor1.5@gmal.com', '706280005', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xZ5IiLZGmyTQ8KbsSLaR+A$rGRL+yJNveAL2Skx5RAwnI8OuvL7NLOM6qi1RgUTB1I', 3, 'asd', '2025-12-17 08:56:45', NULL, 0, NULL, NULL, 1, NULL),
+(36, 'instructor1.6', 'instructor1.6', 'instructor1.6@gmal.com', '706280006', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$+OORfFOiJBIYVlC6jI2qtQ$joyVa3SoPlvytE4HAITT+RjFaAlSsWkhfZ7kPzm4v5w', 3, 'asd', '2025-12-17 08:57:00', NULL, 0, NULL, NULL, 1, NULL),
+(37, 'instructor1.7', 'instructor1.7', 'instructor1.7@gmal.com', '706280007', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$6qvrwrNkK31e/pvkLE1IlQ$f+C3ODRNVY4ZCE9f4oZBOn1pq4Naj2yVf1fcviWSfHg', 3, 'asd', '2025-12-17 08:57:11', NULL, 0, NULL, NULL, 1, NULL),
+(38, 'instructor1.8', 'instructor1.8', 'instructor1.8@gmal.com', '706280008', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$nHvUo2oZRLzTI0QxEQtmiw$H9AqL/SEv97S9F/1IeL6sWKp+llssYmtgHbUkGa+kvw', 3, 'asd', '2025-12-17 08:57:19', NULL, 0, NULL, NULL, 1, NULL),
+(40, 'instructor1.9', 'instructor1.9', 'instructor1.9@gmal.com', '706280009', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$PrzL0H/s3D8J0jSoDyQcqA$o5rAAtfIr9Z+aUQ/6vCg8f64Um0h+HX/ZRJieswrPf0', 3, 'asd', '2025-12-17 08:57:34', NULL, 0, NULL, NULL, 1, NULL),
+(41, 'instructor2.0', 'instructor2.0', 'instructor2.0@gmal.com', '706280010', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$tFvPpMhCy72zzEaD+EWBFQ$DCDoMcM7S+DZ8XucF7N/mBhSuL9ojL7B0tvYHxMwg7Q', 3, 'asd', '2025-12-17 08:57:51', NULL, 0, NULL, NULL, 1, NULL),
+(42, 'instructor2.1', 'instructor2.1', 'instructor2.1@gmal.com', '706280011', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$l/HFOOPntlHN+GOXEvwVSw$avT+6QvAvTjwcP3f9sFE9/rvre7zYgDRMGatPP5UUUw', 3, 'asd', '2025-12-17 08:57:58', NULL, 0, NULL, NULL, 1, NULL),
+(43, 'instructor2.2', 'instructor2.2', 'instructor2.2@gmal.com', '706280012', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$m9D3EF27BrW2mtuS6WgaNA$EUYFHXrlEjsRvb9d89r39dvAy1SkoXu+/M1GJMnLTKA', 3, 'asd', '2025-12-17 08:58:09', NULL, 0, NULL, NULL, 1, NULL),
+(44, 'instructor2.3', 'instructor2.3', 'instructor2.3@gmal.com', '706280013', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$mlMbjXa4CWoP7GU21wGdxQ$kixWD7SeJjHo3iXRtiDAtVebnW2KNsweQuX9trO+//g', 3, 'asd', '2025-12-17 08:58:17', NULL, 0, NULL, NULL, 1, NULL),
+(45, 'instructor2.4', 'instructor2.4', 'instructor2.4@gmal.com', '706280014', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$coa7GB3N6yohUkbKEqcjjA$sHjaWf5q2F009BmA9R+fAwyTZcbi0YQpjTf+YqJd1xk', 3, 'asd', '2025-12-17 08:58:25', NULL, 0, NULL, NULL, 1, NULL),
+(46, 'instructor2.5', 'instructor2.5', 'instructor2.5@gmal.com', '706280015', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$ZoT/Lgq0Yt/3xy/Jc5es2Q$52aG2gnVmZ7roN43lp1eU862Xzo2mnuPrWwdL1+Bx0s', 3, 'asd', '2025-12-17 08:58:33', NULL, 0, NULL, NULL, 1, NULL),
+(47, 'instructor2.6', 'instructor2.6', 'instructor2.6@gmal.com', '706280016', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$D2I0QEa4v5HOOdDErqy6Ew$n5aj7HySZTLwNV00NgXwUR/j2+gWySYOjSVoXsAShj0', 3, 'asd', '2025-12-17 08:58:41', NULL, 0, NULL, NULL, 1, NULL),
+(48, 'instructor2.7', 'instructor2.7', 'instructor2.7@gmal.com', '706280017', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$h21eN6/cGKInyBhMg9OdJA$JbnBVped+Fnp/3TZY2VSBLHmfD/iX9evJGJycTStW4s', 3, 'asd', '2025-12-17 08:58:53', NULL, 0, NULL, NULL, 1, NULL),
+(49, 'instructor2.8', 'instructor2.8', 'instructor2.8@gmal.com', '706280018', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jtifWw3Zt9sjUBOTwTNGOg$UKoHL6ckrhmfd2dk+tigH4NpNHC+Z2JD4jReWjB3z/Q', 3, 'asd', '2025-12-17 08:59:01', NULL, 0, NULL, NULL, 1, NULL),
 (50, 'instructor2.9', 'instructor2.9', 'instructor2.9@gmal.com', '706280019', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$UGyPzs8Y2f2MFAYGW6n9SA$lBogC2av+PrVKzpDQX0yhIfiC8v9Ee2q8MZTFhvsR2o', 3, 'asd', '2025-12-17 08:59:13', NULL, 0, NULL, NULL, 1, NULL),
-(51, 'instructor3.0', 'instructor3.0', 'instructor3.0@gmal.com', '706280020', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$0sxOjcwtZ5PBJwbMPDTj9w$kGqSzm3EBSqMJmAX8l97ux7AnpLq8iKu1wWQbBJi3gg', 1, 'asd', '2025-12-17 08:59:33', NULL, 0, NULL, NULL, 1, NULL),
-(52, 'instructor3.1', 'instructor3.1', 'instructor3.1@gmal.com', '706280021', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$yPBTabuxKTQg+lAAAG9g9Q$g96Fau6nCmKA3P7RL390IrXMfu0HVZuAglv7Pu2Xo6w', 1, 'asd', '2025-12-17 08:59:45', NULL, 0, NULL, NULL, 1, NULL),
-(53, 'instructor3.2', 'instructor3.2', 'instructor3.2@gmal.com', '706280022', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Een3QfmdkPANOdDG7WaWOw$vFqwkreSHjkuni4mJ0P5dhTyxdDUFRNYgy7gfFj2C/g', 1, 'asd', '2025-12-17 08:59:53', NULL, 0, NULL, NULL, 1, NULL),
-(54, 'instructor3.3', 'instructor3.3', 'instructor3.3@gmal.com', '706280023', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$E0Z33BBJRzWeXdLj3+aGWA$/eBlu3dIgNrQI3ZoCaWyozleQ8TWHptjxa4F5uuLweA', 1, 'asd', '2025-12-17 09:00:01', NULL, 0, NULL, NULL, 1, NULL),
-(55, 'instructor3.4', 'instructor3.4', 'instructor3.4@gmal.com', '706280024', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$fUIOHCzGnsfc8PNdYOxf8g$lshdHXUVqAkgwaEheUUvQFsO0SR8RX0304z4EU1pCRM', 1, 'asd', '2025-12-17 09:00:09', NULL, 0, NULL, NULL, 1, NULL),
-(56, 'instructor3.5', 'instructor3.5', 'instructor3.5@gmal.com', '706280025', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$nX2T8g3R5xPKQFOvw53+Cw$eAeuTWmsk1znXi8+2bddEC6m00bXV8mqX5AqISEyj4U', 1, 'asd', '2025-12-17 09:00:22', NULL, 0, NULL, NULL, 1, NULL),
-(57, 'instructor3.6', 'instructor3.6', 'instructor3.6@gmal.com', '706280026', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$NrltaZYToMosVCAYWrzDSg$ylWiZ9cqJKS+JMGOfNtCMj4Vl39f3Qegmvw61a1LzqM', 1, 'asd', '2025-12-17 09:00:32', NULL, 0, NULL, NULL, 1, NULL),
-(58, 'instructor3.7', 'instructor3.7', 'instructor3.7@gmal.com', '706280027', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$996KqnKHCewa3NT/gmS9lQ$NzLdBrk0kJhYivZNbby23PMvvJvpS2U4pT9gTBtUh9k', 1, 'asd', '2025-12-17 09:00:41', NULL, 0, NULL, NULL, 1, NULL),
-(59, 'instructor3.8', 'instructor3.8', 'instructor3.8@gmal.com', '706280028', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5tSsDPZvUi+KuUjjIetyGw$LSG82VR4HsZwK4ZWm+ktrDZBtHx7KYvK85TU1lHZIlA', 1, 'asd', '2025-12-17 09:00:50', NULL, 0, NULL, NULL, 1, NULL),
-(60, 'instructor3.9', 'instructor3.9', 'instructor3.9@gmal.com', '706280029', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$uMq3Qdk0NaNHjLuhQQRHkw$7XebzKF5X8wqoAAm7NP5yBXD4AUKL3oEaRN798BZfWg', 1, 'asd', '2025-12-17 09:00:57', NULL, 0, NULL, NULL, 1, NULL),
-(61, 'instructor4.0', 'instructor4.0', 'instructor4.0@gmal.com', '706280030', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$iQ1yb0yk67c38FkO+KExRA$7jNnvYKFHZYkoyOovG8ZpPnhLM2LBK4y+nrqC/4ZqYE', 1, 'asd', '2025-12-17 09:01:15', NULL, 0, NULL, NULL, 1, NULL),
-(62, 'instructor4.1', 'instructor4.1', 'instructor4.1@gmal.com', '706280031', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$4+juZm/maAO/Pz+JeahEZA$oR3zMWr33J9vgwaKg3vlnML1FDXmJcY/f0MQOaV4zgU', 1, 'asd', '2025-12-17 09:01:24', NULL, 0, NULL, NULL, 1, NULL),
-(63, 'instructor4.2', 'instructor4.2', 'instructor4.2@gmal.com', '706280032', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$rNgKv8Kbs193M7bNKqdlsQ$6yyT5o8D1ZaXqKpOlk9JyixfbU5e8o+6IUgYD3m/tFk', 1, 'asd', '2025-12-17 09:01:41', NULL, 0, NULL, NULL, 1, NULL),
-(64, 'instructor4.3', 'instructor4.3', 'instructor4.3@gmal.com', '706280033', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$820ikLXJEbD+c2FiHlnWfw$+aBfGEpT45f3Yr6BQcyRVCogCoS6/ns/VTlFv3N/JgA', 1, 'asd', '2025-12-17 09:01:55', NULL, 0, NULL, NULL, 1, NULL),
-(65, 'instructor4.4', 'instructor4.4', 'instructor4.4@gmal.com', '706280034', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xn9XxHG4QYbh1+FpmUW7Yw$LrKeNC4AjzPYMklvkBBIqbqyp0hl1eI+lIwgtctY8tM', 1, 'asd', '2025-12-17 09:02:04', NULL, 0, NULL, NULL, 1, NULL),
+(51, 'instructor3.0', 'instructor3.0', 'instructor3.0@gmal.com', '706280020', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$0sxOjcwtZ5PBJwbMPDTj9w$kGqSzm3EBSqMJmAX8l97ux7AnpLq8iKu1wWQbBJi3gg', 3, 'asd', '2025-12-17 08:59:33', NULL, 0, NULL, NULL, 1, NULL),
+(52, 'instructor3.1', 'instructor3.1', 'instructor3.1@gmal.com', '706280021', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$yPBTabuxKTQg+lAAAG9g9Q$g96Fau6nCmKA3P7RL390IrXMfu0HVZuAglv7Pu2Xo6w', 3, 'asd', '2025-12-17 08:59:45', NULL, 0, NULL, NULL, 1, NULL),
+(53, 'instructor3.2', 'instructor3.2', 'instructor3.2@gmal.com', '706280022', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Een3QfmdkPANOdDG7WaWOw$vFqwkreSHjkuni4mJ0P5dhTyxdDUFRNYgy7gfFj2C/g', 3, 'asd', '2025-12-17 08:59:53', NULL, 0, NULL, NULL, 1, NULL),
+(54, 'instructor3.3', 'instructor3.3', 'instructor3.3@gmal.com', '706280023', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$E0Z33BBJRzWeXdLj3+aGWA$/eBlu3dIgNrQI3ZoCaWyozleQ8TWHptjxa4F5uuLweA', 3, 'asd', '2025-12-17 09:00:01', NULL, 0, NULL, NULL, 1, NULL),
+(55, 'instructor3.4', 'instructor3.4', 'instructor3.4@gmal.com', '706280024', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$fUIOHCzGnsfc8PNdYOxf8g$lshdHXUVqAkgwaEheUUvQFsO0SR8RX0304z4EU1pCRM', 3, 'asd', '2025-12-17 09:00:09', NULL, 0, NULL, NULL, 1, NULL),
+(56, 'instructor3.5', 'instructor3.5', 'instructor3.5@gmal.com', '706280025', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$nX2T8g3R5xPKQFOvw53+Cw$eAeuTWmsk1znXi8+2bddEC6m00bXV8mqX5AqISEyj4U', 3, 'asd', '2025-12-17 09:00:22', NULL, 0, NULL, NULL, 1, NULL),
+(57, 'instructor3.6', 'instructor3.6', 'instructor3.6@gmal.com', '706280026', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$NrltaZYToMosVCAYWrzDSg$ylWiZ9cqJKS+JMGOfNtCMj4Vl39f3Qegmvw61a1LzqM', 3, 'asd', '2025-12-17 09:00:32', NULL, 0, NULL, NULL, 1, NULL),
+(58, 'instructor3.7', 'instructor3.7', 'instructor3.7@gmal.com', '706280027', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$996KqnKHCewa3NT/gmS9lQ$NzLdBrk0kJhYivZNbby23PMvvJvpS2U4pT9gTBtUh9k', 3, 'asd', '2025-12-17 09:00:41', NULL, 0, NULL, NULL, 1, NULL),
+(59, 'instructor3.8', 'instructor3.8', 'instructor3.8@gmal.com', '706280028', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5tSsDPZvUi+KuUjjIetyGw$LSG82VR4HsZwK4ZWm+ktrDZBtHx7KYvK85TU1lHZIlA', 3, 'asd', '2025-12-17 09:00:50', NULL, 0, NULL, NULL, 1, NULL),
+(60, 'instructor3.9', 'instructor3.9', 'instructor3.9@gmal.com', '706280029', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$uMq3Qdk0NaNHjLuhQQRHkw$7XebzKF5X8wqoAAm7NP5yBXD4AUKL3oEaRN798BZfWg', 3, 'asd', '2025-12-17 09:00:57', NULL, 0, NULL, NULL, 1, NULL),
+(61, 'instructor4.0', 'instructor4.0', 'instructor4.0@gmal.com', '706280030', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$iQ1yb0yk67c38FkO+KExRA$7jNnvYKFHZYkoyOovG8ZpPnhLM2LBK4y+nrqC/4ZqYE', 3, 'asd', '2025-12-17 09:01:15', NULL, 0, NULL, NULL, 1, NULL),
+(62, 'instructor4.1', 'instructor4.1', 'instructor4.1@gmal.com', '706280031', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$4+juZm/maAO/Pz+JeahEZA$oR3zMWr33J9vgwaKg3vlnML1FDXmJcY/f0MQOaV4zgU', 3, 'asd', '2025-12-17 09:01:24', NULL, 0, NULL, NULL, 1, NULL),
+(63, 'instructor4.2', 'instructor4.2', 'instructor4.2@gmal.com', '706280032', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$rNgKv8Kbs193M7bNKqdlsQ$6yyT5o8D1ZaXqKpOlk9JyixfbU5e8o+6IUgYD3m/tFk', 3, 'asd', '2025-12-17 09:01:41', NULL, 0, NULL, NULL, 1, NULL),
+(64, 'instructor4.3', 'instructor4.3', 'instructor4.3@gmal.com', '706280033', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$820ikLXJEbD+c2FiHlnWfw$+aBfGEpT45f3Yr6BQcyRVCogCoS6/ns/VTlFv3N/JgA', 3, 'asd', '2025-12-17 09:01:55', NULL, 0, NULL, NULL, 1, NULL),
+(65, 'instructor4.4', 'instructor4.4', 'instructor4.4@gmal.com', '706280034', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xn9XxHG4QYbh1+FpmUW7Yw$LrKeNC4AjzPYMklvkBBIqbqyp0hl1eI+lIwgtctY8tM', 3, 'asd', '2025-12-17 09:02:04', NULL, 0, NULL, NULL, 1, NULL),
 (66, 'requestTest1', 'requestTest1', 'requestTest1@gmail.com', '206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$AEwlPFrowj7P4whzwTVuGg$cmS5rok7Vxb46QEZm5ugAJ5W1PKdouPvP2D0Uxz0nHo', 2, 'assets/icons/defaultProfileImg.svg', '2025-12-18 09:25:03', '2026-01-03 15:15:29', 0, NULL, NULL, 1, NULL),
 (67, 'requestTest2', 'requestTest2', 'requestTest2@gmail.com', '306285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$AFzVTJa9FOGUTNk2RnIzhQ$rWlqgw+gy7w+vZN4n2T4ak5Q7QOh+qwO93vJBPqxVQs', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-18 09:25:12', NULL, 0, NULL, NULL, 1, NULL),
 (74, 'asd', 'asd', 'asd@gmail.com', '701211818', '2000-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$M5FShDGEtajN78Lm9o7EmA$Ml0A9qVA8Xgo0PKkZjAZH8qM8MdF7rUnFGV5tAiz+6M', 1, '', '2026-01-03 21:05:07', NULL, 0, NULL, NULL, 1, NULL),
@@ -1123,7 +1135,10 @@ INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`,
 (24, NULL, NULL, NULL, NULL, 0, NULL),
 (25, NULL, NULL, NULL, NULL, 0, NULL),
 (26, NULL, NULL, NULL, NULL, 0, NULL),
-(27, NULL, NULL, NULL, NULL, 0, NULL);
+(27, NULL, NULL, NULL, NULL, 0, NULL),
+(28, 'plate1', 'vehicle_name1', 1, 1, 0, NULL),
+(29, 'plate2', 'vehicle_name2', 4, 1, 0, NULL),
+(30, 'plate3', 'vehicle_name3', 5, 2, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1369,7 +1384,7 @@ ALTER TABLE `vehicle_type`
 -- AUTO_INCREMENT a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_instructor`
@@ -1513,7 +1528,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT a táblához `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle_type`
