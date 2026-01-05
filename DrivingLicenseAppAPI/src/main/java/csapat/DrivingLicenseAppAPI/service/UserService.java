@@ -35,7 +35,6 @@ import java.util.Random;
 public class UserService {
     private final UserRepository userRepository;
     private final InstructorRepository instructorRepository;
-    //    private final RoleRepository roleRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
@@ -348,6 +347,7 @@ public class UserService {
 
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
             ((ObjectNode) returnObject).put("studentId", loggedUser.getStudent().getId());
+            ((ObjectNode) returnObject).put("licenseCategory", loggedUser.getStudent().getSelectedCategory().getName());
 
             if (loggedUser.getStudent().getStudentInstructor() != null) {
                 JsonNode instructor = objectMapper.createObjectNode();
