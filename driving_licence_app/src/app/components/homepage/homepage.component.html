@@ -1,13 +1,13 @@
-<div class="container-fluid p-0 mainFont">
+<div class="container-fluid p-0 mainFont" style="height: 100vh;">
   @if (loggedUser != null){
     @if (loggedUser.role.name != "ROLE_administrator") {
-  <div class="row">
+  <div class="row h-100">
     <div class="col-lg-12 p-0">
       <div class="container-fluid" id="mainContainer">
         <div class="row">
           <div class="col-lg-8">
             <div class="container-fluid h-100">
-              @if(loggedUser.role.name == "ROLE_student"){
+              @if(loggedUser.role.name == "ROLE_student" || loggedUser.role.name == "ROLE_user"){
               <div class="row">
                 <div class="col-lg-6">
                   <div class="container-fluid box" id="school">
@@ -135,12 +135,18 @@
                 </div>
               </div>
               } @else{
-                <div class="row h-50">
-                  <div class="col-lg-12">
-                    <h1 class="text-center">Diákok</h1>
-                    <div>
-                      @for (student of loggedUser.students; track $index) {
-                        <app-profil-card [profilCardData]="student" [role]="'student'"/>
+                <div class="row d-flex justify-content-center align-items-center">
+                  <div class="col-lg-12" style="height: 425px; overflow-y: auto; background-color: #22354F; border-radius: 20px;">
+                    <h1 class="text-center mt-4">Diákok</h1>
+                    <div class="container-fluid">
+                      @for (studentRow of setProfilCardRows(loggedUser.students!); track $index) {
+                        <div class="row my-4">
+                        @for (student of studentRow; track $index) {
+                          <div class="col-lg-4">
+                            <app-profil-card [profilCardData]="student" [role]="'student'"/>
+                          </div>
+                        }
+                        </div>
                       }
                     </div>
                   </div>
@@ -156,12 +162,18 @@
                     </div>
                   </div>
                 } @else {
-                  <div class="row" style="height: 50vh;">
-                    <div class="col-lg-12">
-                      <h1 class="text-center">Oktatók</h1>
-                      <div>
-                      @for (instructor of loggedUser.instructors; track $index) {
-                        <app-profil-card [profilCardData]="instructor" [role]="'instructor'"/>
+                  <div class="row d-flex justify-content-center align-items-center" style="height: 50vh;">
+                    <div class="col-lg-12" style="height: 425px; overflow-y: auto; background-color: #22354F; border-radius: 20px;">
+                      <h1 class="text-center mt-4">Oktatók</h1>
+                      <div class="container-fluid">
+                      @for (instructorRow of setProfilCardRows(loggedUser.instructors!); track $index) {
+                        <div class="row my-3">
+                          @for (instructor of instructorRow; track $index) {
+                            <div class="col-lg-4">
+                              <app-profil-card [profilCardData]="instructor" [role]="'instructor'"/>
+                            </div>
+                          }
+                        </div>
                       }
                     </div>
                     </div>
@@ -172,10 +184,14 @@
           </div>
 
           <div class="col-lg-4">
-            <div class="container-fluid">
+              <div class="container-fluid">
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="box" id="calendar"></div>
+                  <div class="box" id="calendar">
+                    <mat-card class="demo-inline-calendar-card">
+                      <mat-calendar></mat-calendar>
+                    </mat-card>
+                  </div>
                 </div>
               </div>
 
