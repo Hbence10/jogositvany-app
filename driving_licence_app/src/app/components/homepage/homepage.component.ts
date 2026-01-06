@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';import { HomePageUser } from '../../models/notEntity/homepageUser.model';
@@ -12,7 +12,8 @@ import { ProfileCard } from '../../models/notEntity/profileCard.model';
   selector: 'app-homepage',
   imports: [MatDatepickerModule,  RouterLink, ProfilCardComponent, MatCardModule],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css'
+  styleUrl: './homepage.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomepageComponent implements OnInit {
   private userService = inject(UsersService);
