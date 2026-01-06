@@ -1,4 +1,3 @@
-import { School } from './school.model';
 
 export class OpeningDetails {
   constructor(
@@ -6,7 +5,7 @@ export class OpeningDetails {
     public openingTime: Date,
     public closeTime: Date,
     public day: string,
-    public schoolOpeningDetail: School
+    public isClosed: boolean,
   ) {}
   get getOpeningTime(): Date {
     return this.openingTime;
@@ -27,12 +26,5 @@ export class OpeningDetails {
   }
   set setDay(value: string) {
     this.day = value;
-  }
-
-  get getSchoolOpeningDetail(): School {
-    return this.schoolOpeningDetail;
-  }
-  set setSchoolOpeningDetail(value: School) {
-    this.schoolOpeningDetail = value;
   }
 }

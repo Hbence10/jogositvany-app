@@ -1,18 +1,21 @@
+import { DrivingLessonType } from './driving-lesson-type.model';
 import { Instructors } from './instructors.model';
 import { Status } from './status.model';
 import { Students } from './students.model';
 
 export class DrivingLessonRequest {
   constructor(
-    public id: number,
+    public id: number | null,
     public date: Date,
-    public startHour: number,
-    public startMin: number,
-    public endHour: number,
-    public endMin: number,
+    public msg: string,
+    public startTime: Date,
+    public endTime: Date,
+    public dLessonRequestType: DrivingLessonType,
     public dLessonRequestStudent: Students,
     public dLessonInstructor: Instructors,
-    public dLessonStatus: Status
+    public sentAt: Date = new Date(),
+    public isAccepted: boolean | null = null,
+    public acceptedAt: Date | null = null,
   ) {}
 
   get getDate(): Date {
@@ -20,34 +23,6 @@ export class DrivingLessonRequest {
   }
   set setDate(value: Date) {
     this.date = value;
-  }
-
-  get getStartHour(): number {
-    return this.startHour;
-  }
-  set setStartHour(value: number) {
-    this.startHour = value;
-  }
-
-  get getStartMin(): number {
-    return this.startMin;
-  }
-  set setStartMin(value: number) {
-    this.startMin = value;
-  }
-
-  get getEndHour(): number {
-    return this.endHour;
-  }
-  set setEndHour(value: number) {
-    this.endHour = value;
-  }
-
-  get getEndMin(): number {
-    return this.endMin;
-  }
-  set setEndMin(value: number) {
-    this.endMin = value;
   }
 
   get getDLessonRequestStudent(): Students {
@@ -62,12 +37,5 @@ export class DrivingLessonRequest {
   }
   set setDLessonInstructor(value: Instructors) {
     this.dLessonInstructor = value;
-  }
-
-  get getDLessonStatus(): Status {
-    return this.dLessonStatus;
-  }
-  set setDLessonStatus(value: Status) {
-    this.dLessonStatus = value;
   }
 }
