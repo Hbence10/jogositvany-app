@@ -29,7 +29,7 @@ export const routes: Routes = [
   { path: 'page-not-found', component: PageNotFoundComponent },
   { path: 'school-registration', component: SchoolRegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
-  { path: 'searchPage/:type/:typeId', component: SearchPageComponent },
+  { path: 'searchPage/:type', component: SearchPageComponent },
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'request/:owner', component: RequestListComponent },
 ];
