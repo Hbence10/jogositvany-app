@@ -236,6 +236,23 @@ public class InstructorService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> getStudentsByInstructor(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+            Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok().body(searchedInstructor.getStudents().stream().filter(student -> student.getIsDeleted()).toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*

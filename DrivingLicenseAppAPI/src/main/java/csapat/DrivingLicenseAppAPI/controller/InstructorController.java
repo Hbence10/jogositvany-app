@@ -187,6 +187,6 @@ public class InstructorController {
     })
     @GetMapping("/{id}/students")
     private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id) {
-        return null;
+        return instructorService.getStudentsByInstructor(id);
     }
 }
