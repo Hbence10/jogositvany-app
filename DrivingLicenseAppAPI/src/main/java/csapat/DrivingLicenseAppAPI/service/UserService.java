@@ -110,6 +110,7 @@ public class UserService {
                     newInstructor.setVehicle(new Vehicle());
                     newInstructor.setInstructorUser(newUser);
                     instructorRepository.save(newInstructor);
+                    userRepository.setRoleOfUser(newUser.getId(), 3);
                 }
             }
             return ResponseEntity.ok().build();

@@ -27,7 +27,12 @@ import java.util.List;
         }, resultClasses = Users.class),
         @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+
+        @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {
+                @StoredProcedureParameter(name = "userIdIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "roleIdIN", type = Integer.class, mode = ParameterMode.IN)
+        })
 })
 @Getter
 @Setter

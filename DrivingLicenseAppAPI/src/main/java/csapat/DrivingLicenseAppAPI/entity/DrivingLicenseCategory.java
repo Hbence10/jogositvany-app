@@ -75,13 +75,13 @@ public class DrivingLicenseCategory {
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinTable(
             name = "school_category",
             joinColumns = @JoinColumn(name = "school_id"),
             inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<School> schoolList;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {})
