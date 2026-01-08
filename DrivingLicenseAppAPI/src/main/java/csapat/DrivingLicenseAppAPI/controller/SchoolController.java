@@ -209,4 +209,14 @@ public class SchoolController {
     private ResponseEntity<Object> createSchool(@RequestBody School addedSchool) {
         return schoolService.createSchool(addedSchool);
     }
+
+    @GetMapping("/{id}/instructors")
+    private ResponseEntity<Object> getInstructorsBySchool(@PathVariable("id") Integer id){
+        return null;
+    }
+
+    @GetMapping("/{id}/students")
+    private ResponseEntity<Object> getStudentsBySchool(@PathVariable("id") Integer id) {
+        return null;
+    }
 }

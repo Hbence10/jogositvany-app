@@ -205,4 +205,9 @@ public class UserController {
     public ResponseEntity<Users> getUserById(@PathVariable("id") Integer id) {
         return userService.getUserById(id);
     }
+
+    @GetMapping("")
+    public ResponseEntity<Object> getAllUser() {
+        return null;
+    }
 }

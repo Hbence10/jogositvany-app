@@ -6,6 +6,7 @@ import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.entity.Vehicle;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
+import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -17,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -170,5 +172,21 @@ public class InstructorController {
     @GetMapping("/{id}")
     private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
         return instructorService.getInstructorById(id);
+    }
+
+    @Operation(summary = "Tanulók lekérdezése", description = "Az adott oktatóhoz tartozó összes diák lekérdezése.")
+    @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH, required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ProfileCard.class, description = "Az adott tanulóhoz tartozó szükséges adatok a profil kártyához."))
+            )),
+            @ApiResponse(responseCode = "404", description = "Nem létező instructor keresése", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
+    })
+    @GetMapping("/{id}/students")
+    private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id) {
+        return null;
     }
 }
