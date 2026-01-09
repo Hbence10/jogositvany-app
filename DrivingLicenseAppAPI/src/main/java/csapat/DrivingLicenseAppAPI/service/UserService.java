@@ -10,6 +10,7 @@ import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -24,10 +25,7 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -314,6 +312,22 @@ public class UserService {
             } else {
                 return ResponseEntity.ok().body(searchedUser);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getAllUser() {
+        try {
+            List<Users> allUser = userRepository.getAllUser();
+            List<ProfileCard> returnList = new ArrayList<>();
+
+            for (Users i : allUser) {
+                returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath()));
+            }
+
+            return ResponseEntity.ok().body(returnList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

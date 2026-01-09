@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVReader;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -308,6 +309,42 @@ public class SchoolService {
                 schoolRepository.save(addedSchool);
                 return ResponseEntity.ok().build();
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getMembersOfSchool(Integer schoolId, String role) {
+        try {
+            if (schoolId == null || role == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            if (!role.equals("students") && !role.equals("instructors")){
+                return ResponseEntity.status(415).build();
+            }
+
+            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            List<ProfileCard> returnList = new ArrayList<>();
+            if (role.equals("students")) {
+                List<Students> studentsList = searchedSchool.getStudentsList().stream().filter(student -> !student.getIsDeleted()).toList();
+                for (Students i : studentsList) {
+                    returnList.add(new ProfileCard(i.getStudentUser().getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath()));
+                }
+            } else if (role.equals("instructors")){
+                List<Instructors> studentsList = searchedSchool.getInstructorsList().stream().filter(student -> !student.getIsDeleted()).toList();
+                for (Instructors i : studentsList) {
+                    returnList.add(new ProfileCard(i.getInstructorUser().getId(), i.getInstructorUser().getFirstName() + " " + i.getInstructorUser().getLastName(), i.getInstructorUser().getPfpPath()));
+                }
+            }
+
+            return ResponseEntity.ok().body(returnList);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

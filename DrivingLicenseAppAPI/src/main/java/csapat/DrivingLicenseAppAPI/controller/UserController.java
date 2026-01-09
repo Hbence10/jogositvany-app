@@ -208,6 +208,6 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<Object> getAllUser() {
-        return null;
+        return userService.getAllUser();
     }
 }

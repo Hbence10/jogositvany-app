@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -247,7 +248,12 @@ public class InstructorService {
                 return ResponseEntity.notFound().build();
             }
 
-            return ResponseEntity.ok().body(searchedInstructor.getStudents().stream().filter(student -> student.getIsDeleted()).toList());
+            List<ProfileCard> returnList = new ArrayList<>();
+            for (Students i : searchedInstructor.getStudents()) {
+                returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath()));
+            }
+
+            return ResponseEntity.ok().body(returnList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

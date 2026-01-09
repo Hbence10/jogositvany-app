@@ -6,6 +6,7 @@ import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
+import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -210,13 +211,19 @@ public class SchoolController {
         return schoolService.createSchool(addedSchool);
     }
 
-    @GetMapping("/{id}/instructors")
-    private ResponseEntity<Object> getInstructorsBySchool(@PathVariable("id") Integer id){
-        return null;
-    }
-
-    @GetMapping("/{id}/students")
-    private ResponseEntity<Object> getStudentsBySchool(@PathVariable("id") Integer id) {
+    @Operation(summary = "Oktatók lekérdezése", description = "Az adott iskolához tartozó oktatók lekérdezése")
+    @Parameter(name = "id", description = "Az iskolához tartozó id.", in = ParameterIn.PATH, required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = ProfileCard.class))
+            )),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskola megadása", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Endpoint meghívása parameter nélkul", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
+    })
+    @GetMapping("/users")
+    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role){
         return null;
     }
 }
