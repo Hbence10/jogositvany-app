@@ -116,6 +116,64 @@
           </div>
         </div>
 
+        @if (isInstructor) {
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="text-center">Oktatói adatok szerkesztése</h1>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="text-center">Oktatói adatok szerkesztése</h1>
+              <form [formGroup]="instructorForm" class="container-fluid">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for="">Bemutatkozó szöveg</label>
+                    <textarea formControlName="promoText"></textarea>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h3>Jármű adatainak szerkesztése</h3>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-7">
+                    <label>Jármű elnevezése</label>
+                    <input formControlName="vehicleName" type="text" placeholder="Elnevezés" />
+                  </div>
+                  <div class="col-lg-5">
+                    <label for="">Jármű rendszám</label>
+                    <input formControlName="licensePlate" type="text" />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label for="">Jármu tankolasa</label>
+                    <select name="" id="" formControlName="fuelType">
+                      @for (fuelType of fuelTypes; track $index) {
+                        <option [value]="fuelType.id">{{ fuelType.name }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <label for="">Jármu tipusa</label>
+                    <select name="" id="" formControlName="vehicleType">
+                      @for (vehicleType of vehicleTypes; track $index) {
+                        <option [value]="vehicleType.id">{{ vehicleType.name }}</option>
+                      }
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        }
+
       </div>
     </div>
   </div>

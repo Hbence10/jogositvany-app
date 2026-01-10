@@ -1,10 +1,12 @@
 import { Component, inject, input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InstructorServiceService } from '../../../services/instructor-service.service';
 import { OtherStuffServiceService } from '../../../services/other-stuff-service.service';
 import { SchoolServiceService } from '../../../services/school-service.service';
 import { UsersService } from '../../../services/users.service';
 import { Education } from '../../../models/education.model';
+import { FuelType } from '../../../models/fuel-type.model';
+import { VehicleType } from '../../../models/vehicle-type.model';
 
 @Component({
   selector: 'app-profil-editor',
@@ -20,5 +22,10 @@ export class ProfilEditorComponent {
 
   objectType = input.required<"user" | "school">()
   educationList: Education[] = []
+  fuelTypes: FuelType[] = []
+  vehicleTypes: VehicleType[] = []
+
+  instructorForm!: FormGroup;
+  isInstructor = false;
 }
 
