@@ -16,7 +16,7 @@ export class User {
     public gender?: 'male' | 'female' | 'other',
     public userEducation?: Education,
     public password?: string,
-    public intructor?: Instructors,
+    public instructor?: Instructors,
     public student?: Students,
     public adminSchool?: School,
     public schoolJoinRequestList?: SchoolJoinRequest[],
@@ -87,10 +87,10 @@ export class User {
   }
 
   get getInstructor(): Instructors | undefined {
-    return this.intructor;
+    return this.instructor;
   }
   set setInstructor(value: Instructors | undefined) {
-    this.intructor = value;
+    this.instructor = value;
   }
 
   get getStudent(): Students | undefined {

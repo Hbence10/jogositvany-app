@@ -40,4 +40,16 @@ export class UsersService {
   getUserById(id: number): Observable<User>{
     return this.http.get<User>(`${this.baseUrl}/${id}`)
   }
+
+  updateUser(userId: number, firstName: string, lastName:string, email: string, phone: string, birthDateText: string, gender: string, educationId: number): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/update/${userId}`, {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      birthDateText: birthDateText,
+      gender: gender,
+      educationId: educationId
+    })
+  }
 }

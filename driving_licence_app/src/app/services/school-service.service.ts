@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { School } from '../models/school.model';
 import { ExamRequest } from '../models/exam-request.model';
 import { SchoolJoinRequest } from '../models/school-join-request.model';
+import { OpeningDetails } from '../models/opening-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,19 @@ export class SchoolServiceService {
 
   getAllExamRequest(id: number): Observable<ExamRequest[]> {
     return this.http.get<ExamRequest[]>("")
+  }
+
+  //Updatek
+  updateSchool(schoolId: number, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string): Observable<School> {
+    return this.http.put<School>(`${this.baseUrl}/update/${schoolId}`, {name: name, email: email, phone:phone, country: country, town: town, address:address, promoText: promoText})
+  }
+
+  updateOpeningDetails(schoolId: number, updatedOpeningDetails: OpeningDetails[]): Observable<School> {
+    console.log(`${this.baseUrl}/${schoolId}/openingDetails`)
+    return this.http.patch<School>(`${this.baseUrl}/${schoolId}/openingDetails`, updatedOpeningDetails)
+  }
+
+  changeBannerImg(schoolId: number, formData: FormData): Observable<School> {
+    return this.http.patch<School>(`${this.baseUrl}/pfp/${schoolId}`, formData)
   }
 }
