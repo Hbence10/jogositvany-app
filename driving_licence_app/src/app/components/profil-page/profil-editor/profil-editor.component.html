@@ -1,0 +1,122 @@
+<div class="container-fluid" id="mainContainer">
+  <div class="row h-100">
+    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+
+      <div class="container-fluid" id="secondContainer">
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-end align-items-center">
+            <button>X</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="text-center">Profil szerkesztése</h1>
+            <form action="" class="container-fluid">
+              @if(objectType() == 'user') {
+                <div class="row">
+                <div class="col-lg-6">
+                  <label for="">Vezetéknév</label>
+                  <input formControlName="firstName" type="text" placeholder="lastName"/>
+                </div>
+                <div class="col-lg-6">
+                  <label for="">Keresztnév</label>
+                  <input formControlName="lastName" type="text" placeholder="firstName"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <label for="">E-mail</label>
+                  <input formControlName="email" type="text" placeholder="email"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <label for="">Telefonszám</label>
+                  <input formControlName="phone" type="text" placeholder="phone"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="">Nem</label>
+                  <select formControlName="gender">
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">other</option>
+                  </select>
+                </div>
+                <div class="col-lg-6">
+                  <label for="">Születési dátum</label>
+                  <input formControlName="birthDate" type="date" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <label for="">Legmagasabb végzettség</label>
+                  <select formControlName="education">
+                    @for (education of educationList; track $index) {
+                    <option [value]="education.id">{{ education.name }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              } @else {
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for=""></label>
+                    <input formControlName="name" type="text">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for=""></label>
+                    <input formControlName="email" type="text">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for=""></label>
+                    <input formControlName="phone" type="text">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3">
+                    <label for=""></label>
+                    <input formControlName="country" type="text">
+                  </div>
+                  <div class="col-lg-9">
+                    <label for=""></label>
+                    <input formControlName="town" type="text">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label for=""></label>
+                    <input formControlName="address" type="text">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-12">
+                    <textarea formControlName="promoText"></textarea>
+                  </div>
+                </div>
+
+              }
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
