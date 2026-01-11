@@ -227,8 +227,8 @@ public class SchoolController {
         return schoolService.getMembersOfSchool(id, role);
     }
 
-    @DeleteMapping("/kickOut")
-    private ResponseEntity<Object> kickOutMember(@RequestParam("schoolId") Integer schoolId, @RequestParam("instructorId") Integer instructorId) {
-        return null;
+    @DeleteMapping("/kickout")
+    private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Integer instructorId) {
+        return schoolService.kickoutInstructor(instructorId);
     }
 }

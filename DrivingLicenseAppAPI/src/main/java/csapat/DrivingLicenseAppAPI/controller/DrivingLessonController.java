@@ -16,7 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/drivingLesson")
@@ -29,22 +33,6 @@ public class DrivingLessonController {
     @GetMapping("/type")
     public ResponseEntity<Object> getAllDrivingLessonType(@RequestParam("school") Integer schoolId) {
         return drivingLessonService.getAllDrivingLessonType(schoolId);
-    }
-
-    @Operation(summary = "Diák óráinak a megszerzése", description = "Kikeressi az összes vezetési órát amely az adott diákhoz tartozik")
-    @Parameter(name = "id", description = "A diákhoz tartozó id.", required = true, in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres adat lekérés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = DrivingLessons.class))
-            )),
-            @ApiResponse(responseCode = "404", description = "Olyan diák adatait szeretné lekérni, amely nem létzik.", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
-    @GetMapping("/student/{id}")
-    public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(@PathVariable("id") Integer studentId) {
-        return drivingLessonService.getLessonInformationByStudent(studentId);
     }
 
     @Operation(summary = "Óra lemondása", description = "")
@@ -61,26 +49,6 @@ public class DrivingLessonController {
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
         return drivingLessonService.cancelDrivingLesson(id);
-    }
-
-    @Operation(summary = "Az órák visszaszerzése két dátum között.", description = "")
-    @Parameters({
-            @Parameter(name = "startDate", description = "Az intervallum kezdete.", in = ParameterIn.QUERY, required = true),
-            @Parameter(name = "endDate", description = "Az intervallum vége.", in = ParameterIn.QUERY, required = true),
-    })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = DrivingLessons.class))
-            )),
-            @ApiResponse(responseCode = "415", description = "A kezdő dátum előrébb van mint a vég dátum.", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Az endpoint meghivása parameterek nélkul.", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
-
-    })
-    @GetMapping("")
-    public ResponseEntity<Object> getDrivingLessonInformationsBetweenTwoDate(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
-        return drivingLessonService.getDrivingLessonInformationBetweenTwoDate(startDate, endDate);
     }
 
     @Operation(summary = "A vezetési óra frissitése", description = "A vezetési óra adatainak a frissitése, kivétel az időpont frissitése.")
@@ -123,5 +91,11 @@ public class DrivingLessonController {
     @PutMapping("/{id}/reschedule")
     public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("lessonId") Integer lessonId, @RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
         return drivingLessonService.rescheduleDrivingLesson(lessonId, newDateText, newStartHour, newEndHour);
+    }
+
+    @GetMapping("/reservedHour")
+    public ResponseEntity<Object> getReservedHoursByDate (@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
+        System.out.println(date);
+        return drivingLessonService.getReservedHoursByDate(instructorId, date);
     }
 }

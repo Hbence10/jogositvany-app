@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -20,11 +24,8 @@ import java.util.List;
 public class DrivingLessonService {
 
     private final DrivingLessonRepository drivingLessonRepository;
-    private final DrivingLessonTypeRepository drivingLessonTypeRepository;
-    private final ReservedDateRepository reservedDateRepository;
     private final ReservedHourRepository reservedHourRepository;
     private final SchoolRepository schoolRepository;
-    private final StudentRepository studentRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
 
@@ -38,25 +39,6 @@ public class DrivingLessonService {
                 return ResponseEntity.notFound().build();
             }
             return ResponseEntity.ok().body(searchedSchool.getDrivingLessonsType());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<List<DrivingLessons>> getLessonInformationByStudent(Integer studentId) {
-        try {
-            if (studentId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
-
-            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok().body(searchedStudent.getDrivingLessons());
-            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -77,19 +59,6 @@ public class DrivingLessonService {
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
                 return ResponseEntity.ok().body(drivingLessonRepository.getDrivingLessonByID(drivingLessonId).get());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> getDrivingLessonInformationBetweenTwoDate(String startDateText, String endDateText) {
-        try {
-            if (startDateText == null || endDateText == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -146,6 +115,19 @@ public class DrivingLessonService {
         }
     }
 
+    public ResponseEntity<Object> getReservedHoursByDate(Integer instructorId, String wantedDate) {
+        try {
+            if (instructorId == null || wantedDate == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            List<Integer> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
+            return ResponseEntity.ok().body(reservedHourRepository.findAllById(reservedHourIdList));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*

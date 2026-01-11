@@ -11,6 +11,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,7 +27,12 @@ import java.util.Date;
         }, resultClasses = ReservedHour.class),
         @NamedStoredProcedureQuery(name = "deleteReservedHour", procedureName = "deleteReservedHour", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+
+        @NamedStoredProcedureQuery(name = "getReservedHourIdByDateAndInstructor", procedureName = "getReservedHourIdByDateAndInstructor", parameters = {
+                @StoredProcedureParameter(name = "dateIN", type = LocalDate.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "instructorIdIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)
 })
 public class ReservedHour {
 
@@ -58,11 +64,12 @@ public class ReservedHour {
 
     //Kapcsolatok:
     @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnore
     private DrivingLessons drivingLessons;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "date_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"reservedHourList"})
     private ReservedDate reservedDate;
 
     //Constructorok

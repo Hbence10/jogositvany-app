@@ -62,6 +62,7 @@ public class ReservedDate {
             fetch = FetchType.LAZY,
             cascade = {}
     )
+//    @JsonIgnore
     private List<ReservedHour> reservedHourList;
 
     //Constructorok:
