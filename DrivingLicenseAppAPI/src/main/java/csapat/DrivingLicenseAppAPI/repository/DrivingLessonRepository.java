@@ -13,8 +13,8 @@ public interface DrivingLessonRepository extends JpaRepository<DrivingLessons, I
     @Procedure(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson")
     List<DrivingLessons> getAllDrivingLesson();
 
-    @Procedure(name = "getDrivingLessonByID", procedureName = "getDrivingLessonByID")
-    Optional<DrivingLessons> getDrivingLessonByID(@Param("idIN") Integer id);
+    @Procedure(name = "getDrivingLesson", procedureName = "getDrivingLesson")
+    Optional<DrivingLessons> getDrivingLesson(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson")
     String deleteDrivingLesson(@Param("idIN") Integer id);

@@ -98,4 +98,9 @@ public class DrivingLessonController {
         System.out.println(date);
         return drivingLessonService.getReservedHoursByDate(instructorId, date);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
+        return drivingLessonService.getDrivingLessonById(id);
+    }
 }

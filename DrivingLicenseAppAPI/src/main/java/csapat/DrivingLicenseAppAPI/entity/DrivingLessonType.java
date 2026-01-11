@@ -63,17 +63,17 @@ public class DrivingLessonType {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
     )
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "license_category_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private DrivingLicenseCategory drivingLicenseCategory;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "school_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private School drivingTypeSchool;
 
     @OneToMany(mappedBy = "dLessonRequestType", fetch = FetchType.LAZY, cascade = {})

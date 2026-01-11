@@ -21,7 +21,7 @@ import java.util.Date;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson", resultClasses = DrivingLessons.class),
-        @NamedStoredProcedureQuery(name = "getDrivingLessonByID", procedureName = "getDrivingLessonByID", parameters = {
+        @NamedStoredProcedureQuery(name = "getDrivingLesson", procedureName = "getDrivingLesson", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson", parameters = {
@@ -99,11 +99,12 @@ public class DrivingLessons {
 
     @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private Students dstudent;
 
     @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "instructor_id")
+    @JsonIgnore
     private Instructors dinstructor;
 
     @ManyToOne(cascade = {})
