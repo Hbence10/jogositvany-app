@@ -26,6 +26,7 @@ public class DrivingLessonService {
     private final SchoolRepository schoolRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
+    private final DrivingLessonTypeRepository drivingLessonTypeRepository;
 
     public ResponseEntity<Object> getAllDrivingLessonType(Integer schoolId) {
         try {
@@ -63,27 +64,39 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> updateDrivingLesson(DrivingLessons updatedDrivingLesson) {
+    public ResponseEntity<Object> updateDrivingLesson(Integer id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Integer statusId, Integer paymentMethodId, Integer typeId) {
         try {
-            if (updatedDrivingLesson == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            List<PaymentMethod> allPaymentMethod = paymentMethodRepository.getAllPaymentMethod();
-            List<Status> allStatus = statusRepository.getAllStatus();
-
-            if (updatedDrivingLesson.getId() == null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (updatedDrivingLesson.getEndKm() <= updatedDrivingLesson.getStartKm()) {
-                return ResponseEntity.status(415).body("invalidStartEndKm");
-            } else if (updatedDrivingLesson.getLessonHourNumber() <= 0) {
-                return ResponseEntity.status(415).body("invalidLessonHourNumber");
-            } else if (!allPaymentMethod.contains(updatedDrivingLesson.getPaymentMethod())) {
-                return ResponseEntity.notFound().build();
-            } else if (!allStatus.contains(updatedDrivingLesson.getDrivingLessonStatus())) {
-                return ResponseEntity.notFound().build();
+            DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(id).orElse(null);
+            if (searchedDrivingLesson == null) {
+                return ResponseEntity.status(404).body("lessonNotFound");
             } else {
-                return ResponseEntity.ok().body(drivingLessonRepository.save(updatedDrivingLesson));
+                PaymentMethod searchedPayment = paymentMethodRepository.getPaymentMethod(paymentMethodId).orElse(null);
+                Status searchedStatus = statusRepository.getStatus(statusId).orElse(null);
+                DrivingLessonType drivingLessonType = drivingLessonTypeRepository.getDrivingLessonType(typeId).orElse(null);
+
+                if (endKm <= startKm) {
+                    return ResponseEntity.status(415).body("invalidStartEndKm");
+                } else if (lessonHourNumber <= 0) {
+                    return ResponseEntity.status(415).body("invalidLessonHourNumber");
+                } else if (searchedPayment == null) {
+                    return ResponseEntity.status(404).body("");
+                } else if (searchedStatus == null) {
+                    return ResponseEntity.status(404).body("");
+                } else if (drivingLessonType == null) {
+                    return ResponseEntity.status(404).body("");
+                } else {
+                    searchedDrivingLesson.setStartKm(startKm);
+                    searchedDrivingLesson.setEndKm(endKm);
+                    searchedDrivingLesson.setLocation(location);
+                    searchedDrivingLesson.setPickUpPlace(pickUpPlace);
+                    searchedDrivingLesson.setDropOffPlace(dropOffPlace);
+                    searchedDrivingLesson.setLessonHourNumber(lessonHourNumber);
+                    searchedDrivingLesson.setIsPaid(isPaid);
+                    searchedDrivingLesson.setPaymentMethod(searchedPayment);
+                    searchedDrivingLesson.setDrivingLessonStatus(searchedStatus);
+                    searchedDrivingLesson.setDrivingLessonType(drivingLessonType);
+                    return ResponseEntity.ok().body(drivingLessonRepository.save(searchedDrivingLesson));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

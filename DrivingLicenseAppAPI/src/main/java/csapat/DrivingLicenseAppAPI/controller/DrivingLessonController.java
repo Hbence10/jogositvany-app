@@ -1,13 +1,12 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import csapat.DrivingLicenseAppAPI.entity.DrivingLessonType;
+import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,12 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/drivingLesson")
@@ -66,9 +59,9 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása requestBody nélkül.", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
-    @PutMapping("")
-    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody DrivingLessons updatedDrivingLesson) {
-        return drivingLessonService.updateDrivingLesson(updatedDrivingLesson);
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Integer id) {
+        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0), updatedDrivingLesson.get("typeId").asInt(1));
     }
 
     @Operation(summary = "Időpont módositása", description = "Az adott óra dátumának változtatása")
@@ -94,7 +87,7 @@ public class DrivingLessonController {
     }
 
     @GetMapping("/reservedHour")
-    public ResponseEntity<Object> getReservedHoursByDate (@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
+    public ResponseEntity<Object> getReservedHoursByDate(@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
         System.out.println(date);
         return drivingLessonService.getReservedHoursByDate(instructorId, date);
     }
