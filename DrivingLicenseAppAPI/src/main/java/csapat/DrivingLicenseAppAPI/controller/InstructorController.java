@@ -190,7 +190,8 @@ public class InstructorController {
         return instructorService.getStudentsByInstructor(id);
     }
 
-    private ResponseEntity<Object> kickOutStudent(@RequestParam("instructorId") Integer instructorId, @RequestParam("studentId") Integer studentId) {
-        return null;
+    @DeleteMapping("/kickout")
+    private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Integer studentId) {
+        return instructorService.kickoutStudent(studentId);
     }
 }

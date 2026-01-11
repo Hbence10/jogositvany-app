@@ -259,6 +259,26 @@ public class InstructorService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> kickoutStudent(Integer studentId){
+        try {
+            if (studentId == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
+            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                searchedStudent.setStudentInstructor(null);
+                studentRepository.save(searchedStudent);
+                return ResponseEntity.ok().build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*

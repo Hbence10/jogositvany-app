@@ -350,6 +350,27 @@ public class SchoolService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> kickoutInstructor(Integer instructorId) {
+        try {
+            if (instructorId == null) {
+                return ResponseEntity.status(422).build();
+            }
+            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+
+            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
+                return ResponseEntity.internalServerError().build();
+            } else {
+                searchedInstructor.setInstructorSchool(null);
+                instructorRepository.save(searchedInstructor);
+                return ResponseEntity.ok().build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*
