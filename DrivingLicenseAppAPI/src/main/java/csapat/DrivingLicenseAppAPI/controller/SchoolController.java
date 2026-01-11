@@ -224,6 +224,11 @@ public class SchoolController {
     })
     @GetMapping("/users")
     private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role){
+        return schoolService.getMembersOfSchool(id, role);
+    }
+
+    @DeleteMapping("/kickOut")
+    private ResponseEntity<Object> kickOutMember(@RequestParam("schoolId") Integer schoolId, @RequestParam("instructorId") Integer instructorId) {
         return null;
     }
 }

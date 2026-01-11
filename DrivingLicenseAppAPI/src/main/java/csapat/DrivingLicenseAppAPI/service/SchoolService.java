@@ -334,12 +334,12 @@ public class SchoolService {
             if (role.equals("students")) {
                 List<Students> studentsList = searchedSchool.getStudentsList().stream().filter(student -> !student.getIsDeleted()).toList();
                 for (Students i : studentsList) {
-                    returnList.add(new ProfileCard(i.getStudentUser().getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath()));
+                    returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
                 }
             } else if (role.equals("instructors")){
                 List<Instructors> studentsList = searchedSchool.getInstructorsList().stream().filter(student -> !student.getIsDeleted()).toList();
                 for (Instructors i : studentsList) {
-                    returnList.add(new ProfileCard(i.getInstructorUser().getId(), i.getInstructorUser().getFirstName() + " " + i.getInstructorUser().getLastName(), i.getInstructorUser().getPfpPath()));
+                    returnList.add(new ProfileCard(i.getId(), i.getInstructorUser().getFirstName() + " " + i.getInstructorUser().getLastName(), i.getInstructorUser().getPfpPath(), i.getInstructorUser().getId()));
                 }
             }
 

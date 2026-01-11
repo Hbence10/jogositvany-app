@@ -111,7 +111,7 @@ public class Users {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
-    private Role role = new Role(1, "ROLE_user");
+    private Role role =  new Role(1, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})

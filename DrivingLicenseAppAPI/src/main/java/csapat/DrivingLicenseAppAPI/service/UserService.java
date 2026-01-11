@@ -324,7 +324,7 @@ public class UserService {
             List<ProfileCard> returnList = new ArrayList<>();
 
             for (Users i : allUser) {
-                returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath()));
+                returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath(), i.getId()));
             }
 
             return ResponseEntity.ok().body(returnList);

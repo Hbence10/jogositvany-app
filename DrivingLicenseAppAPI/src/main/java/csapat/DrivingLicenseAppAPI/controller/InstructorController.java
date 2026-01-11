@@ -189,4 +189,8 @@ public class InstructorController {
     private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id) {
         return instructorService.getStudentsByInstructor(id);
     }
+
+    private ResponseEntity<Object> kickOutStudent(@RequestParam("instructorId") Integer instructorId, @RequestParam("studentId") Integer studentId) {
+        return null;
+    }
 }

@@ -250,7 +250,7 @@ public class InstructorService {
 
             List<ProfileCard> returnList = new ArrayList<>();
             for (Students i : searchedInstructor.getStudents()) {
-                returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath()));
+                returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
             }
 
             return ResponseEntity.ok().body(returnList);
