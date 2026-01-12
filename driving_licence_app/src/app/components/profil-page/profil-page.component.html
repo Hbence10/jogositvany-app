@@ -40,7 +40,7 @@
             <p class="uData mt-0">E-mail: {{searchedUser == null ? searchedSchool!.email : searchedUser.email}}</p>
             <p class="uData mt-0">Telefonszám: {{searchedUser == null ? searchedSchool!.phone : searchedUser.phone}}</p>
             @if(type() == "user" && searchedUser?.role?.name == 'ROLE_instructor'){
-              <p class="uData mt-0">Iskola: {{searchedUser?.intructor?.instructorSchool?.name}}</p>
+              <p class="uData mt-0">Iskola: {{searchedUser?.instructor?.instructorSchool?.name}}</p>
             }
           </div>
         </div>

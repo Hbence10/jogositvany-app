@@ -1,0 +1,28 @@
+<div class="container-fluid" style="width: 600px; height: 150px; background-color: #22354f; border-radius: 16px;">
+  <div class="row h-100">
+    <div class="col-lg-3 h-100 d-flex justify-content-center align-items-center">
+      <img src="assets/icons/defaultProfileImg.svg" alt="" class="img-fluid" style="height: 100px; width: 100px;">
+    </div>
+    <div class="col-lg-9">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            @for (line of lines; track $index) {
+              <p class="text-white">{{line}}</p>
+            }
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <button (click)="handleRequest('accept')">
+              <span class="material-symbols-outlined">check</span>
+            </button>
+            <button (click)="handleRequest('refuse')">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

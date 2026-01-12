@@ -43,3 +43,10 @@ p{
   margin: 0px;
   font-size: 30px;
 }
+
+app-driving-lesson-editor, app-request-container {
+  position: fixed;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+}
