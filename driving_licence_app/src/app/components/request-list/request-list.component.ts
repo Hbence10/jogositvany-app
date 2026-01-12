@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DrivingLessonRequest } from '../../models/driving-lesson-request.model';
 import { ExamRequest } from '../../models/exam-request.model';
@@ -15,7 +15,7 @@ import { RequestCardComponent } from './request-card/request-card.component';
   templateUrl: './request-list.component.html',
   styleUrl: './request-list.component.css',
 })
-export class RequestListComponent {
+export class RequestListComponent implements OnInit {
   route = inject(ActivatedRoute);
   schoolService = inject(SchoolServiceService);
   instructorService = inject(InstructorServiceService);
@@ -96,7 +96,7 @@ export class RequestListComponent {
     }
   }
 
-  //Keresek lekerese
+  //kérelmek lekerese
   getAllDrivingLessonRequest() {
     this.instructorService
       .getDrivingLessonRequestByInstructor(

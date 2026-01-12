@@ -1,0 +1,38 @@
+<div class="container-fluid" id="mainContainer">
+  <div class="row h-100">
+    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+      <form [formGroup]="reviewForm" class="container-fluid" id="secondContainer">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="text-center">Nev</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- Sajat adat -->
+          </div>
+          <div class="col-lg-6">
+            <input formControlName="rating" type="range" step="0.5" min="0" max="5">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <textarea formControlName="reviewText"></textarea>
+            <input type="checkbox" name="anonym" id="anonym" (click)="isAnonymous = !isAnonymous">
+            <label for="anonym">Kűldés név nélkül</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-end">
+            <button class="mx-2" (click)="close.emit()">Mégsem</button>
+            <button class="mx-2" (click)="sendCreate()">Küldés</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
