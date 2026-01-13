@@ -86,4 +86,12 @@ export class SearchPageComponent implements OnInit {
       complete: () => this.filteredInstructorList = this.instructorList
     })
   }
+
+  navigatToProfilPage() {
+    if (this.selectedSchool == null) {
+      this.router.navigate(["profil/user", this.selectedInstructor?.instructorUser.id])
+    } else {
+      this.router.navigate(["profil/school", this.selectedSchool.id])
+    }
+  }
 }
