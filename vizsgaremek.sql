@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 12. 19:15
+-- Létrehozás ideje: 2026. Jan 13. 17:11
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -26,99 +26,99 @@ DELIMITER $$
 -- Eljárások
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLesson` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson` SET `is_cancelled`= 1 ,`cancelled_at`= CURRENT_DATE() WHERE `driving_lesson`.`id` = idIN;
+	UPDATE `driving_lesson` SET `is_cancelled`= 1 ,`cancelled_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_instructor`.`id` = idIN;
+	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_instructor`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonRequest` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_request`.`id` = idIN;
+	UPDATE `driving_lesson_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonType` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_type`.`id` = idIN;
+	UPDATE `driving_lesson_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLicenseCategory` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_license_category` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_license_category`.`id` = idIN;
+	UPDATE `driving_license_category` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_license_category`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteEducation` (IN `idIN` INT)   BEGIN
-	UPDATE `education` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `education`.`id` = idIN;
+	UPDATE `education` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `education`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteExamRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `exam_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `exam_request`.`id` = idIN;
+    UPDATE `exam_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `exam_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFuelType` (IN `idIN` INT)   BEGIN
-    UPDATE `fuel_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `fuel_type`.`id` = idIN;
+    UPDATE `fuel_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `fuel_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructor` (IN `idIN` INT)   BEGIN
-    UPDATE `instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `instructor`.`id` = idIN;
+    UPDATE `instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `instructor`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructorJoinRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `instructor_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `instructor_join_request`.`id` = idIN;
+    UPDATE `instructor_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `instructor_join_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteMessage` (IN `idIN` INT)   BEGIN
-    UPDATE `message` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `message`.`id` = idIN;
+    UPDATE `message` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `message`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOpeningDetail` (IN `idIN` INT)   BEGIN
-    UPDATE `opening_detail` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `opening_detail`.`id` = idIN;
+    UPDATE `opening_detail` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `opening_detail`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePaymentMethod` (IN `idIN` INT)   BEGIN
-    UPDATE `payment_method` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `payment_method`.`id` = idIN;
+    UPDATE `payment_method` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `payment_method`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReservedDate` (IN `idIN` INT)   BEGIN
-    UPDATE `reserved_date` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `reserved_date`.`id` = idIN;
+    UPDATE `reserved_date` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `reserved_date`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReservedHour` (IN `idIN` INT)   BEGIN
-    UPDATE `reserved_hour` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `reserved_hour`.`id` = idIN;
+    UPDATE `reserved_hour` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `reserved_hour`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReview` (IN `idIN` INT)   BEGIN
-    UPDATE `review` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `review`.`id` = idIN;
+    UPDATE `review` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `review`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteRole` (IN `idIN` INT)   BEGIN
-    UPDATE `role` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `role`.`id` = idIN;
+    UPDATE `role` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `role`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSchool` (IN `idIN` INT)   BEGIN
-    UPDATE `school` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `school`.`id` = idIN;
+    UPDATE `school` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `school`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSchoolJoinRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `school_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `school_join_request`.`id` = idIN;
+    UPDATE `school_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `school_join_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteStatus` (IN `idIN` INT)   BEGIN
-    UPDATE `status` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `status`.`id` = idIN;
+    UPDATE `status` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `status`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteStudent` (IN `idIN` INT)   BEGIN
-    UPDATE `student` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `student`.`id` = idIN;
+    UPDATE `student` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `student`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `idIN` INT)   BEGIN
-    UPDATE `user` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `user`.`id` = idIN;
+    UPDATE `user` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `user`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteVehicle` (IN `idIN` INT)   BEGIN
-    UPDATE `vehicle` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `vehicle`.`id` = idIN;
+    UPDATE `vehicle` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `vehicle`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteVehicleType` (IN `idIN` INT)   BEGIN
-    UPDATE `vehicle_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `vehicle_type`.`id` = idIN;
+    UPDATE `vehicle_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `vehicle_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLesson` ()   BEGIN
