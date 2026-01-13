@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 13. 17:11
+-- Létrehozás ideje: 2026. Jan 13. 17:24
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -304,6 +304,17 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHour` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `reserved_hour` WHERE `reserved_hour`.`id` = idIN AND `reserved_hour`.`is_deleted` = 0;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHourIdByDateAndInstructor` (IN `dateIN` DATE, IN `instructoridIN` INT)   BEGIN
+	SELECT rh.id FROM reserved_hour rh 
+    INNER JOIN reserved_date rd 
+    	ON rh.date_id = rd.id
+	INNER JOIN driving_lesson dl 
+    	ON dl.hour_id = rh.id
+	WHERE rd.date = dateIN
+	AND dl.instructor_id = instructorIdIN
+	ORDER BY rh.start_time;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReview` (IN `idIN` INT)   BEGIN
