@@ -89,7 +89,7 @@ export class SearchPageComponent implements OnInit {
     })
   }
 
-  navigateToProfilPage() {
+  navigateToProfilePage() {
     if (this.selectedSchool == null) {
       this.router.navigate(["profil/user", this.selectedInstructor?.instructorUser.id])
     } else {
@@ -108,5 +108,21 @@ export class SearchPageComponent implements OnInit {
       instructor.name.replaceAll(" ", "").toLowerCase().substring(0, searchedName.length) === searchedName.replaceAll(" ", "").toLowerCase().trim()
     )
   }
+
+  filterTown() {
+    this.filteredTownList = this.townList.filter(town => town.toLowerCase().substring(0, this.selectedTown.trim().length) == this.selectedTown.trim().toLowerCase())
+  }
+
+  filterSchoolName(searchedName: string) {
+    this.filteredSchoolList = this.schoolList.filter(school => school.name.toLowerCase().trim().substring(0, searchedName.length) === searchedName.trim().toLowerCase())
+
+  }
+
+  getSchoolById(id: number) {
+    this.schoolService.getSchoolById(id).subscribe({
+      next: response => this.selectedSchool = response,
+    })
+  }
+
 
 }

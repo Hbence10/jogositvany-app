@@ -5,55 +5,63 @@
   <div class="row w-100">
     <div class="col-lg-6 p-0">
       <div class="container-fluid">
-      @if(selectedType == "instructor"){
-        <div class="row">
-          <div class="col-lg-12">
-            <div id="fuelTypeContainer" class="d-flex align-items-center">
-              @for (fuelType of fuelTypeList; track $index) {
-                <input type="radio" [value]="fuelType.id" [id]="fuelType.name" name="fuelType" (change)="selectedFuelTypeId = fuelType.id!;getInstructorBySearch()">
-                <label [for]="fuelType.name">{{fuelType.name}}</label>
+        @if(selectedType == "instructor"){
+          <div class="row">
+            <div class="col-lg-12">
+              <div id="fuelTypeContainer" class="d-flex align-items-center">
+                @for (fuelType of fuelTypeList; track $index) {
+                  <input type="radio" [value]="fuelType.id" [id]="fuelType.name" name="fuelType" (change)="selectedFuelTypeId = fuelType.id!;getInstructorBySearch()">
+                  <label [for]="fuelType.name">{{fuelType.name}}</label>
               }
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12">
-            <div style="height: 450px; width: 800px;">
-              <input #instructorName (input)="filterInstructor(instructorName.value)" type="text" class="searchInput" placeholder="Az oktató neve" />
-              <div id="schoolContainer">
-                @for (instructor of filteredInstructorList; track $index) {
-                  <p (click)="getInstructorById(instructor.id)" class="townParagraph py-1 px-2">{{instructor.name}}</p>
-                }
               </div>
             </div>
           </div>
-        </div>
-      } @else {
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="box searchCol">
-              <input type="text" placeholder="Város"/>
 
+          <div class="row">
+            <div class="col-lg-12">
+              <div style="height: 450px; width: 800px;">
+                <input #instructorName (input)="filterInstructor(instructorName.value)" type="text" class="searchInput" placeholder="Az oktató neve" />
+                <div id="schoolContainer">
+                  @for (instructor of filteredInstructorList; track $index) {
+                    <p (click)="getInstructorById(instructor.id)" class="townParagraph py-1 px-2">{{instructor.name}}</p>
+                  }
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      }
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="box searchCol">
-            <input type="text" [placeholder]="selectedType == 'instructor' ? 'Az oktató neve' : 'Az iskola neve'" />
+        } @else {
+          <div class="row w-100">
+            <div class="col-lg-12">
+              <div style="height: 450px; width: 800px;">
+                <input type="text" placeholder="Város" class="searchInput" [(ngModel)]="selectedTown" (input)="filterTown()"/>
+                <div id="townContainer">
+                  @for (town of filteredTownList; track $index) {
+                    <p (click)="selectedTown = town; getSchoolByTown()" class="townParagraph py-1 px-2">{{town | titlecase}}</p>
+                  }
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div style="height: 450px; width: 800px;">
+                <input #schoolName (input)="filterSchoolName(schoolName.value)" type="text" class="searchInput" [placeholder]="'Az iskola neve'" />
+                <div id="schoolContainer">
+                  @for (school of filteredSchoolList; track $index) {
+                    <p (click)="getSchoolById(school.id)" class="townParagraph py-1 px-2">{{school.name| titlecase}}</p>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       </div>
-
-      </div>
-
     </div>
 
     <div class="col-lg-6 p-0">
       <div class="container-fluid">
-        <div class="row">
+        @if(selectedSchool !== null || selectedInstructor !== null){
+          <div class="row">
             <div class="box col-lg-12 d-flex flex-column justify-content-between" id="description">
                   @if (selectedType == "school") {
                     <div class="row">
@@ -66,8 +74,8 @@
                           </div>
                           <div class="row my-3">
                             <div class="col-lg-4">
-                              <h1 class="m-0">Név</h1>
-                              <h4>titulus</h4>
+                              <h1 class="m-0">{{selectedSchool?.name | titlecase}}</h1>
+                              <h4>Autósiskola</h4>
                             </div>
                             <div class="col-lg-8">
                               <div class="col-lg-6" id="reviewDiv">
@@ -84,8 +92,8 @@
                         <img src="" alt="" class="img-fluid">
                       </div>
                       <div class="col-lg-8">
-                        <h1 class="m-0">Név</h1>
-                        <h4>titulus</h4>
+                        <h1 class="m-0">{{selectedInstructor?.instructorUser?.firstName + " " + selectedInstructor?.instructorUser?.lastName}}</h1>
+                        <h4>Oktató</h4>
                         <div class="col-lg-6" id="reviewDiv">
                           <p>értékelés</p>
                         </div>
@@ -95,15 +103,24 @@
 
                 <div class="row">
                   <div class="col-lg-12">
-                    <p id="descriptionText">leirás</p>
-                    <p class="infoText">telefonszám</p>
-                    <p class="infoText">email</p>
+                    <div id="descriptionText">
+                      <h5>Bemutatkozás:</h5>
+                      <p>{{selectedSchool == null ? selectedInstructor?.promoText : selectedSchool.promoText}}</p>
+                    </div>
+                    <div class="infoText d-flex justify-content-between align-items-center">
+                      <span>Telefonszám:</span>
+                      <span>{{selectedSchool == null ? selectedInstructor?.instructorUser?.phone : selectedSchool.phone}}</span>
+                    </div>
+                    <div class="infoText d-flex justify-content-between align-items-center">
+                      <span>Email:</span>
+                      <span>{{selectedSchool == null ? selectedInstructor?.instructorUser?.email : selectedSchool.email}}</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="row gx-0">
                   <div class="col-lg-12 d-flex align-items-end justify-content-end p-0">
-                    <button class="profileBtn">
+                    <button class="profileBtn" (click)="navigateToProfilePage()">
                       <img src="assets/icons/defaultProfileImg.svg" alt="">
                     </button>
                     <button class="signBtn">jelentkezés</button>
@@ -113,6 +130,7 @@
             </div>
 
         </div>
+      }
       </div>
     </div>
   </div>
