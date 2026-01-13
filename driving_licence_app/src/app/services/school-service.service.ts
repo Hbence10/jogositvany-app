@@ -18,6 +18,9 @@ export class SchoolServiceService {
   getSchoolById(id: number): Observable<School> {
     return this.http.get<School>(`${this.baseUrl}/${id}`)
   }
+  getSchoolsBySearch(town: string): Observable<{id: number, name: string}[]>{
+    return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?town=${town}`)
+  }
 
   handleJoinRequest(id: number, status: "accept" | "refuse") {
     return this.http.post("", {})

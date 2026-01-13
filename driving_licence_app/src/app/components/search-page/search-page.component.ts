@@ -1,11 +1,13 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuelType } from '../../models/fuel-type.model';
 import { Instructors } from '../../models/instructors.model';
 import { School } from '../../models/school.model';
 import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
 import { SchoolServiceService } from '../../services/school-service.service';
 import { InstructorServiceService } from '../../services/instructor-service.service';
+import { UsersService } from '../../services/users.service';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-search-page',
@@ -14,51 +16,74 @@ import { InstructorServiceService } from '../../services/instructor-service.serv
   styleUrl: './search-page.component.css'
 })
 export class SearchPageComponent implements OnInit {
+
   private otherStuffService = inject(OtherStuffServiceService)
   private schoolService = inject(SchoolServiceService)
   private instructorService = inject(InstructorServiceService)
   private route = inject(ActivatedRoute)
-  private destroyRef = inject(DestroyRef)
+  private router = inject(Router)
+  private userService = inject(UsersService)
+  private requestService = inject(RequestService)
+
   fuelTypeList: FuelType[] = []
   townList: string[] = []
   selectedFuelType!: FuelType
   selectedType: string = ""
   selectedTown: string = "Budapest"
-
   selectedSchool: School | null = null
+  filteredTownList: string[] = []
+  schoolList: { id: number, name: string }[] = []
+  filteredSchoolList: { id: number, name: string }[] = []
+  selectedFuelTypeId: number = 1;
   selectedInstructor: Instructors | null = null
+  instructorList: { id: number, name: string }[] = []
+  filteredInstructorList: { id: number, name: string }[] = []
 
 
   ngOnInit(): void {
-    let subscription;
+    this.selectedSchool = null
+    this.selectedInstructor = null
+    this.selectedFuelTypeId = 1
 
     this.route.params.subscribe({
       next: param => {
         this.selectedType = param["type"]
         if (this.selectedType == "instructor") {
-          subscription = this.otherStuffService.getAllFuelType().subscribe({
-            next: responseList => this.fuelTypeList = responseList
+          this.otherStuffService.getAllFuelType().subscribe({
+            next: responseList => this.fuelTypeList = responseList,
+            complete: () => {
+
+            }
           })
         } else if (this.selectedType == "school") {
-          subscription = this.otherStuffService.getAllTown().subscribe({
-            next: response => this.townList = response
+          this.otherStuffService.getAllTown().subscribe({
+            next: response => this.townList = response,
+            complete: () => {
+              this.filteredTownList = this.townList
+              this.getSchoolByTown()
+            }
           })
         }
       }
     })
 
 
+  }
 
-    this.destroyRef.onDestroy(() => {
-      // subscription.unscrubsibe()
+  getSchoolByTown() {
+    this.schoolService.getSchoolsBySearch(this.selectedTown).subscribe({
+      next: response => this.schoolList = response,
+      complete: () => this.filteredSchoolList = this.schoolList
     })
   }
 
-  selectSchool(){
-
-  }
-
-  selectInstructor(){
-
+  getInstructorBySearch() {
+    this.instructorService.getInstructorBySearch(this.userService.loggedUser()?.school?.id!, this.selectedFuelTypeId).subscribe({
+      next: response => {
+        this.instructorList = response
+        console.log(response)
+      },
+      complete: () => this.filteredInstructorList = this.instructorList
+    })
   }
 }

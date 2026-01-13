@@ -45,4 +45,8 @@ export class InstructorServiceService {
       vehicleTypeId: vehicleTypeId
     })
   }
+
+  getInstructorBySearch(schoolId: number, fuelTypeId: number): Observable<{id: number, name: string}[]> {
+    return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?fuelType=${fuelTypeId}&school=${schoolId}`)
+  }
 }
