@@ -4,6 +4,7 @@ import { DrivingLessonRequest } from '../models/driving-lesson-request.model';
 import { InstructorJoinRequest } from '../models/instructor-join-request.model';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user.model';
+import { Instructors } from '../models/instructors.model';
 
 @Injectable({
   providedIn: 'root',
@@ -48,5 +49,9 @@ export class InstructorServiceService {
 
   getInstructorBySearch(schoolId: number, fuelTypeId: number): Observable<{id: number, name: string}[]> {
     return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?fuelType=${fuelTypeId}&school=${schoolId}`)
+  }
+
+  getInstructorById(id: number):Observable<Instructors> {
+    return this.http.get<Instructors>(`${this.baseUrl}/${id}`)
   }
 }

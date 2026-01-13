@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuelType } from '../../models/fuel-type.model';
 import { Instructors } from '../../models/instructors.model';
@@ -8,10 +8,12 @@ import { SchoolServiceService } from '../../services/school-service.service';
 import { InstructorServiceService } from '../../services/instructor-service.service';
 import { UsersService } from '../../services/users.service';
 import { RequestService } from '../../services/request.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-page',
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './search-page.component.html',
   styleUrl: './search-page.component.css'
 })
@@ -87,11 +89,24 @@ export class SearchPageComponent implements OnInit {
     })
   }
 
-  navigatToProfilPage() {
+  navigateToProfilPage() {
     if (this.selectedSchool == null) {
       this.router.navigate(["profil/user", this.selectedInstructor?.instructorUser.id])
     } else {
       this.router.navigate(["profil/school", this.selectedSchool.id])
     }
   }
+
+  getInstructorById(id: number) {
+    this.instructorService.getInstructorById(id).subscribe({
+      next: response => this.selectedInstructor = response
+    })
+  }
+
+  filterInstructor(searchedName: string) {
+    this.filteredInstructorList = this.instructorList.filter(instructor =>
+      instructor.name.replaceAll(" ", "").toLowerCase().substring(0, searchedName.length) === searchedName.replaceAll(" ", "").toLowerCase().trim()
+    )
+  }
+
 }

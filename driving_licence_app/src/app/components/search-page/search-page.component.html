@@ -2,18 +2,31 @@
   class="container-fluid d-flex flex-column justify-content-center align-items-center mainFont"
   id="searchPage"
 >
-  <div class="row">
+  <div class="row w-100">
     <div class="col-lg-6 p-0">
       <div class="container-fluid">
       @if(selectedType == "instructor"){
         <div class="row">
           <div class="col-lg-12">
-            @for (fuelType of fuelTypeList; track $index) {
-            <div>
-              <input type="checkbox" [value]="fuelType.id" [name]="fuelType.name">
-              <label [for]="fuelType.name">{{fuelType.name}}</label>
+            <div id="fuelTypeContainer" class="d-flex align-items-center">
+              @for (fuelType of fuelTypeList; track $index) {
+                <input type="radio" [value]="fuelType.id" [id]="fuelType.name" name="fuelType" (change)="selectedFuelTypeId = fuelType.id!;getInstructorBySearch()">
+                <label [for]="fuelType.name">{{fuelType.name}}</label>
+              }
             </div>
-          }
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div style="height: 450px; width: 800px;">
+              <input #instructorName (input)="filterInstructor(instructorName.value)" type="text" class="searchInput" placeholder="Az oktató neve" />
+              <div id="schoolContainer">
+                @for (instructor of filteredInstructorList; track $index) {
+                  <p (click)="getInstructorById(instructor.id)" class="townParagraph py-1 px-2">{{instructor.name}}</p>
+                }
+              </div>
+            </div>
           </div>
         </div>
       } @else {
