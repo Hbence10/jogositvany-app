@@ -64,28 +64,6 @@ public class DrivingLessonController {
         return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0), updatedDrivingLesson.get("typeId").asInt(1));
     }
 
-    @Operation(summary = "Időpont módositása", description = "Az adott óra dátumának változtatása")
-    @Parameters({
-            @Parameter(name = "lessonId", description = "Az adott órához tartozó id.", required = true, in = ParameterIn.QUERY),
-            @Parameter(name = "newDate", description = "Az új dátum", required = true, in = ParameterIn.QUERY),
-            @Parameter(name = "newStart", description = "Az új kezdési idő", required = true, in = ParameterIn.QUERY),
-            @Parameter(name = "newEnd", description = "Az új végzési idő", required = true, in = ParameterIn.QUERY),
-    })
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres frissités", content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = DrivingLessons.class, description = "Az áthelyezett óra object-je")
-            )),
-            @ApiResponse(responseCode = "404", description = "Nem létező vezetési óra frissitése", content = @Content),
-            @ApiResponse(responseCode = "415", description = "A kezdő dátum hátrébb van mint a vég dátum", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Az endpoint meghívása hiányos requestBody-val.", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
-    })
-    @PutMapping("/{id}/reschedule")
-    public ResponseEntity<Object> rescheduleDrivingLesson(@RequestParam("lessonId") Integer lessonId, @RequestParam("newDate") String newDateText, @RequestParam("newStart") Integer newStartHour, @RequestParam("newEnd") Integer newEndHour) {
-        return drivingLessonService.rescheduleDrivingLesson(lessonId, newDateText, newStartHour, newEndHour);
-    }
-
     @GetMapping("/reservedHour")
     public ResponseEntity<Object> getReservedHoursByDate(@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
         System.out.println(date);

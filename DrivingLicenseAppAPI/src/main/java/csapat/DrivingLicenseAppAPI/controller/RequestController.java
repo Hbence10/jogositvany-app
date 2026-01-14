@@ -79,19 +79,4 @@ public class RequestController {
         return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
     }
 
-    @Operation(summary = "Vizsga kérelem küldése", description = "")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A küldött kérelem objectje", required = true, content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = ExamRequest.class)
-    ))
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldése", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Nem létező oktató, diák vagy iskola", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
-    @PostMapping("/exam")
-    private ResponseEntity<Object> sendExamRequest(@RequestBody ExamRequest addedExamRequest) {
-        return requestService.sendExamRequest(addedExamRequest);
-    }
 }
