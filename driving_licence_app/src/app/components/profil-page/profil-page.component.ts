@@ -84,4 +84,20 @@ export class ProfilPageComponent implements OnInit {
       }
     })
   }
+  changeImages(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData()
+      formData.append("image", file)
+      if (this.type() == "user") {
+        this.userService.changePfp(this.searchedUser?.id!, formData).subscribe({
+          next: response => this.searchedUser = response
+        })
+      } else if (this.type() == "school") {
+        this.schoolService.changeBannerImg(this.searchedSchool?.id!, formData).subscribe({
+          next: response => this.searchedSchool = response
+        })
+      }
+    }
+  }
 }

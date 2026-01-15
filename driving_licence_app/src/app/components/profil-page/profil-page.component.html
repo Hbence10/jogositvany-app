@@ -5,12 +5,22 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <div id="reviewBox"></div>
+            <div id="reviewBox">
+              @if (roleName == "Iskola" || roleName == "Oktató") {
+                <button (click)="showReviews = true">Review</button>
+              }
+            </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-center align-items-center">
+            @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
+              <input #fileInput type="file" name="fileInput" id="fileInput" style="display: none;" (change)="changeImages($event)">
+              <button class="p-0">
+                <label for="fileInput" class="w-100 h-100">Pfp Edit</label>
+              </button>
+            }
             <img src="assets/icons/kijeletkezés.svg" id="avatar" class="img-fluid" [class.userPfp]="type() == 'user'" [class.bannerImg]="type() == 'school'"/>
           </div>
         </div>
@@ -102,4 +112,3 @@
 
     </div>
   </div>
-<!-- </div> -->
