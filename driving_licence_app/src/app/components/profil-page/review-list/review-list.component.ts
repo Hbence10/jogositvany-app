@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { Instructors } from '../../../models/instructors.model';
 import { Review } from '../../../models/review.model';
 import { School } from '../../../models/school.model';
@@ -14,7 +14,7 @@ import { ReviewCardComponent } from '../review-card/review-card.component';
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css'
 })
-export class ReviewListComponent {
+export class ReviewListComponent implements OnInit{
   userService = inject(UsersService)
   reviewType = input.required<string>()
   aboutObject = input.required<School | Instructors>()
