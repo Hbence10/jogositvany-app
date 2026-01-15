@@ -124,5 +124,25 @@ export class SearchPageComponent implements OnInit {
     })
   }
 
-
+  sendJoinRequest() {
+    if (this.selectedType == "instructor") {
+      this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()?.studentId!, this.selectedInstructor?.id!).subscribe({
+        error: error => {
+          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+        },
+        complete: () => {
+          alert("Sikeres kérelem küldés.")
+        }
+      })
+    } else if (this.selectedType == "school") {
+      this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!).subscribe({
+        error: error => {
+          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+        },
+        complete: () => {
+          alert("Sikeres kérelem küldés.")
+        }
+      })
+    }
+  }
 }

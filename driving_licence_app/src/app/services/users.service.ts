@@ -52,4 +52,12 @@ export class UsersService {
       educationId: educationId
     })
   }
+
+  changePfp(userId: number, formData: FormData): Observable<User> {
+      return this.http.patch<User>(`${this.baseUrl}/pfp/${userId}`, formData)
+  }
+
+  deleteUser(userId: number) {
+    return this.http.delete(`${this.baseUrl}/delete/${userId}`)
+  }
 }

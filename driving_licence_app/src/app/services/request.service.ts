@@ -11,11 +11,17 @@ export class RequestService {
 
   constructor() { }
 
-  sendSchoolJoinRequest(schoolId: number, userId: number, requestedRole: "student" | "instructor") {
-
+  sendSchoolJoinRequest(schoolId: number, userId: number) {
+    return this.http.post(`${this.baseUrl}/school`, {
+      schoolId: schoolId,
+      userId: userId,
+    })
   }
 
   sendInstructorJoinRequest(studentId: number, instructorId: number) {
-
+    return this.http.post(`${this.baseUrl}/instructor`, {
+      studentId: studentId,
+      instructorId: instructorId
+    })
   }
 }
