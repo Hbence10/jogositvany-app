@@ -27,8 +27,14 @@
 
         <div class="row">
           <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-            <button class="infoButton mb-2"><mat-icon>mail_outline</mat-icon></button>
-            <button class="infoButton mt-2">Jelentkezés</button>
+            <button class="infoButton mb-2">
+              <span class="material-symbols-outlined">mail</span>
+            </button>
+            @if (type() == "school" && userService.loggedUser()?.role?.name == "ROLE_user") {
+              <button (click)="sendJoinRequest()">Jelentkezés</button>
+            } @else if (type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == undefined) {
+              <button>Jelentkezés</button>
+            }
           </div>
         </div>
       </div>
@@ -36,6 +42,16 @@
     </div>
 
     <div class="col-lg-9 d-flex justify-content-center align-items-center">
+
+      @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
+        <button (click)="showEditor = true">Edit</button>
+      }
+
+      <div class="w-100 d-flex justify-content-end">
+        <button (click)="showDeleteConfirmation = true">Torlés</button>
+        <button>Arlista</button>
+      </div>
+
       <div class="container-fluid" id="infoBox">
         <div class="row">
           <div class="col-lg-12">
@@ -45,12 +61,27 @@
         </div>
         <div class="row">
           <div class="col-lg-12">
-            <p class="uData mt-0">{{searchedUser == null ? 'Cím:' : 'Születési Dátum:'}}</p>
-            <p class="uData mt-0">{{searchedUser == null ? 'Tulaj:' : 'Nem:'}}</p>
-            <p class="uData mt-0">E-mail: {{searchedUser == null ? searchedSchool!.email : searchedUser.email}}</p>
-            <p class="uData mt-0">Telefonszám: {{searchedUser == null ? searchedSchool!.phone : searchedUser.phone}}</p>
+            <p class="uData mt-0">
+              <span class="fw-bold">{{searchedUser == null ? 'Cím:' : 'Születési Dátum:'}}</span>
+              <span>{{searchedUser == null ? searchedSchool?.country + " " + searchedSchool?.town + " " + searchedSchool?.address : searchedUser.birthDate | date }}</span>
+            </p>
+            <p class="uData mt-0">
+              <span class="fw-bold">{{searchedUser == null ? 'Tulaj:' : 'Nem:'}}</span>
+              <span>{{searchedUser == null ? searchedSchool?.owner?.firstName + " " + searchedSchool?.owner?.lastName : searchedUser.gender}}</span>
+            </p>
+            <p class="uData mt-0">
+              <span class="fw-bold">E-mail:</span>
+              <span>{{searchedUser == null ? searchedSchool!.email : searchedUser.email}}</span>
+            </p>
+            <p class="uData mt-0">
+              <span class="fw-bold">Telefonszám: </span>
+              <span>{{searchedUser == null ? searchedSchool!.phone : searchedUser.phone}}</span>
+            </p>
             @if(type() == "user" && searchedUser?.role?.name == 'ROLE_instructor'){
-              <p class="uData mt-0">Iskola: {{searchedUser?.instructor?.instructorSchool?.name}}</p>
+              <p class="uData mt-0">
+                <span class="fw-bold">Iskola: </span>
+                <span>{{searchedUser?.instructor?.instructorSchool?.name}}</span>
+              </p>
             }
           </div>
         </div>
@@ -61,10 +92,26 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-lg-6">
-                      <div class="instructorInfoBox"></div>
+                      <div class="instructorInfoBox">
+                        <p>{{instructorDetails?.promoText}}</p>
+                      </div>
                     </div>
                     <div class="col-lg-6">
-                      <div class="instructorInfoBox"></div>
+                      <div class="instructorInfoBox">
+                        <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
+                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
+                          <span>Név:</span>
+                          <span>{{instructorDetails?.vehicle?.name}}</span>
+                        </p>
+                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
+                          <span>Típus:</span>
+                          <span>{{instructorDetails?.vehicle?.vehicleType?.name}}</span>
+                        </p>
+                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
+                          <span>Rendszám:</span>
+                          <span>{{instructorDetails?.vehicle?.licensePlate}}</span>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -92,7 +139,28 @@
                 <div class="row">
                   <div class="col-lg-4">
                     <div id="openingDetails">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <h2 class="text-center text-white">Nyitvatartás</h2>
+                        </div>
+                      </div>
 
+                      <div class="row">
+                        <div class="col-lg-12">
+                          @for (item of searchedSchool?.openingDetails; track $index) {
+                            <p class="d-flex justify-content-between text-white">
+                              <span>{{item.day}}:</span>
+                              <span>
+                              @if (!item.isClosed) {
+                                {{item.openingTime}} - {{item.closeTime}}
+                              } @else {
+                                Zárva
+                              }
+                              </span>
+                            </p>
+                          }
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-lg-8">

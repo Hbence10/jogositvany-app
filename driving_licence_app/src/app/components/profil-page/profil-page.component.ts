@@ -100,4 +100,26 @@ export class ProfilPageComponent implements OnInit {
       }
     }
   }
+
+  sendJoinRequest() {
+    if (this.type() == "user") {
+      this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()!.studentId!, this.searchedUser!.instructor!.id).subscribe({
+        error: error => {
+          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+        },
+        complete: () => {
+          alert("Sikeres kérelem küldés.")
+        }
+      })
+    } else if (this.type() == "school") {
+      this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id).subscribe({
+        error: error => {
+          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+        },
+        complete: () => {
+          alert("Sikeres kérelem küldés.")
+        }
+      })
+    }
+  }
 }
