@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InstructorServiceService } from '../../../services/instructor-service.service';
 import { OtherStuffServiceService } from '../../../services/other-stuff-service.service';
@@ -153,7 +153,5 @@ export class ProfilEditorComponent implements OnInit {
   }
 }
 
-function output() {
-  throw new Error('Function not implemented.');
-}
+
 
