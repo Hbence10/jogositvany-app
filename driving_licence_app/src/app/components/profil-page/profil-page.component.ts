@@ -6,11 +6,16 @@ import { User } from '../../models/user.model';
 import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
 import { Instructors } from '../../models/instructors.model';
-import { error } from 'console';
+import { RequestService } from '../../services/request.service';
+import { CommonModule } from '@angular/common';
+import { ProfilCardComponent } from '../profil-card/profil-card.component';
+import { ProfilEditorComponent } from './profil-editor/profil-editor.component';
+import { ReviewListComponent } from './review-list/review-list.component';
+import { PriceListComponent } from './price-list/price-list.component';
 
 @Component({
   selector: 'app-profil-page',
-  imports: [MatIconModule],
+  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent],
   templateUrl: './profil-page.component.html',
   styleUrl: './profil-page.component.css'
 })
@@ -18,12 +23,18 @@ export class ProfilPageComponent implements OnInit {
   private route = inject(ActivatedRoute)
   userService = inject(UsersService)
   private schoolService = inject(SchoolServiceService)
+  private requestService = inject(RequestService)
   searchedUser: User | null = null
   searchedSchool: School | null = null
   instructorDetails: Instructors | null = null
   type = signal("")
   roleName!: string
   errorMsg: string = ""
+
+  showEditor: boolean = false
+  showReviews: boolean = false
+  showDeleteConfirmation: boolean = false
+  showPriceList: boolean = false
 
   ngOnInit(): void {
     this.route.params.subscribe({
