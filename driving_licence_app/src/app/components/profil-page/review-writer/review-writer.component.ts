@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angula
   templateUrl: './review-writer.component.html',
   styleUrl: './review-writer.component.css'
 })
-export class ReviewWriterComponent {
+export class ReviewWriterComponent implements OnInit {
   createReview = output<{reviewText: string, rating: number, isAnonymous: boolean}>()
   reviewForm!: FormGroup
   isAnonymous: boolean = false
