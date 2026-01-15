@@ -122,4 +122,22 @@ export class ProfilPageComponent implements OnInit {
       })
     }
   }
+
+  deleteProfile() {
+    if (this.type() == "user") {
+      this.userService.deleteUser(this.searchedUser?.id!).subscribe({
+        next: response => console.log(response),
+        complete: () => {
+          this.showDeleteConfirmation = false
+        }
+      })
+    } else if (this.type() == "school") {
+      this.schoolService.deleteSchool(this.searchedSchool?.id!).subscribe({
+        next: response => console.log(response),
+        complete: () => {
+          this.showDeleteConfirmation = false
+        }
+      })
+    }
+  }
 }
