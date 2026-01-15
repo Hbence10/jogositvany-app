@@ -1,14 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DrivingLessonEditorComponent } from './driving-lesson-editor/driving-lesson-editor.component';
+import { RequestContainerComponent } from './request-container/request-container.component';
+import { DrivingLessonService } from '../../services/driving-lesson.service';
 
 @Component({
   selector: 'app-calendar',
-  imports: [],
+  imports: [RequestContainerComponent, DrivingLessonEditorComponent],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-  // days: string[] = ['Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat', 'Vasárnap'];
-  // day: any = { monday: [1] , tuesday: [1, 2, 3], wednesday: [1, 2], thursday: [1, 2], friday: [1, 2], saturday: [1, 2], sunday: [1, 2] };
+  showRequestContainer: boolean = false
+  showEditor: boolean = true
+
+  drivingLessonService = inject(DrivingLessonService)
+
   days: {name: string, lessons: number[]}[] = [
     { name: 'Hétfő', lessons: [1] },
     { name: 'Kedd', lessons: [1, 2, 3] },

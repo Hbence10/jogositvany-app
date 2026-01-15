@@ -7,7 +7,7 @@
             <div></div>
             <h1 class="text-center">Óra adatainak módósitása</h1>
             <div>
-              <button>X</button>
+              <button (click)="close.emit()">X</button>
             </div>
           </div>
         </div>
@@ -58,7 +58,9 @@
 
                   <label for="">Fizetési módszer kiválasztása</label>
                   <select name="" id="">
-
+                    @for (paymentMethod of paymentMethods; track $index) {
+                      <option [value]="paymentMethod.id">{{paymentMethod.name}}</option>
+                    }
                   </select>
                 </div>
               </div>
@@ -67,13 +69,17 @@
                 <div class="col-lg-6">
                   <label for="">Vezetési óra tipusa:</label>
                   <select name="" id="">
-
+                    @for (lessonType of drivingLessonTypeList; track $index) {
+                      <option [value]="lessonType.id">{{lessonType.name}}</option>
+                    }
                   </select>
                 </div>
                 <div class="col-lg-6">
                   <label for="">Vezetési óra állapota</label>
                   <select name="" id="">
-
+                    @for (status of statusList; track $index) {
+                      <option [value]="status.id">{{status.name}}</option>
+                    }
                   </select>
                 </div>
               </div>
@@ -83,7 +89,7 @@
 
         <div class="row mb-3">
           <div class="col-lg-12 d-flex justify-content-center">
-            <button >Mentés</button>
+            <button (click)="sendSave()">Mentés</button>
           </div>
         </div>
       </div>

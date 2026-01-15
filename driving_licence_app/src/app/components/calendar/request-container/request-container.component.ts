@@ -3,12 +3,12 @@ import { InstructorServiceService } from '../../../services/instructor-service.s
 import { StudentService } from '../../../services/student.service';
 import { UsersService } from '../../../services/users.service';
 import { DrivingLessonService } from '../../../services/driving-lesson.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DrivingLessonType } from '../../../models/driving-lesson-type.model';
 
 @Component({
   selector: 'app-request-container',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './request-container.component.html',
   styleUrl: './request-container.component.css'
 })
@@ -21,7 +21,6 @@ export class RequestContainerComponent {
   drivingLessonTypeList: DrivingLessonType[] = []
   requestForm!: FormGroup;
   close = output()
-
 
   ngOnInit(): void {
     this.drivingLessonService.getAllDrivingLessonType().subscribe({

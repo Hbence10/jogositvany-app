@@ -7,7 +7,7 @@
             <div></div>
             <h1>Kérelem küldése</h1>
             <div>
-              <button >X</button>
+              <button (click)="close.emit()">X</button>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@
 
               <div class="row">
                 <div class="col-lg-12">
-                  <label for="">Egyéb üzenet az oktatónak:</label>
+                  <label for="">Egyéb üzenet az oktatónak:</label> <br>
                   <textarea name="" id=""></textarea>
                 </div>
               </div>
