@@ -106,18 +106,11 @@ public class DrivingLessons {
     @JoinColumn(name = "instructor_id")
     @JsonIgnore
     private Instructors dinstructor;
-
-    @ManyToOne(cascade = {})
-    @JoinColumn(name = "type_id")
-    @JsonIgnoreProperties({})
-    private DrivingLessonType drivingLessonType;
-
     //Constructorok:
 
-    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor, DrivingLessonType drivingLessonType) {
+    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor) {
         this.reservedHour = reservedHour;
         this.dstudent = dstudent;
         this.dinstructor = dinstructor;
-        this.drivingLessonType = drivingLessonType;
     }
 }

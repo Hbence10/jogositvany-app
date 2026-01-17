@@ -87,7 +87,6 @@ public class RequestService {
                 return ResponseEntity.status(422).build();
             }
 
-
             if (addedDrivingLessonRequest.getId() != null) {
                 return ResponseEntity.status(415).body("invalidObject");
             } else if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {

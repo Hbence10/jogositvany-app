@@ -23,9 +23,9 @@ public class DrivingLessonController {
     private final DrivingLessonService drivingLessonService;
 
     @Operation(summary = "Vezetési")
-    @GetMapping("/type")
-    public ResponseEntity<Object> getAllDrivingLessonType(@RequestParam("school") Integer schoolId) {
-        return drivingLessonService.getAllDrivingLessonType(schoolId);
+    @GetMapping("/categories/school/{id}")
+    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(@PathVariable("id") Integer schoolId) {
+        return drivingLessonService.getDrivingLicenseCategoriesBySchool(schoolId);
     }
 
     @Operation(summary = "Óra lemondása", description = "")
@@ -61,7 +61,7 @@ public class DrivingLessonController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Integer id) {
-        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0), updatedDrivingLesson.get("typeId").asInt(1));
+        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0));
     }
 
     @GetMapping("/reservedHour")

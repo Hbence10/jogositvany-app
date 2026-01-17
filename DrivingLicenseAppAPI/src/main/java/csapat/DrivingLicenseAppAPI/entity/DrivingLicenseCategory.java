@@ -60,14 +60,6 @@ public class DrivingLicenseCategory {
 
     //Kapcsolatok:
     @OneToMany(
-            mappedBy = "drivingLicenseCategory",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<DrivingLessonType> drivingLessonTypeList;
-
-    @OneToMany(
             mappedBy = "joinRequestCategory",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
@@ -81,7 +73,7 @@ public class DrivingLicenseCategory {
             joinColumns = @JoinColumn(name = "school_id"),
             inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
     )
-//    @JsonIgnore
+    @JsonIgnore
     private List<School> schoolList;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {})
@@ -96,6 +88,11 @@ public class DrivingLicenseCategory {
     @OneToMany(mappedBy = "selectedCategory", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore
     private List<Students> studentsList;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "licenseCategory")
+    private List<SchoolCategory> licenseCategory;
 
     //Constructorok:
     public DrivingLicenseCategory(String name, int minAge) {

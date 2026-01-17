@@ -91,13 +91,10 @@ public class School {
     //Kapcsolatok:
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id")
-    @JsonIgnoreProperties({"ownedSchool"})
+    @JsonIgnoreProperties({"ownedSchool", "role", "instructor", "student", "adminSchool", "userEducation"})
     private Users owner;
 
-    @OneToMany(
-            mappedBy = "adminSchool",
-            cascade = {}
-    )
+    @OneToMany(mappedBy = "adminSchool", cascade = {})
     @JsonIgnore
     @Null
     private List<Users> adminList;
@@ -134,14 +131,6 @@ public class School {
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
-    @OneToMany(
-            mappedBy = "drivingTypeSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<DrivingLessonType> drivingLessonsType;
-
     @JsonIgnore
     @OneToMany(
             mappedBy = "examSchool",
@@ -158,6 +147,9 @@ public class School {
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {}, mappedBy = "schoolList")
-    private List<DrivingLicenseCategory> licenseCategoryList;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {}, mappedBy = "schoolCategory")
+    @JsonIgnore
+    private List<SchoolCategory> licenseCategoryList;
+
+
 }

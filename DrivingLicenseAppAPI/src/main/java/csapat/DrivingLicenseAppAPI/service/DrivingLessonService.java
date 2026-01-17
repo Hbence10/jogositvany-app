@@ -26,9 +26,8 @@ public class DrivingLessonService {
     private final SchoolRepository schoolRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
-    private final DrivingLessonTypeRepository drivingLessonTypeRepository;
 
-    public ResponseEntity<Object> getAllDrivingLessonType(Integer schoolId) {
+    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(Integer schoolId) {
         try {
             if (schoolId == null) {
                 return ResponseEntity.status(422).build();
@@ -37,7 +36,7 @@ public class DrivingLessonService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok().body(searchedSchool.getDrivingLessonsType());
+            return ResponseEntity.ok().body(searchedSchool.getLicenseCategoryList());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -64,7 +63,7 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> updateDrivingLesson(Integer id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Integer statusId, Integer paymentMethodId, Integer typeId) {
+    public ResponseEntity<Object> updateDrivingLesson(Integer id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Integer statusId, Integer paymentMethodId) {
         try {
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(id).orElse(null);
             if (searchedDrivingLesson == null) {
@@ -72,7 +71,6 @@ public class DrivingLessonService {
             } else {
                 PaymentMethod searchedPayment = paymentMethodRepository.getPaymentMethod(paymentMethodId).orElse(null);
                 Status searchedStatus = statusRepository.getStatus(statusId).orElse(null);
-                DrivingLessonType drivingLessonType = drivingLessonTypeRepository.getDrivingLessonType(typeId).orElse(null);
 
                 if (endKm <= startKm) {
                     return ResponseEntity.status(415).body("invalidStartEndKm");
@@ -82,9 +80,7 @@ public class DrivingLessonService {
                     return ResponseEntity.status(404).body("");
                 } else if (searchedStatus == null) {
                     return ResponseEntity.status(404).body("");
-                } else if (drivingLessonType == null) {
-                    return ResponseEntity.status(404).body("");
-                } else {
+                }  else {
                     searchedDrivingLesson.setStartKm(startKm);
                     searchedDrivingLesson.setEndKm(endKm);
                     searchedDrivingLesson.setLocation(location);
@@ -94,7 +90,6 @@ public class DrivingLessonService {
                     searchedDrivingLesson.setIsPaid(isPaid);
                     searchedDrivingLesson.setPaymentMethod(searchedPayment);
                     searchedDrivingLesson.setDrivingLessonStatus(searchedStatus);
-                    searchedDrivingLesson.setDrivingLessonType(drivingLessonType);
                     return ResponseEntity.ok().body(drivingLessonRepository.save(searchedDrivingLesson));
                 }
             }
@@ -133,7 +128,10 @@ public class DrivingLessonService {
             }
 
             List<Integer> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
-            List<ReservedHour> reservedHours = reservedHourRepository.findAllById(reservedHourIdList);
+            List<ReservedHour> reservedHours = new ArrayList<ReservedHour>();
+            for (Integer i : reservedHourIdList) {
+                reservedHours.add(reservedHourRepository.findById(i).get());
+            }
 
             List<HourCard> returnList = new ArrayList<>();
             for (ReservedHour i : reservedHours) {
