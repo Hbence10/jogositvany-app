@@ -74,7 +74,7 @@ public class RequestController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PostMapping("/drivingLesson")
+        @PostMapping("/drivingLesson")
     private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
         return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
     }

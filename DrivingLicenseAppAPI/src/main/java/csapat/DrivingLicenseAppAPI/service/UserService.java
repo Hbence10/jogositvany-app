@@ -320,7 +320,7 @@ public class UserService {
 
     public ResponseEntity<Object> getAllUser() {
         try {
-            List<Users> allUser = userRepository.getAllUser();
+            List<Users> allUser = userRepository.findAll();
             List<ProfileCard> returnList = new ArrayList<>();
 
             for (Users i : allUser) {

@@ -64,6 +64,23 @@ public class StudentService {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    public ResponseEntity<Object> getStudentById(Integer id) {
+        try {
+            if (id == null) {
+                return ResponseEntity.status(422).build();
+            }
+            Students searchedStudent = studentRepository.getStudent(id).orElse(null);
+            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.ok().body(searchedStudent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }
 
 /*
