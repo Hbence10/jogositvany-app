@@ -1,66 +1,62 @@
-<div class="container-fluid p-0 mainFont" style="height: 100vh;">
+<div class="container-fluid px-4 py-4 mainFont min-vh-100" >
   @if (loggedUser != null){
     @if (loggedUser.role.name != "ROLE_administrator") {
-  <div class="row h-100">
-    <div class="col-lg-12 p-0">
-      <div class="container-fluid" id="mainContainer">
-        <div class="row g-4">
+  <div class="row g-4">
           <div class="col-lg-8">
-            <div class="container-fluid h-100">
+            <div class="container h-100 d-flex flex-column justify-content-center align-items-center">
               @if(loggedUser.role.name == "ROLE_student" || loggedUser.role.name == "ROLE_user"){
                 <div class="row">
-                  <div class="col-lg-6">
-                    <div class="container-fluid box m-3" id="school">
-                      @if (loggedUser.role.name == "ROLE_student"){
 
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <img src="" alt="" class="img-fluid" />
+                  <div class="col-lg-7">
+                    <div class="container-fluid">
+                      <div class="box" id="school">
+                        @if (loggedUser.role.name == "ROLE_student"){
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <img src="" alt="" class="img-fluid" />
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
-                            <p class="text-center mb-4">{{ loggedUser.school?.name }}</p>
-                            <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
-                            <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
-                            <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
+                          <div class="row">
+                            <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
+                              <p class="text-center mb-4">{{ loggedUser.school?.name }}</p>
+                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
+                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
+                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
+                            </div>
                           </div>
-                        </div>
-
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <div class="container-fluid d-flex flex-column align-items-center">
-                              <div class="info-field m-0"><p>nyitvatartás</p></div>
-                              <div class="container-fluid d-flex flex-column days text-start">
-                                <div class="day">
-                                  <p>hétfő</p>
-                                </div>
-                                <div class="day isSelected">
-                                  <p>kedd</p>
-                                </div>
-                                <div class="day">
-                                  <p>szerda</p>
-                                </div>
-                                <div class="day">
-                                  <p>csütörtök</p>
-                                </div>
-                                <div class="day text-start">
-                                  <p>péntek</p>
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <div class="container-fluid d-flex flex-column align-items-center">
+                                <div class="info-field m-0"><p>nyitvatartás</p></div>
+                                <div class="container-fluid d-flex flex-column days text-start">
+                                  <div class="day">
+                                    <p>hétfő</p>
+                                  </div>
+                                  <div class="day isSelected">
+                                    <p>kedd</p>
+                                  </div>
+                                  <div class="day">
+                                    <p>szerda</p>
+                                  </div>
+                                  <div class="day">
+                                    <p>csütörtök</p>
+                                  </div>
+                                  <div class="day text-start">
+                                    <p>péntek</p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-
-                      } @else {
-                        <h4>Még nem csatlakoztál iskolához</h4>
-                      }
-                  </div>
+                        } @else {
+                          <h4>Még nem csatlakoztál iskolához</h4>
+                        }
+                                        </div>
+                    </div>
                 </div>
 
-                <div class="col-lg-6">
-                  <div class="container-fluid">
+                <div class="col-lg-5">
+                  <div class="container-fluid d-flex flex-column">
 
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
@@ -83,7 +79,7 @@
 
                     <div class="row">
                       <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-                        <div class="box m-3 d-flex flex-column justify-content-center align-items-center" id="license-category">
+                        <div class="box d-flex flex-column justify-content-center align-items-center" id="license-category">
                           @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) {
                             <p>Jogosítvány Kategória:</p>
                             <h1>B</h1>
@@ -125,7 +121,7 @@
                     <!-- Befizetett órák -->
                     <div class="row">
                       <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
-                        <div class="box m-3 d-flex flex-column align-items-start " id="progressbar-payed">
+                        <div class="box d-flex flex-column align-items-start " id="progressbar-payed">
                           <input id="bar" type="range" min="0" max="30" value="9" disabled/>
                           @if (loggedUser.role.name == "ROLE_student") {
                             <div class="d-flex">
@@ -191,10 +187,10 @@
           </div>
 
           <div class="col-lg-4">
-              <div class="container-fluid">
+              <div class="container-fluid d-flex flex-column align-items-center">
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="box m-3" id="calendar">
+                  <div class="box" id="calendar">
                     <mat-card class="demo-inline-calendar-card">
                       <mat-calendar></mat-calendar>
                     </mat-card>
@@ -204,7 +200,7 @@
 
               <div class="row">
                 <div class="col-lg-12">
-                  <div class="box m-3" id="car">
+                  <div class="box flex-column d-flex" id="car">
                   @if ((loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) || loggedUser.role.name == "ROLE_instructor") {
                     <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
                     <p class="w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
@@ -218,10 +214,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-    </div>
   </div>
   } @else {
           <div class="row h-100">
