@@ -14,6 +14,10 @@ import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -318,16 +322,19 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<Object> getAllUser() {
+    public ResponseEntity<Object> getAllUser(Pageable pageable) {
         try {
-            List<Users> allUser = userRepository.findAll();
+            Page<Users> allUser = userRepository.findAll(pageable);
             List<ProfileCard> returnList = new ArrayList<>();
 
             for (Users i : allUser) {
                 returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath(), i.getId()));
             }
 
-            return ResponseEntity.ok().body(returnList);
+            HttpHeaders header = new HttpHeaders();
+            header.add("PageNumber", allUser.getTotalPages()+"");
+
+            return new ResponseEntity<>(returnList, header, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

@@ -10,6 +10,10 @@ import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -366,6 +370,28 @@ public class SchoolService {
                 return ResponseEntity.ok().build();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getAllSchool(Pageable pageable) {
+        try {
+            Page<School> allSchool = schoolRepository.findAll(pageable);
+            List<JsonNode> returnList = new ArrayList<>();
+
+            for (School i : allSchool) {
+                JsonNode school = objectMapper.createObjectNode();
+                ((ObjectNode) school).put("id", i.getId());
+                ((ObjectNode) school).put("name", i.getName());
+                returnList.add(school);
+            }
+
+            HttpHeaders header = new HttpHeaders();
+            header.add("PageNumber", allSchool.getTotalPages()+"");
+
+            return new ResponseEntity<>(returnList, header, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

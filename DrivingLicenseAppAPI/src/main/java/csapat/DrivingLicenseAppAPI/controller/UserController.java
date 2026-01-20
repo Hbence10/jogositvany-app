@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -207,7 +208,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Object> getAllUser() {
-        return userService.getAllUser();
+    public ResponseEntity<Object> getAllUser(Pageable pageable) {
+        return userService.getAllUser(pageable);
     }
 }

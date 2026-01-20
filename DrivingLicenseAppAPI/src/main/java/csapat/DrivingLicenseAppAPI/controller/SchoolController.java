@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -175,7 +176,7 @@ public class SchoolController {
             )),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("")
+    @GetMapping("/search")
     private ResponseEntity<List<JsonNode>> getSchoolsBySearch(@RequestParam(value = "town", defaultValue = "Budapest") String town) {
         return schoolService.getSchoolBySearch(town);
     }
@@ -230,5 +231,10 @@ public class SchoolController {
     @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Integer instructorId) {
         return schoolService.kickoutInstructor(instructorId);
+    }
+
+    @GetMapping("")
+    private ResponseEntity<Object> getAllSchool(Pageable pageable) {
+        return schoolService.getAllSchool(pageable);
     }
 }
