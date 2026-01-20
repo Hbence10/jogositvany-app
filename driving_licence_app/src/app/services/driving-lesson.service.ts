@@ -12,7 +12,7 @@ export class DrivingLessonService {
   baseUrl = "http://localhost:8080/drivingLesson"
 
 
-  getAllDrivingLessonType(): Observable<DrivingLessonType[]> {
+  getAllDrivingLessonType(schoolId: number): Observable<DrivingLessonType[]> {
     return this.http.get<DrivingLessonType[]>(`${this.baseUrl}/type`)
   }
 

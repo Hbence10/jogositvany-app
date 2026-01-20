@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { DrivingLessonRequest } from '../models/driving-lesson-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
+
 
   private http = inject(HttpClient)
   baseUrl = "http://localhost:8080/users"
@@ -23,5 +25,9 @@ export class RequestService {
       studentId: studentId,
       instructorId: instructorId
     })
+  }
+
+  sendDrivingLessonRequest(newRequest: DrivingLessonRequest) {
+    return this.http.post(`${this.baseUrl}/drivingLesson`, newRequest)
   }
 }

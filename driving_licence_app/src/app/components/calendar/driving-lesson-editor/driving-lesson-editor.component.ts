@@ -36,7 +36,7 @@ export class DrivingLessonEditorComponent {
       next: response => this.statusList = response
     })
 
-    this.drivingLessonService.getAllDrivingLessonType().subscribe({
+    this.drivingLessonService.getAllDrivingLessonType(4).subscribe({
       next: response => this.drivingLessonTypeList = response
     })
 
