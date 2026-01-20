@@ -36,7 +36,7 @@
 
 
 @if (showEditor) {
-  <app-driving-lesson-editor (close)="showEditor = false"/>
+  <app-driving-lesson-editor [drivingLesson]="selectedDrivingLesson" (close)="showEditor = false"/>
 }
 
 @if (showRequestContainer) {

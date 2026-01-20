@@ -14,50 +14,50 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <div class="container-fluid">
+            <form [formGroup]="drivingLessonForm" class="container-fluid">
 
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="">Tanuló felvételi helye</label>
-                  <input type="text" name="" id="">
+                  <label for="pickUpPlace">Tanuló felvételi helye</label>
+                  <input type="text" name="pickUpPlace" id="pickUpPlace" formControlName="pickUpPlace">
                 </div>
                 <div class="col-lg-6">
-                  <label for="">Tanuló felvételi helye</label>
-                  <input type="text" name="" id="">
+                  <label for="dropOffPlace">Tanuló elhelyezési helye</label>
+                  <input type="text" name="dropOffPlace" id="dropOffPlace" formControlName="dropOffPlace">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="">Km óra állása kezdéskor:</label>
-                  <input type="number" name="" id="">
+                  <label for="startKm">Km óra állása kezdéskor:</label>
+                  <input type="number" name="startKm" id="startKm" formControlName="startKm">
                 </div>
                 <div class="col-lg-6">
-                  <label for="">Km óra állása végzéskor</label>
-                  <input type="number" name="" id="">
+                  <label for="endKm">Km óra állása végzéskor</label>
+                  <input type="number" name="endKm" id="endKm" formControlName="endKm">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-9">
-                  <label for="">Hol vezetett a diák?</label>
-                  <input type="text">
+                  <label for="location">Hol vezetett a diák?</label>
+                  <input type="text" name="location" id="location" formControlName="location">
                 </div>
                 <div class="col-lg-3">
-                  <label for="">Hány órát vezetett a diák</label>
-                  <input type="number" name="" id="">
+                  <label for="lessonHourNumber">Hány órát vezetett a diák</label>
+                  <input type="number" name="lessonHourNumber" id="lessonHourNumber" formControlName="lessonHourNumber">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
                   <div>
-                    <input type="radio" name="" id="">
-                    <label for="">Ki van fizetve?</label>
+                    <input type="radio" name="isPaid" id="isPaid" (click)="isPaid = !isPaid">
+                    <label for="isPaid">Ki van fizetve?</label>
                   </div>
 
-                  <label for="">Fizetési módszer kiválasztása</label>
-                  <select name="" id="">
+                  <label for="paymentMethod">Fizetési módszer kiválasztása</label>
+                  <select name="paymentMethod" id="paymentMethod" formControlName="paymentMethod">
                     @for (paymentMethod of paymentMethods; track $index) {
                       <option [value]="paymentMethod.id">{{paymentMethod.name}}</option>
                     }
@@ -67,23 +67,23 @@
 
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="">Vezetési óra tipusa:</label>
-                  <select name="" id="">
+                  <label for="lessonType">Vezetési óra tipusa:</label>
+                  <select name="lessonType" id="lessonType" formControlName="lessonType">
                     @for (lessonType of drivingLessonTypeList; track $index) {
                       <option [value]="lessonType.id">{{lessonType.name}}</option>
                     }
                   </select>
                 </div>
                 <div class="col-lg-6">
-                  <label for="">Vezetési óra állapota</label>
-                  <select name="" id="">
+                  <label for="lessonStatus">Vezetési óra állapota</label>
+                  <select name="lessonStatus" id="lessonStatus" formControlName="lessonStatus">
                     @for (status of statusList; track $index) {
-                      <option [value]="status.id">{{status.name}}</option>
+                      <option [value]="$index">{{status.name}}</option>
                     }
                   </select>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 
