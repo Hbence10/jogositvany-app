@@ -83,10 +83,6 @@ public class Instructors {
     @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
-    @OneToMany(mappedBy = "examRequesterInstructor", fetch = FetchType.LAZY, cascade = {})
-    @JsonIgnore
-    private List<ExamRequest> examRequestList;
-
     @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
     @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;

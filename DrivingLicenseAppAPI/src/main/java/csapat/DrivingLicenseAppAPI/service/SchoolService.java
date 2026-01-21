@@ -205,25 +205,6 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<List<ExamRequest>> getAllExamRequest(Integer id) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            School searchedSchool = schoolRepository.getSchool(id).orElse(null);
-            System.out.println(searchedSchool.getName());
-            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok().body(searchedSchool.getExamRequestList().stream().filter(request -> !request.getIsDeleted()).toList());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<Object> deleteSchool(Integer id) {
         try {
             if (id == null) {

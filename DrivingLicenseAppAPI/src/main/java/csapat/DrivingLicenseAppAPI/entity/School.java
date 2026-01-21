@@ -131,14 +131,6 @@ public class School {
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
-    @JsonIgnore
-    @OneToMany(
-            mappedBy = "examSchool",
-            fetch = FetchType.LAZY,
-            cascade = {}
-    )
-    private List<ExamRequest> examRequestList;
-
     @OneToMany(
             mappedBy = "schoolJoinRequestSchool",
             fetch = FetchType.LAZY,

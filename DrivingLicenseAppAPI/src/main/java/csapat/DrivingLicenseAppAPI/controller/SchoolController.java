@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -138,22 +137,6 @@ public class SchoolController {
         return schoolService.getAllJoinRequest(id);
     }
 
-    @Operation(summary = "Iskalához tartozó vizsga kérelmek lekérdezése", description = "Az adott iskolához tartozó vizsga kérelmek lekérdezése")
-    @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres kérelemek lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = ExamRequest.class))
-            )),
-            @ApiResponse(responseCode = "404", description = "Egy nem létező iskolához tartozó kérelmek lekérdezése", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
-    @GetMapping("/{id}/examRequest")
-    private ResponseEntity<List<ExamRequest>> getAllExamRequest(@PathVariable("id") Integer id) {
-        return schoolService.getAllExamRequest(id);
-    }
-
     @Operation(summary = "Iskola törlése", description = "Az adott iskola törlése id alapján.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
@@ -224,7 +207,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/users")
-    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role){
+    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role) {
         return schoolService.getMembersOfSchool(id, role);
     }
 

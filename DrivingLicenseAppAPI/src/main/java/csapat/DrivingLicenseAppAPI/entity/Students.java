@@ -91,14 +91,6 @@ public class Students {
     private List<DrivingLessons> drivingLessons;
 
     @OneToMany(
-            mappedBy = "examStudent",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    @JsonIgnore
-    private List<ExamRequest> examRequestList;
-
-    @OneToMany(
             mappedBy = "instructorJoinRequestStudent",
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}

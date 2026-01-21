@@ -20,7 +20,6 @@ public class RequestService {
 
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
-    private final ExamRequestRepository examRequestRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final SchoolRepository schoolRepository;
@@ -110,31 +109,6 @@ public class RequestService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> sendExamRequest(ExamRequest addedExamRequest) {
-        try {
-            if (addedExamRequest == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(addedExamRequest.getExamRequesterInstructor().getId()).orElse(null);
-            Students searchedStudent = studentRepository.getStudent(addedExamRequest.getExamStudent().getId()).orElse(null);
-            School searchedSchool = schoolRepository.getSchool(addedExamRequest.getExamSchool().getId()).orElse(null);
-
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.status(404).body("schoolNotFound");
-            } else {
-                examRequestRepository.save(addedExamRequest);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }

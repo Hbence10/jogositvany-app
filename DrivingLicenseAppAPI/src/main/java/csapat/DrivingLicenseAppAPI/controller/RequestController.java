@@ -2,11 +2,8 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
-import csapat.DrivingLicenseAppAPI.entity.ExamRequest;
 import csapat.DrivingLicenseAppAPI.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
@@ -14,7 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/request")
@@ -74,7 +74,7 @@ public class RequestController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-        @PostMapping("/drivingLesson")
+    @PostMapping("/drivingLesson")
     private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
         return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
     }
