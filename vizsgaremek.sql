@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 17. 12:19
+-- Létrehozás ideje: 2026. Jan 21. 12:06
 -- Kiszolgáló verziója: 5.7.24
--- PHP verzió: 8.3.1
+-- PHP verzió: 8.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `vizsgaremek`
+-- Adatbázis: `vizsgaremek_10.0`
 --
 
 DELIMITER $$
@@ -26,35 +26,35 @@ DELIMITER $$
 -- Eljárások
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLesson` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson` SET `is_cancelled`= 1 ,`cancelled_at`= CURRENT_DATE() WHERE `driving_lesson`.`id` = idIN;
+	UPDATE `driving_lesson` SET `is_cancelled`= 1 ,`cancelled_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_instructor`.`id` = idIN;
+	UPDATE `driving_lesson_instructor` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_instructor`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonRequest` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_request`.`id` = idIN;
+	UPDATE `driving_lesson_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLessonType` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_lesson_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_lesson_type`.`id` = idIN;
+	UPDATE `driving_lesson_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_lesson_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteDrivingLicenseCategory` (IN `idIN` INT)   BEGIN
-	UPDATE `driving_license_category` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `driving_license_category`.`id` = idIN;
+	UPDATE `driving_license_category` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `driving_license_category`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteEducation` (IN `idIN` INT)   BEGIN
-	UPDATE `education` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `education`.`id` = idIN;
+	UPDATE `education` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `education`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteExamRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `exam_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `exam_request`.`id` = idIN;
+    UPDATE `exam_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `exam_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFuelType` (IN `idIN` INT)   BEGIN
-    UPDATE `fuel_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `fuel_type`.`id` = idIN;
+    UPDATE `fuel_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `fuel_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructor` (IN `idIN` INT)   BEGIN
@@ -62,63 +62,63 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructor` (IN `idIN` INT)  
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteInstructorJoinRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `instructor_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `instructor_join_request`.`id` = idIN;
+    UPDATE `instructor_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `instructor_join_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteMessage` (IN `idIN` INT)   BEGIN
-    UPDATE `message` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `message`.`id` = idIN;
+    UPDATE `message` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `message`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOpeningDetail` (IN `idIN` INT)   BEGIN
-    UPDATE `opening_detail` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `opening_detail`.`id` = idIN;
+    UPDATE `opening_detail` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `opening_detail`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePaymentMethod` (IN `idIN` INT)   BEGIN
-    UPDATE `payment_method` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `payment_method`.`id` = idIN;
+    UPDATE `payment_method` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `payment_method`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReservedDate` (IN `idIN` INT)   BEGIN
-    UPDATE `reserved_date` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `reserved_date`.`id` = idIN;
+    UPDATE `reserved_date` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `reserved_date`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReservedHour` (IN `idIN` INT)   BEGIN
-    UPDATE `reserved_hour` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `reserved_hour`.`id` = idIN;
+    UPDATE `reserved_hour` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `reserved_hour`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteReview` (IN `idIN` INT)   BEGIN
-    UPDATE `review` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `review`.`id` = idIN;
+    UPDATE `review` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `review`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteRole` (IN `idIN` INT)   BEGIN
-    UPDATE `role` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `role`.`id` = idIN;
+    UPDATE `role` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `role`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSchool` (IN `idIN` INT)   BEGIN
-    UPDATE `school` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `school`.`id` = idIN;
+    UPDATE `school` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `school`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteSchoolJoinRequest` (IN `idIN` INT)   BEGIN
-    UPDATE `school_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `school_join_request`.`id` = idIN;
+    UPDATE `school_join_request` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `school_join_request`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteStatus` (IN `idIN` INT)   BEGIN
-    UPDATE `status` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `status`.`id` = idIN;
+    UPDATE `status` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `status`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteStudent` (IN `idIN` INT)   BEGIN
-    UPDATE `student` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `student`.`id` = idIN;
+    UPDATE `student` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `student`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `idIN` INT)   BEGIN
-    UPDATE `user` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `user`.`id` = idIN;
+    UPDATE `user` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `user`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteVehicle` (IN `idIN` INT)   BEGIN
-    UPDATE `vehicle` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `vehicle`.`id` = idIN;
+    UPDATE `vehicle` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `vehicle`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteVehicleType` (IN `idIN` INT)   BEGIN
-    UPDATE `vehicle_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_DATE() WHERE `vehicle_type`.`id` = idIN;
+    UPDATE `vehicle_type` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `vehicle_type`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDrivingLesson` ()   BEGIN
@@ -240,9 +240,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonType` (IN `idIN` IN
     `driving_lesson_type`.id = idIN AND `driving_lesson_type`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonTypeBySchool` ()   BEGIN 
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLicenseCategory` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_license_category` WHERE
     `driving_license_category`.`id` = idIN AND `driving_license_category`.`is_deleted` = 0;
@@ -299,21 +296,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDate` (IN `idIN` INT)   
 	SELECT*FROM `reserved_date` WHERE `reserved_date`.`id` = idIN AND `reserved_date`.`is_deleted` = 0;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedDateByDate` (IN `wantedDateIN` DATE)   BEGIN 
+	SELECT * FROM reserved_date rd
+    WHERE 
+    rd.date = wantedDateIN;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHour` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `reserved_hour` WHERE `reserved_hour`.`id` = idIN AND `reserved_hour`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHourIdByDateAndInstructor` (IN `dateIN` DATE, IN `instructorIdIN` INT)   BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHourIdByDateAndInstructor` (IN `dateIN` DATE, IN `instructoridIN` INT)   BEGIN
 	SELECT rh.id FROM reserved_hour rh 
-    INNER JOIN reserved_date rd ON 
-    rh.date_id = rd.id 
-    INNER JOIN driving_lesson dl ON 
-    dl.hour_id = rh.id
-    WHERE 
-    rd.date = dateIN
-    AND 
-    dl.instructor_id = instructorIdIN
-    ORDER BY rh.start_time;
+    INNER JOIN reserved_date rd 
+    	ON rh.date_id = rd.id
+	INNER JOIN driving_lesson dl 
+    	ON dl.hour_id = rh.id
+	WHERE rd.date = dateIN
+	AND dl.instructor_id = instructorIdIN
+	ORDER BY rh.start_time;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getReview` (IN `idIN` INT)   BEGIN
@@ -392,6 +393,7 @@ CREATE TABLE `driving_lesson` (
   `is_paid` tinyint(1) NOT NULL DEFAULT '0',
   `payment_method_id` int(10) NOT NULL,
   `hour_id` int(11) NOT NULL,
+  `type_id` int(10) NOT NULL,
   `status_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
@@ -404,10 +406,34 @@ CREATE TABLE `driving_lesson` (
 -- A tábla adatainak kiíratása `driving_lesson`
 --
 
-INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
-(1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 6, 1, 4, 11, 0, 0, NULL),
-(2, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 7, 1, 4, 11, 0, 0, NULL),
-(3, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 8, 1, 4, 8, 0, 0, NULL);
+INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `type_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL, NULL, 0, 2, 2, 2, 1, 1, 6, 0, 0, NULL),
+(2, NULL, NULL, 'location1', 'p_u_p1', 'd_o_p1', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(3, NULL, NULL, 'location2', 'p_u_p2', 'd_o_p2', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(4, NULL, NULL, 'location3', 'p_u_p3', 'd_o_p3', NULL, 0, 3, 2, 1, 2, 1, 6, 0, 0, NULL),
+(5, NULL, NULL, 'location4', 'p_u_p4', 'd_o_p4', NULL, 0, 1, 1, 2, 1, 1, 6, 0, 0, NULL),
+(6, NULL, NULL, 'location5', 'p_u_p5', 'd_o_p5', NULL, 0, 1, 1, 2, 2, 1, 6, 0, 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `driving_lesson_instructor`
+--
+
+CREATE TABLE `driving_lesson_instructor` (
+  `id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
+  `driving_lesson_type_id` int(11) NOT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `driving_lesson_instructor`
+--
+
+INSERT INTO `driving_lesson_instructor` (`id`, `instructor_id`, `driving_lesson_type_id`, `is_deleted`, `deleted_at`) VALUES
+(1, 1, 1, 1, '2025-11-30 23:00:00');
 
 -- --------------------------------------------------------
 
@@ -423,6 +449,7 @@ CREATE TABLE `driving_lesson_request` (
   `date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
+  `lesson_type_id` int(11) NOT NULL,
   `sent_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_accepted` tinyint(1) DEFAULT NULL,
   `accepted_at` timestamp NULL DEFAULT NULL,
@@ -515,29 +542,6 @@ INSERT INTO `education` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 (6, 'Egyetem', 0, NULL),
 (7, 'Főiskola', 0, NULL),
 (8, 'Doktori képzés', 0, NULL);
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `exam_request`
---
-
-CREATE TABLE `exam_request` (
-  `id` int(11) NOT NULL,
-  `instructor_id` int(11) NOT NULL,
-  `school_id` int(11) NOT NULL,
-  `requested_date` datetime NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- A tábla adatainak kiíratása `exam_request`
---
-
-INSERT INTO `exam_request` (`id`, `instructor_id`, `school_id`, `requested_date`, `student_id`, `is_deleted`, `deleted_at`) VALUES
-(1, 4, 9, '2025-12-03 00:00:00', 7, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -666,29 +670,6 @@ INSERT INTO `instructor_join_request` (`id`, `student_id`, `instructor_id`, `is_
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `message`
---
-
-CREATE TABLE `message` (
-  `id` int(11) NOT NULL,
-  `message_to` int(10) NOT NULL,
-  `message_from` int(10) NOT NULL,
-  `content` longtext NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- A tábla adatainak kiíratása `message`
---
-
-INSERT INTO `message` (`id`, `message_to`, `message_from`, `content`, `created_at`, `is_deleted`, `deleted_at`) VALUES
-(1, 1, 3, 'A message táblához tartozó test adat', '2025-12-01 09:13:26', 1, '2025-12-01 00:00:00');
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `opening_detail`
 --
 
@@ -757,7 +738,11 @@ CREATE TABLE `reserved_date` (
 --
 
 INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
-(6, '2026-01-11', 0, 0, NULL);
+(1, '2025-10-14', 0, 1, '2025-11-30 23:00:00'),
+(2, '2025-12-04', 0, 0, '2025-12-04 11:24:12'),
+(3, '2025-12-03', 0, 0, '2025-12-03 09:34:20'),
+(4, '2025-12-02', 0, 0, '2025-12-02 05:34:37'),
+(5, '2025-12-01', 0, 0, '2025-12-01 14:34:53');
 
 -- --------------------------------------------------------
 
@@ -779,9 +764,11 @@ CREATE TABLE `reserved_hour` (
 --
 
 INSERT INTO `reserved_hour` (`id`, `date_id`, `start_time`, `end_time`, `is_deleted`, `deleted_at`) VALUES
-(6, 6, '13:45:00', '14:45:00', 0, NULL),
-(7, 6, '10:00:00', '12:00:00', 0, NULL),
-(8, 6, '18:00:00', '20:00:00', 0, NULL);
+(1, 1, '00:00:00', '00:00:00', 1, '2025-11-30 23:00:00'),
+(2, 2, '00:00:00', '00:00:00', 0, '2025-12-04 12:35:30'),
+(3, 2, '00:00:00', '00:00:00', 0, '2025-12-03 09:35:30'),
+(4, 4, '00:00:00', '00:00:00', 0, '2025-12-02 09:36:47'),
+(5, 5, '00:00:00', '00:00:00', 0, '2025-12-01 09:36:47');
 
 -- --------------------------------------------------------
 
@@ -894,20 +881,8 @@ INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `addres
 CREATE TABLE `school_category` (
   `id` int(11) NOT NULL,
   `driving_license_category_id` int(11) NOT NULL,
-  `school_id` int(11) NOT NULL,
-  `hourly_rate` int(5) NOT NULL
+  `shool_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- A tábla adatainak kiíratása `school_category`
---
-
-INSERT INTO `school_category` (`id`, `driving_license_category_id`, `school_id`, `hourly_rate`) VALUES
-(1, 4, 9, 0),
-(2, 2, 9, 0),
-(3, 6, 9, 0),
-(4, 8, 9, 0),
-(5, 10, 9, 0);
 
 -- --------------------------------------------------------
 
@@ -991,7 +966,7 @@ INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `driving_l
 (17, 9, 4, 23, 1, 0, NULL),
 (18, 9, 4, 24, 1, 0, NULL),
 (21, 9, 28, 66, 1, 0, NULL),
-(23, 9, NULL, 77, 1, 1, '2026-01-10 23:00:00');
+(23, 9, NULL, 77, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1024,18 +999,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_admin_id`, `education_id`, `verification_code`) VALUES
-(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, 'assets\\images\\pfp\\285506.jpg', '2025-10-07 14:06:32', '2026-01-08 18:40:52', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
+(1, 'Oktató', 'Oktató', 'bzhalmai@gmail.com', 'a', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$nZAQi9LzNIfrAf8kZ2U2Yg$zDT3uia/IX+LcyqSRw4zeFHVQ+2FDvhudx9Xk2DPvlg', 3, 'assets\\images\\pfp\\285506.jpg', '2025-10-07 14:06:32', '2026-01-04 11:04:07', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$9sEm/pDkj3C+PB1oVTAayg$sfhSqQPmEsDBntThkwGjuHp/QqVI3ZKt1PY0viRQg6c'),
 (2, 'oldalAdmin', 'oldalAdmin', 'oldalAdmin@gmail.com', 'a2', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 5, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:06:59', '2026-01-04 10:18:30', 0, NULL, NULL, 1, NULL),
-(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a3', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:04', '2026-01-05 15:21:52', 0, NULL, NULL, 1, NULL),
+(3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a3', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:04', '2026-01-04 12:06:49', 0, NULL, NULL, 1, NULL),
 (4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a4', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:09', '2025-12-22 15:26:44', 0, NULL, NULL, 1, NULL),
 (5, 'Tanuló4', 'Tanuló4', 'bzhalmai6@gmail.com', 'a5', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
 (6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a6', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, NULL),
 (7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a7', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, 'assets/icons/defaultProfileImg.svg', '2025-10-07 14:09:52', '2026-01-04 12:12:01', 0, NULL, 2, 1, NULL),
-(11, 'iskolaAdmin9', 'iskolaAdmin9', 'iskolaAdmin9@gmail.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 4, 'assets/icons/defaultProfileImg.svg', '2025-11-16 10:34:22', '2026-01-17 10:51:48', 0, NULL, 9, 1, NULL),
+(11, 'iskolaAdmin9', 'iskolaAdmin9', 'iskolaAdmin9@gma.com', '706285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 4, 'assets/icons/defaultProfileImg.svg', '2025-11-16 10:34:22', '2026-01-04 12:12:18', 0, NULL, 9, 1, NULL),
 (12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'a8', '2000-01-01', 'Gender', 'jelszo', 6, 'assets/icons/defaultProfileImg.svg', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
 (13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'a9', '2000-01-01', 'gender', 'password', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
 (14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a10', '1990-01-01', 'a', 'jelszo', 3, 'assets/icons/defaultProfileImg.svg', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL),
-(15, 'diak1.0', 'diak1.0', 'diak1.0@gmal.com', '706285100', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$0unA9iCWXaKiYoJiwAf6kA$0EqOpuRF28id329sTLbMXDAldYzdar6nOIxh5hZdv5I', 2, 'asd', '2025-12-16 12:15:38', '2026-01-17 10:50:44', 0, NULL, NULL, 1, NULL),
+(15, 'diak1.0', 'diak1.0', 'diak1.0@gmal.com', '706285100', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$0unA9iCWXaKiYoJiwAf6kA$0EqOpuRF28id329sTLbMXDAldYzdar6nOIxh5hZdv5I', 2, 'asd', '2025-12-16 12:15:38', '2026-01-04 12:18:13', 0, NULL, NULL, 1, NULL),
 (16, 'diak1.1', 'diak1.1', 'diak1.1@gmal.com', '706285101', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$EaFxZTf+lb6gy08EAULvgQ$KMoappjLlLadU2+NLT1/pI9YDETvhY3O9zU7gAX0Tow', 2, 'asd', '2025-12-16 12:15:49', NULL, 0, NULL, NULL, 1, NULL),
 (17, 'diak1.2', 'diak1.2', 'diak1.2@gmal.com', '706285102', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$5FiW6ZO2pmWHvtQ8M/tpTw$OZEKPjCiyPJ068C38AzUo452JVN2Xev2C9PFGs8p/ys', 2, 'asd', '2025-12-16 12:15:59', NULL, 0, NULL, NULL, 1, NULL),
 (18, 'diak1.3', 'diak1.3', 'diak1.3@gmal.com', '706285103', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xwR1zm32Fl8J223HJAF0kg$Ut4ktIw+yfqeUH630VEGyblN68oTSfhK3k/IRb8oFnM', 2, 'asd', '2025-12-16 12:16:06', NULL, 0, NULL, NULL, 1, NULL),
@@ -1163,11 +1138,20 @@ INSERT INTO `vehicle_type` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
 --
 ALTER TABLE `driving_lesson`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `category` (`type_id`),
   ADD KEY `payment` (`payment_method_id`),
   ADD KEY `hour` (`hour_id`),
   ADD KEY `status` (`status_id`),
   ADD KEY `d_instructor` (`instructor_id`),
   ADD KEY `d_students` (`student_id`);
+
+--
+-- A tábla indexei `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lesson_instructor` (`instructor_id`),
+  ADD KEY `lesson_type` (`driving_lesson_type_id`);
 
 --
 -- A tábla indexei `driving_lesson_request`
@@ -1176,7 +1160,8 @@ ALTER TABLE `driving_lesson_request`
   ADD PRIMARY KEY (`id`),
   ADD KEY `d_request_student` (`student_id`),
   ADD KEY `d_request_instructor` (`instructor_id`),
-  ADD KEY `d_status` (`is_accepted`);
+  ADD KEY `d_status` (`is_accepted`),
+  ADD KEY `d_lesson_type` (`lesson_type_id`);
 
 --
 -- A tábla indexei `driving_lesson_type`
@@ -1197,15 +1182,6 @@ ALTER TABLE `driving_license_category`
 --
 ALTER TABLE `education`
   ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `exam_request`
---
-ALTER TABLE `exam_request`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `e_instructor` (`instructor_id`),
-  ADD KEY `e_school` (`school_id`),
-  ADD KEY `e_student` (`student_id`);
 
 --
 -- A tábla indexei `fuel_type`
@@ -1238,14 +1214,6 @@ ALTER TABLE `instructor_join_request`
   ADD PRIMARY KEY (`id`),
   ADD KEY `instructor_join_student_id` (`student_id`),
   ADD KEY `instructor_join_instructor_id` (`instructor_id`);
-
---
--- A tábla indexei `message`
---
-ALTER TABLE `message`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `message_to` (`message_to`),
-  ADD KEY `message_from` (`message_from`);
 
 --
 -- A tábla indexei `opening_detail`
@@ -1303,7 +1271,7 @@ ALTER TABLE `school`
 ALTER TABLE `school_category`
   ADD PRIMARY KEY (`id`),
   ADD KEY `school_category_id` (`driving_license_category_id`),
-  ADD KEY `schoolasd` (`school_id`);
+  ADD KEY `schoolasd` (`shool_id`);
 
 --
 -- A tábla indexei `school_join_request`
@@ -1364,7 +1332,13 @@ ALTER TABLE `vehicle_type`
 -- AUTO_INCREMENT a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT a táblához `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
@@ -1391,12 +1365,6 @@ ALTER TABLE `education`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT a táblához `exam_request`
---
-ALTER TABLE `exam_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT a táblához `fuel_type`
 --
 ALTER TABLE `fuel_type`
@@ -1421,12 +1389,6 @@ ALTER TABLE `instructor_join_request`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT a táblához `message`
---
-ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT a táblához `opening_detail`
 --
 ALTER TABLE `opening_detail`
@@ -1442,13 +1404,13 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT a táblához `reserved_date`
 --
 ALTER TABLE `reserved_date`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `review`
@@ -1472,7 +1434,7 @@ ALTER TABLE `school`
 -- AUTO_INCREMENT a táblához `school_category`
 --
 ALTER TABLE `school_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `school_join_request`
@@ -1518,6 +1480,7 @@ ALTER TABLE `vehicle_type`
 -- Megkötések a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
+  ADD CONSTRAINT `category` FOREIGN KEY (`type_id`) REFERENCES `driving_lesson_type` (`id`),
   ADD CONSTRAINT `d_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `d_students` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   ADD CONSTRAINT `hour` FOREIGN KEY (`hour_id`) REFERENCES `reserved_hour` (`id`),
@@ -1525,19 +1488,26 @@ ALTER TABLE `driving_lesson`
   ADD CONSTRAINT `status` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`);
 
 --
+-- Megkötések a táblához `driving_lesson_instructor`
+--
+ALTER TABLE `driving_lesson_instructor`
+  ADD CONSTRAINT `lesson_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
+  ADD CONSTRAINT `lesson_type` FOREIGN KEY (`driving_lesson_type_id`) REFERENCES `driving_lesson_type` (`id`);
+
+--
 -- Megkötések a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
+  ADD CONSTRAINT `d_lesson_type` FOREIGN KEY (`lesson_type_id`) REFERENCES `driving_lesson_type` (`id`),
   ADD CONSTRAINT `d_request_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `d_request_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
 
 --
--- Megkötések a táblához `exam_request`
+-- Megkötések a táblához `driving_lesson_type`
 --
-ALTER TABLE `exam_request`
-  ADD CONSTRAINT `e_instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
-  ADD CONSTRAINT `e_school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
-  ADD CONSTRAINT `e_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
+ALTER TABLE `driving_lesson_type`
+  ADD CONSTRAINT `d_school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
+  ADD CONSTRAINT `d_type` FOREIGN KEY (`license_category_id`) REFERENCES `driving_license_category` (`id`);
 
 --
 -- Megkötések a táblához `instructor`
@@ -1560,13 +1530,6 @@ ALTER TABLE `instructor_category`
 ALTER TABLE `instructor_join_request`
   ADD CONSTRAINT `instructor_join_instructor_id` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`),
   ADD CONSTRAINT `instructor_join_student_id` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`);
-
---
--- Megkötések a táblához `message`
---
-ALTER TABLE `message`
-  ADD CONSTRAINT `message_from` FOREIGN KEY (`message_from`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `message_to` FOREIGN KEY (`message_to`) REFERENCES `user` (`id`);
 
 --
 -- Megkötések a táblához `opening_detail`
@@ -1599,7 +1562,7 @@ ALTER TABLE `school`
 --
 ALTER TABLE `school_category`
   ADD CONSTRAINT `school_category_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
-  ADD CONSTRAINT `schoolasd` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`);
+  ADD CONSTRAINT `schoolasd` FOREIGN KEY (`shool_id`) REFERENCES `school` (`id`);
 
 --
 -- Megkötések a táblához `school_join_request`
