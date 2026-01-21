@@ -8,6 +8,7 @@ import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -194,7 +195,6 @@ public class InstructorService {
 
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-//            DrivingLicenseCategory searchedCategory = drivingLc.findBy(categoryId);
 
             if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
@@ -240,7 +240,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> getStudentsByInstructor(Integer id) {
+    public ResponseEntity<Object> getStudentsByInstructor(Integer id, Pageable pageable) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -251,7 +251,7 @@ public class InstructorService {
             }
 
             List<ProfileCard> returnList = new ArrayList<>();
-            for (Students i : searchedInstructor.getStudents()) {
+            for (Students i : instructorRepository.getAllStudents(id, pageable).toList()) {
                 returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
             }
 

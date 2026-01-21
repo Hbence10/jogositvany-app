@@ -207,8 +207,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/users")
-    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role) {
-        return schoolService.getMembersOfSchool(id, role);
+    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role, Pageable pageable) {
+        return schoolService.getMembersOfSchool(id, role, pageable);
     }
 
     @DeleteMapping("/kickout")

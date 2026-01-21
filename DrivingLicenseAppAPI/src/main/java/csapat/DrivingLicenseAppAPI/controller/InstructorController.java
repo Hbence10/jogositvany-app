@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -186,8 +187,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/students")
-    private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id) {
-        return instructorService.getStudentsByInstructor(id);
+    private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
+        return instructorService.getStudentsByInstructor(id, pageable);
     }
 
     @DeleteMapping("/kickout")

@@ -99,28 +99,6 @@ public class DrivingLessonService {
         }
     }
 
-    public ResponseEntity<Object> rescheduleDrivingLesson(Integer lessonId, String newDateText, Integer newStart, Integer newEnd) {
-        try {
-            if (lessonId == null || newDateText == null || newStart == null || newEnd == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            DrivingLessons searchedLesson = drivingLessonRepository.getDrivingLesson(lessonId).orElse(null);
-            if (searchedLesson == null || searchedLesson.getIsCancelled()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                reservedHourRepository.deleteReservedHour(searchedLesson.getReservedHour().getId());
-
-
-            }
-
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<Object> getReservedHoursByDate(Integer instructorId, String wantedDate) {
         try {
             if (instructorId == null || wantedDate == null) {
@@ -162,6 +140,10 @@ public class DrivingLessonService {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    public ResponseEntity<Object> checkIfTimePeriodIsAvailable() {
+        return null;
     }
 }
 

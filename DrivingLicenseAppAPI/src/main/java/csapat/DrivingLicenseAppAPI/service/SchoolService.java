@@ -301,7 +301,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<Object> getMembersOfSchool(Integer schoolId, String role) {
+    public ResponseEntity<Object> getMembersOfSchool(Integer schoolId, String role, Pageable pageable) {
         try {
             if (schoolId == null || role == null) {
                 return ResponseEntity.status(422).build();
@@ -318,12 +318,13 @@ public class SchoolService {
 
             List<ProfileCard> returnList = new ArrayList<>();
             if (role.equals("students")) {
-                List<Students> studentsList = searchedSchool.getStudentsList().stream().filter(student -> !student.getIsDeleted()).toList();
-                for (Students i : studentsList) {
+                List<Students> students = schoolRepository.getAllStudents(schoolId, pageable).toList();
+                for (Students i : students) {
                     returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
                 }
+
             } else if (role.equals("instructors")){
-                List<Instructors> studentsList = searchedSchool.getInstructorsList().stream().filter(student -> !student.getIsDeleted()).toList();
+                List<Instructors> studentsList = schoolRepository.getAllInstructor(schoolId, pageable).toList();
                 for (Instructors i : studentsList) {
                     returnList.add(new ProfileCard(i.getId(), i.getInstructorUser().getFirstName() + " " + i.getInstructorUser().getLastName(), i.getInstructorUser().getPfpPath(), i.getInstructorUser().getId()));
                 }

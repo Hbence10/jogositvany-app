@@ -1,7 +1,11 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
+import csapat.DrivingLicenseAppAPI.entity.Students;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -21,4 +25,7 @@ public interface InstructorRepository extends JpaRepository<Instructors, Integer
 
     @Procedure(name = "getInstructorBySearch", procedureName = "getInstructorBySearch")
     List<Integer> getInstructorBySearch(@Param("fuelTypeIdIN") Integer fuelTypeId, @Param("schoolIdIN") Integer schoolId,  @Param("categoryIdIN") Integer categoryId);
+
+    @Query("select s from Instructors i JOIN i.students s where i.id = ?1 and s.isDeleted = false")
+    Page<Students> getAllStudents(Integer id, Pageable pageable);
 }
