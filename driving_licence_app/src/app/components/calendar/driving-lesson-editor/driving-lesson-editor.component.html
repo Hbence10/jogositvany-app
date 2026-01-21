@@ -68,11 +68,6 @@
               <div class="row">
                 <div class="col-lg-6">
                   <label for="lessonType">Vezetési óra tipusa:</label>
-                  <select name="lessonType" id="lessonType" formControlName="lessonType">
-                    @for (lessonType of drivingLessonTypeList; track $index) {
-                      <option [value]="lessonType.id">{{lessonType.name}}</option>
-                    }
-                  </select>
                 </div>
                 <div class="col-lg-6">
                   <label for="lessonStatus">Vezetési óra állapota</label>

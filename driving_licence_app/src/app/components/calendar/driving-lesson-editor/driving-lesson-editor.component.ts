@@ -1,6 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DrivingLessonType } from '../../../models/driving-lesson-type.model';
 import { PaymentMethod } from '../../../models/payment-method.model';
 import { Status } from '../../../models/status.model';
 import { DrivingLessonService } from '../../../services/driving-lesson.service';
@@ -20,7 +19,6 @@ export class DrivingLessonEditorComponent {
 
   paymentMethods: PaymentMethod[] = []
   statusList: Status[] = []
-  drivingLessonTypeList: DrivingLessonType[] = []
   drivingLessonForm!: FormGroup;
   drivingLesson = input.required<DrivingLessons>()
   isPaid: boolean = false
@@ -36,10 +34,6 @@ export class DrivingLessonEditorComponent {
       next: response => this.statusList = response
     })
 
-    this.drivingLessonService.getAllDrivingLessonType(4).subscribe({
-      next: response => this.drivingLessonTypeList = response
-    })
-
     this.drivingLessonForm = new FormGroup({
       startKm: new FormControl(this.drivingLesson().startKm, []),
       endKm: new FormControl(this.drivingLesson().endKm, []),
@@ -48,7 +42,6 @@ export class DrivingLessonEditorComponent {
       dropOffPlace: new FormControl(this.drivingLesson().dropOffPlace, []),
       lessonHourNumber: new FormControl(this.drivingLesson().lessonHourNumber, []),
       paymentMethod: new FormControl(this.paymentMethods.indexOf(this.paymentMethods.find(method => method.id == this.drivingLesson().paymentMethod.id)!), []),
-      lessonType: new FormControl(this.drivingLessonTypeList.indexOf(this.drivingLessonTypeList.find(dType => dType.id == this.drivingLesson().drivingLessonType.id)!), []),
       lessonStatus: new FormControl(this.statusList.indexOf(this.statusList.find(status => status.id == this.drivingLesson().drivingLessonStatus.id)!), [])
     })
   }
@@ -63,8 +56,7 @@ export class DrivingLessonEditorComponent {
       lessonHourNumber: +this.drivingLessonForm.controls["lessonHourNumber"].value,
       isPaid: this.isPaid,
       statusId: this.statusList[this.drivingLessonForm.controls["lessonStatus"].value]?.id,
-      paymentMethodId: this.paymentMethods[this.drivingLessonForm.controls["paymentMethod"].value]?.id,
-      typeId: this.drivingLessonTypeList[this.drivingLessonForm.controls["lessonType"].value]?.id
+      paymentMethodId: this.paymentMethods[this.drivingLessonForm.controls["paymentMethod"].value]?.id
     }
 
     this.drivingLessonService.updateDrivingLesson(this.drivingLesson().id, body).subscribe({

@@ -1,4 +1,3 @@
-import { DrivingLessonType } from './driving-lesson-type.model';
 import { DrivingLicenseCategory } from './driving-license.model';
 import { Instructors } from './instructors.model';
 import { PaymentMethod } from './payment-method.model';
@@ -22,8 +21,7 @@ export class DrivingLessons {
     public paymentMethod: PaymentMethod,
     public reservedHour: ReservedHour,
     public dStudent: Students,
-    public dInstructor: Instructors,
-    public drivingLessonType: DrivingLessonType
+    public dInstructor: Instructors
   ) {}
 
   get getStartKm(): number {
