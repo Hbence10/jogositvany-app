@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 21. 12:06
+-- Létrehozás ideje: 2026. Jan 21. 12:19
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -261,7 +261,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructor` (IN `idIN` INT)   BE
 	SELECT*FROM `instructor` WHERE `instructor`.`id` = idIN AND `instructor`.`is_deleted` = 0;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `fuelTypeIdIN` INT, IN `schoolIdIN` INT)   BEGIN 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `fuelTypeIdIN` INT, IN `schoolIdIN` INT, IN `categoryIdIN` INT)   BEGIN 
     SELECT i.id
     FROM `instructor` i
     INNER JOIN user u ON 
@@ -270,10 +270,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `fuelTyp
     v.id = i.vehicle_id
     INNER JOIN fuel_type ft ON 
     ft.id = v.fuel_type_id
+    
+    INNER JOIN instructor_category ic ON
+    ic.instructor_id = i.id 
+    INNER JOIN driving_license_category dlc ON 
+    dlc.id = ic.driving_license_category_id
+    
     WHERE 
     ft.id = fuelTypeIdIN
     AND 
-    i.school_id = schoolIdIN;
+    i.school_id = schoolIdIN
+    AND 
+    dlc.id = categoryIdIN
+    ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorJoinRequest` (IN `idIN` INT)   BEGIN
@@ -641,6 +650,21 @@ CREATE TABLE `instructor_category` (
   `driving_license_category_id` int(11) NOT NULL,
   `instructor_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- A tábla adatainak kiíratása `instructor_category`
+--
+
+INSERT INTO `instructor_category` (`id`, `driving_license_category_id`, `instructor_id`) VALUES
+(1, 6, 25),
+(2, 6, 28),
+(3, 6, 29),
+(4, 6, 30),
+(5, 6, 31),
+(6, 6, 32),
+(7, 6, 33),
+(8, 6, 35),
+(11, 6, 36);
 
 -- --------------------------------------------------------
 
@@ -1380,7 +1404,7 @@ ALTER TABLE `instructor`
 -- AUTO_INCREMENT a táblához `instructor_category`
 --
 ALTER TABLE `instructor_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `instructor_join_request`
