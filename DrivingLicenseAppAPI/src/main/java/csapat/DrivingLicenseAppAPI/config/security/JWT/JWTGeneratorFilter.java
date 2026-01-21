@@ -1,46 +1,30 @@
 package csapat.DrivingLicenseAppAPI.config.security.JWT;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.core.env.Environment;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import io.jsonwebtoken.impl.TextCodec;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class JWTGeneratorFilter extends OncePerRequestFilter {
-    private final String secret = "0fd1009ab660c931cb8030c56c7d7ca6fa2bd2b0ae8752a92c6f7b6af2a45b865a66c307";
+
+    private final JwtUtilsService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("ad");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null){
-            Environment env = getEnvironment();
-            String secret = env.getProperty("JWT_SECRET", this.secret);
-            SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder()
-                    .issuer("Feluton")
-                    .subject("JWT_Token")
-                    .claim("id", Integer.valueOf(authentication.getName()))
-                    .claim("authorities", authentication.getAuthorities()
-                            .stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(",")))
-                    .issuedAt(new Date()).expiration(new Date((new Date()).getTime() + 30))
-                    .signWith(SignatureAlgorithm.HS256, TextCodec.BASE64.encode(secret))
-                    .compact();
-            response.setHeader("Authorization", jwt);
+        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
+        if (givenAuthentication != null) {
+            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
+            response.setHeader("Bearer ", jwt);
         }
 
         filterChain.doFilter(request, response);
