@@ -140,7 +140,6 @@ public class School {
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {}, mappedBy = "schoolCategory")
-    @JsonIgnore
     private List<SchoolCategory> licenseCategoryList;
 
 

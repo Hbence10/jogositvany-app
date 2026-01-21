@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Date;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -80,32 +81,19 @@ public class RequestService {
         }
     }
 
-    public ResponseEntity<Object> sendDrivingLessonRequest(DrivingLessonRequest addedDrivingLessonRequest) {
+    public ResponseEntity<Object> sendDrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Integer studentId, Integer instructorId) {
         try {
-            if (addedDrivingLessonRequest == null) {
-                return ResponseEntity.status(422).build();
-            }
+            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
+            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
-            if (addedDrivingLessonRequest.getId() != null) {
-                return ResponseEntity.status(415).body("invalidObject");
-            } else if (!ValidatorCollection.startEndValidator(addedDrivingLessonRequest.getStartTime().getHours(), addedDrivingLessonRequest.getStartTime().getMinutes(), addedDrivingLessonRequest.getEndTime().getHours(), addedDrivingLessonRequest.getEndTime().getMinutes())) {
-                return ResponseEntity.status(415).body("invalidStartEndRange");
+            if (searchedStudent == null) {
+                return ResponseEntity.status(404).body("studentNotFound");
+            } else if (searchedInstructor == null) {
+                return ResponseEntity.status(404).body("instructorNotFound");
             } else {
-                Instructors searchedInstructor = instructorRepository.getInstructor(addedDrivingLessonRequest.getDLessonInstructor().getId()).orElse(null);
-                Students searchedStudent = studentRepository.getStudent(addedDrivingLessonRequest.getDLessonRequestStudent().getId()).orElse(null);
-
-                if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("instructorNotFound");
-                } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                    return ResponseEntity.status(404).body("studentNotFound");
-                } else if (searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()){
-                    return ResponseEntity.status(415).body("invalidInstructor");
-                } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()){
-                    return ResponseEntity.status(415).body("invalidInstructor");
-                } else {
-                    drivingLessonRequestRepository.save(addedDrivingLessonRequest);
-                    return ResponseEntity.ok().build();
-                }
+                DrivingLessonRequest newRequest = new DrivingLessonRequest(msg, date, startTime, endTime, searchedStudent, searchedInstructor);
+                drivingLessonRequestRepository.save(newRequest);
+                return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
             e.printStackTrace();

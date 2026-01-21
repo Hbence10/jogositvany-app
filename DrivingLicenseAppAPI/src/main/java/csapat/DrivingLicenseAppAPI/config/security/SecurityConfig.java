@@ -36,7 +36,6 @@ public class SecurityConfig {
     private JWTValidatorFilter jwtValidatorFilter;
 
     @Bean
-    @Profile("prod")
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Security enabled");
         http

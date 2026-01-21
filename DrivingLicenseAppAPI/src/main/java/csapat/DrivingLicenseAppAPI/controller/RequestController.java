@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.spring.web.json.Json;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/request")
@@ -75,8 +82,25 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequest addedDrivingLessonRequest) {
-        return requestService.sendDrivingLessonRequest(addedDrivingLessonRequest);
+    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody JsonNode requestBody) {
+        DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+
+        System.out.println(requestBody.get("startTime").asText());
+
+        try {
+            return requestService.sendDrivingLessonRequest(
+                    requestBody.get("msg").asText(),
+                    dateFormat.parse((requestBody.get("date").asText())),
+                    dateWithTimeFormat.parse((requestBody.get("startTime").asText())),
+                    dateWithTimeFormat.parse((requestBody.get("endTime").asText())),
+                    requestBody.get("studentId").asInt(),
+                    requestBody.get("instructorId").asInt() );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }

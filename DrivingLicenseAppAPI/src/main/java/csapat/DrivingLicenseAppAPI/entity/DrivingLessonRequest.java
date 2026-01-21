@@ -87,4 +87,13 @@ public class DrivingLessonRequest {
     @JoinColumn(name = "instructor_id")
     @JsonIgnoreProperties({})
     private Instructors dLessonInstructor;
+
+    public DrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Students dLessonRequestStudent, Instructors dLessonInstructor) {
+        this.msg = msg;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.dLessonRequestStudent = dLessonRequestStudent;
+        this.dLessonInstructor = dLessonInstructor;
+    }
 }
