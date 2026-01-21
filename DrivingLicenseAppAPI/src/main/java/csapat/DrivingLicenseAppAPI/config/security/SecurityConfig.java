@@ -29,12 +29,6 @@ import java.util.Collections;
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 public class SecurityConfig {
 
-    @Autowired
-    private JWTGeneratorFilter jwtGeneratorFilter;
-
-    @Autowired
-    private JWTValidatorFilter jwtValidatorFilter;
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Security enabled");
@@ -63,35 +57,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-//    @Bean
-//    @Profile("test")
-//    SecurityFilterChain securityFilterChainTest(HttpSecurity http) throws Exception {
-//        System.out.println("Security Disabled");
-//
-//        http
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-//                    @Override
-//                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//                        CorsConfiguration config = new CorsConfiguration();
-//                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));        //A tamogatott origineket adjuk meg
-//                        config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
-//                        config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
-//                        config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
-//                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
-//                        config.setMaxAge(3600L);
-//                        return config;
-//                    }
-//                }))
-//                .authorizeHttpRequests((requests) ->
-//                        requests.anyRequest().permitAll()
-//                )
-//                .formLogin(Customizer.withDefaults())
-//                .csrf(crs -> crs.disable())
-//                .httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
 
     @Bean
     PasswordEncoder passwordEncoder() {

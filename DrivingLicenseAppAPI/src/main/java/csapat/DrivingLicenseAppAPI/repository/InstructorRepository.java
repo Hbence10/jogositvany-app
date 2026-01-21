@@ -20,5 +20,5 @@ public interface InstructorRepository extends JpaRepository<Instructors, Integer
     String deleteInstructor(@Param("idIN") Integer id);
 
     @Procedure(name = "getInstructorBySearch", procedureName = "getInstructorBySearch")
-    List<Integer> getInstructorBySearch(@Param("fuelTypeIdIN") Integer fuelTypeId, @Param("schoolIdIN") Integer schoolId);
+    List<Integer> getInstructorBySearch(@Param("fuelTypeIdIN") Integer fuelTypeId, @Param("schoolIdIN") Integer schoolId,  @Param("categoryIdIN") Integer categoryId);
 }

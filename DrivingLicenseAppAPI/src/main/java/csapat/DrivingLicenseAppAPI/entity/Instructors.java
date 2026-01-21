@@ -29,7 +29,8 @@ import java.util.List;
         }, resultClasses = String.class),
         @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
                 @StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "schoolIdIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "schoolIdIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "categoryIdIN", type = Integer.class, mode = ParameterMode.IN)
         }, resultClasses = Integer.class)
 })
 public class Instructors {

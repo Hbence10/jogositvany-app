@@ -186,7 +186,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId) {
+    public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId, Integer categoryId) {
         try {
             if (fuelTypeId == null || schoolId == null) {
                 return ResponseEntity.status(422).build();
@@ -194,12 +194,14 @@ public class InstructorService {
 
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+//            DrivingLicenseCategory searchedCategory = drivingLc.findBy(categoryId);
+
             if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else {
-                List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId);
+                List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId, categoryId);
                 List<JsonNode> searchedInstructors = new ArrayList<>();
 
                 for (Integer id : searchedInstructorsId) {

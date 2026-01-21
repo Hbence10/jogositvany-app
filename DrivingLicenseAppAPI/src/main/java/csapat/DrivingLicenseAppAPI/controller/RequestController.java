@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.spring.web.json.Json;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Locale;
 
 @RestController
@@ -86,8 +83,6 @@ public class RequestController {
         DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 
-        System.out.println(requestBody.get("startTime").asText());
-
         try {
             return requestService.sendDrivingLessonRequest(
                     requestBody.get("msg").asText(),
@@ -95,7 +90,7 @@ public class RequestController {
                     dateWithTimeFormat.parse((requestBody.get("startTime").asText())),
                     dateWithTimeFormat.parse((requestBody.get("endTime").asText())),
                     requestBody.get("studentId").asInt(),
-                    requestBody.get("instructorId").asInt() );
+                    requestBody.get("instructorId").asInt());
 
         } catch (Exception e) {
             e.printStackTrace();

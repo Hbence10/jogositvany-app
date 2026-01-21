@@ -61,6 +61,7 @@ public class SchoolService {
                     if (searchedSchoolJoinRequest.getSchoolJoinRequestUser().getRole().getName().equals("ROLE_user")) {
                         Students newStudent = new Students(searchedSchoolJoinRequest.getSchoolJoinRequestUser(), searchedSchoolJoinRequest.getSchoolJoinRequestSchool(), searchedSchoolJoinRequest.getJoinRequestCategory());
                         newStudent.getStudentUser().setRole(new Role(2, "ROLE_student"));
+                        newStudent.setSelectedCategory(searchedSchoolJoinRequest.getJoinRequestCategory());
                         studentRepository.save(newStudent);
                     } else {
                         Instructors senderInstructor = searchedSchoolJoinRequest.getSchoolJoinRequestUser().getInstructor();

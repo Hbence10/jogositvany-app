@@ -154,8 +154,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("")
-    private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Integer fuelTypeId, @RequestParam("school") Integer schoolId) {
-        return instructorService.getInstructorsBySearch(fuelTypeId, schoolId);
+    private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Integer fuelTypeId, @RequestParam("school") Integer schoolId, @RequestParam("category") Integer category) {
+        return instructorService.getInstructorsBySearch(fuelTypeId, schoolId, category);
     }
 
     @Operation(summary = "Oktató id alapján.", description = "Oktató lekérdezése id alapján.")
