@@ -1,6 +1,4 @@
-import { DrivingLessonType } from './driving-lesson-type.model';
 import { Instructors } from './instructors.model';
-import { Status } from './status.model';
 import { Students } from './students.model';
 
 export class DrivingLessonRequest {
@@ -10,7 +8,6 @@ export class DrivingLessonRequest {
     public msg: string,
     public startTime: Date,
     public endTime: Date,
-    public dLessonRequestType: DrivingLessonType,
     public dLessonRequestStudent: Students,
     public dLessonInstructor: Instructors,
     public sentAt: Date = new Date(),

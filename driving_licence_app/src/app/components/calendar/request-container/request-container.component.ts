@@ -1,13 +1,5 @@
 import { Component, inject, input, OnInit, output } from '@angular/core';
-import { InstructorServiceService } from '../../../services/instructor-service.service';
-import { StudentService } from '../../../services/student.service';
-import { UsersService } from '../../../services/users.service';
-import { DrivingLessonService } from '../../../services/driving-lesson.service';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DrivingLessonType } from '../../../models/driving-lesson-type.model';
-import { DrivingLessonRequest } from '../../../models/driving-lesson-request.model';
-import { Instructors } from '../../../models/instructors.model';
-import { Students } from '../../../models/students.model';
 import { RequestService } from '../../../services/request.service';
 
 @Component({
@@ -17,58 +9,37 @@ import { RequestService } from '../../../services/request.service';
   styleUrl: './request-container.component.css'
 })
 export class RequestContainerComponent implements OnInit {
-  studentService = inject(StudentService)
-  instructorService = inject(InstructorServiceService)
   requestService = inject(RequestService)
-  drivingLessonService = inject(DrivingLessonService)
 
-  drivingLessonTypeList: DrivingLessonType[] = []
   requestForm!: FormGroup;
   close = output()
   reservedHours = input.required<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>()
-  availableHours: Date[][] = []
+  availableHours: string[][] = []
+
 
   ngOnInit(): void {
-    this.drivingLessonService.getAllDrivingLessonType(4).subscribe({
-      next: response => this.drivingLessonTypeList = response
-    })
+    this.getAvailableHours()
 
     this.requestForm = new FormGroup({
       selectedDate: new FormControl("", [Validators.required]),
       startTime: new FormControl("", [Validators.required]),
       endTime: new FormControl("", [Validators.required]),
-      selectedType: new FormControl("", [Validators.required]),
       message: new FormControl("", [])
     })
   }
 
   sendDrivingLessonRequest() {
-    const selectedType = this.drivingLessonTypeList[this.requestForm.controls["selectedType"].value]
 
-    let selectedStudent!: Students;
-    let selectedInstructor!: Instructors;
-
-    this.studentService.getStudentById(1).subscribe({
-      next: response => selectedStudent = response
-    })
-
-    this.instructorService.getInstructorById(1).subscribe({
-      next: response => selectedInstructor = response
-    })
-
-
-    const newDrivingLessonRequest = new DrivingLessonRequest(
-      null,
-      this.requestForm.controls["selectedDate"].value,
-      this.requestForm.controls["message"].value,
-      this.requestForm.controls["startTime"].value,
-      this.requestForm.controls["endTime"].value,
-      selectedType!,
-      selectedStudent,
-      selectedInstructor
-    )
-
-    this.requestService.sendDrivingLessonRequest(newDrivingLessonRequest).subscribe({
+    this.requestService.sendDrivingLessonRequest(
+      {
+        msg: this.requestForm.controls["message"].value,
+        date: this.requestForm.controls["selectedDate"].value,
+        startTime: this.dateFormatter(new Date(`2026-01-21 ${this.requestForm.controls["startTime"].value}`).toISOString()),
+        endTime: this.dateFormatter(new Date(`2026-01-21 ${this.requestForm.controls["endTime"].value}`).toISOString()),
+        studentId: 10,
+        instructorId: 4
+      }
+    ).subscribe({
       next: response => console.log(response),
       complete: () => {
         this.close.emit()
@@ -79,17 +50,43 @@ export class RequestContainerComponent implements OnInit {
   getAvailableHours() {
     let listIndex: number = 0;
     let startDate: Date = new Date("2026-01-11 06:00:00")
+    let isBreak = false
+
 
     for (let i = 6; i < 21; i++) {
-      if (this.reservedHours()[listIndex].startTime.getHours() == i) {
-        const baseDate = this.reservedHours()[listIndex]
+      if (this.convertToValidDate(this.reservedHours()[listIndex].startTime).getHours() == i) {
+        const baseDate = this.convertToValidDate(this.reservedHours()[listIndex].startTime)
         for (let j = 0; j < 60; j++) {
-          if (j == baseDate.startTime.getMinutes()){
-            console.log(`${i}:${j}`)
-
+          if (baseDate.getMinutes() == j){
+            const endDate = this.convertToValidDate(this.reservedHours()[listIndex].startTime)
+            this.availableHours.push([
+              `${startDate.getHours() < 10 ? "0" : ""}${startDate.getHours()}:${startDate.getMinutes() < 10 ? "0" : ""}${startDate.getMinutes()}`,
+              `${endDate.getHours() < 10 ? "0" : ""}${endDate.getHours()}:${endDate.getMinutes() < 10 ? "0" : ""}${endDate.getMinutes()}`
+            ])
+            startDate = this.convertToValidDate(this.reservedHours()[listIndex].endTime)
+            listIndex += 1
+            if (listIndex == this.reservedHours().length) {
+              isBreak = true
+              break;
+            }
           }
+        }
+        if (isBreak) {
+           this.availableHours.push([
+              `${startDate.getHours() < 10 ? "0" : ""}${startDate.getHours()}:${startDate.getMinutes() < 10 ? "0" : ""}${startDate.getMinutes()}`,
+              `22:00`
+            ])
+          break;
         }
       }
     }
+  }
+
+  convertToValidDate(hourDate: Date) {
+    return new Date(`2026-01-01 ${hourDate}`);
+  }
+
+  dateFormatter(isoDateString: string): string {
+    return isoDateString.replaceAll("T", " ").substring(0, 19);
   }
 }

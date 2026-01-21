@@ -27,7 +27,7 @@ export class RequestService {
     })
   }
 
-  sendDrivingLessonRequest(newRequest: DrivingLessonRequest) {
+  sendDrivingLessonRequest(newRequest: {msg: string, date: string, startTime: string, endTime: string, studentId: number, instructorId: number}) {
     return this.http.post(`${this.baseUrl}/drivingLesson`, newRequest)
   }
 }
