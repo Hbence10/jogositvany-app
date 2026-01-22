@@ -1,218 +1,374 @@
-<div class="container-fluid" style="height: 100vh;">
-  <div class="row h-100">
-    @if (errorMsg == ""){
-    <div class="col-lg-3 h-100 d-flex flex-column justify-content-center align-items-center">
-      <div class="container-fluid">
-
-        <div class="row">
-          <div class="col-lg-12">
-            <div id="reviewBox">
-              @if (roleName == "Iskola" || roleName == "Oktató") {
-                <button (click)="showReviews = true">Review</button>
-              }
+@if (showEditor || showReviews || showDeleteConfirmation || showPriceList) {
+  <div id="popUpWindow">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          @if (showEditor) {
+            <div id="profE">
+              <app-profil-editor
+                (close)="showEditor = false"
+                [objectType]="searchedSchool == null ? 'user' : 'school'"
+                [wantedObject]="
+                  searchedSchool == null ? searchedUser! : searchedSchool
+                "
+              />
             </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 d-flex justify-content-center align-items-center">
-            @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
-              <input #fileInput type="file" name="fileInput" id="fileInput" style="display: none;" (change)="changeImages($event)">
-              <button class="p-0">
-                <label for="fileInput" class="w-100 h-100">Pfp Edit</label>
-              </button>
-            }
-            <img src="assets/icons/kijeletkezés.svg" id="avatar" class="img-fluid" [class.userPfp]="type() == 'user'" [class.bannerImg]="type() == 'school'"/>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-            <button class="infoButton mb-2">
-              <span class="material-symbols-outlined">mail</span>
-            </button>
-            @if (type() == "school" && userService.loggedUser()?.role?.name == "ROLE_user") {
-              <button (click)="sendJoinRequest()">Jelentkezés</button>
-            } @else if (type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == undefined) {
-              <button>Jelentkezés</button>
-            }
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-lg-9 d-flex justify-content-center align-items-center">
-
-      @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
-        <button (click)="showEditor = true">Edit</button>
-      }
-
-      <div class="w-100 d-flex justify-content-end">
-        <button (click)="showDeleteConfirmation = true">Torlés</button>
-        <button>Arlista</button>
-      </div>
-
-      <div class="container-fluid" id="infoBox">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 style="color: #dee0eb">{{searchedUser == null ? searchedSchool!.name : searchedUser.firstName + ' ' + searchedUser.lastName}}</h1>
-            <h4 style="color: #b3b8d1">{{roleName}}</h4>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <p class="uData mt-0">
-              <span class="fw-bold">{{searchedUser == null ? 'Cím:' : 'Születési Dátum:'}}</span>
-              <span>{{searchedUser == null ? searchedSchool?.country + " " + searchedSchool?.town + " " + searchedSchool?.address : searchedUser.birthDate | date }}</span>
-            </p>
-            <p class="uData mt-0">
-              <span class="fw-bold">{{searchedUser == null ? 'Tulaj:' : 'Nem:'}}</span>
-              <span>{{searchedUser == null ? searchedSchool?.owner?.firstName + " " + searchedSchool?.owner?.lastName : searchedUser.gender}}</span>
-            </p>
-            <p class="uData mt-0">
-              <span class="fw-bold">E-mail:</span>
-              <span>{{searchedUser == null ? searchedSchool!.email : searchedUser.email}}</span>
-            </p>
-            <p class="uData mt-0">
-              <span class="fw-bold">Telefonszám: </span>
-              <span>{{searchedUser == null ? searchedSchool!.phone : searchedUser.phone}}</span>
-            </p>
-            @if(type() == "user" && searchedUser?.role?.name == 'ROLE_instructor'){
-              <p class="uData mt-0">
-                <span class="fw-bold">Iskola: </span>
-                <span>{{searchedUser?.instructor?.instructorSchool?.name}}</span>
-              </p>
-            }
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            @if(type() == "user"){
-              @if (searchedUser?.role?.name == "ROLE_instructor"){
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <div class="instructorInfoBox">
-                        <p>{{instructorDetails?.promoText}}</p>
+          }
+          @if (showReviews) {
+            <app-review-list
+              (closeList)="showReviews = false"
+              [reviewType]="roleName"
+              [aboutObject]="
+                searchedUser == null ? searchedSchool! : instructorDetails!
+              "
+            />
+          }
+          @if (showDeleteConfirmation) {
+            <div class="container-fluid" id="deleteContainer">
+              <div class="row h-100">
+                <div
+                  class="col-lg-12 h-100 d-flex justify-content-center align-items-center"
+                >
+                  <div
+                    style="height: 250px; width: 550px; background-color: blue"
+                  >
+                    <div
+                      class="h-100 d-flex flex-column justify-content-between"
+                    >
+                      <h3 class="text-center">Biztosan törölni szeretnéd?</h3>
+                      <div
+                        class="w-100 d-flex justify-content-center align-items-center mb-3"
+                      >
+                        <button (click)="deleteProfile()">Igen</button>
+                        <button (click)="showDeleteConfirmation = false">
+                          Nem
+                        </button>
                       </div>
-                    </div>
-                    <div class="col-lg-6">
-                      <div class="instructorInfoBox">
-                        <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
-                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
-                          <span>Név:</span>
-                          <span>{{instructorDetails?.vehicle?.name}}</span>
-                        </p>
-                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
-                          <span>Típus:</span>
-                          <span>{{instructorDetails?.vehicle?.vehicleType?.name}}</span>
-                        </p>
-                        <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
-                          <span>Rendszám:</span>
-                          <span>{{instructorDetails?.vehicle?.licensePlate}}</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              } @else if (searchedUser?.role?.name == "ROLE_student"){
-                <div class="w-100 d-flex justify-content-center">
-                <div id="progressBar">
-                  <input id="bar" type="range" min="0" max="30" value="9" disabled />
-                  <div class="d-flex">
-                    <div class="lesson-info-item lesson-info-driven me-4">
-                      Vezetett órák: <span>9</span>
-                    </div>
-                    <div class="lesson-info-item lesson-info-extra">
-                      Plusz órák: <span>0</span>
-                    </div>
-                  </div>
-                  <div class="lesson-info-item lesson-info-required">
-                    Kötelező órák: <span>21</span>
-                  </div>
-                </div>
-                </div>
-              }
-            }
-            @else if (type() == "school"){
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div id="openingDetails">
-                      <div class="row">
-                        <div class="col-lg-12">
-                          <h2 class="text-center text-white">Nyitvatartás</h2>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-lg-12">
-                          @for (item of searchedSchool?.openingDetails; track $index) {
-                            <p class="d-flex justify-content-between text-white">
-                              <span>{{item.day}}:</span>
-                              <span>
-                              @if (!item.isClosed) {
-                                {{item.openingTime}} - {{item.closeTime}}
-                              } @else {
-                                Zárva
-                              }
-                              </span>
-                            </p>
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-8">
-                    <div id="instructorList">
-
                     </div>
                   </div>
                 </div>
               </div>
-            }
-          </div>
+            </div>
+          }
+          @if (showPriceList) {
+            <app-price-list />
+          }
         </div>
       </div>
-
-      </div>
-
-
-    } @else if (errorMsg == "notFound") {
-      <h1>Nincs ilyen {{type() == "user" ? "Felhasználó" : "Iskola"}}</h1>
-    } @else if (errorMsg == "serverError") {
-      <h1>Hiba történt! Kérlek próbáld újra</h1>
-    }
     </div>
   </div>
-
-  @if(showEditor){
-  <app-profil-editor (close)="showEditor = false" [objectType]="searchedSchool == null ? 'user' : 'school'" [wantedObject]="searchedSchool == null ? searchedUser! : searchedSchool" />
 }
 
-@if(showReviews){
-  <app-review-list (closeList)="showReviews = false" [reviewType]="roleName" [aboutObject]="searchedUser == null ? searchedSchool! : instructorDetails!" />
-}
+<div id="mainDiv" class="container-fluid mainFont" style="height: 100vh">
+  <div class="row h-100">
+    @if (errorMsg == "") {
+      <div
+        class="col-lg-4 h-100 d-flex flex-column justify-content-center align-items-center"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div id="reviewBox">
+                @if (roleName == "Iskola" || roleName == "Oktató") {
+                  <button (click)="showReviews = true">Review</button>
+                }
+              </div>
+            </div>
+          </div>
 
-@if(showDeleteConfirmation) {
-  <div class="container-fluid" id="deleteContainer">
-    <div class="row h-100">
-      <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
-        <div style="height: 250px; width: 550px; background-color: blue;">
-          <div class="h-100 d-flex flex-column justify-content-between">
-            <h3 class="text-center">Biztosan törölni szeretnéd?</h3>
-            <div class="w-100 d-flex justify-content-center align-items-center mb-3">
-              <button (click)="deleteProfile()">Igen</button>
-              <button (click)="showDeleteConfirmation=false">Nem</button>
+          <div class="row">
+            <div
+              id="avatarDiv"
+              class="col d-flex justify-content-center align-items-center"
+            >
+              <img
+                src="assets/icons/kijeletkezés.svg"
+                id="avatar"
+                class="img-fluid m-3"
+                [class.userPfp]="type() == 'user'"
+                [class.bannerImg]="type() == 'school'"
+              />
+
+              <div
+                id="editDiv"
+                class="col-lg-12 d-flex justify-content-center align-items-center"
+              >
+                @if (
+                  searchedUser?.id == userService.loggedUser()?.id ||
+                  searchedSchool?.id == userService.loggedUser()?.schoolId
+                ) {
+                  <input
+                    #fileInput
+                    type="file"
+                    name="fileInput"
+                    id="fileInput"
+                    style="display: none"
+                    (change)="changeImages($event)"
+                  />
+                  <button class="p-0" style="width: 60px">
+                    <label
+                      for="fileInput"
+                      class="container-fluid d-flex justify-content-center align-items-center m-0 p-0"
+                      ><i class="material-icons">brush</i></label
+                    >
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-lg-12 d-flex flex-column justify-content-center align-items-center"
+            >
+              <button class="infoButton mb-2" style="width: 240px">
+                <span class="material-icons">mail</span>
+              </button>
+              @if (
+                type() == "school" &&
+                userService.loggedUser()?.role?.name == "ROLE_user"
+              ) {
+                <button (click)="sendJoinRequest()">Jelentkezés</button>
+              } @else if (
+                type() == "user" &&
+                userService.loggedUser()?.role?.name == "ROLE_student" &&
+                userService.loggedUser()?.instructor == undefined
+              ) {
+                <button>Jelentkezés</button>
+              }
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-}
 
-@if (showPriceList) {
-  <app-price-list />
-}
+      <div class="col-lg-8">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="w-100 m-3 d-flex justify-content-end">
+              <button
+                (click)="showDeleteConfirmation = true"
+                style="width: 60px"
+                class="m-3"
+              >
+                <i class="material-icons">delete</i>
+              </button>
+              <button class="m-3" style="width: 60px">
+                <i class="material-icons">info</i>
+              </button>
+              @if (
+                searchedUser?.id == userService.loggedUser()?.id ||
+                searchedSchool?.id == userService.loggedUser()?.schoolId
+              ) {
+                <button
+                  (click)="showEditor = true"
+                  class="m-3"
+                  style="width: 60px"
+                >
+                  <i class="material-icons">edit</i>
+                </button>
+              }
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="container-fluid m-3" id="infoBox">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <h1 style="color: #dee0eb">
+                      {{
+                        searchedUser == null
+                          ? searchedSchool!.name
+                          : searchedUser.firstName + " " + searchedUser.lastName
+                      }}
+                    </h1>
+                    <h4 style="color: #b3b8d1">{{ roleName }}</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    <p class="uData mt-0">
+                      <span class="fw-bold">{{
+                        searchedUser == null ? "Cím:" : "Születési Dátum:"
+                      }}</span>
+                      <span>{{
+                        searchedUser == null
+                          ? searchedSchool?.country +
+                            " " +
+                            searchedSchool?.town +
+                            " " +
+                            searchedSchool?.address
+                          : (searchedUser.birthDate | date)
+                      }}</span>
+                    </p>
+                    <p class="uData mt-0">
+                      <span class="fw-bold">{{
+                        searchedUser == null ? "Tulaj:" : "Nem:"
+                      }}</span>
+                      <span>{{
+                        searchedUser == null
+                          ? searchedSchool?.owner?.firstName +
+                            " " +
+                            searchedSchool?.owner?.lastName
+                          : searchedUser.gender
+                      }}</span>
+                    </p>
+                    <p class="uData mt-0">
+                      <span class="fw-bold">E-mail:</span>
+                      <span>{{
+                        searchedUser == null
+                          ? searchedSchool!.email
+                          : searchedUser.email
+                      }}</span>
+                    </p>
+                    <p class="uData mt-0">
+                      <span class="fw-bold">Telefonszám: </span>
+                      <span>{{
+                        searchedUser == null
+                          ? searchedSchool!.phone
+                          : searchedUser.phone
+                      }}</span>
+                    </p>
+                    @if (
+                      type() == "user" &&
+                      searchedUser?.role?.name == "ROLE_instructor"
+                    ) {
+                      <p class="uData mt-0">
+                        <span class="fw-bold">Iskola: </span>
+                        <span>{{
+                          searchedUser?.instructor?.instructorSchool?.name
+                        }}</span>
+                      </p>
+                    }
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-12">
+                    @if (type() == "user") {
+                      @if (searchedUser?.role?.name == "ROLE_instructor") {
+                        <div class="container-fluid">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="instructorInfoBox">
+                                <p>{{ instructorDetails?.promoText }}</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="instructorInfoBox">
+                                <img
+                                  class="img-fluid"
+                                  src="assets/icons/kijeletkezés.svg"
+                                  alt=""
+                                />
+                                <p
+                                  class="w-100 text-white info-field d-flex align-items-center justify-content-between"
+                                >
+                                  <span>Név:</span>
+                                  <span>{{
+                                    instructorDetails?.vehicle?.name
+                                  }}</span>
+                                </p>
+                                <p
+                                  class="w-100 text-white info-field d-flex align-items-center justify-content-between"
+                                >
+                                  <span>Típus:</span>
+                                  <span>{{
+                                    instructorDetails?.vehicle?.vehicleType
+                                      ?.name
+                                  }}</span>
+                                </p>
+                                <p
+                                  class="w-100 text-white info-field d-flex align-items-center justify-content-between"
+                                >
+                                  <span>Rendszám:</span>
+                                  <span>{{
+                                    instructorDetails?.vehicle?.licensePlate
+                                  }}</span>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      } @else if (searchedUser?.role?.name == "ROLE_student") {
+                        <div class="w-100 d-flex justify-content-center">
+                          <div id="progressBar">
+                            <input
+                              id="bar"
+                              type="range"
+                              min="0"
+                              max="30"
+                              value="9"
+                              disabled
+                            />
+                            <div class="d-flex">
+                              <div
+                                class="lesson-info-item lesson-info-driven me-4"
+                              >
+                                Vezetett órák: <span>9</span>
+                              </div>
+                              <div class="lesson-info-item lesson-info-extra">
+                                Plusz órák: <span>0</span>
+                              </div>
+                            </div>
+                            <div class="lesson-info-item lesson-info-required">
+                              Kötelező órák: <span>21</span>
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    } @else if (type() == "school") {
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div id="openingDetails">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <h2 class="text-center text-white">
+                                    Nyitvatartás
+                                  </h2>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  @for (
+                                    item of searchedSchool?.openingDetails;
+                                    track $index
+                                  ) {
+                                    <p
+                                      class="d-flex justify-content-between text-white"
+                                    >
+                                      <span>{{ item.day }}:</span>
+                                      <span>
+                                        @if (!item.isClosed) {
+                                          {{ item.openingTime }} -
+                                          {{ item.closeTime }}
+                                        } @else {
+                                          Zárva
+                                        }
+                                      </span>
+                                    </p>
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-8">
+                            <div id="instructorList"></div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @else if (errorMsg == "notFound") {
+      <h1>Nincs ilyen {{ type() == "user" ? "Felhasználó" : "Iskola" }}</h1>
+    } @else if (errorMsg == "serverError") {
+      <h1>Hiba történt! Kérlek próbáld újra</h1>
+    }
+  </div>
+</div>

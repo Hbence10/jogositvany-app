@@ -1,0 +1,11 @@
+#mainContainer{
+  background-color: #434A6B;
+  width: 725px;
+  height: 900px;
+}
+
+input {
+  border: none;
+  background-color: #626C99;
+  border-radius: 5px;
+}

@@ -9,8 +9,50 @@
   padding: 17px;
 }
 
+#popUpWindow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#mainDiv {
+  position: relative;
+  z-index: 1;
+}
+
 .profil {
   margin: 0px 50px 0px 0px;
+}
+
+#avatarDiv {
+  position: relative;
+}
+
+#editDiv{
+  width: auto;
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+#avatarDiv:hover #avatar {
+  opacity: 0.7;
+}
+
+#avatarDiv:hover #editDiv {
+  opacity: 1;
 }
 
 #infoBox {
@@ -27,6 +69,11 @@
   height: 300px;
   margin: 0px 0px 20px 0px;
   border-radius: 15px;
+
+  opacity: 1;
+  display: block;
+  transition: .5s ease;
+  backface-visibility: hidden;
 }
 
 #messageBtn {
@@ -51,6 +98,17 @@
   width: 900px;
   color: white;
 }
+
+button {
+  width: 100%;
+  height: 60px;
+  border-radius: 5px;
+  border: none;
+  background-color: #636da1;
+  color: #dee0eb;
+}
+
+
 
 label {
   display: block;

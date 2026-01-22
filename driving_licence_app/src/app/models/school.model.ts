@@ -1,4 +1,3 @@
-import { DrivingLessonType } from './driving-lesson-type.model';
 import { ExamRequest } from './exam-request.model';
 import { Instructors } from './instructors.model';
 import { OpeningDetails } from './opening-details.model';
@@ -24,7 +23,6 @@ export class School {
     public openingDetails: OpeningDetails[],
     public reviewList: Review[],
     public studentsList: Students[],
-    public drivingLessonsList: DrivingLessonType[],
     public examRequestList: ExamRequest[],
     public schoolJoinRequestList: SchoolJoinRequest[]
   ) {}
@@ -125,13 +123,6 @@ export class School {
   }
   set setStudentsList(value: Students[]) {
     this.studentsList = value;
-  }
-
-  get getDrivingLessonsList(): DrivingLessonType[] {
-    return this.drivingLessonsList;
-  }
-  set setDrivingLessonsList(value: DrivingLessonType[]) {
-    this.drivingLessonsList = value;
   }
 
   get getExamRequestList(): ExamRequest[] {
