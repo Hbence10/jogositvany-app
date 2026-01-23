@@ -85,3 +85,47 @@ button {
 #mainContainer {
   height: 900px;
 }
+
+#townContainer {
+  max-height: 450px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#townContainer::-webkit-scrollbar {
+  width: 6px;
+}
+#townContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+#townContainer::-webkit-scrollbar-thumb {
+  background: #22354f;
+  border-radius: 10px;
+}
+#townContainer::-webkit-scrollbar-thumb:hover {
+  background: #434a6b;
+}
+
+#townSearch {
+  width: 450px;
+  height: 600px;
+  background-color: #626C99;
+}
+
+#schoolSearch {
+  width: 450px;
+  height: 600px;
+  background-color: #626C99;
+}
+
+.townParagraph {
+  cursor: pointer;
+}
+.townParagraph:hover {
+  background-color: #2B3B57;
+}
+
+.townParagraph.active {
+  background-color: #2B3B57;
+}

@@ -1,10 +1,10 @@
-<div
+ <div
   class="container-fluid d-flex flex-column justify-content-center align-items-center mainFont"
   id="searchPage"
 >
   <div class="row w-100">
     <div class="col-lg-6 p-0">
-      <div class="container-fluid">
+      <div class="container-fluid d-flex flex-column justify-content-center align-items-end">
         @if(selectedType == "instructor"){
           <div class="row">
             <div class="col-lg-12">
@@ -30,12 +30,12 @@
             </div>
           </div>
         } @else {
-          <div class="row w-100">
+          <div class="row ">
             <div class="col-lg-12">
-              <div style="height: 450px; width: 800px;">
+              <div id="townSearch" class="m-3" style="height: 450px; width: 800px;">
                 <input type="text" placeholder="Város" class="searchInput" [(ngModel)]="selectedTown" (input)="filterTown()"/>
                 <div id="townContainer">
-                  @for (town of filteredTownList; track $index) {
+                  @for (town of filteredTownList;track $index) {
                     <p (click)="selectedTown = town; getSchoolByTown()" class="townParagraph py-1 px-2">{{town | titlecase}}</p>
                   }
                 </div>
@@ -44,7 +44,7 @@
           </div>
           <div class="row">
             <div class="col-lg-12">
-              <div style="height: 450px; width: 800px;">
+              <div id="schoolSearch" class="m-3" style="height: 450px; width: 800px;">
                 <input #schoolName (input)="filterSchoolName(schoolName.value)" type="text" class="searchInput" [placeholder]="'Az iskola neve'" />
                 <div id="schoolContainer">
                   @for (school of filteredSchoolList; track $index) {
@@ -59,7 +59,7 @@
     </div>
 
     <div class="col-lg-6 p-0">
-      <div class="container-fluid">
+      <div class="container-fluid d-flex flex-column justify-content-center align-items-start">
         @if(selectedSchool !== null || selectedInstructor !== null){
           <div class="row">
             <div class="box col-lg-12 d-flex flex-column justify-content-between" id="description">
