@@ -4,18 +4,18 @@
     <div class="row">
 
       <div class="col-lg-12 p-0 d-flex ">
-          <div style="width: 125px;">
-            <app-navbar style="position: fixed;"/>
+          <div class="sidebar-overlay"></div>
+          <div class="navbar-wrapper" style="width: 125px;">
+            <app-navbar/>
           </div>
-          <div class="container-fluid" id="routerOutletContainer">
+          <div class="container-fluid" id="routerOutletContainer" >
             <router-outlet/>
           </div>
       </div>
     </div>
 
-
   <div class="row ">
-    <div class="col-lg-12 p-0">
+    <div id="footer-wrapper" class="col-lg-12 p-0" >
       <app-footer/>
     </div>
   </div>
