@@ -20,6 +20,9 @@ import java.util.Date;
 public class RequestService {
 
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
+    private final ReservedHourRepository reservedHourRepository;
+    private final ReservedDateRepository reservedDateRepository;
+
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;

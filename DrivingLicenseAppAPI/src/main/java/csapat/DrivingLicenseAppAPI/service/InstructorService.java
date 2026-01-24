@@ -35,6 +35,11 @@ public class InstructorService {
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
     private final SchoolRepository schoolRepository;
     private final ObjectMapper objectMapper;
+    private final DrivingLessonRepository drivingLessonRepository;
+
+    //
+    private final ReservedHourRepository reservedHourRepository;
+    private final ReservedDateRepository reservedDateRepository;
 
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         try {
@@ -170,14 +175,24 @@ public class InstructorService {
                     return ResponseEntity.notFound().build();
                 }
 
+                List<Integer> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
+                if (!drivingLessonsAtThisTime.isEmpty()) {
+                    return ResponseEntity.status(400).body("reservedAppointment");
+                }
+
                 if (!status.equals("accept") && !status.equals("refuse")) {
                     return ResponseEntity.status(415).build();
                 } else {
                     if (status.equals("accept")) {
-
+                        ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
+                        ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
+                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor()));
+                        searchedRequest.setIsAccepted(true);
                     } else if (status.equals("refuse")) {
-
+                        searchedRequest.setIsAccepted(false);
                     }
+                    searchedRequest.setAcceptedAt(new Date());
+                    drivingLessonRequestRepository.save(searchedRequest);
                 }
             }
             return null;

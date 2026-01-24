@@ -77,4 +77,10 @@ public class ReservedHour {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public ReservedHour(Date startTime, Date endTime, ReservedDate reservedDate) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.reservedDate = reservedDate;
+    }
 }

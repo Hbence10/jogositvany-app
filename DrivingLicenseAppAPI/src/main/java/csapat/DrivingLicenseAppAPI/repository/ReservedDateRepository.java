@@ -22,4 +22,6 @@ public interface ReservedDateRepository extends JpaRepository<ReservedDate, Inte
 
     @Procedure(name = "getReservedDateByDate", procedureName = "getReservedDateByDate")
     Optional<ReservedDate> getReservedDateByDate(@Param("wantedDateIN") Date wantedDate);
+
+    Optional<ReservedDate> findByDate(Date date);
 }

@@ -75,9 +75,4 @@ public class DrivingLessonController {
     public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
         return drivingLessonService.getDrivingLessonById(id);
     }
-
-    @GetMapping("/check")
-    public ResponseEntity<Object> checkAppointmentIsAvailable(@RequestParam("date") Date date, @RequestParam("startHour") Date startHour, @RequestParam("endHour") Date endHour, @RequestParam("instructorId") Integer instructorId) {
-        return drivingLessonService.checkAppointmentIsAvailable(date, startHour, endHour, instructorId);
-    }
 }

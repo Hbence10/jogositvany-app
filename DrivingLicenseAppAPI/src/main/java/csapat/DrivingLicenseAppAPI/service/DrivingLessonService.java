@@ -27,7 +27,6 @@ public class DrivingLessonService {
     private final SchoolRepository schoolRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
-    private final InstructorRepository instructorRepository;
 
     public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(Integer schoolId) {
         try {
@@ -137,25 +136,6 @@ public class DrivingLessonService {
             } else {
                 return ResponseEntity.ok().body(searchedDrivingLesson);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<Object> checkAppointmentIsAvailable(Date date, Date startHour, Date endHour, Integer instructorId) {
-        try {
-            if (date == null || startHour == null || endHour == null || instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            }
-
-            List<Integer> drivingLessons = drivingLessonRepository.getDrivingLessonBetweenHour(date, startHour, endHour, instructorId);
-            return ResponseEntity.ok().body(drivingLessons.isEmpty());
 
         } catch (Exception e) {
             e.printStackTrace();
