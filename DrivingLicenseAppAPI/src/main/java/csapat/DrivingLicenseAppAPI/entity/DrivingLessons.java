@@ -26,7 +26,13 @@ import java.util.Date;
         }, resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+        }, resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonBetweenHour", procedureName = "getDrivingLessonBetweenHour", parameters = {
+                @StoredProcedureParameter(name = "dateIN", type = Date.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "startHourIN", type = Date.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "endHourIN", type = Date.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "instructorIDIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)
 })
 public class DrivingLessons {
 

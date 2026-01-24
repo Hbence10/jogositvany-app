@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,8 @@ public interface DrivingLessonRepository extends JpaRepository<DrivingLessons, I
     Optional<DrivingLessons> getDrivingLesson(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson")
-    String deleteDrivingLesson(@Param("idIN") Integer id);
+    void deleteDrivingLesson(@Param("idIN") Integer id);
+
+    @Procedure(name = "getDrivingLessonBetweenHour", procedureName = "getDrivingLessonBetweenHour")
+    List<Integer> getDrivingLessonBetweenHour(@Param("dateIN") Date date, @Param("startHourIN") Date startHour, @Param("endHourIN") Date endHour, @Param("instructorIDIN") Integer instructorId);
 }
