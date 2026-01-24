@@ -34,19 +34,6 @@ public class OtherStuffController {
         return otherStuffService.getAllPaymentMethod();
     }
 
-    @Operation(summary = "Jogosítvány kategóriák lekérdezése", description = "Az összes jogosítvány kategória lekérdezése.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = DrivingLicenseCategory.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
-    @GetMapping("/licenseCategory")
-    public ResponseEntity<List<DrivingLicenseCategory>> getAllCategory() {
-        return otherStuffService.getAllCategory();
-    }
-
     @Operation(summary = "Üzemanyag tipusok lekérdezése", description = "Az összes üzemanyag tipus lekérdezése.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(

@@ -98,25 +98,6 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<Review> updateReview(Review updatedReview) {
-        try {
-            if (updatedReview == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Review searchedReview = reviewRepository.getReview(updatedReview.getId()).orElse(null);
-            if (searchedReview == null || searchedReview.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                searchedReview.setText(searchedReview.getText().trim());
-                return ResponseEntity.ok().body(reviewRepository.save(updatedReview));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<Object> deleteReview(Integer id) {
         try {
             if (id == null) {

@@ -29,6 +29,8 @@ import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
@@ -230,11 +232,13 @@ public class UserService {
                 } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")) {
                     return ResponseEntity.status(415).body("invalidGender");
                 } else {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+
                     searchedUser.setFirstName(firstName.trim());
                     searchedUser.setLastName(lastName.trim());
                     searchedUser.setEmail(email.trim());
                     searchedUser.setPhone(phone.trim());
-                    searchedUser.setBirthDate(new Date(birthDateText));
+                    searchedUser.setBirthDate(dateFormat.parse(birthDateText));
                     searchedUser.setGender(gender);
                     searchedUser.setUserEducation(searchedEducation);
                     return ResponseEntity.ok(userRepository.save(searchedUser));
@@ -296,7 +300,7 @@ public class UserService {
 
             userRepository.deleteUser(id);
 
-            return ResponseEntity.ok().body("success");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -369,7 +373,7 @@ public class UserService {
 
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
             ((ObjectNode) returnObject).put("studentId", loggedUser.getStudent().getId());
-            ((ObjectNode) returnObject).put("licenseCategory", loggedUser.getStudent().getSelectedCategory().getName());
+            ((ObjectNode) returnObject).put("categoryId", loggedUser.getStudent().getSelectedCategory().getId());
 
             if (loggedUser.getStudent().getStudentInstructor() != null) {
                 JsonNode instructor = objectMapper.createObjectNode();

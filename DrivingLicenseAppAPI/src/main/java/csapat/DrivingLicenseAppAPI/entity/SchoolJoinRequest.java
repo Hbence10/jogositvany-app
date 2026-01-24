@@ -78,4 +78,9 @@ public class SchoolJoinRequest {
         this.schoolJoinRequestSchool = school;
         this.joinRequestCategory = joinRequestCategory;
     }
+
+    public SchoolJoinRequest(Users user, School school) {
+        this.schoolJoinRequestUser = user;
+        this.schoolJoinRequestSchool = school;
+    }
 }

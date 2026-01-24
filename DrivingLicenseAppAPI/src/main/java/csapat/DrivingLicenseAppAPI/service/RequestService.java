@@ -2,7 +2,6 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -39,16 +38,22 @@ public class RequestService {
 
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             Users searchedUser = userRepository.getUser(userId).orElse(null);
-            DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
 
-            if (searchedSchool== null || searchedSchool.getIsDeleted()) {
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
-            } else if (searchedCategory == null || searchedCategory.getIsDeleted()) {
-                return ResponseEntity.status(404).body("categoryNotFound");
             } else {
-                SchoolJoinRequest newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
+                SchoolJoinRequest newSchoolJoinRequest;
+                if (searchedUser.getRole().getName().equals("ROLE_user")) {
+                    DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
+                    if (searchedCategory == null || searchedCategory.getIsDeleted()) {
+                        return ResponseEntity.status(404).body("categoryNotFound");
+                    }
+                    newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
+                } else {
+                    newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
+                }
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }
@@ -71,7 +76,7 @@ public class RequestService {
                 return ResponseEntity.status(404).body("instructorNotFound");
             } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()){
+            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()) {
                 return ResponseEntity.status(415).body("invalidInstructor");
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);

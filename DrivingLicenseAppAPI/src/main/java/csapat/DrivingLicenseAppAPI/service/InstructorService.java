@@ -146,7 +146,7 @@ public class InstructorService {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
             } else if (searchedVehicleType == null || searchedVehicleType.getIsDeleted()) {
                 return ResponseEntity.status(404).body("vehicleTypeNotFound");
-            } else if (licensePlate.length() == 7 || licensePlate.length() == 9) {
+            } else if (licensePlate.length() != 7 && licensePlate.length() != 9) {
                 return ResponseEntity.status(415).build();
             } else {
                 searchedInstructors.setPromoText(promoText.trim());

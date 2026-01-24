@@ -103,7 +103,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body) {
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body)     {
         return userService.checkVerificationCode(body.get("vCode").asText(null), body.get("email").asText(null));
     }
 

@@ -71,25 +71,6 @@ public class ReviewController {
     return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asInt(), requestBody.get("isAnonymous").asBoolean(false) , requestBody.get("instructorId").asInt(), requestBody.get("schoolId").asInt());
     }
 
-    @Operation(summary = "Review frissitése", description = "Review frissitése")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett review object-je", required = true, content = @Content(
-            mediaType = "application/json",
-            schema = @Schema(implementation = Review.class)
-    ))
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres frissités", content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = Review.class)
-            )),
-            @ApiResponse(responseCode = "404", description = "Vagy nem létező review frissitése vagy nem létező diák tette a frissitést.", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
-    @PutMapping("/updateReview")
-    public ResponseEntity<Review> updateReview(@RequestBody Review updatedReview) {
-        return reviewService.updateReview(updatedReview);
-    }
-
     @Operation(summary = "Review törlése", description = "A keresett review-t kitörli")
     @Parameter(name = "id", description = "A törlendő review-hoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({

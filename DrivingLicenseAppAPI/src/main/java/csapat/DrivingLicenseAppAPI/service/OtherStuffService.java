@@ -38,15 +38,6 @@ public class OtherStuffService {
         }
     }
 
-    public ResponseEntity<List<DrivingLicenseCategory>> getAllCategory() {
-        try {
-            return ResponseEntity.ok().body(drivingLicenseCategoryRepository.getAllDrivingLicenseCategory());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<List<FuelType>> getAllFuelType() {
         try {
             return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
