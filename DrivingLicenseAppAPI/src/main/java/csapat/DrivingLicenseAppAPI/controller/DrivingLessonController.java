@@ -5,7 +5,6 @@ import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/drivingLesson")
@@ -73,5 +74,10 @@ public class DrivingLessonController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
         return drivingLessonService.getDrivingLessonById(id);
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Object> checkAppointmentIsAvailable(@RequestParam("date") Date date, @RequestParam("startHour") Date startHour, @RequestParam("endHour") Date endHour, @RequestParam("instructorId") Integer instructorId) {
+        return drivingLessonService.checkAppointmentIsAvailable(date, startHour, endHour, instructorId);
     }
 }
