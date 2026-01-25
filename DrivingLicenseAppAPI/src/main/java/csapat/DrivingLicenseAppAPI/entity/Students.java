@@ -66,35 +66,19 @@ public class Students {
     @JsonIgnoreProperties({"student"})
     private Users studentUser;
 
-    @OneToMany(
-            mappedBy = "reviewAuthor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "reviewAuthor", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<Review> reviewList;
 
-    @OneToMany(
-            mappedBy = "dLessonRequestStudent",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "dLessonRequestStudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<DrivingLessonRequest> requestList;
 
-    @OneToMany(
-            mappedBy = "dstudent",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "dstudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<DrivingLessons> drivingLessons;
 
-    @OneToMany(
-            mappedBy = "instructorJoinRequestStudent",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "instructorJoinRequestStudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 

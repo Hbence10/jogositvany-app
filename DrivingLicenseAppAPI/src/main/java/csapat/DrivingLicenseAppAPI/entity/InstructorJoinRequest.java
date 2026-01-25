@@ -35,7 +35,7 @@ public class InstructorJoinRequest {
 
     @Column(name = "is_accepted")
     @Null
-    private Boolean isAccepted = false;
+    private Boolean isAccepted;
 
     @Column(name = "accepted_at")
     @Null
@@ -60,12 +60,12 @@ public class InstructorJoinRequest {
     //Kapcsolatok
     @ManyToOne(cascade = {})
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private Students instructorJoinRequestStudent;
 
     @ManyToOne(cascade = {})
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({})
+    @JsonIgnore
     private Instructors instructorJoinRequestInstructor;
 
     public InstructorJoinRequest(Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor) {

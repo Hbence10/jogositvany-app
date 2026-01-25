@@ -63,7 +63,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("/{id}/request")
+    @GetMapping("/{id}/joinRequest")
     private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id) {
         return instructorService.getAllJoinRequestByInstructor(id);
     }
@@ -178,6 +178,7 @@ public class InstructorController {
         return instructorService.getStudentsByInstructor(id, pageable);
     }
 
+    @Operation(summary = "", description = "")
     @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Integer studentId) {
         return instructorService.kickoutStudent(studentId);
