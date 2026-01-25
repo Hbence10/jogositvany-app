@@ -207,6 +207,13 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @Operation(summary = "Az összes felhasználó lekérdezése", description = "Az összes felhasználó lekérdezése röviditett formában")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json"
+            )),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
+    })
     @GetMapping("")
     public ResponseEntity<Object> getAllUser(Pageable pageable) {
         return userService.getAllUser(pageable);

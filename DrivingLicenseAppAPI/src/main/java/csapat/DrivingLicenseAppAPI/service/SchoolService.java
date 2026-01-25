@@ -346,9 +346,13 @@ public class SchoolService {
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
 
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.internalServerError().build();
+                return ResponseEntity.notFound().build();
             } else {
                 searchedInstructor.setInstructorSchool(null);
+                for (Students i : searchedInstructor.getStudents()){
+                    i.setStudentInstructor(null);
+                    studentRepository.save(i);
+                }
                 instructorRepository.save(searchedInstructor);
                 return ResponseEntity.ok().build();
             }

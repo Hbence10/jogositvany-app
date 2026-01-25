@@ -2,6 +2,8 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.entity.Role;
 import csapat.DrivingLicenseAppAPI.entity.Students;
+import csapat.DrivingLicenseAppAPI.entity.Users;
+import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     public ResponseEntity<Map<String, Integer>> getLessonDetails(Integer id) {
         try {
@@ -56,6 +60,10 @@ public class StudentService {
             if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
+                Users user = searchedStudent.getStudentUser();
+                user.setRole(roleRepository.getRole(1).get());
+                user.setStudent(null);
+                userRepository.save(user);
                 studentRepository.deleteStudent(id);
                 return ResponseEntity.ok().build();
             }

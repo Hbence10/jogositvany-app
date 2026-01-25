@@ -69,7 +69,14 @@ public class RequestController {
     @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kérelem object-je", required = true, content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = DrivingLessonRequest.class)
+            schemaProperties = {
+                    @SchemaProperty(name = "msg", schema = @Schema(implementation = String.class, description = "Az oktatónak szánt üzenet. (Ez opcionális)", nullable = true)),
+                    @SchemaProperty(name = "date", schema = @Schema(implementation = String.class, description = "A kivánt dátum, amikor vezetni szeretne a diák.")),
+                    @SchemaProperty(name = "startTime", schema = @Schema(implementation = String.class, description = "A kivánt kezdési idő.")),
+                    @SchemaProperty(name = "endTime", schema = @Schema(implementation = String.class, description = "A kivánt befejezési idő.")),
+                    @SchemaProperty(name = "studentId", schema = @Schema(implementation = String.class, description = "Az küldő diákhoz tartozó id.")),
+                    @SchemaProperty(name = "instructorId", schema = @Schema(implementation = String.class, description = "A diákhoz tartozó oktatónak az id-ja.")),
+            }
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres kérelem küldése", content = @Content),

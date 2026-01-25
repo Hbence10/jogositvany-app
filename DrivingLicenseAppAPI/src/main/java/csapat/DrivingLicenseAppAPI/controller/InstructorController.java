@@ -68,19 +68,6 @@ public class InstructorController {
         return instructorService.getAllJoinRequestByInstructor(id);
     }
 
-    @Operation(summary = "Oktató törlése", description = "Az oktató törlése id alapján.")
-    @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres törlés", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Nem létező oktató törlése", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
-    @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deleteInstructor(@PathVariable("id") Integer instructorId) {
-        return instructorService.deleteInstructor(instructorId);
-    }
-
     @Operation(summary = "Óra kérelmek lekérdezése", description = "Az adott oktatóhoz tartozó órakérelmek megszerzése")
     @Parameter(name = "id", description = "Az oktatóhoz tartozó id.", in = ParameterIn.PATH)
     @ApiResponses({

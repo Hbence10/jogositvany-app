@@ -90,25 +90,6 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<Object> deleteInstructor(Integer instructorId) {
-        try {
-            if (instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                instructorRepository.deleteInstructor(instructorId);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
         try {
             if (instructorId == null) {

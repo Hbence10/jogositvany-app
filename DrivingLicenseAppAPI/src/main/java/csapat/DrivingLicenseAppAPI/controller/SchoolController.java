@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,7 @@ public class SchoolController {
 
     private final SchoolService schoolService;
 
-    @Operation(summary = "Iskolához való jelentkezés", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
+    @Operation(summary = "Iskolához való jelentkezés eldöntése", description = "Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.")
     @Parameter(name = "id", description = "Az adott csatlakozási kérelemhez tartozó id.", in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A kérelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)", required = true, content = @Content(
             mediaType = "application/json",
@@ -56,13 +53,13 @@ public class SchoolController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je", required = true, content = @Content(
             mediaType = "application/json",
             schemaProperties = {
-                    @SchemaProperty(name = "name", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "country", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "town", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "address", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "name", schema = @Schema(implementation = String.class, description = "Az iskola neve")),
+                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "Az iskola e-mail cime")),
+                    @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "Az iskola telefonszáma")),
+                    @SchemaProperty(name = "country", schema = @Schema(implementation = String.class, description = "Az a vármegye amelyben az iskola tartozkodik")),
+                    @SchemaProperty(name = "town", schema = @Schema(implementation = String.class, description = "Az a város amelyben az iskola tartozkodik")),
+                    @SchemaProperty(name = "address", schema = @Schema(implementation = String.class, description = "Az iskola cime")),
+                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "Az iskola bemutatkozó szövege")),
             }
     ))
     @ApiResponses({
@@ -195,8 +192,11 @@ public class SchoolController {
         return schoolService.createSchool(addedSchool);
     }
 
-    @Operation(summary = "Oktatók lekérdezése", description = "Az adott iskolához tartozó oktatók lekérdezése")
-    @Parameter(name = "id", description = "Az iskolához tartozó id.", in = ParameterIn.PATH, required = true)
+    @Operation(summary = "Iskola tagjainak lekérdezése", description = "Az adott iskolához tartozó tagok lekérdezése")
+    @Parameters({
+            @Parameter(name = "schoolId", description = "Az iskolához tartozó id.", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "role", description = "A lekérdezni való tagok beosztása. Csak student vagy instructor értéke lehet.", in = ParameterIn.QUERY, required = true),
+    })
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
                     mediaType = "application/json",
@@ -211,11 +211,26 @@ public class SchoolController {
         return schoolService.getMembersOfSchool(id, role, pageable);
     }
 
+    @Operation(summary = "Oktató kirugása", description = "Az iskolábol az adott oktató kirugása")
+    @Parameter(name = "instructorId", description = "Az adott oktatóhoz tartozó id", required = true, in = ParameterIn.QUERY)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres kirugás", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező oktatóhoz tartozó id.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Endpoint meghivása parameter nélkül.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
+    })
     @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Integer instructorId) {
         return schoolService.kickoutInstructor(instructorId);
     }
 
+    @Operation(summary = "Az összes iskola lekérdezése", description = "Az összes iskola lekérdezése röviditett formában")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json"
+            )),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
+    })
     @GetMapping("")
     private ResponseEntity<Object> getAllSchool(Pageable pageable) {
         return schoolService.getAllSchool(pageable);
