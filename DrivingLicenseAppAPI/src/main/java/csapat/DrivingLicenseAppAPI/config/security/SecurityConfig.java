@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,11 +29,15 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JWTGeneratorFilter jwtGeneratorFilter;
+    private final JWTValidatorFilter jwtValidatorFilter;
+    private final UserSetter userSetter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("Security enabled");
         http
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
                     @Override
@@ -49,8 +55,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) ->
                         requests.anyRequest().permitAll()
                 )
-//                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
-//                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
+                .authenticationProvider(authProvider())
+                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());
@@ -66,5 +73,13 @@ public class SecurityConfig {
     @Bean
     public CompromisedPasswordChecker compromisedPasswordChecker() {
         return new HaveIBeenPwnedRestApiPasswordChecker();
+    }
+
+    @Bean
+    AuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userSetter);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+
+        return authenticationProvider;
     }
 }

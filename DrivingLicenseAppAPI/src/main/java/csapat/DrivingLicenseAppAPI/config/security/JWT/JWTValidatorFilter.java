@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class JWTValidatorFilter extends OncePerRequestFilter {
 
@@ -23,16 +23,13 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
 
-    @Autowired
-    JwtUtilsService jwtUtilsService;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(AUTHORIZATION);
 
         if (header != null && header.startsWith(BEARER)) {
             String jwt = header.substring(BEARER.length());
-            UserDetails principal = jwtUtilsService.parseJwt(jwt);
+            UserDetails principal = jwtService.parseJwt(jwt);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

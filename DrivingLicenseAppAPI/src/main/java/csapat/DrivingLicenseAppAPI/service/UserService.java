@@ -390,6 +390,7 @@ public class UserService {
 
                 ((ObjectNode) returnObject).put("instructor", instructor);
                 ((ObjectNode) returnObject).put("vehicle", vehicle);
+                ((ObjectNode) returnObject).put("instructorId", loggedUser.getStudent().getStudentInstructor().getId());
             }
             ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getStudent().getStudentSchool()));
 
