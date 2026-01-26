@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.HourCard;
@@ -27,6 +28,7 @@ public class DrivingLessonService {
     private final SchoolRepository schoolRepository;
     private final StatusRepository statusRepository;
     private final PaymentMethodRepository paymentMethodRepository;
+    private final EmailSender emailSender;
 
     public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(Integer schoolId) {
         try {
@@ -56,6 +58,7 @@ public class DrivingLessonService {
             } else {
                 reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
+                emailSender.sendEmailAboutDrivingLessonCanceled(searchedDrivingLesson.getDstudent().getStudentUser().getEmail());
                 return ResponseEntity.ok().body(drivingLessonRepository.getDrivingLesson(drivingLessonId).get());
             }
         } catch (Exception e) {

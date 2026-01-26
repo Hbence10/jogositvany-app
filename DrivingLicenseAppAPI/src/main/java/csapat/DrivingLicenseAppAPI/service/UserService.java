@@ -203,6 +203,7 @@ public class UserService {
                 String hashedPassword = passwordEncoder.encode(newPassword);
                 searchedUser.setPassword(hashedPassword);
                 userRepository.save(searchedUser);
+                emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

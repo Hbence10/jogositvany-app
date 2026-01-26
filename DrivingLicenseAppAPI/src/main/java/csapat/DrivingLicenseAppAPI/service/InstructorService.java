@@ -3,10 +3,12 @@ package csapat.DrivingLicenseAppAPI.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ public class InstructorService {
     private final SchoolRepository schoolRepository;
     private final ObjectMapper objectMapper;
     private final DrivingLessonRepository drivingLessonRepository;
+    private final EmailSender emailSender;
 
     //
     private final ReservedHourRepository reservedHourRepository;
@@ -64,6 +67,7 @@ public class InstructorService {
                     searchedJoinRequest.setIsAccepted(false);
                 }
                 searchedJoinRequest.setAcceptedAt(new Date());
+                emailSender.sendEmailAboutInstructorJoinRequestToStudent(searchedJoinRequest.getInstructorJoinRequestStudent().getStudentUser().getEmail());
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
             }
         } catch (Exception e) {
@@ -174,9 +178,11 @@ public class InstructorService {
                     }
                     searchedRequest.setAcceptedAt(new Date());
                     drivingLessonRequestRepository.save(searchedRequest);
+
+                    emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail());
+                    return ResponseEntity.ok().build();
                 }
             }
-            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

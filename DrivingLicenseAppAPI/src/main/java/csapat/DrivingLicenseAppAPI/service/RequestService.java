@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,6 @@ import java.util.Date;
 public class RequestService {
 
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
-    private final ReservedHourRepository reservedHourRepository;
-    private final ReservedDateRepository reservedDateRepository;
-
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
@@ -29,6 +27,7 @@ public class RequestService {
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
+    private final EmailSender emailSender;
 
     public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, Integer categoryId) {
         try {
@@ -54,6 +53,8 @@ public class RequestService {
                 } else {
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
                 }
+
+                emailSender.sendEmailAboutSchoolJoinRequestToSchool(searchedSchool.getEmail());
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }
@@ -81,6 +82,7 @@ public class RequestService {
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
                 instructorJoinRequestRepository.save(instructorJoinRequest);
+                emailSender.sendEmailAboutInstructorJoinRequestToInstructor(searchedInstructor.getInstructorUser().getEmail());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -101,6 +103,7 @@ public class RequestService {
             } else {
                 DrivingLessonRequest newRequest = new DrivingLessonRequest(msg, date, startTime, endTime, searchedStudent, searchedInstructor);
                 drivingLessonRequestRepository.save(newRequest);
+                emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

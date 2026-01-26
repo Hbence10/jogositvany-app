@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVReader;
+import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
@@ -42,6 +43,7 @@ public class SchoolService {
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
+    private final EmailSender emailSender;
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
@@ -78,6 +80,7 @@ public class SchoolService {
                 }
                 searchedSchoolJoinRequest.setAcceptedAt(new Date());
                 schoolJoinRequestRepository.save(searchedSchoolJoinRequest);
+                emailSender.sendEmailAboutSchoolJoinRequestToUser(searchedSchoolJoinRequest.getSchoolJoinRequestUser().getEmail());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -293,6 +296,7 @@ public class SchoolService {
                 return ResponseEntity.status(415).body("invalidTown");
             } else {
                 schoolRepository.save(addedSchool);
+                emailSender.sendEmailAboutSchoolRegistration(addedSchool.getEmail());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
