@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
-import csapat.DrivingLicenseAppAPI.entity.Vehicle;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,7 +87,12 @@ public class InstructorController {
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.", required = true, content = @Content(
             mediaType = "application/json",
             schemaProperties = {
-
+                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "Az oktatóhoz tartozó bemutatkozó szöveg.")),
+                    @SchemaProperty(name = "vehicleId", schema = @Schema(implementation = Integer.class, description = "Az oktatóhoz tartozó jármű id-ja.")),
+                    @SchemaProperty(name = "vehicleName", schema = @Schema(implementation = String.class, description = "Az oktatóhoz tartozó jármű neve.")),
+                    @SchemaProperty(name = "licensePlate", schema = @Schema(implementation = String.class, description = "Az oktató járművének a rendszáma. A felépitése a következő lehet: AAA-111 vagy AAAA-1111.")),
+                    @SchemaProperty(name = "fuelTypeId", schema = @Schema(implementation = Integer.class, description = "Az oktató járművének a tankolási tipusához tartozó id.")),
+                    @SchemaProperty(name = "vehicleTypeId", schema = @Schema(implementation = Integer.class, description = "Az oktató járművének a tipusához tartozó id."))
             }
     ))
     @ApiResponses({
@@ -103,7 +106,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Integer instructorId) {
         return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
     }

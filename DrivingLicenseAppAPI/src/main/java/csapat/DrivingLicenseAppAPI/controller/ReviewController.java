@@ -79,7 +79,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @DeleteMapping("/deleteReview/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable("id") int id) {
         return reviewService.deleteReview(id);
     }

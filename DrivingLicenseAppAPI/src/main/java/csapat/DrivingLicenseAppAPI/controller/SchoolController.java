@@ -43,7 +43,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
-    @PostMapping("/joinRequest/{id}")
+    @PostMapping("/{id}/joinRequest")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status").asText());
     }
@@ -73,13 +73,12 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Integer schoolId) {
         return schoolService.updateSchool(schoolId, requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
     }
 
     @Operation(summary = "Iskola boritókép csere.")
-    @PatchMapping("/coverImg/{id}")
     @Parameters({
             @Parameter(name = "id", description = "Az adott fiókhoz tartozó id.", in = ParameterIn.PATH),
             @Parameter(name = "image", description = "A feltöltött boritókép.")
@@ -93,6 +92,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.", content = @Content)
     })
+    @PatchMapping("/{id}/coverImg")
     public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
