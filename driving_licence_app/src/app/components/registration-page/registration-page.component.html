@@ -86,13 +86,28 @@
                   <p>Van fiókja? <a routerLink="/login">Jelentkezzen be</a></p>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <h6>Miként szeretnél regisztrálni?</h6>
+                  <div>
+                    <label for="student">Diákként</label>
+                    <input (click)="registrationForm.controls['registerAs'].setValue('student')" type="radio" name="registerAs" id="student">
+                  </div>
+                  <div>
+                    <label for="instructor">Oktatóként</label>
+                    <input (click)="registrationForm.controls['registerAs'].setValue('instructor')" type="radio" name="registerAs" id="instructor">
+                  </div>
+                </div>
+              </div>
+
             </form>
           </div>
         </div>
 
         <div class="row">
           <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-            <button id="register-button" (click)="registration()">Regisztráció</button>
+            <button [disabled]="registrationForm.invalid" id="register-button" (click)="registration()">Regisztráció</button>
           </div>
         </div>
 

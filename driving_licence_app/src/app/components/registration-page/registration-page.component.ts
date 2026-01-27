@@ -40,6 +40,17 @@ function validatePassword(
   }
 }
 
+function validatePhone(control: AbstractControl): { [key: string]: any } | null {
+  const givenPhoneNumber: string = control.value
+  const phoneServicesCode: string[] = ["30", "20", "70", "50", "31"]
+  if (givenPhoneNumber.length == 11 && phoneServicesCode.includes(givenPhoneNumber.substring(2, 4))) {
+    return null;
+  } else {
+    return { invalid: false }
+  }
+}
+
+
 @Component({
   selector: 'app-registration-page',
   imports: [ReactiveFormsModule, RouterModule],
@@ -76,6 +87,7 @@ export class RegistrationPageComponent implements OnInit {
       education: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, validatePassword]),
       confirmPassword: new FormControl('', [Validators.required]),
+      registerAs: new FormControl("student", [Validators.required])
     });
     this.registrationForm.controls['confirmPassword'].addValidators(
       this.samePasswordValidator
