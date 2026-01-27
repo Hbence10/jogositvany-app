@@ -27,4 +27,8 @@ export class NavbarComponent {
       this.router.navigate(["users", "schoolStudent"])
     }
   }
+
+  logout(){
+    this.userService.logout();
+  }
 }

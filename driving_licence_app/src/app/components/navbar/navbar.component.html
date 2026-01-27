@@ -88,7 +88,7 @@
     @if(userService.loggedUser() == null){
     <a routerLink="login">Bejelentkezése</a>
     } @else {
-    <a>kijeletkezés</a>
+    <a (click)="logout()">kijeletkezés</a>
     }
   </div>
 

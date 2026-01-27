@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
 import { HomePageUser } from '../models/notEntity/homepageUser.model';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -12,6 +13,7 @@ export class UsersService {
 
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/users';
+  private router = inject(Router);
   loggedUser =  signal<null | HomePageUser>(null)
 
   constructor() { }
@@ -20,6 +22,10 @@ export class UsersService {
     return this.http.post<HomePageUser>(`${this.baseUrl}/login`, {email: email, password: password});
   }
 
+  logout(){
+    this.loggedUser.set(null);
+    this.router.navigate(['/login']);
+  }
   registration(user: User) : Observable<string> {
     console.log(user);
     return this.http.post<string>(`${this.baseUrl}/register`, user);
