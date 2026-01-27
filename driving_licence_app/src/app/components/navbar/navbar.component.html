@@ -24,27 +24,27 @@
     }
 
     @if (userService.loggedUser()?.role?.name == "ROLE_student"){
-      <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page">
+      <div class="navItem d-flex justify-content-start align-items-center" routerLink="searchPage/instructor">
         <div class="navIconContainer d-flex justify-content-center align-items-center">
           <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="people"></mat-icon>
         </div>
-        <a routerLink="searchPage/instructor">Oktatók</a>
+        <a>Oktatók</a>
       </div>
     }
 
     @if (userService.loggedUser()?.role?.name != "ROLE_school_admin" && userService.loggedUser() != null) {
-      <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page">
+      <div class="navItem d-flex justify-content-start align-items-center" routerLink="searchPage/school">
         <div class="navIconContainer d-flex justify-content-center align-items-center">
           <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="home_work"></mat-icon>
         </div>
-        <a routerLink="searchPage/school">Iskolák</a>
+        <a>Iskolák</a>
       </div>
     }
 
     @if(userService.loggedUser()?.role?.name == "ROLE_instructor" ||
     userService.loggedUser()?.role?.name == "ROLE_school_admin" ||
     userService.loggedUser()?.role?.name == "ROLE_school_owner"){
-    <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page">
+    <div class="navItem d-flex justify-content-start align-items-center" (click)="checkRequestList()">
       <div class="navIconContainer d-flex justify-content-center align-items-center">
         <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="people"></mat-icon>
       </div>
@@ -53,29 +53,29 @@
     }
 
     @if (userService.loggedUser()?.role?.name == "ROLE_school_admin" || userService.loggedUser()?.role?.name == "ROLE_school_owner" || userService.loggedUser()?.role?.name == "ROLE_instructor") {
-      <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page" >
+      <div class="navItem d-flex justify-content-start align-items-center" (click)="navigateToStudents()">
         <div class="navIconContainer d-flex justify-content-center align-items-center">
           <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="home_work"></mat-icon>
         </div>
-        <a routerLink="searchPage/school" >Diákok</a>
+        <a>Diákok</a>
       </div>
     }
 
     @if (userService.loggedUser()?.role?.name == "ROLE_school_admin" || userService.loggedUser()?.role?.name == "ROLE_school_owner") {
-      <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page" >
+      <div class="navItem d-flex justify-content-start align-items-center" routerLink="/users/instructors" >
         <div class="navIconContainer d-flex justify-content-center align-items-center">
           <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="home_work"></mat-icon>
         </div>
-        <a routerLink="searchPage/school" >Oktatóink</a>
+        <a>Oktatóink</a>
       </div>
     }
 
     @if (userService.loggedUser()?.role?.name == "ROLE_administrator"){
-      <div class="navItem d-flex justify-content-start align-items-center" routerLink="search-page">
+      <div class="navItem d-flex justify-content-start align-items-center" routerLink="/users/users">
         <div class="navIconContainer d-flex justify-content-center align-items-center">
           <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="people"></mat-icon>
         </div>
-        <a routerLink="searchPage/instructor">Felhasználók</a>
+        <a>Felhasználók</a>
       </div>
     }
   </div>

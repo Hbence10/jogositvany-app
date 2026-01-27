@@ -20,4 +20,11 @@ export class NavbarComponent {
       this.router.navigate(["request", "school"])
     }
   }
+  navigateToStudents() {
+    if (this.userService.loggedUser()?.role.name == "ROLE_instructor"){
+      this.router.navigate(["users", "instructorStudents"])
+    } else {
+      this.router.navigate(["users", "schoolStudent"])
+    }
+  }
 }
