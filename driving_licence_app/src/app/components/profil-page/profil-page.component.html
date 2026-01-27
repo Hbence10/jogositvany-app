@@ -125,17 +125,22 @@
                 <span class="material-icons">mail</span>
               </button>
               @if (
-                type() == "school" &&
-                userService.loggedUser()?.role?.name == "ROLE_user"
-              ) {
-                <button (click)="sendJoinRequest()">Jelentkezés</button>
-              } @else if (
-                type() == "user" &&
-                userService.loggedUser()?.role?.name == "ROLE_student" &&
-                userService.loggedUser()?.instructor == undefined
-              ) {
-                <button>Jelentkezés</button>
+                (type() == "school" &&
+                (userService.loggedUser()?.role?.name == "ROLE_user" ||
+                userService.loggedUser()?.role?.name == "ROLE_instructor") ||
+                type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == null
+              ))
+              {
+                <button id="signButton" (click)="sendJoinRequest()" [disabled]="type() == 'school' && selectedCategory == null && userService.loggedUser()?.role?.name == 'ROLE_user'">Jelentkezés</button>
+
+               @if (userService.loggedUser()?.role?.name == "ROLE_user") {
+                <select #categorySelect (change)="selectedCategory = +categorySelect.value">
+                  @for (category of searchedSchool?.licenseCategoryList; track $index) {
+                    <option [value]="category.licenseCategory.id">{{category.licenseCategory.name}}</option>
+                  }
+                </select>
               }
+            }
             </div>
           </div>
         </div>
@@ -152,9 +157,12 @@
               >
                 <i class="material-icons">delete</i>
               </button>
-              <button class="m-3" style="width: 60px">
-                <i class="material-icons">info</i>
-              </button>
+              @if(type() == "school") {
+                <button class="m-3" style="width: 60px">
+                  <i class="material-icons">info</i>
+                </button>
+              }
+
               @if (
                 searchedUser?.id == userService.loggedUser()?.id ||
                 searchedSchool?.id == userService.loggedUser()?.schoolId
@@ -201,32 +209,16 @@
                       }}</span>
                     </p>
                     <p class="uData mt-0">
-                      <span class="fw-bold">{{
-                        searchedUser == null ? "Tulaj:" : "Nem:"
-                      }}</span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool?.owner?.firstName +
-                            " " +
-                            searchedSchool?.owner?.lastName
-                          : searchedUser.gender
-                      }}</span>
+                      <span class="fw-bold">{{ searchedUser == null ? "Tulaj:" : "Nem:" }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool?.owner?.firstName + " " + searchedSchool?.owner?.lastName : searchedUser.gender}}</span>
                     </p>
                     <p class="uData mt-0">
                       <span class="fw-bold">E-mail:</span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool!.email
-                          : searchedUser.email
-                      }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool!.email : searchedUser.email }}</span>
                     </p>
                     <p class="uData mt-0">
                       <span class="fw-bold">Telefonszám: </span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool!.phone
-                          : searchedUser.phone
-                      }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool!.phone : searchedUser.phone }}</span>
                     </p>
                     @if (
                       type() == "user" &&
@@ -234,9 +226,7 @@
                     ) {
                       <p class="uData mt-0">
                         <span class="fw-bold">Iskola: </span>
-                        <span>{{
-                          searchedUser?.instructor?.instructorSchool?.name
-                        }}</span>
+                        <span>{{ searchedUser?.instructor?.instructorSchool?.name}}</span>
                       </p>
                     }
                   </div>
@@ -259,9 +249,7 @@
                                   src="assets/icons/kijeletkezés.svg"
                                   alt=""
                                 />
-                                <p
-                                  class="w-100 text-white info-field d-flex align-items-center justify-content-between"
-                                >
+                                <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
                                   <span>Név:</span>
                                   <span>{{
                                     instructorDetails?.vehicle?.name
@@ -271,18 +259,13 @@
                                   class="w-100 text-white info-field d-flex align-items-center justify-content-between"
                                 >
                                   <span>Típus:</span>
-                                  <span>{{
-                                    instructorDetails?.vehicle?.vehicleType
-                                      ?.name
-                                  }}</span>
+                                  <span>{{instructorDetails?.vehicle?.vehicleType?.name}}</span>
                                 </p>
                                 <p
                                   class="w-100 text-white info-field d-flex align-items-center justify-content-between"
                                 >
                                   <span>Rendszám:</span>
-                                  <span>{{
-                                    instructorDetails?.vehicle?.licensePlate
-                                  }}</span>
+                                  <span>{{instructorDetails?.vehicle?.licensePlate}}</span>
                                 </p>
                               </div>
                             </div>
@@ -353,7 +336,17 @@
                             </div>
                           </div>
                           <div class="col-lg-8">
-                            <div id="instructorList"></div>
+                            <div id="instructorList" class="container-fluid" style="height: 400px; width: 650px; overflow-y: auto;">
+                              @for (row of getInstructorRows(); track $index) {
+                                <div class="row my-3">
+                                  @for (instructors of row; track $index) {
+                                    <div class="col-lg-6">
+                                      <app-profil-card [profilCardData]="instructors" [role]="'instructors'"/>
+                                    </div>
+                                  }
+                                </div>
+                              }
+                            </div>
                           </div>
                         </div>
                       </div>

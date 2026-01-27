@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { School } from '../../models/school.model';
 import { User } from '../../models/user.model';
 import { SchoolServiceService } from '../../services/school-service.service';
@@ -12,6 +12,7 @@ import { ProfilCardComponent } from '../profil-card/profil-card.component';
 import { ProfilEditorComponent } from './profil-editor/profil-editor.component';
 import { ReviewListComponent } from './review-list/review-list.component';
 import { PriceListComponent } from './price-list/price-list.component';
+import { ProfileCard } from '../../models/notEntity/profileCard.model';
 
 @Component({
   selector: 'app-profil-page',
@@ -24,6 +25,8 @@ export class ProfilPageComponent implements OnInit {
   userService = inject(UsersService)
   private schoolService = inject(SchoolServiceService)
   private requestService = inject(RequestService)
+  private router = inject(Router)
+
   searchedUser: User | null = null
   searchedSchool: School | null = null
   instructorDetails: Instructors | null = null
@@ -35,6 +38,7 @@ export class ProfilPageComponent implements OnInit {
   showReviews: boolean = false
   showDeleteConfirmation: boolean = false
   showPriceList: boolean = false
+  selectedCategory: number | null = null
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -138,6 +142,31 @@ export class ProfilPageComponent implements OnInit {
           this.showDeleteConfirmation = false
         }
       })
+    }
+  }
+
+  getInstructorRows(): ProfileCard[][] {
+    const rows: ProfileCard[][] = []
+    if (this.searchedSchool != null) {
+      for (let i: number = 0; i < this.searchedSchool!.instructorsList?.length; i++) {
+        const row: ProfileCard[] = []
+        for (let j: number = i; j < i + 2; j++) {
+          if (this.searchedSchool!.instructorsList[j] != undefined) {
+            row.push(new ProfileCard(this.searchedSchool!.instructorsList[j].instructorUser.id!, this.searchedSchool!.instructorsList[j].instructorUser.firstName!, this.searchedSchool!.instructorsList[j].instructorUser.lastName!))
+          }
+        }
+        rows.push(row)
+      }
+    }
+    return rows
+  }
+
+  setChanges(updatedObject: User | School) {
+    this.showEditor = false
+    if (this.type() == "user") {
+      this.searchedUser = updatedObject as User
+    } else {
+      this.searchedSchool = updatedObject as School
     }
   }
 }

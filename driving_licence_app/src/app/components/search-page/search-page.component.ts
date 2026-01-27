@@ -24,7 +24,7 @@ export class SearchPageComponent implements OnInit {
   private instructorService = inject(InstructorServiceService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
-  private userService = inject(UsersService)
+  userService = inject(UsersService)
   private requestService = inject(RequestService)
 
   fuelTypeList: FuelType[] = []
@@ -40,7 +40,7 @@ export class SearchPageComponent implements OnInit {
   selectedInstructor: Instructors | null = null
   instructorList: { id: number, name: string }[] = []
   filteredInstructorList: { id: number, name: string }[] = []
-
+  selectedCategoryId: number | null = null
 
   ngOnInit(): void {
     this.selectedSchool = null

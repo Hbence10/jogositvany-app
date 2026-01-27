@@ -3,6 +3,7 @@ import { Instructors } from './instructors.model';
 import { OpeningDetails } from './opening-details.model';
 import { Review } from './review.model';
 import { SchoolJoinRequest } from './school-join-request.model';
+import { SchoolCategory } from './schoolCategory.model';
 import { Students } from './students.model';
 import { User } from './user.model';
 
@@ -24,7 +25,8 @@ export class School {
     public reviewList: Review[],
     public studentsList: Students[],
     public examRequestList: ExamRequest[],
-    public schoolJoinRequestList: SchoolJoinRequest[]
+    public schoolJoinRequestList: SchoolJoinRequest[],
+    public licenseCategoryList: SchoolCategory[]
   ) {}
 
   get getName(): string {

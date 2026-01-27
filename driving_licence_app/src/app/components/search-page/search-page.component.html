@@ -123,6 +123,14 @@
                     <button class="profileBtn" (click)="navigateToProfilePage()">
                       <img src="assets/icons/defaultProfileImg.svg" alt="">
                     </button>
+
+                    @if (selectedType == "school" && userService.loggedUser()?.role?.name == "ROLE_user") {
+                      <select #categorySelect (change)="selectedCategoryId = +categorySelect.value">
+                        @for (category of selectedSchool?.licenseCategoryList; track $index) {
+                          <option [value]="category.licenseCategory.id">{{category.licenseCategory.name}}</option>
+                        }
+                      </select>
+                    }
                     <button class="signBtn">jelentkezés</button>
                   </div>
                 </div>
