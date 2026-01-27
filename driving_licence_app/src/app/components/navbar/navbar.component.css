@@ -1,7 +1,7 @@
 #navbar {
   background-color: #22354f;
   color: white;
-  padding: 15px;
+  padding: 25px 15px;
   width: 120px;
   height: 100vh;
   transition: width 0.5s ease;
@@ -9,18 +9,18 @@
 #navbar a {
   padding: 5px 10px;
   display: none;
-  transition: width 0.5s ease;
+  transition: width 1s ease;
 }
 #navbar .navItem {
-  margin: 30px 0px 0px 0px;
-  transition: width 0.5s ease;
+  margin: 15px 0px;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 
 #navbar:hover {
   background-color: #22354f;
   color: white;
-  padding: 25px;
+  padding: 25px 15px;
   width: 360px;
   height: 100vh;
   transition: width 0.5s ease;
@@ -30,43 +30,44 @@
   text-decoration: none;
   padding: 5px 10px;
   display: inline-block;
-  transition: width 0.5s ease;
+  transition: width 1s ease;
 }
 #navbar:hover .navItem {
-  margin: 30px 0px 0px 0px;
-  transition: width 1s ease;
+  margin: 15px 0px;
+  transition: width 1s ease, height 1s ease;
 }
 
 
 #navbar:hover .navItem:hover {
+  transition: width 1s ease, height 1s ease;
   width: 310px;
   height: 70px;
   border-radius: 50px;
-  background-color: #434a6b;
-  margin: 30px 0px 0px 0px;
+  background-color: #434a6b ;
+  margin: 15px 0px 15px 0px;
   font-size: 32px;
-  transition: width 1s ease;
+
 }
 #navbar:hover .navItem:hover .navIconContainer {
   background-color: #22354f;
   width: 60px;
   height: 60px;
   margin: 0px 5px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 #navbar:hover .navItem:hover .navIcons {
   width: 60px;
   height: 60px;
   font-size: 40px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 
 
 #navbar:hover .navItem {
-  margin: 30px 0px 0px 15px;
+  margin: 15px 0px 15px 15px;
   cursor: pointer;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 #navbar:hover .profil {
@@ -74,10 +75,10 @@
   width: 280px;
   height: 110px;
   padding: 10px;
-  margin: 0px 0px 0px 15px;
+  margin: 0px 0px 15px 15px;
   border-radius: 20px;
   background-color: #434a6b;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 
 }
 
@@ -89,25 +90,25 @@
   height: 70px;
   border-radius: 50px;
   background-color: #434a6b;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 .navbar:hover .calendar {
   font-weight: bold;
   width: 280px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 .navbar:hover .instructors {
   font-weight: bold;
   width: 280px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 .navbar:hover .schools {
   font-weight: bold;
   width: 280px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 /*------------------*/
@@ -128,17 +129,16 @@
   height: 40px;
   background-color: #434a6b;
   border-radius: 100px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 
 }
 
 #navbar:hover #avatar {
-  transition: width 0.5s ease;
   width: 90px;
   height: 90px;
   background-color: #22354f;
   border-radius: 20px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 
 }
 
@@ -147,7 +147,7 @@
   height: 70px;
   background-color: #22354f;
   border-radius: 15px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 .profil:hover {
@@ -155,40 +155,38 @@
   width: 90px;
   height: 90px;
   padding: 10px;
-  margin: 0px 0px 0px 15px;
   border-radius: 20px;
   background-color: #434a6b;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 #navbar .profil {
   width: 90px;
   height: 90px;
   padding: 10px;
+  margin: 0px 0px 15px 0px;
   border-radius: 20px;
   background-color: #434a6b;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 #navbar:hover .navItem {
   padding: 0px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 
 #navbar .navItem {
   padding: 0px 25px 0px 25px;
-  transition: width 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 #navbar #login{
-  padding: 0px 15px 0px 15px;
-  margin-bottom: 30px;
-  transition: width 0.5s ease;
+  margin: 0px 0px 30px 15px;
+  transition: width 0.5s ease, height 0.5s ease;
 }
 
 #navbar:hover #login{
-  margin-left: 15px;
-  padding: 0px;
-  transition: width 0.5s ease;
+  margin: 0px 0px 30px 15px;
+  transition: width 0.5s ease, height 0.5s ease;
 }

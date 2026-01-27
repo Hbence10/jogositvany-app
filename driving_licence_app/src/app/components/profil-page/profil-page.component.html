@@ -51,7 +51,7 @@
             </div>
           }
           @if (showPriceList) {
-            <app-price-list />
+            <app-price-list [schoolId]="searchedSchool?.id!" (close)="showPriceList = false"/>
           }
         </div>
       </div>

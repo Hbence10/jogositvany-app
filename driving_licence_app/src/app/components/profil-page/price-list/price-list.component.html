@@ -1,1 +1,35 @@
-<p>price-list works!</p>
+<div class="container-fluid" id="mainContainer">
+  <div class="row h-100">
+    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+      <div class="container-fluid" id="secondContainer">
+
+        <button (click)="close.emit()">X</button>
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="text-center mt-4">Áraink:</h1>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-center">
+            <table style="width: 300px;">
+              <tr>
+                <th class="text-center">Kategória</th>
+                <th class="text-center">Min. korhatár</th>
+                <th class="text-center">Ft/Óra</th>
+              </tr>
+              @for (category of priceList; track $index) {
+                <tr>
+                  <td class="text-center">{{category.licenseCategory.name}}</td>
+                  <td class="text-center">{{category.licenseCategory.minAge}}</td>
+                  <td class="text-center">{{category.hourlyRate}} Ft</td>
+                </tr>
+              }
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
