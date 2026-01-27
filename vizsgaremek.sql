@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Jan 21. 12:19
+-- Létrehozás ideje: 2026. Jan 27. 07:59
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -223,6 +223,25 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLesson` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson` WHERE driving_lesson.id= idIN;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonBetweenHour` (IN `dateIN` DATE, IN `startHourIN` TIME, IN `endHourIN` TIME, IN `instructorIDIN` INT)   BEGIN 
+    SELECT dl.id FROM driving_lesson dl 
+    INNER JOIN reserved_hour rh ON 
+    rh.id = dl.hour_id 
+    INNER JOIN reserved_date rd ON 
+    rh.date_id = rd.id 
+    WHERE 
+    dl.instructor_id = instructorIDIN 
+    AND 
+    rd.date = dateIN
+    AND 
+    (
+    (rh.start_time BETWEEN startHourIN AND endHourIN)    
+    OR
+    (rh.end_time BETWEEN startHourIN AND endHourIN)    
+    )
+    ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
