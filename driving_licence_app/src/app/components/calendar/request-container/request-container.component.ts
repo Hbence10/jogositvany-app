@@ -15,10 +15,13 @@ export class RequestContainerComponent implements OnInit {
   close = output()
   reservedHours = input.required<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>()
   availableHours: string[][] = []
-
+  selectedDate = input.required<Date>()
 
   ngOnInit(): void {
-    this.getAvailableHours()
+    if(this.reservedHours().length != 0){
+      this.getAvailableHours()
+    }
+
 
     this.requestForm = new FormGroup({
       selectedDate: new FormControl("", [Validators.required]),

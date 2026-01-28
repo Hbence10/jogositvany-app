@@ -35,17 +35,41 @@ export class CalendarComponent implements OnInit{
   selectedDrivingLesson!: DrivingLessons
   selectedReservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[] = []
 
-  ngOnInit(): void {
-    const datesOfWeek: Date[] = this.getWeekDates(this.getWeekOfYear(new Date()), 2026)
+  selectedDate: Date = new Date()
+  datesOfWeek: Date[] = []
+  numberOfWeek!: number
+  dateForRequest!: Date
 
-    for (let i: number = 0; i < datesOfWeek.length; i++) {
-      this.drivingLessonService.getReservedHourByDate(4, datesOfWeek[i].toISOString().split("T")[0]).subscribe({
+  ngOnInit(): void {
+    this.numberOfWeek = this.getWeekOfYear(this.selectedDate) - 1
+    this.getReservedHoursOfWeek(this.numberOfWeek)
+  }
+  getReservedHoursOfWeek(numberOfWeek: number) {
+    this.days = []
+    this.datesOfWeek = this.getWeekDates(numberOfWeek, 2026)
+    console.log(this.datesOfWeek)
+
+    for (let i: number = 0; i < this.datesOfWeek.length; i++) {
+      const formattedDate: string = this.datesOfWeek[i].toLocaleString().replaceAll(". ", "-").substring(0, 10)
+      console.log(formattedDate)
+      this.drivingLessonService.getReservedHourByDate(this.userService.loggedUser()?.instructorId!, formattedDate).subscribe({
         next: response => {
+          console.log(response)
           this.days.push({ name: this.dayNames[i], reservedHours: response })
         }
       })
     }
   }
+  changeWeekWithArrow(isForward: boolean) {
+    this.numberOfWeek += isForward ? 1 : -1
+    this.getReservedHoursOfWeek(this.numberOfWeek)
+  }
+
+  changeWeekWithInput(newDate: Date) {
+    this.numberOfWeek = this.getWeekOfYear(newDate) - 1
+    this.getReservedHoursOfWeek(this.numberOfWeek)
+  }
+
 
   getWeekDates(week: number, year: number): Date[] {
     const start = new Date(year, 0, 1 + (week - 1) * 7);
@@ -76,13 +100,17 @@ export class CalendarComponent implements OnInit{
   }
 
   selectDrivingLesson(id: number) {
-    this.drivingLessonService.getDrivingLessonById(id).subscribe({
-      next: response => this.selectedDrivingLesson = response,
-      complete: () => this.showEditor = true
-    })
+    if(this.userService.loggedUser()?.role.name == "ROLE_instructor"){
+      this.drivingLessonService.getDrivingLessonById(id).subscribe({
+        next: response => this.selectedDrivingLesson = response,
+        complete: () => this.showEditor = true
+      })
+    }
+
   }
 
-  sendRequest(reservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]) {
+  sendRequest(dateIndex: number, reservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]) {
+    this.dateForRequest = this.datesOfWeek[dateIndex]
     this.selectedReservedHours = reservedHours
     this.showRequestContainer = true
   }

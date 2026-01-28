@@ -64,4 +64,12 @@ export class DrivingLessonEditorComponent {
       complete: () => this.close.emit()
     })
   }
+
+  cancelDrivingLesson() {
+    this.drivingLessonService.cancelDrivingLesson(this.drivingLesson().id).subscribe({
+      complete: () => {
+        this.close.emit()
+      }
+    })
+  }
 }
