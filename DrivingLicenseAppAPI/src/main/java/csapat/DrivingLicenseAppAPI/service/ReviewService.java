@@ -42,6 +42,10 @@ public class ReviewService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("studentNotFound");
             }
 
+            if (rating < 0 || rating > 5) {
+                return ResponseEntity.status(415).body("invalidRating");
+            }
+
             Review newReview = new Review(reviewText, rating, author);
             if (schoolId == 0 && instructorId != 0) {
                 Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
