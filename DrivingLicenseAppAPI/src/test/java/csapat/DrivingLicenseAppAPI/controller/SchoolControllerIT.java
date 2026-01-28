@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-//34
+//37
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:application.properties")
 @ActiveProfiles("test")
@@ -51,6 +51,15 @@ public class SchoolControllerIT {
     public void updateExistentSchoolWithDuplicatedEmail() throws Exception {}
 
     //coverImg
+    @Test
+    public void updateExistentSchoolsCoverImgWithValidPhoto() throws Exception {}
+
+    @Test
+    public void updateNonExistentSchoolsCoverImg() throws Exception {}
+
+    @Test
+    public void updateExistentSchoolsCoverImgWithInvalidPhoto() throws Exception {}
+
     @Test
     public void updateOpeningDetailsOfExistentSchool() throws Exception {}
 
