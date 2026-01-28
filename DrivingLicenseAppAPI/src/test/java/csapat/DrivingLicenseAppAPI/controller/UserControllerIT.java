@@ -37,6 +37,7 @@ public class UserControllerIT {
     @Test
     public void registerWithValidDatasAsInstructor() throws Exception{}
 
+    @Test
     public void registerAsNonExistentRole() throws Exception {}
 
     @Test
