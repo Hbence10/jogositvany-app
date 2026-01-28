@@ -1,6 +1,8 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,16 +12,19 @@ import org.springframework.test.web.servlet.MockMvc;
 
 //36db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(locations = "classpath:application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerIT {
 
     @Autowired
     MockMvc mockMvc;
 
-//    @Autowired
-//    tools.jackson.databind.ObjectMapper objectMapper;
+    @BeforeAll
+    public void setUpRequiredDatas() {
+        System.out.println("setUpRequiredDatas");
+    }
 
     @Test
     public void loginWithExistentUsersDetails() throws Exception {
