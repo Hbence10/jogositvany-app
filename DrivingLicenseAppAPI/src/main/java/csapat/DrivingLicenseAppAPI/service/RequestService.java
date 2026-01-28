@@ -49,6 +49,11 @@ public class RequestService {
                     if (searchedCategory == null || searchedCategory.getIsDeleted()) {
                         return ResponseEntity.status(404).body("categoryNotFound");
                     }
+                    Boolean isSchoolNotContainsCategory = searchedSchool.getLicenseCategoryList().stream().filter(category -> category.getLicenseCategory().getId() == categoryId).toList().isEmpty();
+                    if (isSchoolNotContainsCategory) {
+                        return ResponseEntity.status(415).body("invalidCategory");
+                    }
+
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
                 } else {
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
@@ -100,7 +105,14 @@ public class RequestService {
                 return ResponseEntity.status(404).body("studentNotFound");
             } else if (searchedInstructor == null) {
                 return ResponseEntity.status(404).body("instructorNotFound");
-            } else {
+            } else if (
+                    searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() ||
+                    searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()
+            ) {
+                return ResponseEntity.status(415).body("invalidInstructor");
+            }
+
+            else {
                 DrivingLessonRequest newRequest = new DrivingLessonRequest(msg, date, startTime, endTime, searchedStudent, searchedInstructor);
                 drivingLessonRequestRepository.save(newRequest);
                 emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail());
