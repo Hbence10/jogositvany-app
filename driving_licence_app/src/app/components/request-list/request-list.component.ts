@@ -8,6 +8,7 @@ import { InstructorServiceService } from '../../services/instructor-service.serv
 import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
 import { RequestCardComponent } from './request-card/request-card.component';
+import { DrivingLessonService } from '../../services/driving-lesson.service';
 
 @Component({
   selector: 'app-request-list',
@@ -20,6 +21,8 @@ export class RequestListComponent implements OnInit {
   schoolService = inject(SchoolServiceService);
   instructorService = inject(InstructorServiceService);
   userService = inject(UsersService);
+  drivingLessonService = inject(DrivingLessonService);
+
 
   requestType!: 'drivingLesson' | 'instructorJoin' | 'schoolJoin' | 'exam';
   ownerType!: 'school' | 'instructor';
@@ -91,12 +94,9 @@ export class RequestListComponent implements OnInit {
       this.getAllInstructorJoinRequest();
     } else if (this.requestType == 'schoolJoin') {
       this.getAllSchoolJoinRequest();
-    } else if (this.requestType == 'exam') {
-      this.getAllExamRequest();
     }
   }
 
-  //kérelmek lekerese
   getAllDrivingLessonRequest() {
     this.instructorService
       .getDrivingLessonRequestByInstructor(
