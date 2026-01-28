@@ -26,6 +26,7 @@ export class UsersService {
     this.loggedUser.set(null);
     this.router.navigate(['/login']);
   }
+
   registration(user: User) : Observable<string> {
     console.log(user);
     return this.http.post<string>(`${this.baseUrl}/register`, user);
@@ -65,5 +66,9 @@ export class UsersService {
 
   deleteUser(userId: number) {
     return this.http.delete(`${this.baseUrl}/delete/${userId}`)
+  }
+
+  getAllUser(): Observable<{id:number, name: string, imagePath: string, userId: number}[]> {
+    return this.http.get<{id:number, name: string, imagePath: string, userId: number}[]>(`${this.baseUrl}?page=0&size=10`)
   }
 }

@@ -56,4 +56,20 @@ export class SchoolServiceService {
   deleteSchool(schoolId: number) {
     return this.http.delete(`${this.baseUrl}/${schoolId}`)
   }
+
+  createSchool(newSchool: School) {
+    return this.http.post(`${this.baseUrl}`, newSchool)
+  }
+
+  getMembersOfSchool(schoolId: number, role: string): Observable<{id:number, name: string, imagePath: string, userId: number}[]> {
+    return this.http.get<{id:number, name: string, imagePath: string, userId: number}[]>(`${this.baseUrl}/users?schoolId=${schoolId}&role=${role}&page=0&size=10`)
+  }
+
+  kickOutInstructor(instructorId: number) {
+    return this.http.delete(`${this.baseUrl}/kickout?instructorId=${instructorId}`)
+  }
+
+  getAllSchool(): Observable<{id: number, name: string}[]> {
+    return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?page=0&size=10`)
+  }
 }

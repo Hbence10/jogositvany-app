@@ -54,4 +54,12 @@ export class InstructorServiceService {
   getInstructorById(id: number):Observable<Instructors> {
     return this.http.get<Instructors>(`${this.baseUrl}/${id}`)
   }
+
+  getStudents(id: number): Observable<{id:number, name: string, imagePath: string, userId: number}[]> {
+    return this.http.get<{id:number, name: string, imagePath: string, userId: number}[]>(`${this.baseUrl}/${id}/students?page=0&size=10`)
+  }
+
+  kickoutStudent(studentId: number) {
+    return this.http.delete(`${this.baseUrl}/kickout?studentId=${studentId}`)
+  }
 }
