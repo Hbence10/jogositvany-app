@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink, RouterModule } from "@angular/router";
-import { Router } from '@angular/router';
+import { Router, RouterModule } from "@angular/router";
 import { UsersService } from '../../services/users.service';
 
 
