@@ -81,9 +81,9 @@ public class DrivingLessonService {
                 } else if (lessonHourNumber <= 0) {
                     return ResponseEntity.status(415).body("invalidLessonHourNumber");
                 } else if (searchedPayment == null) {
-                    return ResponseEntity.status(404).body("");
+                    return ResponseEntity.status(404).body("paymentMethodNotFound");
                 } else if (searchedStatus == null) {
-                    return ResponseEntity.status(404).body("");
+                    return ResponseEntity.status(404).body("statusNotFound");
                 }  else {
                     searchedDrivingLesson.setStartKm(startKm);
                     searchedDrivingLesson.setEndKm(endKm);
