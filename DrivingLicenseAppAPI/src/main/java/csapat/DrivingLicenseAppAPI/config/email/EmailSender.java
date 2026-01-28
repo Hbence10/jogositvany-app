@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-@PropertySource("./application.properties")
+//@PropertySource("./application.properties")
 public class EmailSender {
 
     private final JavaMailSender mailSender;
