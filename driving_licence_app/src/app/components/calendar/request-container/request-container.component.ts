@@ -24,7 +24,7 @@ export class RequestContainerComponent implements OnInit {
 
 
     this.requestForm = new FormGroup({
-      selectedDate: new FormControl("", [Validators.required]),
+      selectedDate: new FormControl(this.selectedDate(), [Validators.required]),
       startTime: new FormControl("", [Validators.required]),
       endTime: new FormControl("", [Validators.required]),
       message: new FormControl("", [])

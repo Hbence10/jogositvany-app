@@ -98,7 +98,7 @@ export class ProfilEditorComponent implements OnInit {
     }
   }
 
-    saveProfilChanges() {
+  saveProfilChanges() {
     if (this.objectType() == "school") {
       this.schoolService.updateSchool(this.wantedObject().id!, this.profilForm.controls["name"].value, this.profilForm.controls["email"].value, this.profilForm.controls["phone"].value, this.profilForm.controls["country"].value, this.profilForm.controls["town"].value, this.profilForm.controls["address"].value, this.profilForm.controls["promoText"].value).subscribe({
         next: response => console.log(response)
@@ -111,7 +111,7 @@ export class ProfilEditorComponent implements OnInit {
   }
 
   saveInstructorChanges() {
-    this.instructorService.updateInstructor((this.wantedObject() as User).instructor?.id!, this.instructorForm.controls["promoText"].value, this.instructorForm.controls["vehicleName"].value, this.instructorForm.controls["licensePlate"].value, this.instructorForm.controls[""].value, this.instructorForm.controls["fuelType"].value, this.instructorForm.controls["vehicleType"].value).subscribe({
+    this.instructorService.updateInstructor((this.wantedObject() as User).instructor?.id!, this.instructorForm.controls["promoText"].value,3, this.instructorForm.controls["vehicleName"].value, this.instructorForm.controls["licensePlate"].value, this.instructorForm.controls["fuelType"].value, this.instructorForm.controls["vehicleType"].value).subscribe({
       next: response => console.log(response)
     })
   }

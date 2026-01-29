@@ -110,7 +110,7 @@ export class RegistrationPageComponent implements OnInit {
       this.registrationForm.controls['password'].value!
     );
 
-    this.usersService.registration(newUser).subscribe({
+    this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
       complete: () => {
         this.router.navigate(['/login']);

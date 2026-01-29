@@ -87,7 +87,7 @@ export class PasswordResetComponent implements OnInit {
 
   checkVCode(vCodeInputValue: string) {
     if (vCodeInputValue.length == 10) {
-      this.userService.checkVerificationCode(vCodeInputValue).subscribe({
+      this.userService.checkVerificationCode(vCodeInputValue, this.form.controls["email"].value).subscribe({
         next: response => this.isCorrectVCode.set(response),
         error: error => {
           if (error.status == 417) {

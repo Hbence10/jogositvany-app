@@ -67,7 +67,7 @@
                               <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" class="img-fluid"/>
                             </div>
                             <div>
-                              <a routerLink="/profil/user/{{loggedUser.instructor.id}}"><button>profil</button></a>
+                              <a routerLink="/profil/user/{{loggedUser.instructor?.id}}"><button>profil</button></a>
                               <button>üzenet</button>
                             </div>
                           } @else {
@@ -223,6 +223,16 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <h1 class="text-white text-center">Felhasználók:</h1>
+                    <div class="px-4 userCardContainer">
+                      @for (user of userList; track $index) {
+                        <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
+                          <h2>{{user.name}}</h2>
+                          <button (click)="navigateToProfilPage('user', user.id)">
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                          </button>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
               </div>
@@ -233,6 +243,16 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <h1 class="text-white text-center">Iskolák:</h1>
+                    <div class="px-4 userCardContainer">
+                      @for (school of schoolList; track $index) {
+                        <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
+                          <h2>{{school.name}}</h2>
+                          <button (click)="navigateToProfilPage('school', school.id)">
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                          </button>
+                        </div>
+                      }
+                    </div>
                   </div>
                 </div>
               </div>

@@ -7,6 +7,8 @@ import { StudentService } from '../../services/student.service';
 import { ProfilCardComponent } from '../profil-card/profil-card.component';
 import { RouterLink } from "@angular/router";
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
+import { Router } from 'express';
+import { SchoolServiceService } from '../../services/school-service.service';
 
 
 @Component({
@@ -17,9 +19,12 @@ import { ProfileCard } from '../../models/notEntity/profileCard.model';
 })
 export class HomepageComponent implements OnInit {
   private userService = inject(UsersService);
-
-  private studentService = inject(StudentService)
+  private schoolService = inject(SchoolServiceService);
+  private studentService = inject(StudentService);
+  private router = inject(Router);
   loggedUser!: HomePageUser;
+  schoolList: {id: number, name: string}[] = []
+  userList: {id:number, name: string, imagePath: string, userId: number}[] = []
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser()!;
@@ -28,10 +33,21 @@ export class HomepageComponent implements OnInit {
       this.studentService.getLessonDetailsForHomePage(1).subscribe({
         next: response => console.log(response)
       })
+    } else if (this.loggedUser.role?.name == "ROLE_administrator") {
+      this.schoolService.getAllSchool().subscribe({
+        next: response => {
+          this.schoolList = response
+          console.log(this.schoolList)
+        }
+      })
+
+      this.userService.getAllUser().subscribe({
+        next: response => this.userList = response
+      })
     }
   }
 
-    setProfilCardRows(originList: ProfileCard[]): ProfileCard[][]{
+  setProfilCardRows(originList: ProfileCard[]): ProfileCard[][]{
     const rows: ProfileCard[][] = []
     for (let i: number = 0; i < originList.length; i+=3){
       const row: ProfileCard[] = []
@@ -43,5 +59,9 @@ export class HomepageComponent implements OnInit {
       rows.push(row)
     }
     return rows;
+  }
+
+  navigateToProfilPage(type: "user" | "school", id: number) {
+    this.router.navigate(["profil", type, id])
   }
 }

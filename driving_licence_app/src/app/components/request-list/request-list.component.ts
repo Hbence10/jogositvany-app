@@ -129,14 +129,6 @@ export class RequestListComponent implements OnInit {
       });
   }
 
-  getAllExamRequest() {
-    this.schoolService
-      .getAllExamRequest(this.userService.loggedUser()?.schoolId!)
-      .subscribe({
-        next: response => this.requestList = response,
-        error: error => console.log(error),
-      });
-  }
 
   makeRows(): (
     ExamRequest
