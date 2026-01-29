@@ -17,8 +17,8 @@
             </div>
           </div>
           <div class="row align-items-center text-center request">
-            <div class="col-lg-12">
-               <p (click)="showRequestContainer = true">request</p>
+            <div class="col-lg-12" (click)="sendRequest($index, day.reservedHours)">
+               <p>request</p>
             </div>
           </div>
           <div class="row">

@@ -27,17 +27,17 @@ export class UsersService {
     this.router.navigate(['/login']);
   }
 
-  registration(user: User) : Observable<string> {
+  registration(user: User, registerAs: "student" | "instructor") : Observable<string> {
     console.log(user);
-    return this.http.post<string>(`${this.baseUrl}/register`, user);
+    return this.http.post<string>(`${this.baseUrl}/register${registerAs}`, user);
   }
 
   getVerificationCode(email: string) {
     return this.http.get(`${this.baseUrl}/getVerificationCode`, { params: new HttpParams().set("email", email) })
   }
 
-  checkVerificationCode(userVCode: string): Observable<boolean> {
-    return this.http.post<boolean>(`${this.baseUrl}/checkVerificationCode`, { vCode: userVCode })
+  checkVerificationCode(userVCode: string, email: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.baseUrl}/checkVerificationCode`, { vCode: userVCode, email: email })
   }
 
   passwordReset(email: string, newPassword: string, vCode: string) {

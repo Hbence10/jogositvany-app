@@ -17,23 +17,21 @@ export class InstructorServiceService {
   constructor() {}
 
   handleJoinRequest(requestId: number, status: 'accept' | 'refuse') {
-    return this.http.post('', {});
+    return this.http.post(`${this.baseUrl}/handleJoinRequest`, {requestId: requestId, status: status});
   }
 
   handleDrivingLessonRequest(requestId: number, status: 'accept' | 'refuse') {
-    return this.http.post('', {});
+    return this.http.post(`${this.baseUrl}/handleDrivingLessonRequest`, {requestId: requestId, status: status});
   }
 
   getAllJoinRequestByInstructor(
     id: number
   ): Observable<InstructorJoinRequest[]> {
-    return this.http.get<InstructorJoinRequest[]>('');
+    return this.http.get<InstructorJoinRequest[]>(`${this.baseUrl}/${id}/joinRequest`);
   }
 
-  getDrivingLessonRequestByInstructor(
-    id: number
-  ): Observable<DrivingLessonRequest[]> {
-    return this.http.get<DrivingLessonRequest[]>('');
+  getDrivingLessonRequestByInstructor(id: number): Observable<DrivingLessonRequest[]> {
+    return this.http.get<DrivingLessonRequest[]>(`${this.baseUrl}/${id}/drivingLessonRequest`);
   }
 
   updateInstructor(instructorId: number, promoText: string, vehicleId: number, vehicleName: string, licensePlate: string, fuelTypeId: number, vehicleTypeId: number): Observable<User> {
@@ -47,8 +45,8 @@ export class InstructorServiceService {
     })
   }
 
-  getInstructorBySearch(schoolId: number, fuelTypeId: number): Observable<{id: number, name: string}[]> {
-    return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?fuelType=${fuelTypeId}&school=${schoolId}`)
+  getInstructorBySearch(schoolId: number, fuelTypeId: number, categoryId: number): Observable<{id: number, name: string}[]> {
+    return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?fuelType=${fuelTypeId}&school=${schoolId}&category=${categoryId}`)
   }
 
   getInstructorById(id: number):Observable<Instructors> {

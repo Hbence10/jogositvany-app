@@ -22,23 +22,14 @@ export class SchoolServiceService {
     return this.http.get<{id: number, name: string}[]>(`${this.baseUrl}?town=${town}`)
   }
 
-
-
   handleJoinRequest(id: number, status: "accept" | "refuse") {
-    return this.http.post("", {})
+    return this.http.post(`${this.baseUrl}/joinRequest/${id}`, {status: status})
   }
 
   getAllJoinRequest(id: number): Observable<SchoolJoinRequest[]> {
-    return this.http.get<SchoolJoinRequest[]>("")
+    return this.http.get<SchoolJoinRequest[]>(`${this.baseUrl}/${id}/joinRequests`)
   }
 
-  getAllExamRequest(id: number): Observable<ExamRequest[]> {
-    return this.http.get<ExamRequest[]>("")
-  }
-
-
-
-  //Updatek
   updateSchool(schoolId: number, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string): Observable<School> {
     return this.http.put<School>(`${this.baseUrl}/update/${schoolId}`, {name: name, email: email, phone:phone, country: country, town: town, address:address, promoText: promoText})
   }
@@ -51,7 +42,6 @@ export class SchoolServiceService {
   changeBannerImg(schoolId: number, formData: FormData): Observable<School> {
     return this.http.patch<School>(`${this.baseUrl}/pfp/${schoolId}`, formData)
   }
-
 
   deleteSchool(schoolId: number) {
     return this.http.delete(`${this.baseUrl}/${schoolId}`)

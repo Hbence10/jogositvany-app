@@ -12,9 +12,7 @@ import { User } from '../../models/user.model';
 import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
 import { Education } from '../../models/education.model';
 
-function validatePassword(
-  control: AbstractControl
-): { [key: string]: any } | null {
+function validatePassword(control: AbstractControl): { [key: string]: any } | null {
   const password: string = control.value;
 
   const specialCharacters: string = '!@#$%^&*()-_=+[]{};:,.?/';
@@ -81,7 +79,7 @@ export class RegistrationPageComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
-      phone: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required, validatePhone]),
       birthDate: new FormControl('', [Validators.required]),
       gender: new FormControl('', [Validators.required]),
       education: new FormControl('', [Validators.required]),

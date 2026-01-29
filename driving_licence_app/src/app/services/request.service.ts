@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { DrivingLessonRequest } from '../models/driving-lesson-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +12,11 @@ export class RequestService {
 
   constructor() { }
 
-  sendSchoolJoinRequest(schoolId: number, userId: number) {
+  sendSchoolJoinRequest(schoolId: number, userId: number, categoryId: number) {
     return this.http.post(`${this.baseUrl}/school`, {
       schoolId: schoolId,
       userId: userId,
+      categoryId: categoryId
     })
   }
 
