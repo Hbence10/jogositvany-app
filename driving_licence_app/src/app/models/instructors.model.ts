@@ -1,4 +1,5 @@
 import { DrivingLessons } from './driving-lessons.model';
+import { DrivingLicenseCategory } from './driving-license.model';
 import { Review } from './review.model';
 import { School } from './school.model';
 import { Students } from './students.model';
@@ -14,7 +15,8 @@ export class Instructors {
     public vehicle: Vehicle,
     public reviewList: Review[],
     public students: Students[],
-    public instructorDrivingLessons: DrivingLessons[]
+    public instructorDrivingLessons: DrivingLessons[],
+    public categoryList: DrivingLicenseCategory[]
   ) {}
 
   get getPromoText(): string {

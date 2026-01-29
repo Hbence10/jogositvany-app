@@ -1,4 +1,3 @@
-import { ExamRequest } from './exam-request.model';
 import { Instructors } from './instructors.model';
 import { OpeningDetails } from './opening-details.model';
 import { Review } from './review.model';
@@ -24,7 +23,6 @@ export class School {
     public openingDetails: OpeningDetails[],
     public reviewList: Review[],
     public studentsList: Students[],
-    public examRequestList: ExamRequest[],
     public schoolJoinRequestList: SchoolJoinRequest[],
     public licenseCategoryList: SchoolCategory[]
   ) {}
@@ -125,13 +123,6 @@ export class School {
   }
   set setStudentsList(value: Students[]) {
     this.studentsList = value;
-  }
-
-  get getExamRequestList(): ExamRequest[] {
-    return this.examRequestList;
-  }
-  set setExamRequestList(value: ExamRequest[]) {
-    this.examRequestList = value;
   }
 
   get getSchoolJoinRequestList(): SchoolJoinRequest[] {

@@ -116,7 +116,7 @@ export class ProfilPageComponent implements OnInit {
         }
       })
     } else if (this.type() == "school") {
-      this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id).subscribe({
+      this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id, this.selectedCategory!).subscribe({
         error: error => {
           alert("Hiba merült fel!. Kérlek próbáld meg újra.")
         },

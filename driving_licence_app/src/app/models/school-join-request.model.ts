@@ -1,3 +1,4 @@
+import { DrivingLicenseCategory } from './driving-license.model';
 import { School } from './school.model';
 import { User } from './user.model';
 
@@ -9,7 +10,8 @@ export class SchoolJoinRequest {
     public accpetedat: Date,
     public sentAt: Date,
     public schoolJoinRequestUser: User,
-    public schoolJoinRequestShool: School
+    public schoolJoinRequestShool: School,
+    public joinRequestCategory: DrivingLicenseCategory
   ) {}
 
   get getRequestedRole(): 'student' | 'instructor' {

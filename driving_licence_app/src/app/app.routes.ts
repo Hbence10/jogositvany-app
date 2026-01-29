@@ -32,5 +32,8 @@ export const routes: Routes = [
   { path: 'searchPage/:type', component: SearchPageComponent },
   { path: 'password-reset', component: PasswordResetComponent },
   { path: 'request/:owner', component: RequestListComponent },
-
+  {
+    path: "users/:userType",
+    loadComponent: () => import("./components/user-list/user-list.component").then((c) => c.UserListComponent)
+  }
 ];

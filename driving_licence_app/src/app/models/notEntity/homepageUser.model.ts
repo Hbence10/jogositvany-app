@@ -18,5 +18,6 @@ export class HomePageUser {
     public vehicle?: Vehicle,
     public students?: ProfileCard[],
     public instructors?: ProfileCard[],
+    public categoryId?: number
   ){}
 }

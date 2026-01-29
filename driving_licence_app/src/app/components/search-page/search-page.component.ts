@@ -80,7 +80,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   getInstructorBySearch() {
-    this.instructorService.getInstructorBySearch(this.userService.loggedUser()?.school?.id!, this.selectedFuelTypeId).subscribe({
+    this.instructorService.getInstructorBySearch(this.userService.loggedUser()?.school?.id!, this.selectedFuelTypeId, this.userService.loggedUser()?.categoryId!).subscribe({
       next: response => {
         this.instructorList = response
         console.log(response)
@@ -135,7 +135,7 @@ export class SearchPageComponent implements OnInit {
         }
       })
     } else if (this.selectedType == "school") {
-      this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!).subscribe({
+      this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!, this.selectedCategoryId!).subscribe({
         error: error => {
           alert("Hiba merült fel!. Kérlek próbáld meg újra.")
         },

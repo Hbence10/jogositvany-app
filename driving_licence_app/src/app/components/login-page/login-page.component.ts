@@ -18,7 +18,7 @@ export class LoginPageComponent {
     homePageUser!: HomePageUser
 
     loginForm = new FormGroup({
-      email: new FormControl('bzhalmai2@gmail.com', [Validators.required, Validators.email]),
+      email: new FormControl('bzhalmai1@gmail.com', [Validators.required, Validators.email]),
       password: new FormControl('test5.Asd', [Validators.required])
     });
 

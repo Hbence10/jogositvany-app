@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  @for (row of getCardRow(); track $index) {
+  <div class="row my-5">
+    <div class="col-lg-12 d-flex">
+      @for (card of row; track $index) {
+        <div class="container-fluid d-flex flex-column justify-content-between" id="cardContainer">
+          <div class="row">
+            <div class="col-lg-12 d-flex flex-column align-items-center">
+              <img src="" alt="" class="mt-4 mb-3 img-fluid">
+              <h6>{{card.name}}</h6>
+              <div class="col-lg-12 d-flex justify-content-center">
+                <button class="iconButton mx-2"></button>
+                <button (click)="navigateToUserPage(card)" class="iconButton mx-2"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-lg-12 d-flex justify-content-center">
+              <button class="deleteButton" (click)="deleteMember(card)">{{deleteText}}</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  }
+</div>
