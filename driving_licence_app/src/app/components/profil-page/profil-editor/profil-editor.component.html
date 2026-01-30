@@ -1,8 +1,8 @@
-<div class="container-fluid" id="mainContainer">
-  <div class="row h-100 w-100">
-    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+<div class="container-fluid d-flex flex-column align-items-center justify-content-center mainFont" id="mainContainer">
+  <div class="row">
+    <div class="col-lg-12 d-flex justify-content-center align-items-center">
 
-      <div class="container-fluid" id="secondContainer">
+      <div class="container-fluid w-100"  id="secondContainer">
 
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-end align-items-center">
@@ -11,37 +11,37 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 " >
             <h1 class="text-center">Profil szerkesztése</h1>
-            <form [formGroup]="profilForm" class="container-fluid">
+            <form [formGroup]="profilForm" class="container-fluid d-flex flex-column justify-content-center align-items-center">
               @if(objectType() == 'user') {
                 <div class="row">
-                <div class="col-lg-6">
-                  <label for="">Vezetéknév</label>
-                  <input formControlName="firstName" type="text" placeholder="lastName"/>
+                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
+                  <label for="" class="w-100">Vezetéknév</label>
+                  <input formControlName="firstName" type="text" class="w-100" placeholder="lastName"/>
                 </div>
-                <div class="col-lg-6">
-                  <label for="">Keresztnév</label>
-                  <input formControlName="lastName" type="text" placeholder="firstName"/>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <label for="">E-mail</label>
-                  <input formControlName="email" type="text" placeholder="email"/>
+                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
+                  <label for="" class="w-100">Keresztnév</label>
+                  <input formControlName="lastName" class="w-100" type="text" placeholder="firstName"/>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12">
+                <div class="inputDiv w-100 col-lg-12 d-flex flex-column align-items-start ">
+                  <label for="" class="w-100">E-mail</label>
+                  <input formControlName="email" class="w-100" type="text" placeholder="email"/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="inputDiv col-lg-12 d-flex flex-column align-items-start">
                   <label for="">Telefonszám</label>
                   <input formControlName="phone" type="text" placeholder="phone"/>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-6">
+                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
                   <label for="">Nem</label>
                   <select formControlName="gender">
                     <option value="female">Female</option>
@@ -49,14 +49,14 @@
                     <option value="other">other</option>
                   </select>
                 </div>
-                <div class="col-lg-6">
+                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
                   <label for="">Születési dátum</label>
                   <input formControlName="birthDate" type="date" />
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12">
+                <div class="inputDiv col-lg-12 d-flex flex-column justify-content-center align-items-start">
                   <label for="">Legmagasabb végzettség</label>
                   <select formControlName="education">
                     @for (education of educationList; track $index) {
@@ -206,7 +206,7 @@
         }
 
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
             <button (click)="saveChanges()">Változtatások mentése</button>
           </div>
         </div>
