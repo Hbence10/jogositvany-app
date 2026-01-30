@@ -64,7 +64,7 @@ public class OpeningDetails {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolOpeningDetail;

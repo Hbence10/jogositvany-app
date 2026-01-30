@@ -18,18 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllReservedDate", procedureName = "getAllReservedDate", resultClasses = ReservedDate.class),
-        @NamedStoredProcedureQuery(name = "getReservedDate", procedureName = "getReservedDate", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = ReservedDate.class),
-        @NamedStoredProcedureQuery(name = "deleteReservedDate", procedureName = "deleteReservedDate", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "getReservedDateByDate", procedureName = "getReservedDateByDate", parameters = {
-                @StoredProcedureParameter(name = "wantedDateIN", type = Date.class, mode = ParameterMode.IN)
-        })
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllReservedDate", procedureName = "getAllReservedDate", resultClasses = ReservedDate.class), @NamedStoredProcedureQuery(name = "getReservedDate", procedureName = "getReservedDate", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = ReservedDate.class), @NamedStoredProcedureQuery(name = "deleteReservedDate", procedureName = "deleteReservedDate", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class), @NamedStoredProcedureQuery(name = "getReservedDateByDate", procedureName = "getReservedDateByDate", parameters = {@StoredProcedureParameter(name = "wantedDateIN", type = Date.class, mode = ParameterMode.IN)})})
 public class ReservedDate {
 
     @Id
@@ -57,12 +46,7 @@ public class ReservedDate {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToMany(
-            mappedBy = "reservedDate",
-            fetch = FetchType.LAZY,
-            cascade = {}
-    )
-//    @JsonIgnore
+    @OneToMany(mappedBy = "reservedDate", fetch = FetchType.LAZY)
     private List<ReservedHour> reservedHourList;
 
     //Constructorok:

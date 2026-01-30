@@ -27,11 +27,11 @@ public class SchoolCategory {
     private Integer hourlyRate;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "driving_license_category_id")
     private DrivingLicenseCategory licenseCategory;
 
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolCategory;

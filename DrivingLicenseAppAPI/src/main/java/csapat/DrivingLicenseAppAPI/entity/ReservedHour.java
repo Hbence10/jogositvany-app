@@ -10,7 +10,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -63,11 +62,11 @@ public class ReservedHour {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToOne(mappedBy = "reservedHour", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "reservedHour")
     @JsonIgnore
     private DrivingLessons drivingLessons;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne()
     @JoinColumn(name = "date_id")
     @JsonIgnoreProperties({"reservedHourList"})
     private ReservedDate reservedDate;

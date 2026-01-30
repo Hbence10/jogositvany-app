@@ -54,8 +54,7 @@ public class Status {
     //Kapcsolatok:
     @OneToMany(
             mappedBy = "drivingLessonStatus",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;

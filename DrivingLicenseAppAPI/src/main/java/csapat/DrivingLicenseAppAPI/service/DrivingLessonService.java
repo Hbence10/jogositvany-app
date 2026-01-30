@@ -7,6 +7,7 @@ import csapat.DrivingLicenseAppAPI.service.other.HourCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,7 @@ public class DrivingLessonService {
         }
     }
 
+//    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId) {
         try {
             if (drivingLessonId == null) {
@@ -67,6 +69,7 @@ public class DrivingLessonService {
         }
     }
 
+//    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateDrivingLesson(Integer id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Integer statusId, Integer paymentMethodId) {
         try {
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(id).orElse(null);
@@ -103,6 +106,7 @@ public class DrivingLessonService {
         }
     }
 
+//    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getReservedHoursByDate(Integer instructorId, String wantedDate) {
         try {
             if (instructorId == null || wantedDate == null) {
@@ -127,6 +131,7 @@ public class DrivingLessonService {
         }
     }
 
+//    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getDrivingLessonById(Integer id) {
         try {
             if (id == null) {

@@ -19,15 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class),
-        @NamedStoredProcedureQuery(name = "getFuelType", procedureName = "getFuelType", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = FuelType.class),
-        @NamedStoredProcedureQuery(name = "deleteFuelType", procedureName = "deleteFuelType", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class), @NamedStoredProcedureQuery(name = "getFuelType", procedureName = "getFuelType", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = FuelType.class), @NamedStoredProcedureQuery(name = "deleteFuelType", procedureName = "deleteFuelType", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
 public class FuelType {
 
     @Id
@@ -52,11 +44,7 @@ public class FuelType {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToMany(
-            mappedBy = "fuelType",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "fuelType", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Vehicle> vehicles;
 

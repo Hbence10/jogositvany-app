@@ -54,8 +54,7 @@ public class VehicleType {
     //Kapcsolatok:
     @OneToMany(
             mappedBy = "vehicleType",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     private List<Vehicle> vehicleList;
 

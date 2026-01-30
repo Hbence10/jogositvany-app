@@ -58,12 +58,12 @@ public class InstructorJoinRequest {
     private Date deletedAt;
 
     //Kapcsolatok
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "student_id")
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private Students instructorJoinRequestStudent;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "instructor_id")
     @JsonIgnore
     private Instructors instructorJoinRequestInstructor;

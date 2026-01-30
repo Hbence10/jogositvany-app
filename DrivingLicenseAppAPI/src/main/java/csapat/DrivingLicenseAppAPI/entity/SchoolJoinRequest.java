@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -58,17 +56,17 @@ public class SchoolJoinRequest {
     private Date deletedAt;
 
     //Kapcsolatok
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor", "student", "adminSchool", "ownedSchool"})
     private Users schoolJoinRequestUser;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolJoinRequestSchool;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "driving_license_category_id")
     @JsonIgnore
     private DrivingLicenseCategory joinRequestCategory;

@@ -19,20 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class),
-        @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Instructors.class),
-        @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
-                @StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "schoolIdIN", type = Integer.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "categoryIdIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Integer.class)
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class), @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Instructors.class), @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class), @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {@StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "schoolIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "categoryIdIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Integer.class)})
 public class Instructors {
 
     @Id
@@ -56,47 +43,43 @@ public class Instructors {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor", "adminSchool"})
     private Users instructorUser;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({"owner", "instructorsList", "adminList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     @Null
     private School instructorSchool;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "vehicle_id")
     @JsonIgnoreProperties({"instructor"})
     private Vehicle vehicle;
 
-    @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "aboutInstructor", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Review> reviewList;
 
-    @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "studentInstructor", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"studentSchool", "studentInstructor", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private List<Students> students;
 
-    @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "dLessonInstructor", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DrivingLessonRequest> drivingLessonRequestList;
 
-    @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "dinstructor", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DrivingLessons> instructorDrivingLessons;
 
-    @OneToMany(
-            mappedBy = "instructorJoinRequestInstructor",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "instructorJoinRequestInstructor", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {}, mappedBy = "instructorsList")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "instructorsList")
     private List<DrivingLicenseCategory> categoryList;
 
     //Constructorok:

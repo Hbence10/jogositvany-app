@@ -19,15 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class),
-        @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = PaymentMethod.class),
-        @NamedStoredProcedureQuery(name = "deletePaymentMethod", procedureName = "deletePaymentMethod", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class), @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = PaymentMethod.class), @NamedStoredProcedureQuery(name = "deletePaymentMethod", procedureName = "deletePaymentMethod", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
 public class PaymentMethod {
 
     @Id
@@ -52,11 +44,7 @@ public class PaymentMethod {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToMany(
-            mappedBy = "paymentMethod",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DrivingLessons> drivingLessonsList;
 

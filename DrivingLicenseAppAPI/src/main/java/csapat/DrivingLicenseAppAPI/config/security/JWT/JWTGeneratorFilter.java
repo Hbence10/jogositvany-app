@@ -23,17 +23,17 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        if (givenAuthentication != null) {
-            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
-            response.setHeader("Bearer ", jwt);
-        }
+//        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (givenAuthentication != null) {
+//            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
+//            response.setHeader("Bearer ", jwt);
+//        }
 
         filterChain.doFilter(request, response);
     }
 
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getServletPath().equals("/users/login");
-    }
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+//        return !request.getServletPath().equals("/users/login");
+//    }
 }

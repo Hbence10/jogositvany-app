@@ -90,25 +90,25 @@ public class DrivingLessons {
     private Date cancelledAt;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "status_id")
     private Status drivingLessonStatus;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "hour_id")
     @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "student_id")
     @JsonIgnore
     private Students dstudent;
 
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne()
     @JoinColumn(name = "instructor_id")
     @JsonIgnore
     private Instructors dinstructor;

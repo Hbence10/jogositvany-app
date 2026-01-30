@@ -89,57 +89,52 @@ public class School {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "owner_id")
     @JsonIgnoreProperties({"ownedSchool", "role", "instructor", "student", "adminSchool", "userEducation"})
     private Users owner;
 
-    @OneToMany(mappedBy = "adminSchool", cascade = {})
+    @OneToMany(mappedBy = "adminSchool")
     @JsonIgnore
     @Null
     private List<Users> adminList;
 
     @OneToMany(
             mappedBy = "instructorSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnoreProperties({"instructorSchool", "vehicle", "reviewList", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private List<Instructors> instructorsList;
 
     @OneToMany(
             mappedBy = "schoolOpeningDetail",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnoreProperties({"schoolOpeningDetail"})
     private List<OpeningDetails> openingDetails;
 
     @OneToMany(
             mappedBy = "aboutSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private List<Review> reviewList;
 
     @OneToMany(
             mappedBy = "studentSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
     @OneToMany(
             mappedBy = "schoolJoinRequestSchool",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {}, mappedBy = "schoolCategory")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "schoolCategory")
     private List<SchoolCategory> licenseCategoryList;
 
 

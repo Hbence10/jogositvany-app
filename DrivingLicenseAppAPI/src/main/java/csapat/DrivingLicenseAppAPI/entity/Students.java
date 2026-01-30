@@ -50,35 +50,35 @@ public class Students {
     private Date deletedAt;
 
     //Kapcsolatok
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "school_id")
     @JsonIgnoreProperties({"owner", "adminList", "instructorsList", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"})
     private School studentSchool;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "instructor_id")
     @JsonIgnoreProperties({"instructorSchool", "reviewList", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     @Null
     private Instructors studentInstructor;
 
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
+    @OneToOne()
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"student"})
     private Users studentUser;
 
-    @OneToMany(mappedBy = "reviewAuthor", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "reviewAuthor", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Review> reviewList;
 
-    @OneToMany(mappedBy = "dLessonRequestStudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "dLessonRequestStudent", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DrivingLessonRequest> requestList;
 
-    @OneToMany(mappedBy = "dstudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "dstudent", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<DrivingLessons> drivingLessons;
 
-    @OneToMany(mappedBy = "instructorJoinRequestStudent", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "instructorJoinRequestStudent", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 

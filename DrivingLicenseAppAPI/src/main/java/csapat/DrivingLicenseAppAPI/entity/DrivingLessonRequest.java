@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -78,14 +76,12 @@ public class DrivingLessonRequest {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "student_id")
-    @JsonIgnoreProperties({})
     private Students dLessonRequestStudent;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "instructor_id")
-    @JsonIgnoreProperties({})
     private Instructors dLessonInstructor;
 
     public DrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Students dLessonRequestStudent, Instructors dLessonInstructor) {

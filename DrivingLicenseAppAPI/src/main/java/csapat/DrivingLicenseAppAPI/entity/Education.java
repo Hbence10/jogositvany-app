@@ -19,15 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class),
-        @NamedStoredProcedureQuery(name = "getEducation", procedureName = "getEducation", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Education.class),
-        @NamedStoredProcedureQuery(name = "deleteEducation", procedureName = "deleteEducation", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class), @NamedStoredProcedureQuery(name = "getEducation", procedureName = "getEducation", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Education.class), @NamedStoredProcedureQuery(name = "deleteEducation", procedureName = "deleteEducation", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
 public class Education {
 
     @Id
@@ -52,11 +44,7 @@ public class Education {
     private Date deletedAt;
 
     //Kapcsolatok
-    @OneToMany(
-            mappedBy = "userEducation",
-            fetch = FetchType.LAZY,
-            cascade = {}
-    )
+    @OneToMany(mappedBy = "userEducation", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Users> userEducationList;
 

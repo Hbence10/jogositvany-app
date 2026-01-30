@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory", resultClasses = DrivingLicenseCategory.class),
-        @NamedStoredProcedureQuery(name = "getDrivingLicenseCategory", procedureName = "getDrivingLicenseCategory", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = DrivingLicenseCategory.class),
-        @NamedStoredProcedureQuery(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
-})
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory", resultClasses = DrivingLicenseCategory.class), @NamedStoredProcedureQuery(name = "getDrivingLicenseCategory", procedureName = "getDrivingLicenseCategory", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = DrivingLicenseCategory.class), @NamedStoredProcedureQuery(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
 public class DrivingLicenseCategory {
 
     @Id
@@ -59,33 +50,23 @@ public class DrivingLicenseCategory {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @OneToMany(
-            mappedBy = "joinRequestCategory",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    @OneToMany(mappedBy = "joinRequestCategory", fetch = FetchType.LAZY
+
     )
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "school_category",
-            joinColumns = @JoinColumn(name = "school_id"),
-            inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "school_category", joinColumns = @JoinColumn(name = "school_id"), inverseJoinColumns = @JoinColumn(name = "driving_license_category_id"))
     @JsonIgnore
     private List<School> schoolList;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {})
-    @JoinTable(
-            name = "instructor_category",
-            joinColumns = @JoinColumn(name = "instructor_id"),
-            inverseJoinColumns = @JoinColumn(name = "driving_license_category_id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "instructor_category", joinColumns = @JoinColumn(name = "instructor_id"), inverseJoinColumns = @JoinColumn(name = "driving_license_category_id"))
     @JsonIgnore
     private List<Instructors> instructorsList;
 
-    @OneToMany(mappedBy = "selectedCategory", fetch = FetchType.LAZY, cascade = {})
+    @OneToMany(mappedBy = "selectedCategory", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Students> studentsList;
 

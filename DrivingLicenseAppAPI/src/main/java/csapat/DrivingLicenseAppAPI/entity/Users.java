@@ -15,25 +15,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
-                @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
-        }, resultClasses = Users.class),
-        @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
-        @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class),
-        @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Users.class),
-        @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
+@Table(name = "users")
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {@StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class), @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class),
 
-        @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {
-                @StoredProcedureParameter(name = "userIdIN", type = Integer.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "roleIdIN", type = Integer.class, mode = ParameterMode.IN)
-        })
-})
+        @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {@StoredProcedureParameter(name = "userIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "roleIdIN", type = Integer.class, mode = ParameterMode.IN)})})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -111,35 +96,31 @@ public class Users {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
-    private Role role =  new Role(1, "ROLE_user");
+    private Role role = new Role(1, "ROLE_user");
 
-    @OneToOne(mappedBy = "instructorUser", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "instructorUser")
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
     private Instructors instructor;
 
-    @OneToOne(mappedBy = "studentUser", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "studentUser")
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students student;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "school_admin_id")
     @Null
     private School adminSchool;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne()
     @JoinColumn(name = "education_id")
     @JsonIgnoreProperties({"userEducationList"})
     private Education userEducation;
 
-    @OneToMany(
-            mappedBy = "schoolJoinRequestUser",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
+    @OneToMany(mappedBy = "schoolJoinRequestUser", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
-    @OneToOne(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "owner")
     private School ownedSchool;
 
 }
