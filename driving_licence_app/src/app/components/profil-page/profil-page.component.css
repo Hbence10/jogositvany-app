@@ -176,3 +176,21 @@ input[type="range"]::-moz-range-track {
 .lesson-info-required::before {
   background-color: #b3b8d1;
 }
+
+#profDel {
+  background-color: #636da1;
+  height: auto;
+  width: auto;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+#profDel button {
+  background-color: #22354f;
+  width: 100px;
+  margin: 15px;
+}
+
+#profDel h3{
+  margin: 15px;
+}
