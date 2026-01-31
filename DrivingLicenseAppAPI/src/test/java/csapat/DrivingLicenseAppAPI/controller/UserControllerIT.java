@@ -1,17 +1,23 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Role;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -22,6 +28,10 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 //36db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
@@ -30,20 +40,24 @@ import java.util.List;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerIT {
 
-    @Autowired
     MockMvc mockMvc;
-
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
     EducationRepository educationRepository;
-
-    @Autowired
     RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
+    ObjectMapper objectMapper;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    public UserControllerIT(MockMvc mockMvc, UserRepository userRepository, EducationRepository educationRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
+        this.mockMvc = mockMvc;
+        this.userRepository = userRepository;
+        this.educationRepository = educationRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.objectMapper = objectMapper;
+    }
+
+    private final String BASE_URL = "http://localhost:8080/users";
 
     @BeforeAll
     public void setUpRequiredDatas() {
@@ -66,16 +80,35 @@ public class UserControllerIT {
     }
 
     @Test
+    @DisplayName("Login with existent e-mail and password combination.")
     public void loginWithExistentUsersDetails() throws Exception {
-
+        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test5.Asd");
+        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(1)));
     }
 
     @Test
+    @DisplayName("Login with non-existent e-mail.")
     public void loginWithNonExistentEmail() throws Exception {
+        JsonNode requestBody = createLoginBody("bzhalmaii@gmail.com", "test5.Asd");
+        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
+    @DisplayName("Login with existent e-mail and bad password.")
     public void loginWithBadPassword() throws Exception {
+        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test.Asd");
+        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound());
+    }
+
+    public JsonNode createLoginBody(String email, String password) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("email", email);
+        ((ObjectNode) returnObject).put("password", password);
+        return returnObject;
     }
 
     @Test

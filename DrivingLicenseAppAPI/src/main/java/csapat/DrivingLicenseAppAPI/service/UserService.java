@@ -56,7 +56,7 @@ public class UserService {
                 return ResponseEntity.status(415).build();
             }
 
-            Users loggedUser = userRepository.getUserByEmail(email.trim()).orElse(null);
+            Users loggedUser = userRepository.findByEmail(email.trim()).orElse(null);
 
             if (loggedUser == null || loggedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
@@ -137,7 +137,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
+            Users searchedUser = userRepository.findByEmail(email).orElse(null);
 
             if (!ValidatorCollection.emailValidator(email.trim())) {
                 return ResponseEntity.status(415).body("InvalidEmail");
@@ -167,7 +167,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
+            Users searchedUser = userRepository.findByEmail(email).orElse(null);
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             }
@@ -191,7 +191,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Users searchedUser = userRepository.getUserByEmail(email).orElse(null);
+            Users searchedUser = userRepository.findByEmail(email).orElse(null);
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
