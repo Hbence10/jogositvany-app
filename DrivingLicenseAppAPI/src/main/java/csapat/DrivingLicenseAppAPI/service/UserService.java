@@ -10,6 +10,7 @@ import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import csapat.DrivingLicenseAppAPI.repository.VehicleRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ import java.util.*;
 public class UserService {
     private final UserRepository userRepository;
     private final InstructorRepository instructorRepository;
+    private final VehicleRepository vehicleRepository;
     private final EmailSender emailSender;
     private final PasswordEncoder passwordEncoder;
     private final EducationRepository educationRepository;
@@ -104,14 +106,14 @@ public class UserService {
                 try {
                     emailSender.sendEmailAboutRegistration(newUser.getEmail());
                 } catch (Exception e) {
-//                    return ResponseEntity.internalServerError().body("emailSenderError");
+                    return ResponseEntity.internalServerError().body("emailSenderError");
                 }
 
                 newUser = userRepository.save(newUser);
 
                 if (registerAs.equals("instructor")) {
                     Instructors newInstructor = new Instructors();
-                    newInstructor.setVehicle(new Vehicle());
+                    newInstructor.setVehicle(vehicleRepository.save(new Vehicle()));
                     newInstructor.setInstructorUser(newUser);
                     instructorRepository.save(newInstructor);
                     userRepository.setRoleOfUser(newUser.getId(), 3);

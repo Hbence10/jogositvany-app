@@ -96,7 +96,7 @@ public class Users {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
-    private Role role = new Role(1, "ROLE_user");
+    private Role role;
 
     @OneToOne(mappedBy = "instructorUser")
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
@@ -123,4 +123,16 @@ public class Users {
     @OneToOne(mappedBy = "owner")
     private School ownedSchool;
 
+    //constructorok
+    public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.password = password;
+        this.userEducation = userEducation;
+        this.role = role;
+    }
 }
