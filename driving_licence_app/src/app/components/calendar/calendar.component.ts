@@ -50,7 +50,7 @@ export class CalendarComponent implements OnInit{
     console.log(this.datesOfWeek)
 
     for (let i: number = 0; i < this.datesOfWeek.length; i++) {
-      const formattedDate: string = this.datesOfWeek[i].toLocaleString().replaceAll(". ", "-").substring(0, 10)
+      const formattedDate: string = this.datesOfWeek[i].toLocaleString('hu-HU').replaceAll(". ", "-").substring(0, 10)
       console.log(formattedDate)
       this.drivingLessonService.getReservedHourByDate(this.userService.loggedUser()?.instructorId!, formattedDate).subscribe({
         next: response => {

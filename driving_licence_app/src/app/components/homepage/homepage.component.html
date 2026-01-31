@@ -1,141 +1,170 @@
 <div class="container-fluid px-4 py-4 mainFont min-vh-100 d-flex flex-column align-items-center justify-content-center">
   @if (loggedUser != null){
     @if (loggedUser.role.name != "ROLE_administrator") {
-  <div class="row g-4">
-          <div class="col-lg-8">
-            <div class="container h-100 d-flex flex-column justify-content-center align-items-end">
+  <div class="row g-4 w-100">
+          <div class="col-lg-8 p-0">
+            <div class="container h-100 d-flex flex-column justify-content-center align-items-end w-100">
               @if(loggedUser.role.name == "ROLE_student" || loggedUser.role.name == "ROLE_user"){
                 <div class="row">
-
-                  <div class="col-lg-7">
-                    <div class="container-fluid">
-                      <div class="box" id="school">
-                        @if (loggedUser.role.name == "ROLE_student"){
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <img src="" alt="" class="img-fluid" />
+                  <div class="col-lg-7 p-3">
+                        <div class="container-fluid box h-100 w-100" id="school">
+                          @if (loggedUser.role.name == "ROLE_student"){
+                            <div class="row w-100">
+                              <div class="col-lg-12">
+                                <img src="" alt="" class="img-fluid" />
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
-                              <p class="text-center mb-4">{{ loggedUser.school?.name }}</p>
-                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
-                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
-                              <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
+                            <div class="row">
+                              <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
+                                <p class="text-center mb-4">{{ loggedUser.school?.name }}</p>
+                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
+                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
+                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
+                              </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="container-fluid d-flex flex-column align-items-center">
-                                <div class="info-field m-0"><p>nyitvatartás</p></div>
-                                <div class="container-fluid d-flex flex-column days text-start">
-                                  <div class="day">
-                                    <p>hétfő</p>
-                                  </div>
-                                  <div class="day isSelected">
-                                    <p>kedd</p>
-                                  </div>
-                                  <div class="day">
-                                    <p>szerda</p>
-                                  </div>
-                                  <div class="day">
-                                    <p>csütörtök</p>
-                                  </div>
-                                  <div class="day text-start">
-                                    <p>péntek</p>
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <div class="container-fluid d-flex flex-column align-items-center">
+                                  <div class="info-field"><p>nyitvatartás</p></div>
+                                  <div class="container-fluid d-flex flex-column days text-start">
+                                    <div class="day">
+                                      <p>hétfő</p>
+                                    </div>
+                                    <div class="day isSelected">
+                                      <p>kedd</p>
+                                    </div>
+                                    <div class="day">
+                                      <p>szerda</p>
+                                    </div>
+                                    <div class="day">
+                                      <p>csütörtök</p>
+                                    </div>
+                                    <div class="day text-start">
+                                      <p>péntek</p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        } @else {
-                          <h4>Még nem csatlakoztál iskolához</h4>
-                        }
-                      </div>
-                    </div>
+                          } @else {
+                            <h4>Még nem csatlakoztál iskolához</h4>
+                          }
+                        </div>
                 </div>
 
-                <div class="col-lg-5">
-                  <div class="container-fluid d-flex flex-column">
+                <div class="col-lg-5 p-2">
+                  <div class="container-fluid w-100">
+                    <div class="row justify-content-center">
+                        <div class="col-12 p-2">
+                          <div class="container-fluid box d-flex flex-column align-items-center text-center p-3" id="instructor">
+                            @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null){
 
-                    <div class="row">
-                      <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
-                        <div class="box m-3 d-flex flex-column justify-content-center align-items-center" id="instructor">
-                          @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null){
-                            <h1>{{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}</h1>
-                            <div>
-                              <img src="assets/icons/kijeletkezés.svg" alt="Profil fotó" class="img-fluid"/>
-                            </div>
-                            <div>
-                              <a routerLink="/profil/user/{{loggedUser.instructor?.id}}"><button>profil</button></a>
-                              <button>üzenet</button>
-                            </div>
-                          } @else {
-                            <h4>Oktató nincs kiválasztva</h4>
-                          }
+                              <div class="row">
+                                <h1>
+                                  {{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}
+                                </h1>
+                              </div>
+
+                              <div class="row">
+                                <img class="inctructor-image" src="assets/icons/kijeletkezés.svg" alt="Profil fotó" />
+                              </div>
+
+                              <div class="row">
+                                <div class="col-6">
+                                  <a routerLink="/profil/user/{{loggedUser.instructor?.id}}">
+                                    <button>profil</button>
+                                  </a>
+                                </div>
+                                <div class="col-6">
+                                  <button>üzenet</button>
+                                </div>
+                              </div>
+
+                            } @else {
+                              <h4>Oktató nincs kiválasztva</h4>
+                            }
+                          </div>
                         </div>
-                      </div>
                     </div>
 
                     <div class="row">
-                      <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-                        <div class="box d-flex flex-column justify-content-center align-items-center" id="license-category">
-                          @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) {
-                            <p>Jogosítvány Kategória:</p>
-                            <h1>B</h1>
-                          } @else {
-                            <h4>Kategória nincs kiválasztva</h4>
-                          }
+                        <div class="col-12 p-2">
+                          <div class="container-fluid box w-100 d-flex flex-column justify-content-center align-items-center" id="license-category">
+                            @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) {
+                              <div class="row justify-content-center">
+                                <p>Jogosítvány Kategória:</p>
+                              </div>
+                              <div class="row justify-content-center">
+                                <h1>B</h1>
+                              </div>
+                            } @else {
+                              <div class="row justify-content-center">
+                                <h4>Kategória nincs kiválasztva</h4>
+                              </div>
+                            }
+                          </div>
                         </div>
-                      </div>
                     </div>
 
                   </div>
                 </div>
               </div>
 
-              <!-- Levezetett órák -->
               <div class="row">
-                <div class="col-lg-12">
-                  <div class="container-fluid">
-
-                    <div class="row">
-                      <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
-                        <div class="box m-3 d-flex flex-column align-items-start " id="progressbar-driven">
-                          <input id="bar" type="range" min="0" max="30" value="9" disabled/>
-                          @if (loggedUser.role.name == "ROLE_student") {
-                            <div class="d-flex">
-                              <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
-                              <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
+                  <div class="col-12 p-2">
+                    <div class="container-fluid d-flex flex-column">
+                      <div class="row">
+                        <div class="col-lg-12 p-2">
+                          <div class="container-fluid d-flex flex-column justify-content-center box" id="progressbar-driven">
+                            <div class="row">
+                              <div class="col-12">
+                                <input id="bar" type="range" min="0" max="30" value="9" disabled/>
+                              </div>
                             </div>
-                            <div>
-                              <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                            @if (loggedUser.role.name == "ROLE_student") {
+                              <div class="row">
+                                  <div class="col-6">
+                                    <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
+                                  </div>
+                                  <div class="col-6">
+                                    <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-12">
+                                  <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                                </div>
+                              </div>
+                            } @else {
+                              <h1>Vezetési előzmény nem található</h1>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12 p-2">
+                          <div class="container-fluid box d-flex flex-column align-items-start " id="progressbar-payed">
+                            <div class="row">
+                              <div class="col-12"><input id="bar" type="range" min="0" max="30" value="9" disabled/></div>
                             </div>
-                          } @else {
-                            <h1>Vezetési előzmény nem található</h1>
-                          }
+                            @if (loggedUser.role.name == "ROLE_student") {
+                              <div class="row">
+                                <div class="col-12">
+                                  <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
+                                </div>
+                              </div>
+                            } @else {
+                              <div class="row">
+                                <div class="col-12">
+                                  <h1>Fizetési előzmény nem található</h1>
+                                </div>
+                              </div>
+                            }
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <!-- Befizetett órák -->
-                    <div class="row">
-                      <div class="col-lg-12 d-flex justify-content-center align-items-center p-0">
-                        <div class="box d-flex flex-column align-items-start " id="progressbar-payed">
-                          <input id="bar" type="range" min="0" max="30" value="9" disabled/>
-                          @if (loggedUser.role.name == "ROLE_student") {
-                            <div class="d-flex">
-                              <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
-                            </div>
-                          } @else {
-                            <h1>Fizetési előzmény nem található</h1>
-                          }
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
-                </div>
               </div>
               } @else{
                 <div class="row d-flex justify-content-center align-items-center">
@@ -186,32 +215,49 @@
             </div>
           </div>
 
-          <div class="col-lg-4">
-              <div class="container-fluid d-flex flex-column align-items-start">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="box" id="calendar">
-                    <mat-card class="demo-inline-calendar-card">
-                      <mat-calendar></mat-calendar>
-                    </mat-card>
-                  </div>
-                </div>
-              </div>
+          <div class="col-lg-4 p-2">
+              <div class="container-fluid d-flex flex-column align-items-start h-100 w-100">
 
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="box flex-column d-flex" id="car">
-                  @if ((loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) || loggedUser.role.name == "ROLE_instructor") {
-                    <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
-                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
-                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Típus:</p>
-                    <p class="w-100 info-field d-flex align-items-center justify-content-between">Rendszám:</p>
-                  } @else if (loggedUser.role.name == "ROLE_user" || loggedUser.instructorId == undefined) {
-                    <h2>Oktató nincs kiválasztva</h2>
-                  }
+                <div class="row w-100 h-100">
+                  <div class="col-12 p-2">
+                      <div class="box" id="calendar">
+                        <mat-card class="demo-inline-calendar-card">
+                          <mat-calendar></mat-calendar>
+                        </mat-card>
+                      </div>
                   </div>
                 </div>
-              </div>
+
+                <div class="row">
+                  <div class="col-12 p-2">
+                    <div class="container-fluid box flex-column d-flex" id="car">
+                    @if ((loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) || loggedUser.role.name == "ROLE_instructor") {
+                      <div class="row">
+                        <div class="col-12">
+                          <img src="assets/icons/kijeletkezés.svg" alt=""/>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="infoDiv w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="w-100 info-field d-flex align-items-center justify-content-between">Típus:</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="w-100 info-field d-flex align-items-center justify-content-between">Rendszám:</p>
+                        </div>
+                      </div>
+                    } @else if (loggedUser.role.name == "ROLE_user" || loggedUser.instructorId == undefined) {
+                      <h2>Oktató nincs kiválasztva</h2>
+                    }
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
 
