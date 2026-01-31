@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PaymentMethod } from '../../../models/payment-method.model';
 import { Status } from '../../../models/status.model';
@@ -12,7 +12,7 @@ import { DrivingLessons } from '../../../models/driving-lessons.model';
   templateUrl: './driving-lesson-editor.component.html',
   styleUrl: './driving-lesson-editor.component.css'
 })
-export class DrivingLessonEditorComponent {
+export class DrivingLessonEditorComponent implements OnInit {
   otherService = inject(OtherStuffServiceService)
   drivingLessonService = inject(DrivingLessonService)
   close = output()
@@ -26,6 +26,8 @@ export class DrivingLessonEditorComponent {
 
 
   ngOnInit(): void {
+    console.log(this.drivingLesson())
+
     this.otherService.getAllPaymentMethod().subscribe({
       next: response => this.paymentMethods = response
     })

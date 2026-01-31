@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../../services/request.service';
 
@@ -8,7 +8,7 @@ import { RequestService } from '../../../services/request.service';
   templateUrl: './request-container.component.html',
   styleUrl: './request-container.component.css'
 })
-export class RequestContainerComponent implements OnInit {
+export class RequestContainerComponent implements OnChanges {
   requestService = inject(RequestService)
 
   requestForm!: FormGroup;
@@ -17,12 +17,10 @@ export class RequestContainerComponent implements OnInit {
   availableHours: string[][] = []
   selectedDate = input.required<Date>()
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if(this.reservedHours().length != 0){
       this.getAvailableHours()
     }
-
-
     this.requestForm = new FormGroup({
       selectedDate: new FormControl(this.selectedDate(), [Validators.required]),
       startTime: new FormControl("", [Validators.required]),
