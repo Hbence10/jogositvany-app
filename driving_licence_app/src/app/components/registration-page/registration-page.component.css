@@ -15,10 +15,11 @@ a {
 
 #secondContainer {
   border-radius: 20px;
-  height: 850px;
+  height: 900px;
   width: 650px;
   background-color: #22354F;
   color: #DEE0EB;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .inputs {
@@ -42,5 +43,6 @@ a {
   background-color: #626C99;
   border: none;
   border-radius: 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
