@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from "@angular/router";
@@ -33,13 +33,11 @@ function validatePassword(control: AbstractControl): { [key: string]: any } | nu
 
 @Component({
   selector: 'app-password-reset',
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, ReactiveFormsModule],
   templateUrl: './password-reset.component.html',
   styleUrl: './password-reset.component.css'
 })
 export class PasswordResetComponent implements OnInit {
-
-
   private userService = inject(UsersService)
   private router = inject(Router)
   isShowPassword = signal<boolean>(false)
