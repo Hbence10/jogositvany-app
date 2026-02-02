@@ -171,6 +171,7 @@ input[type="range"]::-moz-range-track {
   margin: 15px;
 }
 
+/**/
 app-review-list, app-profil-editor, #deleteContainer, app-price-list {
   position: fixed;
   top: 0px;

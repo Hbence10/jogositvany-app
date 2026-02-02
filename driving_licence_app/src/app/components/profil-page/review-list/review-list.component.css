@@ -1,0 +1,82 @@
+#mainContainer {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#secondContainer {
+  background-color: #626c99;
+  width: 1420px;
+  height: 900px;
+}
+
+.reviewRow {
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+  overflow: auto;
+  max-height: 100%;
+  position: relative;
+  top: 0px;
+}
+
+.column {
+  -ms-flex: 33.3%; /* IE10 */
+  flex: 33.3%;
+  max-width: 33.3%;
+  padding: 0 4px;
+}
+
+.column app-review-card {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .column {
+    -ms-flex: 50%;
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .column {
+    -ms-flex: 100%;
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+
+app-review-writer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+#closeButton {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: #22354f;
+  color: white;
+  border-radius: 8px;
+}
+
+.reviewRow::-webkit-scrollbar {
+  width: 6px;
+}
+.reviewRow::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.reviewRow::-webkit-scrollbar-thumb {
+  background: #22354f;
+  border-radius: 10px;
+}
+.reviewRow::-webkit-scrollbar-thumb:hover {
+  background: #434a6b;
+}

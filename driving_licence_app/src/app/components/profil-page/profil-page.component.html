@@ -1,17 +1,17 @@
 <div id="mainDiv" class="container-fluid mainFont" style="min-height: 100vh">
-  <div class="row">
-    <div class="w-100 m-3 d-flex justify-content-end">
+  <!-- Editor sor: -->
+  <div class="row my-4">
+    <div class="col-lg-12 d-flex justify-content-lg-end justify-content-center">
       @if (searchedUser?.id == userService.loggedUser()?.id || (searchedSchool?.id == userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name == "ROLE_school_owner")) {
         <button (click)="showDeleteConfirmation = true" class="editorButton mx-2">
           <i class="material-icons">delete</i>
         </button>
       }
-      @if (type() == "school") {
+      @if(type() == "school") {
         <button class="editorButton mx-2" (click)="showPriceList = true">
           <i class="material-icons">info</i>
         </button>
       }
-
       @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
         <button (click)="showEditor = true" class="editorButton mx-2">
           <i class="material-icons">edit</i>
@@ -22,25 +22,18 @@
 
   <div class="row h-100 mb-5">
     @if (errorMsg == "") {
-      <div class="col-lg-4 h-100 d-flex flex-column justify-content-center align-items-center">
+      <div class="col-lg-4 d-flex justify-content-center align-items-center">
         <div class="container-fluid">
           @if (roleName == "Iskola" || roleName == "Oktató") {
             <div class="row">
               <div class="col-lg-12 d-flex justify-content-center align-items-center">
-                <button (click)="showReviews = true">Review</button>
+                <button class="text-white eventButton" (click)="showReviews = true">Review</button>
               </div>
             </div>
           }
-
           <div class="row">
             <div id="avatarDiv" class="col d-flex justify-content-center align-items-center">
-              <img
-                src="assets/icons/kijeletkezés.svg"
-                id="avatar"
-                class="img-fluid m-3"
-                [class.userPfp]="type() == 'user'"
-                [class.bannerImg]="type() == 'school'"
-              />
+              <img src="assets/icons/kijeletkezés.svg" id="avatar" class="img-fluid m-3" [class.userPfp]="type() == 'user'" [class.bannerImg]="type() == 'school'"/>
 
               <div id="editDiv" class="col-lg-12 d-flex justify-content-center align-items-center">
                 @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
@@ -52,7 +45,6 @@
                   </button>
                 }
               </div>
-
             </div>
           </div>
 
@@ -61,43 +53,16 @@
               <button class="infoButton mb-2 eventButton text-white">
                 <span class="material-icons">mail</span>
               </button>
-              @if (
-                (type() == "school" &&
-                  (userService.loggedUser()?.role?.name == "ROLE_user" ||
-                    userService.loggedUser()?.role?.name ==
-                      "ROLE_instructor")) ||
-                (type() == "user" &&
-                  userService.loggedUser()?.role?.name == "ROLE_student" &&
-                  userService.loggedUser()?.instructor == null)
-              ) {
-                <button
-                  id="signButton"
-                  (click)="sendJoinRequest()"
-                  [disabled]="
-                    type() == 'school' &&
-                    selectedCategory == null &&
-                    userService.loggedUser()?.role?.name == 'ROLE_user'
-                  "
-                >
-                  Jelentkezés
-                </button>
-
+              @if ((type() == "school" &&(userService.loggedUser()?.role?.name == "ROLE_user" ||userService.loggedUser()?.role?.name == "ROLE_instructor") ||type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == null)){
+                <button id="signButton" (click)="sendJoinRequest()" [disabled]="type() == 'school' && selectedCategory == null && userService.loggedUser()?.role?.name == 'ROLE_user'">Jelentkezés</button>
                 @if (userService.loggedUser()?.role?.name == "ROLE_user") {
-                  <select
-                    #categorySelect
-                    (change)="selectedCategory = +categorySelect.value"
-                  >
-                    @for (
-                      category of searchedSchool?.licenseCategoryList;
-                      track $index
-                    ) {
-                      <option [value]="category.licenseCategory.id">
-                        {{ category.licenseCategory.name }}
-                      </option>
+                  <select #categorySelect (change)="selectedCategory = +categorySelect.value">
+                    @for (category of searchedSchool?.licenseCategoryList; track $index) {
+                      <option [value]="category.licenseCategory.id">{{category.licenseCategory.name}}</option>
                     }
                   </select>
                 }
-              }
+            }
             </div>
           </div>
         </div>
@@ -111,70 +76,39 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <h1 style="color: #dee0eb">
-                      {{
-                        searchedUser == null
-                          ? searchedSchool!.name
-                          : searchedUser.firstName + " " + searchedUser.lastName
-                      }}
+                      {{searchedUser == null ? searchedSchool!.name : searchedUser.firstName + " " + searchedUser.lastName}}
                     </h1>
                     <h4 style="color: #b3b8d1">{{ roleName }}</h4>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <div class="uData mt-0  px-3">
-                      <span class="fw-bold">{{
-                        searchedUser == null ? "Cím:" : "Születési Dátum:"
-                      }}</span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool?.country +
-                            " " +
-                            searchedSchool?.town +
-                            " " +
-                            searchedSchool?.address
-                          : (searchedUser.birthDate | date)
-                      }}</span>
+                    <div class="uData mt-0 px-3">
+                      <span class="fw-bold">{{searchedUser == null ? "Cím:" : "Születési Dátum:"}}</span>
+                      <span>{{searchedUser == null ? searchedSchool?.country + " " + searchedSchool?.town + " " + searchedSchool?.address: (searchedUser.birthDate | date)}}</span>
                     </div>
                     <div class="uData mt-0 px-3">
-                      <span class="fw-bold">{{
-                        searchedUser == null ? "Tulaj:" : "Nem:"
-                      }}</span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool?.owner?.firstName +
-                            " " +
-                            searchedSchool?.owner?.lastName
-                          : searchedUser.gender
-                      }}</span>
+                      <span class="fw-bold">{{ searchedUser == null ? "Tulaj:" : "Nem:" }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool?.owner?.firstName + " " + searchedSchool?.owner?.lastName : searchedUser.gender}}</span>
                     </div>
                     <div class="uData mt-0 px-3">
                       <span class="fw-bold">E-mail:</span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool!.email
-                          : searchedUser.email
-                      }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool!.email : searchedUser.email }}</span>
                     </div>
                     <div class="uData mt-0 px-3">
                       <span class="fw-bold">Telefonszám: </span>
-                      <span>{{
-                        searchedUser == null
-                          ? searchedSchool!.phone
-                          : searchedUser.phone
-                      }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool!.phone : searchedUser.phone }}</span>
                     </div>
-                    @if (type() == "user" && searchedUser?.role?.name == "ROLE_instructor"
-                    ) {
+                    @if (type() == "user" &&searchedUser?.role?.name == "ROLE_instructor") {
                       <div class="uData mt-0 px-3">
                         <span class="fw-bold">Iskola: </span>
-                        <span>{{searchedUser?.instructor?.instructorSchool?.name}}</span>
+                        <span>{{ searchedUser?.instructor?.instructorSchool?.name}}</span>
                       </div>
                     }
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12">
+                  <div class="col-lg-12 p-0">
                     @if (type() == "user") {
                       @if (searchedUser?.role?.name == "ROLE_instructor") {
                         <div class="container-fluid">
@@ -186,11 +120,7 @@
                             </div>
                             <div class="col-lg-6">
                               <div class="instructorInfoBox">
-                                <img
-                                  class="img-fluid"
-                                  src="assets/icons/kijeletkezés.svg"
-                                  alt=""
-                                />
+                                <img class="img-fluid" src="assets/icons/kijeletkezés.svg" alt=""/>
                                 <p class="w-100 text-white info-field d-flex align-items-center justify-content-between">
                                   <span>Név:</span>
                                   <span>{{instructorDetails?.vehicle?.name}}</span>
@@ -210,14 +140,7 @@
                       } @else if (searchedUser?.role?.name == "ROLE_student") {
                         <div class="w-100 d-flex justify-content-center">
                           <div id="progressBar">
-                            <input
-                              id="bar"
-                              type="range"
-                              min="0"
-                              max="30"
-                              value="9"
-                              disabled
-                            />
+                            <input id="bar" type="range" min="0" max="30" value="9" disabled/>
                             <div class="d-flex">
                               <div class="lesson-info-item lesson-info-driven me-4">
                                 Vezetett órák: <span>9</span>
@@ -239,18 +162,13 @@
                             <div id="openingDetails" class="p-3">
                               <div class="row">
                                 <div class="col-lg-12">
-                                  <h2 class="text-center text-white">
-                                    Nyitvatartás
-                                  </h2>
+                                  <h2 class="text-center text-white">Nyitvatartás</h2>
                                 </div>
                               </div>
 
                               <div class="row">
                                 <div class="col-lg-12">
-                                  @for (
-                                    item of searchedSchool?.openingDetails;
-                                    track $index
-                                  ) {
+                                  @for (item of searchedSchool?.openingDetails;track $index) {
                                     <p
                                       class="d-flex justify-content-between text-white"
                                     >
@@ -269,15 +187,16 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-8">
+                          <div class="col-lg-8 ">
                             <div id="instructorList" class="container-fluid">
-                            <div class="row my-3">
+                              <div class="row my-3">
                                 <div class="col-lg-12">
                                   <h2 class="text-center text-white">Oktatóink:</h2>
                                 </div>
                               </div>
+
                               @for (row of getInstructorRows(); track $index) {
-                                <div class="row my-3">
+                                <div class="row">
                                   @for (instructors of row; track $index) {
                                     <div class="col-lg-6">
                                       <app-profil-card [profilCardData]="instructors" [role]="'instructors'"/>
@@ -306,36 +225,24 @@
 </div>
 
 @if (showEditor) {
-  <div id="profE">
-    <app-profil-editor
-      (close)="showEditor = false"
-      [objectType]="searchedSchool == null ? 'user' : 'school'"
-      [wantedObject]="searchedSchool == null ? searchedUser! : searchedSchool"
-    />
-  </div>
+  <app-profil-editor (close)="showEditor = false" [objectType]="searchedSchool == null ? 'user' : 'school'" [wantedObject]="searchedSchool == null ? searchedUser! : searchedSchool"/>
+}
+@if (showReviews) {
+  <app-review-list (closeList)="showReviews = false" [reviewType]="roleName" [aboutObject]="searchedUser == null ? searchedSchool! : instructorDetails!"/>
 }
 
-@if (showReviews) {
-  <app-review-list
-    (closeList)="showReviews = false"
-    [reviewType]="roleName"
-    [aboutObject]="searchedUser == null ? searchedSchool! : instructorDetails!"
-  />
-}
 @if (showDeleteConfirmation) {
   <div class="container-fluid" id="deleteContainer">
     <div class="row h-100">
-      <div
-        class="col-lg-12 h-100 d-flex justify-content-center align-items-center"
-      >
+      <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
         <div id="profDel">
           <div class="h-100 d-flex flex-column justify-content-between">
             <h3 class="text-center text-white">Biztosan törölni szeretnéd?</h3>
-            <div
-              class="w-100 d-flex justify-content-center align-items-center mb-3"
-            >
+            <div class="w-100 d-flex justify-content-center align-items-center mb-3">
               <button class="text-white eventButton" (click)="deleteProfile()">Igen</button>
-              <button class="text-white eventButton" (click)="showDeleteConfirmation = false">Nem</button>
+              <button class="text-white eventButton" (click)="showDeleteConfirmation = false">
+                Nem
+              </button>
             </div>
           </div>
         </div>
@@ -344,8 +251,5 @@
   </div>
 }
 @if (showPriceList) {
-  <app-price-list
-    [schoolId]="searchedSchool?.id!"
-    (close)="showPriceList = false"
-  />
+  <app-price-list [schoolId]="searchedSchool?.id!" (close)="showPriceList = false"/>
 }

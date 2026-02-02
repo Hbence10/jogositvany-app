@@ -1,64 +1,64 @@
 <div class="container-fluid d-flex flex-column align-items-center justify-content-center mainFont" id="mainContainer">
-  <div class="row">
+  <div class="row w-100">
     <div class="col-lg-12 d-flex justify-content-center align-items-center">
 
-      <div class="container-fluid w-100"  id="secondContainer">
-
-        <div class="row">
-          <div class="col-lg-12 d-flex justify-content-end align-items-center">
-            <button (click)="close.emit()">X</button>
+      <div class="container-fluid" id="secondContainer">
+        <div class="row mt-4">
+          <div class="col-lg-12 d-flex justify-content-between align-items-center">
+            <div style="width: 50px; height: 50px;"></div>
+            <h1 class="text-center">Profil szerkesztése</h1>
+            <button (click)="close.emit()" id="closeButton">X</button>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-lg-12 " >
-            <h1 class="text-center">Profil szerkesztése</h1>
-            <form [formGroup]="profilForm" class="container-fluid d-flex flex-column justify-content-center align-items-center">
+          <div class="col-lg-12">
+            <form [formGroup]="profilForm" class="container-fluid">
               @if(objectType() == 'user') {
-                <div class="row">
-                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
-                  <label for="" class="w-100">Vezetéknév</label>
-                  <input formControlName="firstName" type="text" class="w-100" placeholder="lastName"/>
+                <div class="row my-3">
+                  <div class="col-lg-6">
+                    <label for="firstName" class="w-100">Vezetéknév:</label>
+                    <input formControlName="firstName" class="w-100" type="text" placeholder="Vezetéknév" id="firstName" name="lastName"/>
+                  </div>
+                  <div class="col-lg-6">
+                    <label for="lastName" class="w-100">Keresztnév:</label>
+                    <input formControlName="lastName" class="w-100" type="text" placeholder="Keresztnév" id="lastName" name="lastName"/>
+                  </div>
                 </div>
-                <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
-                  <label for="" class="w-100">Keresztnév</label>
-                  <input formControlName="lastName" class="w-100" type="text" placeholder="firstName"/>
-                </div>
-              </div>
 
-              <div class="row">
+              <div class="row my-3">
                 <div class="inputDiv w-100 col-lg-12 d-flex flex-column align-items-start ">
-                  <label for="" class="w-100">E-mail</label>
-                  <input formControlName="email" class="w-100" type="text" placeholder="email"/>
+                  <label for="email" class="w-100">E-mail:</label>
+                  <input formControlName="email" class="w-100" type="text" placeholder="E-mail cím" id="email" name="email"/>
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row my-3">
                 <div class="inputDiv col-lg-12 d-flex flex-column align-items-start">
-                  <label for="">Telefonszám</label>
-                  <input formControlName="phone" type="text" placeholder="phone"/>
+                  <label for="phone">Telefonszám:</label>
+                  <input class="w-100" formControlName="phone" type="text" placeholder="Telefonszám" id="phone" name="phone"/>
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row my-3">
                 <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
-                  <label for="">Nem</label>
-                  <select formControlName="gender">
+                  <label for="gender">Nem:</label>
+                  <select formControlName="gender" class="w-100" id="gender" name="gender">
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                     <option value="other">other</option>
                   </select>
                 </div>
                 <div class="inputDiv col-lg-6 d-flex flex-column align-items-start">
-                  <label for="">Születési dátum</label>
-                  <input formControlName="birthDate" type="date" />
+                  <label for="birthDate">Születési dátum:</label>
+                  <input formControlName="birthDate" class="w-100" type="date" id="birthDate" name="birthDate"/>
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row my-3">
                 <div class="inputDiv col-lg-12 d-flex flex-column justify-content-center align-items-start">
-                  <label for="">Legmagasabb végzettség</label>
-                  <select formControlName="education">
+                  <label for="education">Legmagasabb végzettség:</label>
+                  <select formControlName="education" id="education" name="education" class="w-100">
                     @for (education of educationList; track $index) {
                     <option [value]="education.id">{{ education.name }}</option>
                     }
@@ -66,48 +66,49 @@
                 </div>
               </div>
               } @else {
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-12">
-                    <label for=""></label>
-                    <input formControlName="name" type="text">
+                    <label for="schoolName">Iskola neve:</label> <br>
+                    <input class="w-100" formControlName="name" type="text" id="schoolName" name="schoolName" placeholder="Az iskola neve.">
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-12">
-                    <label for=""></label>
-                    <input formControlName="email" type="text">
+                    <label for="email">E-mail cím:</label><br>
+                    <input class="w-100" formControlName="email" type="text" id="email" name="email" placeholder="Az iskolához tartozó e-mail cím.">
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-12">
-                    <label for=""></label>
-                    <input formControlName="phone" type="text">
+                    <label for="phone">Telefonszám:</label><br>
+                    <input class="w-100" formControlName="phone" type="text" id="phone" name="phone" placeholder="Az iskolához tartozó telefonszám.">
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-3">
-                    <label for=""></label>
-                    <input formControlName="country" type="text">
+                    <label for="country">Megye:</label><br>
+                    <input class="w-100" formControlName="country" type="text" id="country" name="country" placeholder="Megye">
                   </div>
                   <div class="col-lg-9">
-                    <label for=""></label>
-                    <input formControlName="town" type="text">
+                    <label for="town">Település:</label><br>
+                    <input class="w-100" formControlName="town" type="text" id="town" name="town" placeholder="Település">
+                  </div>
+                </div>
+
+                <div class="row my-3">
+                  <div class="col-lg-12">
+                    <label for="">Cím:</label><br>
+                    <input class="w-100" formControlName="address" type="text">
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-12">
-                    <label for=""></label>
-                    <input formControlName="address" type="text">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-12">
-                    <textarea formControlName="promoText"></textarea>
+                    <label for="promoText">Bemutatkozó szöveg:</label><br>
+                    <textarea formControlName="promoText" class="w-100" id="promoText" name="promoText" placeholder="Bemutatkozó szöveg" style="height: 150px;"></textarea>
                   </div>
                 </div>
 
@@ -117,43 +118,37 @@
         </div>
 
         @if (isInstructor) {
-          <div class="row">
-            <div class="col-lg-12">
-              <h1 class="text-center">Oktatói adatok szerkesztése</h1>
-            </div>
-          </div>
-
-          <div class="row">
+          <div class="row my-4">
             <div class="col-lg-12">
               <h1 class="text-center">Oktatói adatok szerkesztése</h1>
               <form [formGroup]="instructorForm" class="container-fluid">
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-12">
-                    <label for="">Bemutatkozó szöveg</label>
-                    <textarea formControlName="promoText"></textarea>
+                    <label for="promoText">Bemutatkozó szöveg:</label><br>
+                    <textarea formControlName="promoText" placeholder="Bemutatkozó szöveg" class="w-100" id="promoText" name="promoText" style="height: 150px;"></textarea>
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-12">
-                    <h3>Jármű adatainak szerkesztése</h3>
+                    <h3 class="text-center">Jármű adatainak szerkesztése</h3>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-7">
-                    <label>Jármű elnevezése</label>
-                    <input formControlName="vehicleName" type="text" placeholder="Elnevezés" />
+                    <label for="vehicleName">Jármű elnevezése:</label><br>
+                    <input formControlName="vehicleName" class="w-100" type="text" placeholder="Jármű elnevezése" id="vehicleName" name="vehicleName" />
                   </div>
                   <div class="col-lg-5">
-                    <label for="">Jármű rendszám</label>
-                    <input formControlName="licensePlate" type="text" />
+                    <label for="licensePlate">Jármű rendszám:</label><br>
+                    <input formControlName="licensePlate" class="w-100" type="text" placeholder="Jármű rendszáma" id="licensePlate" name="licensePlate"/>
                   </div>
                 </div>
 
-                <div class="row">
+                <div class="row my-3">
                   <div class="col-lg-6">
-                    <label for="">Jármu tankolasa</label>
-                    <select name="" id="" formControlName="fuelType">
+                    <label for="fuelType">Jármű tankolasa:</label><br>
+                    <select name="fuelType" id="fuelType" formControlName="fuelType" class="w-100">
                       @for (fuelType of fuelTypes; track $index) {
                         <option [value]="fuelType.id">{{ fuelType.name }}</option>
                       }
@@ -161,8 +156,8 @@
                   </div>
 
                   <div class="col-lg-6">
-                    <label for="">Jármu tipusa</label>
-                    <select name="" id="" formControlName="vehicleType">
+                    <label for="vehicleType">Jármű tipusa:</label><br>
+                    <select name="vehicleType" id="vehicleType" formControlName="vehicleType" class="w-100">
                       @for (vehicleType of vehicleTypes; track $index) {
                         <option [value]="vehicleType.id">{{ vehicleType.name }}</option>
                       }
@@ -175,27 +170,17 @@
         }
 
         @if(objectType() == "school") {
-        <div class="row">
+        <div class="row mt-5">
           <div class="col-lg-12">
             <h1 class="text-center">Nyitva tartás módosítása</h1>
             <form [formGroup]="openingDetailsForm" class="container-fluid">
               @for (dayName of dayNames; track $index) {
-              <div class="row">
-                <div class="col-lg-12">
-                  <span>{{ dayName }}</span>
+              <div class="row my-4">
+                <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+                  <span class="dayName">{{ dayName }}:</span>
                   <div>
-                    <input
-                      formControlName="{{ dayName }}Start"
-                      type="time"
-                      name=""
-                      id=""
-                    />
-                    <input
-                      formControlName="{{ dayName }}End"
-                      type="time"
-                      name=""
-                      id=""
-                    />
+                    <input class="mx-2" formControlName="{{ dayName }}Start" type="time" name="" id="" />
+                    <input class="mx-2" formControlName="{{ dayName }}End" type="time" name="" id=""/>
                   </div>
                 </div>
               </div>
@@ -207,7 +192,7 @@
 
         <div class="row">
           <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
-            <button (click)="saveChanges()">Változtatások mentése</button>
+            <button class="my-3 text-white" (click)="saveChanges()" id="saveButton">Változtatások mentése</button>
           </div>
         </div>
       </div>

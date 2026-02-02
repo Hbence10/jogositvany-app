@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { Router } from 'express';
 import { UsersService } from '../../services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar-phone',

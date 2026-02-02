@@ -1,34 +1,68 @@
 #mainContainer{
-  background-color: #434A6B;
-  width: auto;
-  height: auto;
-  padding: 15px;
-  border-radius: 15px;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 #secondContainer {
-  width: auto;
+  width: 820px;
+  height: 900px;
+  background-color: #434A6B;
+  overflow: auto;
 }
 
-input {
+input, textarea, select {
   border: none;
   background-color: #626C99;
   border-radius: 5px;
   color: #dee0eb;
-  padding: 5px;
-  width: 100%;
+  height: 50px;
+  padding: 0px 15px;
 }
 
-select {
-  background-color: #626C99;
-  color: #dee0eb;
-  padding: 5px;
+input::placeholder, textarea::placeholder {
+  color: white;
+}
+
+/**/
+#closeButton {
+  width: 50px;
+  height: 50px;
   border: none;
-  width: 100%;
+  background-color: #22354f;
+  color: white;
+  border-radius: 8px;
 }
 
-.inputDiv {
-  background-color: #434A6B;
-  width: auto;
-  height: auto;
+#secondContainer::-webkit-scrollbar {
+  width: 6px;
+}
+#secondContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+#secondContainer::-webkit-scrollbar-thumb {
+  background: #22354f;
+  border-radius: 10px;
+}
+#secondContainer::-webkit-scrollbar-thumb:hover {
+  background: #434a6b;
+}
+
+.dayName {
+  font-size: 25px;
+}
+
+#saveButton {
+  height: 60px;
+  background-color: #22354f;
+  width: 300px;
+  border: none;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 860px) {
+  #secondContainer {
+    width: 90%;
+  }
 }
