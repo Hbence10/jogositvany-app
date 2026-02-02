@@ -40,7 +40,7 @@ export class SearchPageComponent implements OnInit {
   selectedInstructor: Instructors | null = null
   instructorList: { id: number, name: string }[] = []
   filteredInstructorList: { id: number, name: string }[] = []
-  selectedCategoryId: number | null = null
+  selectedCategoryId: number = 1
 
   ngOnInit(): void {
     this.selectedSchool = null
@@ -54,7 +54,7 @@ export class SearchPageComponent implements OnInit {
           this.otherStuffService.getAllFuelType().subscribe({
             next: responseList => this.fuelTypeList = responseList,
             complete: () => {
-
+                this.getInstructorBySearch()
             }
           })
         } else if (this.selectedType == "school") {
@@ -68,14 +68,15 @@ export class SearchPageComponent implements OnInit {
         }
       }
     })
-
-
   }
 
   getSchoolByTown() {
     this.schoolService.getSchoolsBySearch(this.selectedTown).subscribe({
       next: response => this.schoolList = response,
-      complete: () => this.filteredSchoolList = this.schoolList
+      complete: () => {
+        this.filteredSchoolList = this.schoolList
+        this.getSchoolById(this.filteredSchoolList[0].id)
+      }
     })
   }
 
@@ -115,7 +116,6 @@ export class SearchPageComponent implements OnInit {
 
   filterSchoolName(searchedName: string) {
     this.filteredSchoolList = this.schoolList.filter(school => school.name.toLowerCase().trim().substring(0, searchedName.length) === searchedName.trim().toLowerCase())
-
   }
 
   getSchoolById(id: number) {

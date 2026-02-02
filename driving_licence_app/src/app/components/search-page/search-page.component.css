@@ -1,42 +1,15 @@
-#searchPage {
-  height: 100vh;
-}
-
-.box {
-  background-color: #626C99;
-  width: 800px;
-  margin: 15px;
-}
-
-#description {
-  width: 800px;
-  height: 900px;
-}
-#profileImg {
-  width: 100%;
-  height: 100%;
-}
-
-input {
+input[type=text] {
   width: 100%;
   border-radius: 15px 15px 0px 0px;
   border: none;
   height: 45px;
 }
 
-img {
+#schoolCoverImg {
   background-color: #22354F;
   width: 100%;
   height: 100%;
   border-radius: 15px 15px 0px 0px;
-}
-
-div {
-  border-radius: 15px;
-}
-
-#townIn {
-  height: 435px;
 }
 
 #nameIn {
@@ -51,81 +24,96 @@ button {
   margin: 7.5px;
   height: 50px;
 }
-
-.profileBtn{
-  width: 50px;
-}
-
-.signBtn {
-  width: 180px;
-}
-
-#descriptionText{
-  background-color: #22354F;
-  width: 770px;
-  height: 200px;
-  margin: 15px 0px;
-  padding: 5px;
-}
-
-.infoText{
-  background-color: #22354F;
-  width: 770px;
-  height: 50px;
-  margin: 15px 0px;
-  padding: 5px;
-}
-
-#reviewDiv{
-  background-color: #22354F;
-  width: 300px;
-  height: 100px;
-}
-
+/*Kozos*/
 #mainContainer {
-  height: 900px;
+  min-height: 100vh;
 }
 
-#townContainer {
-  max-height: 450px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-#townContainer::-webkit-scrollbar {
-  width: 6px;
-}
-#townContainer::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-#townContainer::-webkit-scrollbar-thumb {
-  background: #22354f;
-  border-radius: 10px;
-}
-#townContainer::-webkit-scrollbar-thumb:hover {
-  background: #434a6b;
-}
-
-#townSearch {
-  width: 450px;
-  height: 600px;
+/*Kereso felulet:*/
+/*Iskola kereso dolgai*/
+.searchContainer {
+  width: 100% !important;
   background-color: #626C99;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
-#schoolSearch {
-  width: 450px;
-  height: 600px;
-  background-color: #626C99;
+.optionContainer {
+  height: 350px;
+  overflow: auto;
 }
 
 .townParagraph {
   cursor: pointer;
 }
-.townParagraph:hover {
+
+.townParagraph:hover, .townParagraph.active, .selectedItem {
   background-color: #2B3B57;
 }
 
-.townParagraph.active {
-  background-color: #2B3B57;
+.optionContainer::-webkit-scrollbar {
+  width: 6px;
+}
+.optionContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.optionContainer::-webkit-scrollbar-thumb {
+  background: #22354f;
+  border-radius: 10px;
+}
+.optionContainer::-webkit-scrollbar-thumb:hover {
+  background: #434a6b;
+}
+
+/*Eredmeny felulet:*/
+#resultContainer {
+  background-color: #626C99;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  border-radius: 16px;
+  height: 900px;
+}
+
+#schoolCoverImg {
+  height: 170px;
+}
+
+.infoParagraph {
+  background-color: #22354F;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#promoDiv {
+  background-color: #22354F;
+  height: 225px;
+}
+
+.infoParagraph, .reviewDiv, #promoDiv {
+  border-radius: 10px;
+}
+
+.reviewDiv {
+  background-color: #22354F;
+  height: 100px;
+  min-width: 250px;
+}
+
+.profileBtn{
+  width: 50px;
+}
+
+#signBtn {
+  width: 180px;
+}
+
+#categorySelect {
+  width: 75px;
+  height: 50px;
+}
+
+#instructorPfp {
+  width: 175px;
+  height: 175px;
 }
