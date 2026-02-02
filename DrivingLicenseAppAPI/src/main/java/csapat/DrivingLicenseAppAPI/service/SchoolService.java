@@ -295,6 +295,7 @@ public class SchoolService {
             } else if (!townName.contains(addedSchool.getTown().trim())) {
                 return ResponseEntity.status(415).body("invalidTown");
             } else {
+                addedSchool.setBannerImgPath("http://localhost:8080/coverImages/defaultCoverImg.jpg");
                 schoolRepository.save(addedSchool);
                 emailSender.sendEmailAboutSchoolRegistration(addedSchool.getEmail());
                 return ResponseEntity.ok().build();

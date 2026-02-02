@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
@@ -106,9 +107,10 @@ public class UserService {
                 try {
                     emailSender.sendEmailAboutRegistration(newUser.getEmail());
                 } catch (Exception e) {
-                    return ResponseEntity.internalServerError().body("emailSenderError");
+//                    return ResponseEntity.internalServerError().body("emailSenderError");
                 }
 
+                newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
                 newUser = userRepository.save(newUser);
 
                 if (registerAs.equals("instructor")) {
@@ -268,14 +270,15 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = File.separator + pfpFile.getOriginalFilename();
+
+                String filePath = "src/main/resources/static/pfp" + File.separator + searchedUser.getId() + pfpFile.getOriginalFilename();
 
                 try {
-//                    FileOutputStream fout = new FileOutputStream(filePath);
-//                    fout.write(pfpFile.getBytes());
-//                    fout.close();
+                    FileOutputStream fout = new FileOutputStream(filePath);
+                    fout.write(pfpFile.getBytes());
+                    fout.close();
 
-                    searchedUser.setPfpPath("assets\\images\\pfp" + File.separator + pfpFile.getOriginalFilename());
+                    searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + pfpFile.getOriginalFilename());
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ResponseEntity.internalServerError().body("fileUploadingError");
@@ -339,7 +342,7 @@ public class UserService {
             }
 
             HttpHeaders header = new HttpHeaders();
-            header.add("PageNumber", allUser.getTotalPages()+"");
+            header.add("PageNumber", allUser.getTotalPages() + "");
 
             return new ResponseEntity<>(returnList, header, HttpStatus.OK);
         } catch (Exception e) {

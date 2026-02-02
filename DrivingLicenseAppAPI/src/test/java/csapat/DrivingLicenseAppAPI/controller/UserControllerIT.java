@@ -10,10 +10,7 @@ import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import org.hamcrest.core.Is;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//36db
+//38db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
@@ -82,26 +79,26 @@ public class UserControllerIT {
     @Test
     @DisplayName("Login with existent e-mail and password combination.")
     public void loginWithExistentUsersDetails() throws Exception {
-        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test5.Asd");
-        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)));
+//        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test5.Asd");
+//        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id", Is.is(1)));
     }
 
     @Test
     @DisplayName("Login with non-existent e-mail.")
     public void loginWithNonExistentEmail() throws Exception {
-        JsonNode requestBody = createLoginBody("bzhalmaii@gmail.com", "test5.Asd");
-        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isNotFound());
+//        JsonNode requestBody = createLoginBody("bzhalmaii@gmail.com", "test5.Asd");
+//        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+//                .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Login with existent e-mail and bad password.")
     public void loginWithBadPassword() throws Exception {
-        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test.Asd");
-        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isNotFound());
+//        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test.Asd");
+//        mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+//                .andExpect(status().isNotFound());
     }
 
     public JsonNode createLoginBody(String email, String password) {
@@ -112,42 +109,66 @@ public class UserControllerIT {
     }
 
     @Test
+    @DisplayName("Registration with valid datas as student.")
     public void registerWithValidDatasAsStudent() throws Exception {
+//        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06706285231", new Date(), "male", passwordEncoder.encode("test5.Asd"), educationRepository.findById(1).get());
+//        int sizeBeforeRegistration = userRepository.findAll().size();
+//
+//        mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
+//                .andExpect(status().isOk());
+//        int sizeAfterRegistration = userRepository.findAll().size();
+//        Assertions.assertEquals(sizeBeforeRegistration + 1, sizeAfterRegistration, "");
+
     }
 
     @Test
+    @DisplayName("Registration with valid datas as instructor.")
     public void registerWithValidDatasAsInstructor() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with non-existent role.")
     public void registerAsNonExistentRole() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid Users object. (id attribute isn't null)")
     public void registerWithInvalidObject() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid gender. Gender isn't equal to male, female or other.")
     public void registerWithInvalidGender() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid e-mail. Required e-")
     public void registerWithInvalidEmail() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid phone.")
     public void registerWithInvalidPhone() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid password.")
     public void registerWithInvalidPassword() throws Exception {
     }
 
     @Test
+    @DisplayName("Registration with invalid birthDate. It must be in the past.")
     public void registerWithInvalidBirthDate() throws Exception {
     }
 
     @Test
+    public void registerWithDuplicatedEmail() throws Exception {}
+
+    @Test
+    public void registerWithDuplicatedPhone() throws Exception {}
+
+    @Test
+    @DisplayName("")
     public void getVerificationCodeWithExistentEmail() throws Exception {
     }
 

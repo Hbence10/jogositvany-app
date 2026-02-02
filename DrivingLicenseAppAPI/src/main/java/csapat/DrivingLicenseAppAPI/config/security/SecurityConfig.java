@@ -36,26 +36,26 @@ public class SecurityConfig {
 //    private final JWTValidatorFilter jwtValidatorFilter;
     private final UserSetter userSetter;
 
-//    @Bean
-//    @Profile("prod")
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        System.out.println("Security enabled!");
-//        http
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-//                    @Override
-//                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-//                        CorsConfiguration config = new CorsConfiguration();
-//                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));        //A tamogatott origineket adjuk meg
-//                        config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
-//                        config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
-//                        config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
-//                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
-//                        config.setMaxAge(3600L);
-//                        return config;
-//                    }
-//                }))
-//                .authorizeHttpRequests((requests) -> requests
-//                        //DrivingLessonController:
+    @Bean
+    @Profile("prod")
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("Security enabled!");
+        http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));        //A tamogatott origineket adjuk meg
+                        config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
+                        config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
+                        config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
+                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
+                        config.setMaxAge(3600L);
+                        return config;
+                    }
+                }))
+                .authorizeHttpRequests((requests) -> requests
+                        //DrivingLessonController:
 //                        .requestMatchers("/drivingLesson/categories/school/**").permitAll()
 //                        .requestMatchers("/drivingLesson/cancel/**").hasRole("instructor")
 //                        .requestMatchers(HttpMethod.PUT, "/drivingLesson/*").hasRole("instructor")
@@ -104,17 +104,18 @@ public class SecurityConfig {
 //                        .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
 //                        .requestMatchers("/users").hasRole("administrator")
 //                        .anyRequest().authenticated()
-//
-//                )
-//                .authenticationProvider(authProvider())
-////                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
-////                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
-//                .formLogin(Customizer.withDefaults())
-//                .csrf(crs -> crs.disable())
-//                .httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
+                                .anyRequest().permitAll()
+
+                )
+                .authenticationProvider(authProvider())
+//                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
+//                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
+                .formLogin(Customizer.withDefaults())
+                .csrf(crs -> crs.disable())
+                .httpBasic(Customizer.withDefaults());
+
+        return http.build();
+    }
 
     @Bean
     SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {

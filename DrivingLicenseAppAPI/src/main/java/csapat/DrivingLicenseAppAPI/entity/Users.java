@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {@StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class), @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class),
 
         @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {@StoredProcedureParameter(name = "userIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "roleIdIN", type = Integer.class, mode = ParameterMode.IN)})})
@@ -96,7 +96,7 @@ public class Users {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
-    private Role role;
+    private Role role = new Role(1, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser")
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
@@ -134,5 +134,16 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
         this.role = role;
+    }
+
+    public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.password = password;
+        this.userEducation = userEducation;
     }
 }
