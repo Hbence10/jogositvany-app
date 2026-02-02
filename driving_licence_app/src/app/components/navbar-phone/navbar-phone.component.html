@@ -1,0 +1,53 @@
+@if (!isOpened) {
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-lg-12 d-flex justify-content-between align-items-center">
+        <button class="iconButton baseButton text-white" (click)="isOpened = true">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <button class="iconButton baseButton text-white" (click)="userNavigation()">
+          <span class="material-symbols-outlined">account_circle</span>
+        </button>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="container-fluid mainFont" id="openedContainer">
+    <div class="row my-4 w-100" style="position: fixed; top: 0px;">
+      <div class="col-lg-12 d-flex justify-content-end">
+        <button class="iconButton text-white" id="closeButton" (click)="isOpened = false">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="row h-100">
+      <div class="col-lg-12 d-flex align-items-center">
+        <ul class="text-white list-unstyled w-100 m-0">
+          <li (click)="navigate('/home')" class="text-center my-3 w-100">Főoldal</li>
+          @if (userService.loggedUser()?.role?.name == "ROLE_student" || userService.loggedUser()?.role?.name == "ROLE_instructor" || userService.loggedUser()?.role?.name == "ROLE_school_admin") {
+            <li (click)="navigate('/calendar')" class="text-center my-3">Naptár</li>
+          }
+          @if (userService.loggedUser()?.role?.name == "ROLE_student"){
+            <li (click)="navigate('searchPage/instructor')" class="text-center my-3">Oktatók</li>
+          }
+          @if (userService.loggedUser()?.role?.name != "ROLE_school_admin" && userService.loggedUser() != null) {
+            <li (click)="navigate('searchPage/school')" class="text-center my-3">Iskolák</li>
+          }
+          @if(userService.loggedUser()?.role?.name == "ROLE_instructor" || userService.loggedUser()?.role?.name == "ROLE_school_admin" || userService.loggedUser()?.role?.name == "ROLE_school_owner"){
+            <li (click)="checkRequestList()" class="text-center my-3">Kérelmek</li>
+          }
+          @if (userService.loggedUser()?.role?.name == "ROLE_school_admin" || userService.loggedUser()?.role?.name == "ROLE_school_owner" || userService.loggedUser()?.role?.name == "ROLE_instructor") {
+            <li (click)="navigateToStudents()" class="text-center my-3">Diákok</li>
+          }
+          @if (userService.loggedUser()?.role?.name == "ROLE_school_admin" || userService.loggedUser()?.role?.name == "ROLE_school_owner") {
+            <li (click)="navigate('/users/instructors')" class="text-center my-3">Oktatóink</li>
+          }
+          @if (userService.loggedUser()?.role?.name == "ROLE_administrator"){
+            <li (click)="navigate('/users/users')" class="text-center my-3">Felhasználók</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,31 @@
+.iconButton {
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#openedContainer {
+  background-color: #22354f;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  z-index: 9999;
+}
+
+.baseButton {
+  background-color: #22354f;
+}
+
+#closeButton {
+  background-color: #626C99;
+}
+
+li {
+  font-size: 30px;
+}
