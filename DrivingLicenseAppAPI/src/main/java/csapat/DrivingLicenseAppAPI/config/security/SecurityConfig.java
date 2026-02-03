@@ -32,12 +32,12 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-//    private final JWTGeneratorFilter jwtGeneratorFilter;
-//    private final JWTValidatorFilter jwtValidatorFilter;
+    private final JWTGeneratorFilter jwtGeneratorFilter;
+    private final JWTValidatorFilter jwtValidatorFilter;
     private final UserSetter userSetter;
 
-    @Bean
     @Profile("prod")
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Security enabled!");
         http
@@ -107,8 +107,8 @@ public class SecurityConfig {
 
                 )
                 .authenticationProvider(authProvider())
-//                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
-//                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
+                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());
@@ -116,6 +116,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Profile("dev")
     @Bean
     SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
         System.out.println("Security disabled");
