@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.config.security.JWT;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import csapat.DrivingLicenseAppAPI.config.security.JWT.RefreshToken.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +28,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
     private final JwtUtilsService jwtService;
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
+    private final ObjectMapper mapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

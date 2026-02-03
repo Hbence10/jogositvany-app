@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.config.security.JWT;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import csapat.DrivingLicenseAppAPI.config.security.JWT.RefreshToken.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,26 +16,45 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class JWTGeneratorFilter extends OncePerRequestFilter {
 
     private final JwtUtilsService jwtService;
+    private final ObjectMapper mapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (givenAuthentication != null) {
-//            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
-//            response.setHeader("Bearer ", jwt);
-//        }
+        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
+        if (givenAuthentication != null) {
+            UserDetails principal = (UserDetails) givenAuthentication.getPrincipal();
+            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
+            response.setHeader("Bearer ", jwt);
+            response.setHeader("refreshToken", generateRefreshToken(principal.getUsername()));
+        }
 
         filterChain.doFilter(request, response);
     }
 
-//    @Override
-//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-//        return !request.getServletPath().equals("/users/login");
-//    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return !request.getServletPath().equals("/users/login");
+    }
+
+    //RefreshToken Generalasa:
+    private String generateRefreshToken(String email){
+        RefreshToken refreshToken = new RefreshToken(email, UUID.randomUUID().toString(), Instant.now().plusMillis(7200000));
+
+        try {
+            String refreshTokenAsString = mapper.writeValueAsString(refreshToken);
+            return Base64.getUrlEncoder().encodeToString(refreshTokenAsString.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
