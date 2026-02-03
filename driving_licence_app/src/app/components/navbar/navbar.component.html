@@ -3,7 +3,7 @@
   <div id="top" class="d-flex flex-column justify-content-start align-items-start">
     <div class="profil d-flex justify-content-start align-items-center" [class.navbar:hover]="true" routerLink="profil/user/{{ userService.loggedUser()?.id }}">
       <div id="avatar" class="d-flex justify-content-center align-items-center">
-        <img src="assets/icons/defaultProfileImg.svg" alt="" />
+        <img [src]="userService.loggedUser() == null ? 'assets/icons/defaultProfileImg.svg' : userService.loggedUser()?.pfpPath" alt="" />
       </div>
       <a>Profil</a>
     </div>
