@@ -1,0 +1,11 @@
+.requestTypeButton {
+  height: 50px;
+  width: 150px;
+  border: none;
+  border-radius: 5px;
+}
+
+.selectedButton {
+  background-color: #22354f;
+  color: white;
+}

@@ -1,0 +1,49 @@
+.statusButton {
+  height: 30px;
+  width: 90px;
+  border: none;
+  border-radius: 8px;
+}
+
+.cardContainer {
+  width: 600px;
+  min-height: 150px;
+  background-color: #22354f;
+  border-radius: 16px;
+}
+
+.acceptButton {
+  background-color: #0ACF83;
+  color: #057248;
+}
+
+.refuseButton {
+  background-color: #CF210A;
+  color: #741407;
+}
+
+@media screen and (max-width: 1400px) {
+  .cardContainer {
+    width: 100%;
+  }
+}
+
+@Media screen and (max-whidth: 992px) {
+  .cardContainer {
+    height: 250px !important;
+  }
+}
+
+.textContainer {
+  width: 75%;
+}
+
+.imgContainer {
+  width: 25%;
+}
+
+img {
+  width: 100px;
+  width: 100px;
+  border-radius: 8px;
+}

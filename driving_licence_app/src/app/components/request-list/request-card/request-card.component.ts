@@ -15,34 +15,32 @@ export class RequestCardComponent implements OnChanges {
   answerRequest = output<{ requestType: "drivingLesson" | "instructorJoin" | "schoolJoin" | "exam", status: "accept" | "refuse", id: number }>()
   requestType = input.required<"drivingLesson" | "instructorJoin" | "schoolJoin" | "exam">()
   lines: string[] = []
+  pfpPath: string = ""
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.requestType() == "drivingLesson") {
       const drivingRequest = this.requestDetail() as DrivingLessonRequest
       this.lines = [
-        `${drivingRequest.dLessonRequestStudent.studentUser.firstName} ${drivingRequest.dLessonRequestStudent.studentUser.lastName} szeretne vezetni`,
-        `Az óra ideje: ${drivingRequest.startTime} eddig: ${drivingRequest.endTime}`,
+        `${drivingRequest.dLessonRequestStudent.studentUser.firstName} ${drivingRequest.dLessonRequestStudent.studentUser.lastName}`,
+        `Vezetni szeretne ekkor: ${drivingRequest.date} ${drivingRequest.startTime} - ${drivingRequest.endTime}`,
         `Küldte ekkor: ${drivingRequest.sentAt}`
       ]
+      this.pfpPath = drivingRequest.dLessonRequestStudent.studentUser.pfpPath
     } else if (this.requestType() == "instructorJoin") {
       const instructorRequest = this.requestDetail() as InstructorJoinRequest
       this.lines = [
-        `${instructorRequest.instructorJoinRequestStudent.studentUser.firstName} ${instructorRequest.instructorJoinRequestStudent.studentUser.lastName} szeretne nálad vezetni`,
+        `${instructorRequest.instructorJoinRequestStudent.studentUser.firstName} ${instructorRequest.instructorJoinRequestStudent.studentUser.lastName}`,
+        `Nálad szeretne tanulni`,
         `Küldte ekkor: ${instructorRequest.sentAt}`
       ]
+      this.pfpPath = instructorRequest.instructorJoinRequestStudent.studentUser.pfpPath
     } else if (this.requestType() == "schoolJoin") {
       const schoolRequest = this.requestDetail() as SchoolJoinRequest
       this.lines = [
         `${schoolRequest.schoolJoinRequestUser.firstName} ${schoolRequest.schoolJoinRequestUser.lastName} szeretne csatlakozni mint ${schoolRequest.requestedRole}`,
         `Küldte ekkor: ${schoolRequest.sentAt}`
       ]
-    } else if (this.requestType() == "exam") {
-      const examRequest = this.requestDetail() as ExamRequest
-      this.lines = [
-        `${examRequest.examStudent.studentUser.lastName} ${examRequest.examStudent.studentUser.firstName} szeretne vizsgázni`,
-        `A vizsga időpontja: ${examRequest.requestedDate}`,
-        `Küldte ekkor: `
-      ]
+      this.pfpPath = schoolRequest.schoolJoinRequestUser.pfpPath
     }
   }
 
