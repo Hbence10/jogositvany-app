@@ -33,7 +33,7 @@
           }
           <div class="row">
             <div id="avatarDiv" class="col d-flex justify-content-center align-items-center">
-              <img src="assets/icons/kijeletkezés.svg" id="avatar" class="img-fluid m-3" [class.userPfp]="type() == 'user'" [class.bannerImg]="type() == 'school'"/>
+              <img [src]="searchedUser?.pfpPath" id="avatar" class="img-fluid m-3" [class.userPfp]="type() == 'user'" [class.bannerImg]="type() == 'school'"/>
 
               <div id="editDiv" class="col-lg-12 d-flex justify-content-center align-items-center">
                 @if (searchedUser?.id == userService.loggedUser()?.id || searchedSchool?.id == userService.loggedUser()?.schoolId) {
@@ -108,7 +108,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-12 p-0">
+                  <div class="col-lg-12">
                     @if (type() == "user") {
                       @if (searchedUser?.role?.name == "ROLE_instructor") {
                         <div class="container-fluid">
@@ -138,18 +138,22 @@
                           </div>
                         </div>
                       } @else if (searchedUser?.role?.name == "ROLE_student") {
-                        <div class="w-100 d-flex justify-content-center">
-                          <div id="progressBar">
+                        <!-- <div class="w-100 d-flex justify-content-center"> -->
+                        <div class="w-100">
+                          <div id="progressBar" class="w-100 p-4">
                             <input id="bar" type="range" min="0" max="30" value="9" disabled/>
-                            <div class="d-flex">
+                            <div class="d-flex flex-md-row flex-column justify-content-lg-start justify-content-center align-items-center">
                               <div class="lesson-info-item lesson-info-driven me-4">
                                 Vezetett órák: <span>9</span>
                               </div>
                               <div class="lesson-info-item lesson-info-extra">
                                 Plusz órák: <span>0</span>
                               </div>
+                              <div class="mx-3 lesson-info-item lesson-info-required d-lg-none d-block">
+                              Kötelező órák: <span>21</span>
                             </div>
-                            <div class="lesson-info-item lesson-info-required">
+                            </div>
+                            <div class="lesson-info-item lesson-info-required d-lg-block d-none">
                               Kötelező órák: <span>21</span>
                             </div>
                           </div>

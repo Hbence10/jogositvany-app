@@ -64,16 +64,16 @@
 }
 
 #progressBar #bar {
-  width: 850px;
+  /* width: 850px; */
   height: 20px;
   margin: 0px;
 }
 
 #progressBar {
   background-color: #636da1;
-  padding: 25px;
+  /* padding: 25px; */
   border-radius: 16px;
-  width: 900px;
+  /* width: 900px; */
   color: white;
 }
 
@@ -215,4 +215,10 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list {
   height: 60px;
   border: none;
   border-radius: 8px;
+}
+
+@media screen and (max-width: 1650px) {
+  #progressBar {
+    width: 100%;
+  }
 }
