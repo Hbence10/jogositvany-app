@@ -36,7 +36,14 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
         if (header != null && header.startsWith(BEARER)) {
             String jwt = header.substring(BEARER.length());
-            UserDetails principal = jwtService.parseJwt(jwt);
+            UserDetails principal;
+            try {
+                principal = jwtService.parseJwt(jwt);
+            } catch (Exception e) {
+                String newJwt = jwtService.regenerateJwtToken(request.getHeader("refreshToken"));
+                principal = jwtService.parseJwt(newJwt);
+                response.setHeader("Bearer ", newJwt);
+            }
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

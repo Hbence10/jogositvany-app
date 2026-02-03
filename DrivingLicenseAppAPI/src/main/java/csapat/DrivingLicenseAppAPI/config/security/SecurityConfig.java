@@ -56,55 +56,54 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests((requests) -> requests
                         //DrivingLessonController:
-//                        .requestMatchers("/drivingLesson/categories/school/**").permitAll()
-//                        .requestMatchers("/drivingLesson/cancel/**").hasRole("instructor")
-//                        .requestMatchers(HttpMethod.PUT, "/drivingLesson/*").hasRole("instructor")
-//                        .requestMatchers("/drivingLesson/reservedHour").hasAnyRole("instructor", "student")
-//                        .requestMatchers(HttpMethod.GET, "/drivingLesson/*").hasAnyRole("instructor", "student")
-//                        //InstructorController:
-//                        .requestMatchers("/instructor/handleJoinRequest").hasRole("instructor")
-//                        .requestMatchers("/instructor/*/joinRequest").hasRole("instructor")
-//                        .requestMatchers("/instructor/*/drivingLessonRequest").hasRole("instructor")
-//                        .requestMatchers(HttpMethod.PUT, "/instructor/*").hasRole("instructor")
-//                        .requestMatchers("/instructor/handleDrivingLessonRequest").hasRole("instructor")
-//                        .requestMatchers("/instructor").hasRole("student")
-//                        .requestMatchers(HttpMethod.GET,"/instructor/*").permitAll()
-//                        .requestMatchers("/instructor/*/students").hasRole("instructor")
-//                        .requestMatchers("/instructor/kickout").hasRole("instructor")
-//                        //OtherStuffController:
-//                        .requestMatchers("/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education").permitAll()
-//                        //RequestController:
-//                        .requestMatchers("/request/school").hasAnyRole("instructor")
-//                        .requestMatchers("/request/instructor").hasRole("student")
-//                        .requestMatchers("/request/drivingLesson").hasRole("student")
-//                        //ReviewController:
-//                        .requestMatchers(HttpMethod.GET, "/review").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/review").hasRole("student")
-//                        .requestMatchers("/review/*").hasRole("student")
-//                        //SchoolController:
-//                        .requestMatchers(HttpMethod.POST, "/school/*/joinRequest").hasRole("school_admin")
-//                        .requestMatchers(HttpMethod.PUT, "/school/*").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers("/school/*/coverImg").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers("/school/*/openingDetails").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers(HttpMethod.GET, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers(HttpMethod.DELETE, "/school/*").hasAnyRole("administrator", "school_owner")
-//                        .requestMatchers("/school/search").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/school/*").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
-//                        .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
-//                        .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
-//
-//                        //StudentController:
-//                        //UserController
-//                        .requestMatchers("/users/login", "/users/register", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
-//                        .requestMatchers(HttpMethod.PUT, "/user/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-//                        .requestMatchers("/users/pfp/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-//                        .requestMatchers(HttpMethod.DELETE, "/users/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-//                        .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
-//                        .requestMatchers("/users").hasRole("administrator")
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/drivingLesson/categories/school/**").permitAll()
+                        .requestMatchers("/drivingLesson/cancel/**").hasRole("instructor")
+                        .requestMatchers(HttpMethod.PUT, "/drivingLesson/*").hasRole("instructor")
+                        .requestMatchers("/drivingLesson/reservedHour").hasAnyRole("instructor", "student")
+                        .requestMatchers(HttpMethod.GET, "/drivingLesson/*").hasAnyRole("instructor", "student")
+                        //InstructorController:
+                        .requestMatchers("/instructor/handleJoinRequest").hasRole("instructor")
+                        .requestMatchers("/instructor/*/joinRequest").hasRole("instructor")
+                        .requestMatchers("/instructor/*/drivingLessonRequest").hasRole("instructor")
+                        .requestMatchers(HttpMethod.PUT, "/instructor/*").hasRole("instructor")
+                        .requestMatchers("/instructor/handleDrivingLessonRequest").hasRole("instructor")
+                        .requestMatchers("/instructor").hasRole("student")
+                        .requestMatchers(HttpMethod.GET,"/instructor/*").permitAll()
+                        .requestMatchers("/instructor/*/students").hasRole("instructor")
+                        .requestMatchers("/instructor/kickout").hasRole("instructor")
+                        //OtherStuffController:
+                        .requestMatchers("/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education").permitAll()
+                        //RequestController:
+                        .requestMatchers("/request/school").hasAnyRole("instructor")
+                        .requestMatchers("/request/instructor").hasRole("student")
+                        .requestMatchers("/request/drivingLesson").hasRole("student")
+                        //ReviewController:
+                        .requestMatchers(HttpMethod.GET, "/review").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/review").hasRole("student")
+                        .requestMatchers("/review/*").hasRole("student")
+                        //SchoolController:
+                        .requestMatchers(HttpMethod.POST, "/school/*/joinRequest").hasRole("school_admin")
+                        .requestMatchers(HttpMethod.PUT, "/school/*").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers("/school/*/coverImg").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers("/school/*/openingDetails").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers(HttpMethod.GET, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers(HttpMethod.DELETE, "/school/*").hasAnyRole("administrator", "school_owner")
+                        .requestMatchers("/school/search").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/school/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
+                        .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
+                        .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
+
+                        //StudentController:
+                        //UserController
+                        .requestMatchers("/users/login", "/users/register", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/user/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
+                        .requestMatchers("/users/pfp/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
+                        .requestMatchers(HttpMethod.DELETE, "/users/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
+                        .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
+                        .requestMatchers("/users").hasRole("administrator")
+                        .anyRequest().authenticated()
 
                 )
                 .authenticationProvider(authProvider())
