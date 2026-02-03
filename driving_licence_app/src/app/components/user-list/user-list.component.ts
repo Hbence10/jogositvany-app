@@ -1,6 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from 'express';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { InstructorServiceService } from '../../services/instructor-service.service';
 import { SchoolServiceService } from '../../services/school-service.service';
@@ -26,6 +25,7 @@ export class UserListComponent implements OnInit{
   cardList: { id: number, name: string, imagePath: string, userId: number }[] = []
   deleteText: string = ""
   userType = ""
+  title: string = ""
 
   ngOnInit(): void {
     let sub: Subscription
@@ -38,26 +38,31 @@ export class UserListComponent implements OnInit{
           sub = this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "students").subscribe({
             next: response => this.cardList = response
           })
+          this.title = "Diákjaink:"
         } else if (this.userType == "instructors") {
           this.deleteText = "Oktató kirugása"
           sub = this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "instructors").subscribe({
             next: response => this.cardList = response
           })
+          this.title = "Oktatóink:"
         } else if (this.userType == "instructorStudents") {
           this.deleteText = "Diák kirugása"
           sub = this.instructorService.getStudents(this.userService.loggedUser()?.instructorId!).subscribe({
             next: response => this.cardList = response
           })
+          this.title = "Diákjaim"
         } else if (this.userType === "users") {
           this.deleteText = "Felhasználó törloése"
           sub = this.userService.getAllUser().subscribe({
             next: response => this.cardList = response
           })
+          this.title = "Felhasználók:"
         } else if (this.userType === "school") {
           this.deleteText = "Iskola törloése"
           sub = this.schoolService.getAllSchool().subscribe({
             next: response => console.log(response)
           })
+          this.title = "Iskolák:"
         }
       }
     })

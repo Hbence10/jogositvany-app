@@ -1,0 +1,23 @@
+#cardContainer {
+  height: 350px;
+  width: 250px;
+  background-color: #22354f;
+  border-radius: 15px;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+}
+
+.iconButton {
+  height: 30px;
+  width: 60px;
+}
+
+button {
+  background-color: #626C99;
+  border-radius: 5px;
+  border: none;
+}
