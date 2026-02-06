@@ -1,1 +1,83 @@
-<p>school-registration works!</p>
+<div class="container-fluid" style="min-height: 100vh !important; min-width: 100vw !important; background-color: rgba(0, 0, 0, 0.6);">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="container-fluid d-flex flex-column justify-content-between" id="secondContainer">
+        <div class="row">
+          <div class="col-lg-12 mt-4 d-flex justify-content-between align-items-center">
+            <div style="height: 50px; width: 50px;"></div>
+            <h1 class="text-center text-white mainFont">Iskola létrehozása</h1>
+            <button id="closeButton" (click)="close.emit()">
+              X
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <form class="container-fluid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <input type="text" class="w-100 mt-3" placeholder="Iskola neve">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <input type="text" class="w-100 mt-3" placeholder="E-mail cím">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <input type="text" class="w-100 mt-3" placeholder="Telefonszám">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4">
+                  <select class="w-100 mt-3">
+                    <option value="" selected disabled>Válaszd ki a vármegyét</option>
+                    @for (country of varmegyek; track $index) {
+                      <option [value]="country">{{country}}</option>
+                    }
+                  </select>
+                </div>
+
+                <div class="col-lg-8">
+                  <input type="text" class="w-100 mt-3" placeholder="Város" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <input type="text" class="w-100 mt-3" placeholder="Cím">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <textarea type="text" class="w-100 mt-3 pt-3" style="height: 125px;" placeholder="Bemutatkozó szöveg"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <select class="w-100 mt-3">
+                    <option value="" selected disabled>Válaszd ki a tulajt</option>
+                  </select>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <div class="row w-100">
+          <div class="col-lg-12 w-100 d-flex justify-content-center align-items-center">
+            <button id="saveButton" class="text-white mb-4">Létrehozás</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
