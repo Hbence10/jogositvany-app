@@ -15,9 +15,10 @@ export class HomePageUser {
     public instructor?: {id:number, firstName:string, lastName: string, pfpPath:string},
     public instructorId?: number,
     public schoolId?: number,
-    public vehicle?: Vehicle,
+    public vehicle?: {name: string, type: string, licensePlate: string},
     public students?: ProfileCard[],
     public instructors?: ProfileCard[],
-    public categoryId?: number
+    public categoryId?: number,
+    public category?: string
   ){}
 }

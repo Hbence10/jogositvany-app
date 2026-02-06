@@ -1,180 +1,131 @@
-<div class="container-fluid px-4 py-4 mainFont min-vh-100 d-flex flex-column align-items-center justify-content-center">
-  @if (loggedUser != null){
-    @if (loggedUser.role.name != "ROLE_administrator") {
-  <div class="row g-4 w-100">
-          <div class="col-lg-8 p-0">
-            <div class="container h-100 d-flex flex-column justify-content-center align-items-end w-100">
-              @if(loggedUser.role.name == "ROLE_student" || loggedUser.role.name == "ROLE_user"){
-                <div class="row">
-                  <div class="col-lg-7 p-3">
-                        <div class="container-fluid box h-100 w-100" id="school">
-                          @if (loggedUser.role.name == "ROLE_student"){
-                            <div class="row w-100">
-                              <div class="col-lg-12">
-                                <img src="" alt="" class="img-fluid" />
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-12 d-flex flex-column align-items-center justify-content-between default-info">
-                                <p class="text-center mb-4">{{ loggedUser.school?.name }}</p>
-                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Cím:</span><span>{{ loggedUser.school?.town }}{{ loggedUser.school?.address }}</span></p>
-                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>E-mail:</span><span>{{ loggedUser.school?.email }}</span></p>
-                                <p class="w-100 info-field d-flex align-items-center justify-content-between"><span>Telefonszám:</span><span>{{ loggedUser.school?.phone }}</span></p>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-12">
-                                <div class="container-fluid d-flex flex-column align-items-center">
-                                  <div class="info-field"><p>nyitvatartás</p></div>
-                                  <div class="container-fluid d-flex flex-column days text-start">
-                                    <div class="day">
-                                      <p>hétfő</p>
-                                    </div>
-                                    <div class="day isSelected">
-                                      <p>kedd</p>
-                                    </div>
-                                    <div class="day">
-                                      <p>szerda</p>
-                                    </div>
-                                    <div class="day">
-                                      <p>csütörtök</p>
-                                    </div>
-                                    <div class="day text-start">
-                                      <p>péntek</p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          } @else {
-                            <h4>Még nem csatlakoztál iskolához</h4>
-                          }
-                        </div>
-                </div>
-
-                <div class="col-lg-5 p-2">
-                  <div class="container-fluid w-100">
-                    <div class="row justify-content-center">
-                        <div class="col-12 p-2">
-                          <div class="container-fluid box d-flex flex-column align-items-center text-center p-3" id="instructor">
-                            @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null){
-
-                              <div class="row">
-                                <h1>
-                                  {{ loggedUser.instructor?.firstName }}{{ loggedUser.instructor?.lastName }}
-                                </h1>
-                              </div>
-
-                              <div class="row">
-                                <img class="inctructor-image" src="assets/icons/kijeletkezés.svg" alt="Profil fotó" />
-                              </div>
-
-                              <div class="row">
-                                <div class="col-6">
-                                  <a routerLink="/profil/user/{{loggedUser.instructor?.id}}">
-                                    <button>profil</button>
-                                  </a>
-                                </div>
-                                <div class="col-6">
-                                  <button>üzenet</button>
-                                </div>
-                              </div>
-
-                            } @else {
-                              <h4>Oktató nincs kiválasztva</h4>
-                            }
-                          </div>
-                        </div>
+<div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;" id="asd">
+  @if (loggedUser == null) {
+    <div class="row h-100">
+      <div class="col-lg-12 d-flex justify-content-center align-items-center">
+        <h1 class="text-center mainFont">Az adatok megjelenitéséhez jeletkezz be!</h1>
+      </div>
+    </div>
+  } @else if (loggedUser.role.name != "ROLE_administrator") {
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Felsosor -->
+          <div class="row">
+            <!-- Diak nezete, felsosor: -->
+            @if (loggedUser.role.name == "ROLE_student") {
+              <div class="col-lg-6 my-lg-0 my-4">
+                <div id="studentSchoolContainer" class="container-fluid h-100">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <img id="schoolBannerImg" class="img-fluid" src="" alt="">
                     </div>
-
-                    <div class="row">
-                        <div class="col-12 p-2">
-                          <div class="container-fluid box w-100 d-flex flex-column justify-content-center align-items-center" id="license-category">
-                            @if (loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) {
-                              <div class="row justify-content-center">
-                                <p>Jogosítvány Kategória:</p>
-                              </div>
-                              <div class="row justify-content-center">
-                                <h1>B</h1>
-                              </div>
-                            } @else {
-                              <div class="row justify-content-center">
-                                <h4>Kategória nincs kiválasztva</h4>
-                              </div>
-                            }
-                          </div>
-                        </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h3 class="text-center mainFont">{{loggedUser.school?.name}}</h3>
                     </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>Cím:</span>
+                        <span>{{loggedUser.school?.country}} {{loggedUser.school?.town}} {{loggedUser.school?.address}}</span>
+                      </div>
 
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>E-mail:</span>
+                        <span>{{loggedUser.school?.email}}</span>
+                      </div>
+
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>Telefonszám:</span>
+                        <span>{{loggedUser.school?.phone}}</span>
+                      </div>
+
+                      <div class="mb-0 px-3 py-2 text-white infoDiv" style="background-color: #626C99;">Nyitvatartás:</div>
+                      <div class="w-100 h-100 px-4">
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                          <span>Hétfő:</span>
+                          <span>{{loggedUser.school?.openingDetails![0].openingTime}} - {{loggedUser.school?.openingDetails![0].closeTime}}</span>
+                        </div>
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                          <span>Kedd:</span>
+                          <span>{{loggedUser.school?.openingDetails![1].openingTime}} - {{loggedUser.school?.openingDetails![1].closeTime}}</span>
+                        </div>
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                          <span>Szerda:</span>
+                          <span>{{loggedUser.school?.openingDetails![2].openingTime}} - {{loggedUser.school?.openingDetails![2].closeTime}}</span>
+                        </div>
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                          <span>Csütörtök:</span>
+                          <span>{{loggedUser.school?.openingDetails![3].openingTime}} - {{loggedUser.school?.openingDetails![3].closeTime}}</span>
+                        </div>
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                          <span>Péntek:</span>
+                          <span>{{loggedUser.school?.openingDetails![4].openingTime}} - {{loggedUser.school?.openingDetails![4].closeTime}}</span>
+                        </div>
+
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div class="row">
-                  <div class="col-12 p-2">
-                    <div class="container-fluid d-flex flex-column">
-                      <div class="row">
-                        <div class="col-lg-12 p-2">
-                          <div class="container-fluid d-flex flex-column justify-content-center box" id="progressbar-driven">
-                            <div class="row">
-                              <div class="col-12">
-                                <input id="bar" type="range" min="0" max="30" value="9" disabled/>
-                              </div>
-                            </div>
-                            @if (loggedUser.role.name == "ROLE_student") {
-                              <div class="row">
-                                  <div class="col-6">
-                                    <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
-                                  </div>
-                                  <div class="col-6">
-                                    <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-12">
-                                  <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
-                                </div>
-                              </div>
-                            } @else {
-                              <h1>Vezetési előzmény nem található</h1>
-                            }
+              <div class="col-lg-6 my-lg-0 my-4">
+                <div class="container-fluid">
+                  <div class="row mt">
+                    <div class="col-lg-12">
+                      <div id="studentInstructorDiv" class="container-fluid my-lg-0 my-4">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <h3 class="text-center mainFont mt-3">{{loggedUser.instructor?.firstName}} {{loggedUser.instructor?.lastName}}</h3>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-12 p-2">
-                          <div class="container-fluid box d-flex flex-column align-items-start " id="progressbar-payed">
-                            <div class="row">
-                              <div class="col-12"><input id="bar" type="range" min="0" max="30" value="9" disabled/></div>
+                        <div class="row">
+                          <div class="col-lg-12 d-flex flex-column align-items-center justify-content-center">
+                            <img [src]="loggedUser.instructor?.pfpPath" alt="" class="img-fluid" id="instructorPfp">
+                            <div class="mt-3">
+                              <button class="instructorButton mx-2">
+                                <span class="material-symbols-outlined">mail</span>
+                              </button>
+                              <button class="instructorButton mx-2">
+                                <span class="material-symbols-outlined">account_circle</span>
+                              </button>
                             </div>
-                            @if (loggedUser.role.name == "ROLE_student") {
-                              <div class="row">
-                                <div class="col-12">
-                                  <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
-                                </div>
-                              </div>
-                            } @else {
-                              <div class="row">
-                                <div class="col-12">
-                                  <h1>Fizetési előzmény nem található</h1>
-                                </div>
-                              </div>
-                            }
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <div class="row h-100">
+                    <div class="col-lg-12 h-100 mt-lg-4 mb-lg-0 my-4">
+                      <div id="studentCategoryDiv" class="container-fluid h-100">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <h3 class="text-center mainFont mt-4">Jogosítvány kategória</h3>
+                            <p id="category" class="text-center">{{loggedUser.category}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              } @else{
-                <div class="row d-flex justify-content-center align-items-center">
-                  <div class="col-lg-12" style="height: 425px; overflow-y: auto; background-color: #22354F; border-radius: 20px;">
-                    <h1 class="text-center mt-4">Diákok</h1>
+            <!-- Oktato, suliadmin felsosor -->
+            } @else {
+              <div class="col-lg-12">
+                <div class="container-fluid h-100" style="background-color: #22354F; height: 425px !important; overflow: auto;">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h1 class="text-center mainFont">Diákok</h1>
+                    </div>
+                  </div>
+                  <div class="row">
                     <div class="container-fluid">
                       @for (studentRow of setProfilCardRows(loggedUser.students!); track $index) {
-                        <div class="row my-4">
+                        <div class="row">
                         @for (student of studentRow; track $index) {
-                          <div class="col-lg-4">
+                          <div class="col-lg-4 my-2">
                             <app-profil-card [profilCardData]="student" [role]="'student'"/>
                           </div>
                         }
@@ -183,131 +134,229 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            }
+          </div>
 
-                @if (loggedUser.role.name == "ROLE_instructor"){
-                  <div class="row" style="height: 50vh;">
-                    <div class="col-lg-12">
-                      <h1 class="text-center">Iskola</h1>
-                      <div>
-                        <!-- Oktato iskola nezete -->
+          <!-- alsosor -->
+          <div class="row mt-3">
+          <!-- diak alsosor -->
+          @if (loggedUser.role.name == "ROLE_student") {
+            <div class="col-lg-12">
+              <div class="container-fluid my-lg-0 my-4">
+                <!-- Levezetett orak -->
+                <div class="row mt-4">
+                  <div class="col-lg-12 d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column justify-content-center align-items-start w-100 p-4" id="progressbar-driven" style="background-color: #22354F; border-radius: 12px;">
+                      <input classóó="bar" type="range" min="0" max="30" value="9" disabled/>
+                      @if (loggedUser.role.name == "ROLE_student") {
+                      <div class="d-flex">
+                        <p class="lesson-info-item lesson-info-driven me-4">Vezetett órák: <span>9</span></p>
+                        <p class="lesson-info-item lesson-info-extra">Plusz órák: <span>0</span></p>
                       </div>
-                    </div>
-                  </div>
-                } @else {
-                  <div class="row d-flex justify-content-center align-items-center" style="height: 50vh;">
-                    <div class="col-lg-12" style="height: 425px; overflow-y: auto; background-color: #22354F; border-radius: 20px;">
-                      <h1 class="text-center mt-4">Oktatók</h1>
-                      <div class="container-fluid">
-                      @for (instructorRow of setProfilCardRows(loggedUser.instructors!); track $index) {
-                        <div class="row my-3">
-                          @for (instructor of instructorRow; track $index) {
-                            <div class="col-lg-4">
-                              <app-profil-card [profilCardData]="instructor" [role]="'instructor'"/>
-                            </div>
-                          }
-                        </div>
+                      <div>
+                        <p class="lesson-info-item lesson-info-required">Kötelező órák: <span>21</span></p>
+                      </div>} @else {
+                        <h1>Vezetési előzmény nem található</h1>
                       }
                     </div>
+                  </div>
+                </div>
+
+                <!-- Befizetett órák -->
+                <div class="row mt-4">
+                  <div class="col-lg-12 d-flex justify-content-center align-items-center">
+                    <div class="d-flex flex-column align-items-start w-100 p-4" id="progressbar-payed" style="background-color: #22354F; border-radius: 12px;">
+                      <input class="bar" type="range" min="0" max="30" value="9" disabled/>
+                      @if (loggedUser.role.name == "ROLE_student") {
+                      <div class="d-flex">
+                        <p class="lesson-info-item lesson-info-driven me-4">Befizetett órák: <span>9</span></p>
+                      </div>} @else {
+                        <h1>Fizetési előzmény nem található</h1>
+                      }
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="col-lg-12">
+              <div class="container-fluid" style="background-color: #22354F; height: 425px; overflow: auto;">
+                <div class="row">
+                  <div class="col-lg-12">
+
+                    <!-- Oktato alsosor -->
+                    @if (loggedUser.role.name == "ROLE_instructor") {
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <h1 class="text-center mainFont mt-4">Iskola</h1>
+                          </div>
+                        </div>
+
+                        <div class="row py-4">
+                          <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                            <div class="w-100">
+                              <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                                <span>Cím:</span>
+                                <span>{{loggedUser.school?.country}} {{loggedUser.school?.town}} {{loggedUser.school?.address}}</span>
+                              </div>
+
+                              <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                                <span>E-mail:</span>
+                                <span>{{loggedUser.school?.email}}</span>
+                              </div>
+
+                              <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                                <span>Telefonszám:</span>
+                                <span>{{loggedUser.school?.phone}}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-0 px-3 py-2 text-white" style="background-color: #626C99; border-radius: 8px;">Nyitvatartás:</div>
+                            <div class="w-100 h-100 px-4">
+                              <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                                <span>Hétfő:</span>
+                                <span>{{loggedUser.school?.openingDetails![0].openingTime}} - {{loggedUser.school?.openingDetails![0].closeTime}}</span>
+                              </div>
+                              <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                                <span>Kedd:</span>
+                                <span>{{loggedUser.school?.openingDetails![1].openingTime}} - {{loggedUser.school?.openingDetails![1].closeTime}}</span>
+                              </div>
+                              <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                                <span>Szerda:</span>
+                                <span>{{loggedUser.school?.openingDetails![2].openingTime}} - {{loggedUser.school?.openingDetails![2].closeTime}}</span>
+                              </div>
+                              <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                                <span>Csütörtök:</span>
+                                <span>{{loggedUser.school?.openingDetails![3].openingTime}} - {{loggedUser.school?.openingDetails![3].closeTime}}</span>
+                              </div>
+                              <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                                <span>Péntek:</span>
+                                <span>{{loggedUser.school?.openingDetails![4].openingTime}} - {{loggedUser.school?.openingDetails![4].closeTime}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    <!-- suliAdmin/suliTulaj alsosor -->
+                    @else {
+                      <div class="container-fluid" >
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <h1 class="text-center mainFont">Oktatók</h1>
+                             @for (instructorRow of setProfilCardRows(loggedUser.instructors!); track $index) {
+                              <div class="row my-3">
+                                @for (instructor of instructorRow; track $index) {
+                                  <div class="col-lg-4">
+                                    <app-profil-card [profilCardData]="instructor" [role]="'instructor'"/>
+                                  </div>
+                                }
+                              </div>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="container-fluid h-100 d-flex flex-column justify-content-between">
+
+            <!-- Naptar helye: -->
+            <div class="row my-lg-0 my-4">
+              <div class="col-lg-12">
+                <mat-card class="demo-inline-calendar-card">
+                  <mat-calendar></mat-calendar>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row my-lg-0 my-4">
+              <div class="col-lg-12">
+                <div class="p-3 h-100 w-100" id="littleCard">
+                    @if (loggedUser.role.name == "ROLE_student" || loggedUser.role.name == "ROLE_instructor") {
+                      <div class="w-100 mb-2 d-flex justify-content-center align-items-center">
+                          <span class="material-symbols-outlined">directions_car</span>
+                      </div>
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>Név:</span>
+                        <span>{{loggedUser.vehicle?.name}}</span>
+                      </div>
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>Típus:</span>
+                        <span>{{loggedUser.vehicle?.type}}</span>
+                      </div>
+                      <div class="w-100 my-3 px-3 py-2 text-white infoDiv d-flex align-items-center justify-content-between">
+                        <span>Rendszám:</span>
+                        <span>{{loggedUser.vehicle?.licensePlate}}</span>
+                      </div>
+                    } @else {
+
+                    }
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else { -->
+    <div class="row w-100">
+      <div class="col-lg-6 my-lg-0 my-4">
+        <div class="cardContainer container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="text-white text-center my-4">Felhasználók:</h1>
+              <div class="px-4 userCardContainer">
+                @for (user of userList; track $index) {
+                  <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
+                    <h2>{{user.name}}</h2>
+                    <button (click)="navigateToProfilPage('user', user.id)">
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
                   </div>
                 }
-              }
-            </div>
-          </div>
-
-          <div class="col-lg-4 p-2">
-              <div class="container-fluid d-flex flex-column align-items-start h-100 w-100">
-
-                <div class="row w-100 h-100">
-                  <div class="col-12 p-2">
-                      <div class="box" id="calendar">
-                        <mat-card class="demo-inline-calendar-card">
-                          <mat-calendar></mat-calendar>
-                        </mat-card>
-                      </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-12 p-2">
-                    <div class="container-fluid box flex-column d-flex" id="car">
-                    @if ((loggedUser.role.name == "ROLE_student" && loggedUser.instructor != null) || loggedUser.role.name == "ROLE_instructor") {
-                      <div class="row">
-                        <div class="col-12">
-                          <img src="assets/icons/kijeletkezés.svg" alt=""/>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12">
-                          <p class="infoDiv w-100 info-field d-flex align-items-center justify-content-between">Név:</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12">
-                          <p class="w-100 info-field d-flex align-items-center justify-content-between">Típus:</p>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-12">
-                          <p class="w-100 info-field d-flex align-items-center justify-content-between">Rendszám:</p>
-                        </div>
-                      </div>
-                    } @else if (loggedUser.role.name == "ROLE_user" || loggedUser.instructorId == undefined) {
-                      <h2>Oktató nincs kiválasztva</h2>
-                    }
-                    </div>
-                  </div>
-                </div>
-            </div>
-          </div>
-
-  </div>
-  } @else {
-          <div class="row h-100">
-            <div class="col-lg-6 h-100 d-flex justify-content-center align-items-center">
-              <div class="cardContainer container-fluid">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h1 class="text-white text-center">Felhasználók:</h1>
-                    <div class="px-4 userCardContainer">
-                      @for (user of userList; track $index) {
-                        <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
-                          <h2>{{user.name}}</h2>
-                          <button (click)="navigateToProfilPage('user', user.id)">
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                          </button>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-6 h-100 d-flex justify-content-center align-items-center">
-              <div class="cardContainer container-fluid">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h1 class="text-white text-center">Iskolák:</h1>
-                    <div class="px-4 userCardContainer">
-                      @for (school of schoolList; track $index) {
-                        <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
-                          <h2>{{school.name}}</h2>
-                          <button (click)="navigateToProfilPage('school', school.id)">
-                            <span class="material-symbols-outlined">arrow_forward</span>
-                          </button>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
-        }
-  } @else {
-    <div class="container-fluid align-items-center justify-content-center h-100 d-flex">
-      <h1 class="text-center">Az adatok megtekintéséhez Jeletkezzen be!</h1>
+        </div>
+      </div>
+      <div class="col-lg-6 my-lg-0 my-4">
+        <div class="cardContainer container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1 class="text-white text-center my-4">Iskolák:</h1>
+              <div class="px-4 userCardContainer">
+                <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
+                    <h2>Iskola hozzáadása</h2>
+                    <button (click)="showSchoolForm = true">+</button>
+                  </div>
+
+                @for (school of schoolList; track $index) {
+                  <div class="bg-white px-4 my-3 d-flex justify-content-between align-items-center schoolCard">
+                    <h2>{{school.name}}</h2>
+                    <button (click)="navigateToProfilPage('school', school.id)">
+                      <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   }
 </div>
+
+@if (showSchoolForm) {
+  <app-school-registration (close)="showSchoolForm = false"/>
+}

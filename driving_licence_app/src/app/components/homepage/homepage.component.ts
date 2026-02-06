@@ -1,18 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UsersService } from '../../services/users.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { Router } from "@angular/router";
 import { HomePageUser } from '../../models/notEntity/homepageUser.model';
-import { StudentService } from '../../services/student.service';
-import { ProfilCardComponent } from '../profil-card/profil-card.component';
-import { Router,RouterLink } from "@angular/router";
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { SchoolServiceService } from '../../services/school-service.service';
+import { UsersService } from '../../services/users.service';
+import { ProfilCardComponent } from '../profil-card/profil-card.component';
+import { SchoolRegistrationComponent } from '../school-registration/school-registration.component';
 
 
 @Component({
   selector: 'app-homepage',
-  imports: [MatDatepickerModule,  RouterLink, ProfilCardComponent, MatCardModule],
+  imports: [MatDatepickerModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
 
@@ -24,6 +24,8 @@ export class HomepageComponent implements OnInit {
   loggedUser!: HomePageUser;
   schoolList: {id: number, name: string}[] = []
   userList: {id:number, name: string, imagePath: string, userId: number}[] = []
+  studentList: any[] = []
+  showSchoolForm: boolean = false
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser()!;

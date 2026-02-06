@@ -1,155 +1,63 @@
-#mainContainer {
-  max-width: 1500px;
-  margin: 0 auto;
-}
-
-#leftSide{
-  max-width: 900px;
-  max-height: 900px;
-}
-
-#middleDiv {
-  max-width: 350px;
-  max-height: 600px;
-}
-
-#rightSide {
-  max-width: 435px;
-  max-height: 900px;
-}
-
-.box{
+#littleCard {
   background-color: #22354F;
-  border-radius: 15px;
-  padding: 15px;
-  height: 100%;
+  border-radius: 12px;
+
+  .material-symbols-outlined {
+    font-size: 55px;
+    color: #E6EBF7;
+  }
 }
 
-#school {
-  max-width: 500px;
-  max-height: 600px;
-  height: 100%;
+#studentSchoolContainer {
+  height: 600px !important;
 }
 
-
-#instructor {
-  max-width: 350px;
-  max-height: 405px;
+#studentInstructorDiv {
+  height: 400px;
 }
 
-#instructor h1 {
-  font-size: 30px;
+#studentCategoryDiv {
+  height: 160px !important;
 }
-#instructor button {
-  background-color: #626C99;
-  border: none;
-  margin: 15px;
+
+#studentSchoolContainer, #studentInstructorDiv, #studentCategoryDiv {
+  background-color: #22354F;
+  border-radius: 12px;
+}
+
+#schoolBannerImg {
+  height: 100px !important;
+}
+
+.infoDiv, .openingDiv {
+  background-color: #626C99 !important;
+  border-radius: 8px !important;
+}
+
+.openingDiv {
+  border-radius: 0px !important;
+}
+
+#instructorPfp {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+}
+
+.instructorButton {
   width: 80px;
   height: 40px;
-  border-radius: 20px;
-}
-.inctructor-image {
+  border: none;
   background-color: #626C99;
-  height: 300px;
-  width: 300px;
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 15px;
+  border-radius: 8px;
 }
 
-#license-category {
-  max-width: 350px;
-  max-height: 160px;
-}
-#license-category h1 {
-  font-size: 5rem;
-  color: #1A99FE;
-  margin: 0px;
-}
-#license-category p {
-  font-size: 24px;
-  margin: 0px;
-}
-
-#calendar {
-  max-width: 435px;
-  max-height: 600px;
-}
-
-
-
-#car {
-  width: 435px;
-  height: 270px;
-}
-#car .infoDiv {
-  width: 405px;
-  height: 40px;
-  background-color: #626C99;
-  margin-bottom: 15px;
-  padding: 5px;
-  border-radius: 5px;
-}
-#car img{
-  width: 75px;
-  height: 75px;
-}
-
-
-#progressbar {
-  max-width: 900px;
-  max-height: 270px;
-}
-
-#progressbar-driven {
-  max-height: 140px;
-}
 #progress-driven div {
   font-size: 30px;
 }
 
-
-#progressbar-payed {
-  max-height: 100px;
-}
-
-.info-field{
-  width: 450px;
-  height: 40px;
-  background-color: #636da1;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  padding: 0px  15px;
-}
-
-.info-field P {
-  margin: 0px;
-  font-size: 24px;
-}
-
-.isSelected {
-  background-color: #434A6B;
-}
-.day {
-    padding: 5px;
-}
-.day p {
-  margin: 0px;
-}
-
-.days{
-  width: 425px;
-  background-color: #636da1;
-  padding: 0px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-
-
-#bar {
-  width: 850px;
-  height: 20px;
+.bar {
+  height: 20px !important;
   margin: 0px;
 }
 
@@ -161,15 +69,11 @@
   color: white;
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-}
 
 input[type="range"] {
   appearance: none;
   width: 100%;
-  max-height: 20px;
+  height: 20px;
   border-radius: 20px;
   background: linear-gradient(to right, #349eff 30.5%, #b8bdd2 30%);
   outline: none;
@@ -179,31 +83,21 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-
-  max-width: 20px;
-  width: 100%;
-
-  max-height: 20px;
-  height: 100%;
-
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: #349eff;
 }
 
 input[type="range"]::-moz-range-progress {
   background-color: #349eff;
-
-  max-height: 20px;
-  height: 100%;
-
+  height: 20px;
   border-radius: 9999px;
 }
+
 input[type="range"]::-moz-range-track {
   background-color: #b8bdd2;
-
-  max-height: 20px;
-  height: 100%;
-
+  height: 20px;
   border-radius: 9999px;
 }
 
@@ -238,4 +132,57 @@ input[type="range"]::-moz-range-track {
 
 .lesson-info-required::before {
   background-color: #b3b8d1;
+}
+
+.adminCardContainer {
+  height: 720px;
+  width: 600px;
+  background-color: #22354F;
+  border-radius: 12px;
+}
+
+@media screen and (max-width: 1440px) {
+  .adminCardContainer {
+    width: 100%;
+  }
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #22354f;
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #434a6b;
+}
+
+.cardContainer {
+  width: 700px;
+  height: 800px;
+  background-color: #22354F;
+  overflow-y: scroll;
+}
+
+.schoolCard {
+  height: 75px;
+  color: #22354F;
+  border-radius: 8px;
+}
+
+.schoolCard button {
+  border: none;
+  background-color: transparent;
+}
+
+app-school-registration {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 9999;
 }
