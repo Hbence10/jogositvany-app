@@ -104,7 +104,7 @@ public class UserController {
     })
     @PostMapping("/checkVerificationCode")
     public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body)     {
-        return userService.checkVerificationCode(body.get("vCode").asText(null), body.get("email").asText(null));
+            return userService.checkVerificationCode(body.get("vCode").asText(null), body.get("email").asText(null));
     }
 
     @Operation(summary = "Jelszó módosítás", description = "Jelszó módosítás")

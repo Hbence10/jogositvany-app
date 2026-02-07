@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,7 +86,6 @@ public class UserService {
                 return ResponseEntity.status(415).body("invalidParameter");
             }
 
-            System.out.println(newUser.getUserEducation().getName());
             Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getIsDeleted()) {
                 return ResponseEntity.status(404).body("educationNotFound");
@@ -103,7 +103,10 @@ public class UserService {
                 return ResponseEntity.status(415).body("invalidBirthDate");
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
-                emailSender.sendEmailAboutRegistration(newUser.getEmail());
+                try {
+                    emailSender.sendEmailAboutRegistration(newUser.getEmail());
+                } catch (MailSendException mailException) {
+                }
 
                 newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
                 newUser = userRepository.save(newUser);
@@ -141,19 +144,19 @@ public class UserService {
             Users searchedUser = userRepository.findByEmail(email).orElse(null);
 
             if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("InvalidEmail");
+                return ResponseEntity.status(415).body("invalidEmail");
             } else if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("emailNotFound");
             } else {
                 String vCode = generateVerificationCode();
                 searchedUser.setVCode(passwordEncoder.encode(vCode));
                 userRepository.save(searchedUser);
+                System.out.println(vCode);
                 try {
                     emailSender.sendVerificationCodeEmail(email, vCode);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return ResponseEntity.internalServerError().body("emailSenderError");
+                } catch (MailSendException mailException) {
                 }
+
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
@@ -174,7 +177,7 @@ public class UserService {
             }
 
             if (userVCode.length() != 10) {
-                return ResponseEntity.status(415).body("InvalidVerificationCode");
+                return ResponseEntity.status(415).body("invalidVerificationCode");
             } else {
                 JsonNode returnObject = objectMapper.createObjectNode();
                 ((ObjectNode) returnObject).put("success", passwordEncoder.matches(userVCode, searchedUser.getVCode()));

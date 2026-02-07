@@ -23,9 +23,17 @@ public class EmailSender {
     private String fromEmail;
 
     public void sendVerificationCodeEmail(String toEmail, String verificationCode){
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom(fromEmail);
+        msg.setText("adsads");
+        mailSender.send(msg);
     }
 
     public void sendEmailAboutRegistration(String toEmail){
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom(fromEmail);
+        msg.setText("adsads");
+        mailSender.send(msg);
     }
 
     public void sendEmailAboutDrivingLessonCanceled(String toEmail) {

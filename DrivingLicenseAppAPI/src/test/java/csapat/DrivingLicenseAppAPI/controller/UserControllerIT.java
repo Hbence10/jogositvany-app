@@ -23,10 +23,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//38db
+//40db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
@@ -55,7 +56,7 @@ public class UserControllerIT {
 
     @BeforeEach
     public void setup() {
-        Users newUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola")));
+        Users newUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         testUserId = newUser.getId();
     }
 
@@ -257,12 +258,28 @@ public class UserControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get verification code for password reset with existent and valid e-mail.")
     public void getVerificationCodeWithExistentEmail() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/getVerificationCode?email={wantedEmail}", "test@gmail.com"))
+                .andExpect(status().isOk());
     }
 
     @Test
+    @DisplayName("Get verification code for password reset with invalid e-mail.")
+    public void getVerificationCodeWithInvalidEmail() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/getVerificationCode?email={wantedEmail}", "testmail.com"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+    }
+
+    @Test
+    @DisplayName("Get verification code for password reset with non-existent e-mail.")
     public void getVerificationCodeWithNonExistentEmail() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/getVerificationCode?email={wantedEmail}", "passwordReset@gmail.com"))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$", Is.is("emailNotFound")));
     }
 
     @Test
@@ -275,6 +292,13 @@ public class UserControllerIT {
 
     @Test
     public void checkInvalidVerificationCode() throws Exception {
+    }
+
+    public JsonNode createrequestBodyForVCodeCheck(String email, String vCode) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("email", email);
+        ((ObjectNode) returnObject).put("vCode", vCode);
+        return returnObject;
     }
 
     @Test
