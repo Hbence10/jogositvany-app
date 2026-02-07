@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,50 +21,66 @@ public class RequestControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void sendSchoolJoinRequestWithValidDatas() throws Exception {}
+    public void sendSchoolJoinRequestWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void sendSchoolJoinRequestWithNonExistentSchool() throws Exception {}
+    public void sendSchoolJoinRequestWithNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void sendSchoolJoinRequestWithNonExistentUser() throws Exception {}
+    public void sendSchoolJoinRequestWithNonExistentUser() throws Exception {
+    }
 
     @Test
-    public void sendSchoolJoinRequestWithNonExistentCategory() throws Exception {}
+    public void sendSchoolJoinRequestWithNonExistentCategory() throws Exception {
+    }
 
     @Test
-    public void sendSchoolJoinRequestWithNonExistentCategoryInSchool() throws Exception {}
+    public void sendSchoolJoinRequestWithNonExistentCategoryInSchool() throws Exception {
+    }
 
     @Test
-    public void sendInstructorJoinRequestWithValidDatas() throws Exception {}
+    public void sendInstructorJoinRequestWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void sendInstructorJoinRequestWithNonExistentInstructor() throws Exception {}
+    public void sendInstructorJoinRequestWithNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void sendInstructorJoinRequestWithNonExistentStudent() throws Exception {}
+    public void sendInstructorJoinRequestWithNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void sendInstructorJoinRequestWithInvalidInstructor() throws Exception {}
+    public void sendInstructorJoinRequestWithInvalidInstructor() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithValidDatas() throws Exception {}
+    public void sendDrivingLessonRequestWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithNonExistentInstructor() throws Exception {}
+    public void sendDrivingLessonRequestWithNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithNonExistentStudent() throws Exception {}
+    public void sendDrivingLessonRequestWithNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithInvalidDate() throws Exception {}
+    public void sendDrivingLessonRequestWithInvalidDate() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithInvalidStartEndTime() throws Exception {}
+    public void sendDrivingLessonRequestWithInvalidStartEndTime() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithInstructorFromOtherSchool() throws Exception {}
+    public void sendDrivingLessonRequestWithInstructorFromOtherSchool() throws Exception {
+    }
 
     @Test
-    public void sendDrivingLessonRequestWithOtherStudentsInstructor() throws Exception {}
+    public void sendDrivingLessonRequestWithOtherStudentsInstructor() throws Exception {
+    }
 }

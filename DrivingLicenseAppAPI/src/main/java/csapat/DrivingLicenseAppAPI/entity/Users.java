@@ -170,4 +170,17 @@ public class Users {
         this.userEducation = userEducation;
         this.vCode = vCode;
     }
+
+    public Users(Integer id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, String vCode) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.password = password;
+        this.userEducation = userEducation;
+        this.vCode = vCode;
+    }
 }

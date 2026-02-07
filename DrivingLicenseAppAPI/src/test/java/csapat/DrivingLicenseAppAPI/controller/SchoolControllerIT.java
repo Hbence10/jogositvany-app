@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,115 +20,152 @@ public class SchoolControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void acceptExistentJoinRequest() throws Exception {}
+    public void acceptExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void refuseExistentJoinRequest() throws Exception {}
+    public void refuseExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void handleJoinRequestWithInvalidStatus() throws Exception {}
+    public void handleJoinRequestWithInvalidStatus() throws Exception {
+    }
 
     @Test
-    public void handleNonExistentJoinRequest() throws Exception {}
+    public void handleNonExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithValidDatas() throws Exception {}
+    public void updateExistentSchoolWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void updateNonExistentSchool () throws Exception {}
+    public void updateNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithInvalidPhone() throws Exception {}
+    public void updateExistentSchoolWithInvalidPhone() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithInvalidEmail() throws Exception {}
+    public void updateExistentSchoolWithInvalidEmail() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithDuplicatedName() throws Exception {}
+    public void updateExistentSchoolWithDuplicatedName() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithDuplicatedPhone() throws Exception {}
+    public void updateExistentSchoolWithDuplicatedPhone() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolWithDuplicatedEmail() throws Exception {}
+    public void updateExistentSchoolWithDuplicatedEmail() throws Exception {
+    }
 
     //coverImg
     @Test
-    public void updateExistentSchoolsCoverImgWithValidPhoto() throws Exception {}
+    public void updateExistentSchoolsCoverImgWithValidPhoto() throws Exception {
+    }
 
     @Test
-    public void updateNonExistentSchoolsCoverImg() throws Exception {}
+    public void updateNonExistentSchoolsCoverImg() throws Exception {
+    }
 
     @Test
-    public void updateExistentSchoolsCoverImgWithInvalidPhoto() throws Exception {}
+    public void updateExistentSchoolsCoverImgWithInvalidPhoto() throws Exception {
+    }
 
     @Test
-    public void updateOpeningDetailsOfExistentSchool() throws Exception {}
+    public void updateOpeningDetailsOfExistentSchool() throws Exception {
+    }
 
     @Test
-    public void updateOpeningDetailsOfNonExistentSchool() throws Exception {}
+    public void updateOpeningDetailsOfNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {}
+    public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {
+    }
 
     @Test
-    public void getAllJoinRequestOfExistentSchool() throws Exception {}
+    public void getAllJoinRequestOfExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getAllJoinRequestOfNonExistentSchool() throws Exception {}
+    public void getAllJoinRequestOfNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void deleteExistentSchool() throws Exception {}
+    public void deleteExistentSchool() throws Exception {
+    }
 
     @Test
-    public void deleteNonExistentSchool() throws Exception {}
+    public void deleteNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void searchSchoolsByExistentTown() throws Exception {}
+    public void searchSchoolsByExistentTown() throws Exception {
+    }
 
     @Test
-    public void searchSchoolByNonExistentTown() throws Exception {}
+    public void searchSchoolByNonExistentTown() throws Exception {
+    }
 
     @Test
-    public void getExistentSchoolById() throws Exception {}
+    public void getExistentSchoolById() throws Exception {
+    }
 
     @Test
-    public void getNonExistentSchoolById() throws Exception {}
+    public void getNonExistentSchoolById() throws Exception {
+    }
 
     @Test
-    public void createSchoolWithValidDatas() throws Exception {}
+    public void createSchoolWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void createSchoolWithInvalidObject() throws Exception {}
+    public void createSchoolWithInvalidObject() throws Exception {
+    }
 
     @Test
-    public void createSchoolWithInvalidEmail() throws Exception {}
+    public void createSchoolWithInvalidEmail() throws Exception {
+    }
 
     @Test
-    public void createSchoolWithInvalidPhone() throws Exception {}
+    public void createSchoolWithInvalidPhone() throws Exception {
+    }
 
     @Test
-    public void createSchoolWithNonExistentTown() throws Exception {}
+    public void createSchoolWithNonExistentTown() throws Exception {
+    }
 
     @Test
-    public void getAllStudentsOfExistentSchool() throws Exception {}
+    public void getAllStudentsOfExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getAllInstructorOfExistentSchool() throws Exception {}
+    public void getAllInstructorOfExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getAllMemberOfNonExistentSchool() throws Exception {}
+    public void getAllMemberOfNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getAllMemberOfSchoolByInvalidRole() throws Exception {}
+    public void getAllMemberOfSchoolByInvalidRole() throws Exception {
+    }
 
     @Test
-    public void kickoutExistentInstructor() throws Exception {}
+    public void kickoutExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void kickoutNonExistentInstructor() throws Exception {}
+    public void kickoutNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getAllSchool() throws Exception {}
+    public void getAllSchool() throws Exception {
+    }
 }
 

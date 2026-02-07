@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +20,26 @@ public class StudentControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void getLessonDetailsOfExistentStudent() throws Exception {}
+    public void getLessonDetailsOfExistentStudent() throws Exception {
+    }
 
     @Test
-    public void getLessonDetailsOfNonExistentStudent() throws Exception {}
+    public void getLessonDetailsOfNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void deleteExistentStudent() throws Exception {}
+    public void deleteExistentStudent() throws Exception {
+    }
 
     @Test
-    public void deleteNonExistentStudent() throws Exception {}
+    public void deleteNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void getExistentStudentById() throws Exception {}
+    public void getExistentStudentById() throws Exception {
+    }
 
     @Test
-    public void getNonExistentStudentById() throws Exception {}
+    public void getNonExistentStudentById() throws Exception {
+    }
 }

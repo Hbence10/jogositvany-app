@@ -103,8 +103,8 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/checkVerificationCode")
-    public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body)     {
-            return userService.checkVerificationCode(body.get("vCode").asText(null), body.get("email").asText(null));
+    public ResponseEntity<Object> checkVerificationCode(@RequestBody JsonNode body) {
+        return userService.checkVerificationCode(body.get("vCode").asText(null), body.get("email").asText(null));
     }
 
     @Operation(summary = "Jelszó módosítás", description = "Jelszó módosítás")
@@ -124,7 +124,7 @@ public class UserController {
     })
     @PatchMapping("/passwordReset")
     public ResponseEntity<Object> updatePassword(@RequestBody JsonNode body) {
-        return ResponseEntity.ok(userService.updatePassword(body.get("email").asText(), body.get("newPassword").asText()).getBody());
+        return userService.updatePassword(body.get("email").asText(), body.get("newPassword").asText());
     }
 
     //Frissitesek:
@@ -154,7 +154,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId ,@RequestBody JsonNode requestBody) {
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId, @RequestBody JsonNode requestBody) {
         return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDateText").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
     }
 
@@ -181,7 +181,7 @@ public class UserController {
     @Operation(summary = "Profilok törlése", description = "Id alapján töröl egy User-t.")
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres fiók törlés" , content = @Content),
+            @ApiResponse(responseCode = "200", description = "Sikeres fiók törlés", content = @Content),
             @ApiResponse(responseCode = "404", description = "Olyan fiókot szeretne törölni, amely nem létzik.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),

@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,41 +21,54 @@ public class ReviewControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void getReviewsAboutExistentSchool() throws Exception {}
+    public void getReviewsAboutExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getReviewsAboutExistentInstructor() throws Exception {}
+    public void getReviewsAboutExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getReviewsAboutNonExistentSchool() throws Exception {}
+    public void getReviewsAboutNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void getReviewsAboutNonExistentInstructor() throws Exception {}
+    public void getReviewsAboutNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getReviewsAboutInvalidObjectType() throws Exception {}
+    public void getReviewsAboutInvalidObjectType() throws Exception {
+    }
 
     @Test
-    public void deleteExistentReview() throws Exception {}
+    public void deleteExistentReview() throws Exception {
+    }
 
     @Test
-    public void deleteNonExistent() throws Exception {}
+    public void deleteNonExistent() throws Exception {
+    }
 
     @Test
-    public void createReviewByExistentStudentAboutExistentInstructor() throws Exception {}
+    public void createReviewByExistentStudentAboutExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void createReviewByExistentStudentAboutExistentSchool() throws Exception {}
+    public void createReviewByExistentStudentAboutExistentSchool() throws Exception {
+    }
 
     @Test
-    public void createReviewWithInvalidRating() throws Exception {}
+    public void createReviewWithInvalidRating() throws Exception {
+    }
 
     @Test
-    public void createReviewByNonExistentStudent() throws Exception {}
+    public void createReviewByNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void createReviewByExistentStudentAboutNonExistentInstructor() throws Exception {}
+    public void createReviewByExistentStudentAboutNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void createReviewByExistentStudentAboutNonExistentSchool() throws Exception {}
+    public void createReviewByExistentStudentAboutNonExistentSchool() throws Exception {
+    }
 }

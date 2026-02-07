@@ -328,19 +328,54 @@ public class UserControllerIT {
     }
 
     @Test
+    @DisplayName("Update existent user's password")
     public void updatePasswordWithValidDatas() throws Exception {
+        JsonNode requestBody = createRequestBodyForPasswordReset("test@gmail.com", "test5.Asd");
+        mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
     }
 
     @Test
+    @DisplayName("Update non-existent user's password")
     public void updatePasswordWithNonExistentEmail() throws Exception {
+        JsonNode requestBody = createRequestBodyForPasswordReset("passwordUpdateTest@gmail.com", "test5.Asd");
+        mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$", Is.is("userNotFound")));
     }
 
     @Test
+    @DisplayName("Update user's password with invalid password")
     public void updatePasswordWithInvalidPassword() throws Exception {
+        JsonNode requestBody = createRequestBodyForPasswordReset("test@gmail.com", "tes.Asd");
+        mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidPassword")));
+    }
+
+    @Test
+    @DisplayName("Update user's password with valid password")
+    public void updatePasswordWithInvalidEmail() throws Exception {
+        JsonNode requestBody = createRequestBodyForPasswordReset("tesgmail.com", "test5.Asd");
+        mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+    }
+
+    public JsonNode createRequestBodyForPasswordReset(String email, String newPassword) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("email", email);
+        ((ObjectNode) returnObject).put("newPassword", newPassword);
+        return returnObject;
     }
 
     @Test
     public void updateExistentUserWithValidDatas() throws Exception {
+//        Users testUser = new Users(testUserId, "testUser1Update", "registerStudent1Update", "testUpdate@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa"));
+//        mockMvc.perform()
     }
 
     @Test
@@ -423,6 +458,11 @@ public class UserControllerIT {
 
     @Test
     public void getAllUser() throws Exception {
+//        long sizeOfAllUser = userRepository.countNotDeletedUsers(false);
+//        mockMvc.perform(get(BASE_URL))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$", Matchers.hasSize(Integer.valueOf(sizeOfAllUser + ""))));
     }
 
 

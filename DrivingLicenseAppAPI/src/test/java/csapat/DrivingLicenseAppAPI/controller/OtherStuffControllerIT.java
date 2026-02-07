@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +23,26 @@ public class OtherStuffControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void getAllPaymentMethod() throws Exception {}
+    public void getAllPaymentMethod() throws Exception {
+    }
 
     @Test
-    public void getAllFuelType() throws Exception {}
+    public void getAllFuelType() throws Exception {
+    }
 
     @Test
-    public void getAllEducation() throws Exception {}
+    public void getAllEducation() throws Exception {
+    }
 
     @Test
-    public void getAllTown() throws Exception {}
+    public void getAllTown() throws Exception {
+    }
 
     @Test
-    public void getAllStatus() throws Exception {}
+    public void getAllStatus() throws Exception {
+    }
 
     @Test
-    public void getAllVehicleType() throws Exception {}
+    public void getAllVehicleType() throws Exception {
+    }
 }

@@ -195,21 +195,26 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
+            if (!ValidatorCollection.emailValidator(email)) {
+                return ResponseEntity.status(415).body("invalidEmail");
+            }
+
             Users searchedUser = userRepository.findByEmail(email).orElse(null);
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("userNotFound");
             }
 
-            if (!ValidatorCollection.emailValidator(email)) {
-                return ResponseEntity.status(415).body("InvalidEmail");
-            } else if (!ValidatorCollection.passwordValidator(newPassword)) {
-                return ResponseEntity.status(415).body("InvalidPassword");
+            if (!ValidatorCollection.passwordValidator(newPassword)) {
+                return ResponseEntity.status(415).body("invalidPassword");
             } else {
                 String hashedPassword = passwordEncoder.encode(newPassword);
                 searchedUser.setPassword(hashedPassword);
                 userRepository.save(searchedUser);
-                emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail());
+                try {
+                    emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail());
+                } catch (MailSendException e) {
+                }
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

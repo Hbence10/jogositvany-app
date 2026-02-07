@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,90 +21,119 @@ public class InstructorControllerIT {
     MockMvc mockMvc;
 
     @Test
-    public void acceptExistentJoinRequest() throws Exception {}
+    public void acceptExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void refuseExistentJoinRequest() throws Exception {}
+    public void refuseExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void handleNonExistentJoinRequest() throws Exception {}
+    public void handleNonExistentJoinRequest() throws Exception {
+    }
 
     @Test
-    public void handleExistentRequestWithInvalidStatus() throws Exception {}
+    public void handleExistentRequestWithInvalidStatus() throws Exception {
+    }
 
     @Test
-    public void getAllJoinRequestByExistentInstructor() throws Exception {}
+    public void getAllJoinRequestByExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getAllJoinRequestByNonExistentInstructor() throws Exception {}
+    public void getAllJoinRequestByNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getAllDrivingLessonRequestByExistentInstructor() throws Exception {}
+    public void getAllDrivingLessonRequestByExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getAllDrivingLessonRequestByNonExistentInstructor() throws Exception {}
+    public void getAllDrivingLessonRequestByNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void updateExistentInstructorWithValidData() throws Exception {}
+    public void updateExistentInstructorWithValidData() throws Exception {
+    }
 
     @Test
-    public void updateNonExistentInstructor() throws Exception {}
+    public void updateNonExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void updateNonExistentVehicleOfInstructor() throws Exception {}
+    public void updateNonExistentVehicleOfInstructor() throws Exception {
+    }
 
     @Test
-    public void updateExistentVehicleWithNonExistentFuelType() throws Exception {}
+    public void updateExistentVehicleWithNonExistentFuelType() throws Exception {
+    }
 
     @Test
-    public void updateExistentVehicleWithNonExistentVehicleType() throws Exception {}
+    public void updateExistentVehicleWithNonExistentVehicleType() throws Exception {
+    }
 
     @Test
-    public void updateExistentVehicleWithInvalidLicensePlate() throws Exception {}
+    public void updateExistentVehicleWithInvalidLicensePlate() throws Exception {
+    }
 
     @Test
-    public void acceptExistentDrivingLessonRequest() throws Exception {}
+    public void acceptExistentDrivingLessonRequest() throws Exception {
+    }
 
     @Test
-    public void refuseExistentDrivingLessonRequest() throws Exception {}
+    public void refuseExistentDrivingLessonRequest() throws Exception {
+    }
 
     @Test
-    public void handleNonExistentDrivingLessonRequest() throws Exception {}
+    public void handleNonExistentDrivingLessonRequest() throws Exception {
+    }
 
     @Test
-    public void handleDrivingLessonWithInvalidStatus() throws Exception {}
+    public void handleDrivingLessonWithInvalidStatus() throws Exception {
+    }
 
     @Test
-    public void searchInstructorWithValidDatas() throws Exception {}
+    public void searchInstructorWithValidDatas() throws Exception {
+    }
 
     @Test
-    public void searchInstructorWithNonExistentFuelType() throws Exception {}
+    public void searchInstructorWithNonExistentFuelType() throws Exception {
+    }
 
     @Test
-    public void searchInstructorWithNonExistentSchool() throws Exception {}
+    public void searchInstructorWithNonExistentSchool() throws Exception {
+    }
 
     @Test
-    public void searchInstructorWithNonExistentLicenseCategory() throws Exception {}
+    public void searchInstructorWithNonExistentLicenseCategory() throws Exception {
+    }
 
     @Test
-    public void getExistentInstructorById() throws Exception {}
+    public void getExistentInstructorById() throws Exception {
+    }
 
     @Test
-    public void getNonExistentInstructorById() throws Exception {}
+    public void getNonExistentInstructorById() throws Exception {
+    }
 
     @Test
-    public void getStudentsOfExistentInstructor() throws Exception {}
+    public void getStudentsOfExistentInstructor() throws Exception {
+    }
 
     @Test
-    public void getStudentsOfNonExistestInstructor() throws Exception {}
+    public void getStudentsOfNonExistestInstructor() throws Exception {
+    }
 
     @Test
-    public void kickOutExistentStudent() throws Exception {}
+    public void kickOutExistentStudent() throws Exception {
+    }
 
     @Test
-    public void kickOutNonExistentStudent() throws Exception {}
+    public void kickOutNonExistentStudent() throws Exception {
+    }
 
     @Test
-    public void kickOutInvalidStudent() throws Exception {}
+    public void kickOutInvalidStudent() throws Exception {
+    }
 
 }
