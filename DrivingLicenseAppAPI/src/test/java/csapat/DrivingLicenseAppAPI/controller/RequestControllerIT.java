@@ -21,11 +21,6 @@ public class RequestControllerIT {
     @Autowired
     MockMvc mockMvc;
 
-    @BeforeAll
-    public void setUpRequiredDatas() {
-        System.out.println("setUpRequiredDatas");
-    }
-
     @Test
     public void sendSchoolJoinRequestWithValidDatas() throws Exception {}
 

@@ -21,11 +21,6 @@ public class InstructorControllerIT {
     @Autowired
     MockMvc mockMvc;
 
-    @BeforeAll
-    public void setUpRequiredDatas() {
-        System.out.println("setUpRequiredDatas");
-    }
-
     @Test
     public void acceptExistentJoinRequest() throws Exception {}
 

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 //6db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -16,15 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Transactional
 public class OtherStuffControllerIT {
 
     @Autowired
     MockMvc mockMvc;
-
-    @BeforeAll
-    public void setUpRequiredDatas() {
-        System.out.println("setUpRequiredDatas");
-    }
 
     @Test
     public void getAllPaymentMethod() throws Exception {}

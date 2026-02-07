@@ -387,7 +387,7 @@ public class UserControllerIT {
     @DisplayName("Delete existent user.")
     public void deleteExistentUser() throws Exception {
         Long sizeBeforeDelete = userRepository.countNotDeletedUsers(false);
-        mockMvc.perform(delete(BASE_URL+"/" + testUserId))
+        mockMvc.perform(delete(BASE_URL + "/" + testUserId))
                 .andExpect(status().isOk());
         Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
         Assertions.assertEquals(sizeBeforeDelete - 1, sizeAfterDelete, "");
@@ -397,7 +397,7 @@ public class UserControllerIT {
     @DisplayName("Delete non-existent user.")
     public void deleteNonExistentUser() throws Exception {
         Long sizeBeforeDelete = userRepository.countNotDeletedUsers(false);
-        mockMvc.perform(delete(BASE_URL+"/" + 23132))
+        mockMvc.perform(delete(BASE_URL + "/" + 23132))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404));
         Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
@@ -407,7 +407,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Get existent user by id.")
     public void getExistentUserById() throws Exception {
-        mockMvc.perform(get(BASE_URL+"/" + 124124124))
+        mockMvc.perform(get(BASE_URL + "/" + 124124124))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404));
     }
@@ -415,7 +415,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Get non-existent user by id.")
     public void getNonExistentUserById() throws Exception {
-        mockMvc.perform(get(BASE_URL+"/" + testUserId))
+        mockMvc.perform(get(BASE_URL + "/" + testUserId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", Is.is(testUserId)));
