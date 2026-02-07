@@ -25,6 +25,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +33,8 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-//    private final JWTGeneratorFilter jwtGeneratorFilter;
-//    private final JWTValidatorFilter jwtValidatorFilter;
+    private final JWTGeneratorFilter jwtGeneratorFilter;
+    private final JWTValidatorFilter jwtValidatorFilter;
     private final UserSetter userSetter;
 
     @Profile("prod")
@@ -48,8 +49,8 @@ public class SecurityConfig {
                         config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));        //A tamogatott origineket adjuk meg
                         config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
                         config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
-                        config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
-                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
+                        config.setAllowedHeaders(List.of("*"));                            //A http headerek adjuk meg
+                        config.setExposedHeaders(Arrays.asList("Authorization", "refreshToken", "Bearer "));
                         config.setMaxAge(3600L);
                         return config;
                     }
@@ -103,12 +104,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
                         .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
                         .requestMatchers("/users").hasRole("administrator")
+                        .requestMatchers("/pfp/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
-//                .authenticationProvider(authProvider())
-//                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
-//                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
+                .authenticationProvider(authProvider())
+                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());

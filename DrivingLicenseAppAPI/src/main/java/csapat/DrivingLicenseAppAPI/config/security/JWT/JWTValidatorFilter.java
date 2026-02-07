@@ -18,6 +18,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -32,29 +34,34 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String header = request.getHeader(AUTHORIZATION);
-//
-//        if (header != null && header.startsWith(BEARER)) {
-//            String jwt = header.substring(BEARER.length());
-//            UserDetails principal;
-//            try {
-//                principal = jwtService.parseJwt(jwt);
-//            } catch (Exception e) {
-//                String newJwt = jwtService.regenerateJwtToken(request.getHeader("refreshToken"));
-//                principal = jwtService.parseJwt(newJwt);
-//                response.setHeader("Bearer ", newJwt);
-//            }
-//
-//            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-//            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//        }
+        String header = request.getHeader(AUTHORIZATION);
+        System.out.println("header: " + header);
+        if (header != null && header.startsWith(BEARER)) {
+            String jwt = header.substring(BEARER.length());
+            System.out.println(jwt);
+            UserDetails principal;
+            try {
+                principal = jwtService.parseJwt(jwt);
+            } catch (Exception e) {
+                String newJwt = jwtService.regenerateJwtToken(request.getHeader("refreshToken"));
+                principal = jwtService.parseJwt(newJwt);
+                response.setHeader("Bearer ", newJwt);
+            }
+
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
 
         filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().equals("/users/login");
+        ArrayList<String> allowedUrlPaths = new ArrayList<String>(Arrays.asList(
+
+        ));
+
+        return request.getServletPath().equals("/users/register");
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSendException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -339,6 +340,7 @@ public class UserService {
         }
     }
 
+    @PreAuthorize("hasRole('administrator')")
     public ResponseEntity<Object> getAllUser(Pageable pageable) {
         try {
             Page<Users> allUser = userRepository.findAll(pageable);
@@ -350,6 +352,7 @@ public class UserService {
 
             HttpHeaders header = new HttpHeaders();
             header.add("PageNumber", allUser.getTotalPages() + "");
+            System.out.println("getAllUser");
 
             return new ResponseEntity<>(returnList, header, HttpStatus.OK);
         } catch (Exception e) {
