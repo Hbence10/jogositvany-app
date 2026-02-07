@@ -32,8 +32,8 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JWTGeneratorFilter jwtGeneratorFilter;
-    private final JWTValidatorFilter jwtValidatorFilter;
+//    private final JWTGeneratorFilter jwtGeneratorFilter;
+//    private final JWTValidatorFilter jwtValidatorFilter;
     private final UserSetter userSetter;
 
     @Profile("prod")
@@ -106,9 +106,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
 
                 )
-                .authenticationProvider(authProvider())
-                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
-                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
+//                .authenticationProvider(authProvider())
+//                .addFilterAfter(jwtGeneratorFilter, BasicAuthenticationFilter.class)
+//                .addFilterBefore(jwtValidatorFilter, BasicAuthenticationFilter.class)
                 .formLogin(Customizer.withDefaults())
                 .csrf(crs -> crs.disable())
                 .httpBasic(Customizer.withDefaults());

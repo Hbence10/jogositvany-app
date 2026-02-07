@@ -26,16 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -91,7 +88,7 @@ public class UserService {
             System.out.println(newUser.getUserEducation().getName());
             Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
             if (searchedEducation == null || searchedEducation.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("educationNotFound");
             } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")) {
                 return ResponseEntity.status(415).body("invalidGender");
             } else if (!ValidatorCollection.emailValidator(newUser.getEmail().trim())) {
@@ -102,13 +99,11 @@ public class UserService {
                 return ResponseEntity.status(415).body("invalidPassword");
             } else if (newUser.getId() != null) {
                 return ResponseEntity.status(415).body("invalidObject");
+            } else if (newUser.getBirthDate().after(new Date())) {
+                return ResponseEntity.status(415).body("invalidBirthDate");
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
-                try {
-                    emailSender.sendEmailAboutRegistration(newUser.getEmail());
-                } catch (Exception e) {
-//                    return ResponseEntity.internalServerError().body("emailSenderError");
-                }
+                emailSender.sendEmailAboutRegistration(newUser.getEmail());
 
                 newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
                 newUser = userRepository.save(newUser);
@@ -123,9 +118,13 @@ public class UserService {
             }
             return ResponseEntity.ok().build();
         } catch (DataIntegrityViolationException e) {
-            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.status(409).body(errorMsg);
+            if (e.getMessage().contains("Duplicate entry '" + newUser.getEmail() + "' for key 'email'")) {
+                return ResponseEntity.status(409).body("duplicateEmail");
+            } else if (e.getMessage().contains("Duplicate entry '" + newUser.getPhone() + "' for key 'phone'")) {
+                return ResponseEntity.status(409).body("duplicatePhone");
+            } else {
+                return ResponseEntity.internalServerError().build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
@@ -380,6 +379,7 @@ public class UserService {
         if (loggedUser.getRole().getName().equals("ROLE_student")) {
             ((ObjectNode) returnObject).put("studentId", loggedUser.getStudent().getId());
             ((ObjectNode) returnObject).put("categoryId", loggedUser.getStudent().getSelectedCategory().getId());
+            ((ObjectNode) returnObject).put("category", loggedUser.getStudent().getSelectedCategory().getName());
 
             if (loggedUser.getStudent().getStudentInstructor() != null) {
                 JsonNode instructor = objectMapper.createObjectNode();

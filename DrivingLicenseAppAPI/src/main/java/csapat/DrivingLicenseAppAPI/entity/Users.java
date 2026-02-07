@@ -146,4 +146,16 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
     }
+
+    public Users(Integer id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.password = password;
+        this.userEducation = userEducation;
+    }
 }

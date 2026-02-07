@@ -30,13 +30,13 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
-        if (givenAuthentication != null) {
-            UserDetails principal = (UserDetails) givenAuthentication.getPrincipal();
-            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
-            response.setHeader("Bearer ", jwt);
-            response.setHeader("refreshToken", generateRefreshToken(principal.getUsername()));
-        }
+//        Authentication givenAuthentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (givenAuthentication != null) {
+//            UserDetails principal = (UserDetails) givenAuthentication.getPrincipal();
+//            String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
+//            response.setHeader("Bearer ", jwt);
+//            response.setHeader("refreshToken", generateRefreshToken(principal.getUsername()));
+//        }
 
         filterChain.doFilter(request, response);
     }

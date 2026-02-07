@@ -2,10 +2,7 @@ package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -49,6 +46,11 @@ public class Education {
     private List<Users> userEducationList;
 
     public Education(String name) {
+        this.name = name;
+    }
+
+    public Education(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 }
