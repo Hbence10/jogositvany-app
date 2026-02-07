@@ -23,8 +23,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //40db
@@ -283,18 +282,45 @@ public class UserControllerIT {
     }
 
     @Test
-    public void checkValidVerificationCode() throws Exception {
+    @DisplayName("Check good verification code with existent e-mail.")
+    public void checkGoodVerificationCode() throws Exception {
+        JsonNode requestBody = createRequestBodyForVCodeCheck("test@gmail.com", "aaaaaaaaaa");
+        mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(true)));
+
     }
 
     @Test
-    public void checkVerificationCodeWithNonExistentEmail() throws Exception {
+    @DisplayName("Check bad verification code with existent e-mail.")
+    public void checkBadVerificationCode() throws Exception {
+        JsonNode requestBody = createRequestBodyForVCodeCheck("test@gmail.com", "aaaaaaaaa1");
+        mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success", Is.is(false)));
     }
 
     @Test
+    @DisplayName("Check invalid verification code with existent e-mail.")
     public void checkInvalidVerificationCode() throws Exception {
+        JsonNode requestBody = createRequestBodyForVCodeCheck("test@gmail.com", "aaaaaaaaa");
+        mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidVerificationCode")));
     }
 
-    public JsonNode createrequestBodyForVCodeCheck(String email, String vCode) {
+    @Test
+    @DisplayName("Check good verification code with non-existent e-mail.")
+    public void checkVerificationCodeWithNonExistentEmail() throws Exception {
+        JsonNode requestBody = createRequestBodyForVCodeCheck("checkVCode@gmail.com", "aaaaaaaaaa");
+        mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$", Is.is("userNotFound")));
+    }
+
+    public JsonNode createRequestBodyForVCodeCheck(String email, String vCode) {
         JsonNode returnObject = objectMapper.createObjectNode();
         ((ObjectNode) returnObject).put("email", email);
         ((ObjectNode) returnObject).put("vCode", vCode);
@@ -358,19 +384,41 @@ public class UserControllerIT {
     }
 
     @Test
+    @DisplayName("Delete existent user.")
     public void deleteExistentUser() throws Exception {
+        Long sizeBeforeDelete = userRepository.countNotDeletedUsers(false);
+        mockMvc.perform(delete(BASE_URL+"/" + testUserId))
+                .andExpect(status().isOk());
+        Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
+        Assertions.assertEquals(sizeBeforeDelete - 1, sizeAfterDelete, "");
     }
 
     @Test
+    @DisplayName("Delete non-existent user.")
     public void deleteNonExistentUser() throws Exception {
+        Long sizeBeforeDelete = userRepository.countNotDeletedUsers(false);
+        mockMvc.perform(delete(BASE_URL+"/" + 23132))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404));
+        Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
+        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
+    @DisplayName("Get existent user by id.")
     public void getExistentUserById() throws Exception {
+        mockMvc.perform(get(BASE_URL+"/" + 124124124))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404));
     }
 
     @Test
+    @DisplayName("Get non-existent user by id.")
     public void getNonExistentUserById() throws Exception {
+        mockMvc.perform(get(BASE_URL+"/" + testUserId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(testUserId)));
     }
 
     @Test

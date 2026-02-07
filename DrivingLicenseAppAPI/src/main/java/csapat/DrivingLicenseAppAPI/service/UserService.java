@@ -173,7 +173,7 @@ public class UserService {
 
             Users searchedUser = userRepository.findByEmail(email).orElse(null);
             if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(404).body("userNotFound");
             }
 
             if (userVCode.length() != 10) {
