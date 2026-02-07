@@ -127,9 +127,9 @@ public class InstructorService {
                 return ResponseEntity.status(404).body("instructorNotFound");
             } else if (searchedVehicle == null || searchedVehicle.getIsDeleted()) {
                 return ResponseEntity.status(404).body("vehicleNotFound");
-            } else if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
+            } else if (searchedFuelType == null) {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
-            } else if (searchedVehicleType == null || searchedVehicleType.getIsDeleted()) {
+            } else if (searchedVehicleType == null) {
                 return ResponseEntity.status(404).body("vehicleTypeNotFound");
             } else if (licensePlate.length() != 7 && licensePlate.length() != 9) {
                 return ResponseEntity.status(415).build();
@@ -198,7 +198,7 @@ public class InstructorService {
             FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
 
-            if (searchedFuelType == null || searchedFuelType.getIsDeleted()) {
+            if (searchedFuelType == null) {
                 return ResponseEntity.status(404).body("fuelTypeNotFound");
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");

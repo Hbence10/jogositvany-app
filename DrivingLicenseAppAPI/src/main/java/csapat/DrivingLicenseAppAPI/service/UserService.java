@@ -87,7 +87,7 @@ public class UserService {
             }
 
             Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
-            if (searchedEducation == null || searchedEducation.getIsDeleted()) {
+            if (searchedEducation == null) {
                 return ResponseEntity.status(404).body("educationNotFound");
             } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")) {
                 return ResponseEntity.status(415).body("invalidGender");

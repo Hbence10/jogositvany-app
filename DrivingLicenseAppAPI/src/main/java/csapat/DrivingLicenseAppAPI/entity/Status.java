@@ -40,17 +40,6 @@ public class Status {
     @Size(max = 100)
     private String name;
 
-    @Column(name = "is_deleted")
-    @NotNull
-    @JsonIgnore
-    private Boolean isDeleted = false;
-
-    @Column(name = "deleted_at")
-    @Null
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt;
-
     //Kapcsolatok:
     @OneToMany(
             mappedBy = "drivingLessonStatus",

@@ -32,17 +32,6 @@ public class PaymentMethod {
     @NotNull
     private String name;
 
-    @Column(name = "is_deleted")
-    @NotNull
-    @JsonIgnore
-    private Boolean isDeleted = false;
-
-    @Column(name = "deleted_at")
-    @Null
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt;
-
     //Kapcsolatok:
     @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.LAZY)
     @JsonIgnore
