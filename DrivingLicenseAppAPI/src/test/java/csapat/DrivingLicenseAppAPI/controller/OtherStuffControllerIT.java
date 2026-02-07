@@ -1,7 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import csapat.DrivingLicenseAppAPI.repository.*;
-import org.hamcrest.collection.IsCollectionWithSize;
+import static org.hamcrest.collection.IsCollectionWithSize.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -12,9 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 //6db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -50,10 +52,10 @@ public class OtherStuffControllerIT {
     public void getAllPaymentMethod() throws Exception {
         long sizeOfPaymentMethods = paymentMethodRepository.count();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/paymentMethod"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(sizeOfPaymentMethods+""))));
+        mockMvc.perform(get(BASE_URL + "/paymentMethod"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(sizeOfPaymentMethods + ""))));
     }
 
     @Test
@@ -61,10 +63,10 @@ public class OtherStuffControllerIT {
     public void getAllFuelType() throws Exception {
         long sizeOfFuelTypes = fuelTypeRepository.count();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/fuelType"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(sizeOfFuelTypes+""))));
+        mockMvc.perform(get(BASE_URL + "/fuelType"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(sizeOfFuelTypes + ""))));
     }
 
     @Test
@@ -72,38 +74,38 @@ public class OtherStuffControllerIT {
     public void getAllEducation() throws Exception {
         long sizeOfEducations = educationRepository.count();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/education"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(sizeOfEducations+""))));
+        mockMvc.perform(get(BASE_URL + "/education"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(sizeOfEducations + ""))));
     }
 
     @Test
     @DisplayName("Get all town.")
     public void getAllTown() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/town"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(213))));
+        mockMvc.perform(get(BASE_URL + "/town"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(213))));
     }
 
     @Test
     @DisplayName("Get all status.")
     public void getAllStatus() throws Exception {
         long sizeOfAllStatus = statusRepository.count();
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/status"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(sizeOfAllStatus+""))));
+        mockMvc.perform(get(BASE_URL + "/status"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(sizeOfAllStatus + ""))));
     }
 
     @Test
     @DisplayName("Get all vehicle type.")
     public void getAllVehicleType() throws Exception {
         long sizeOfAllVehicleType = vehicleTypeRepository.count();
-        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL+"/vehicleType"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", IsCollectionWithSize.hasSize(Integer.valueOf(sizeOfAllVehicleType+""))));
+        mockMvc.perform(get(BASE_URL + "/vehicleType"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(sizeOfAllVehicleType + ""))));
     }
 }
