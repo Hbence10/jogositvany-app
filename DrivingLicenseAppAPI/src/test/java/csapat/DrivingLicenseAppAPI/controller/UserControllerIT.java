@@ -26,10 +26,10 @@ import java.util.Date;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//40db
+//41db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
@@ -356,7 +356,7 @@ public class UserControllerIT {
     }
 
     @Test
-    @DisplayName("Update user's password with valid password")
+    @DisplayName("Update user's password with valid password.")
     public void updatePasswordWithInvalidEmail() throws Exception {
         JsonNode requestBody = createRequestBodyForPasswordReset("tesgmail.com", "test5.Asd");
         mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
@@ -373,49 +373,103 @@ public class UserControllerIT {
     }
 
     @Test
+    @DisplayName("Update existent user with valid datas.")
     public void updateExistentUserWithValidDatas() throws Exception {
-//        Users testUser = new Users(testUserId, "testUser1Update", "registerStudent1Update", "testUpdate@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa"));
-//        mockMvc.perform()
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@gmail.com", "06701111111", "2022-08-02", "male", 1);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(testUserId)))
+                .andExpect(jsonPath("$.firstName", Is.is("testUserUpdate1")))
+                .andExpect(jsonPath("$.lastName", Is.is("registerStudent1")))
+                .andExpect(jsonPath("$.email", Is.is("test@gmail.com")))
+                .andExpect(jsonPath("$.phone", Is.is("06701111111")))
+                .andExpect(jsonPath("$.birthDate", Is.is("2022-08-01T22:00:00.000+00:00")))
+                .andExpect(jsonPath("$.gender", Is.is("male")))
+                .andExpect(jsonPath("$.userEducation.id", Is.is(1)));
     }
 
     @Test
+    @DisplayName("Update non existent user's data.")
     public void updateNonExistentUser() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@gmail.com", "06701111111", "2022-08-02", "male", 1);
+        mockMvc.perform(put(BASE_URL + "/" + 78978564).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$", Is.is("userNotFound")));
     }
 
     @Test
-    public void updateWithInvalidObject() throws Exception {
-    }
-
-    @Test
+    @DisplayName("Update user with invalid gender.")
     public void updateWithInvalidGender() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@gmail.com", "06701111111", "2022-08-02", "non-binary", 1);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidGender")));
     }
 
     @Test
+    @DisplayName("Update user with invalid e-mail.")
     public void updateWithInvalidEmail() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "testmail.com", "06701111111", "2022-08-02", "male", 1);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidEmail")));
     }
 
     @Test
+    @DisplayName("Update user with invalid phone.")
     public void updateWithInvalidPhone() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06351111111", "2022-08-02", "male", 1);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidPhone")));
     }
 
     @Test
-    public void updateWithInvalidPassword() throws Exception {
-    }
-
-    @Test
+    @DisplayName("Update user with invalid birth date.")
     public void updateWithInvalidBirthDate() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06701111111", "2029-08-02", "male", 1);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidBirthDate")));
     }
 
     @Test
+    @DisplayName("Update user with non-existent education.")
+    public void updateWithNonExistentEducation() throws Exception {
+        JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06701111111", "2029-08-02", "male", 456);
+        mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$", Is.is("educationNotFound")));
+    }
+
+    @Test
+    @DisplayName("")
     public void updateExistentUserPfpWithValidPhoto() throws Exception {
     }
 
     @Test
+    @DisplayName("")
     public void updateNoneExistentUsersPfp() throws Exception {
     }
 
     @Test
+    @DisplayName("")
     public void updateUsersPfpWithInvalidPhoto() throws Exception {
+    }
+
+    public JsonNode createRequestBodyForUpdate(String firstName, String lastName, String email, String phone, String birthDate, String gender, Integer educationId) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("firstName", firstName);
+        ((ObjectNode) returnObject).put("lastName", lastName);
+        ((ObjectNode) returnObject).put("email", email);
+        ((ObjectNode) returnObject).put("phone", phone);
+        ((ObjectNode) returnObject).put("birthDate", birthDate);
+        ((ObjectNode) returnObject).put("gender", gender);
+        ((ObjectNode) returnObject).put("educationId", educationId);
+        return returnObject;
     }
 
     @Test

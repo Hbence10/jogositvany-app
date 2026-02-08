@@ -123,7 +123,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Profile("dev")
+    @Profile({"dev", "test"})
     @Bean
     SecurityFilterChain securityFilterChainDev(HttpSecurity http) throws Exception {
         System.out.println("Security disabled");

@@ -232,6 +232,8 @@ public class UserService {
             }
 
             Users searchedUser = userRepository.getUser(id).orElse(null);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
             } else {
@@ -244,8 +246,10 @@ public class UserService {
                     return ResponseEntity.status(415).body("invalidEmail");
                 } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")) {
                     return ResponseEntity.status(415).body("invalidGender");
+                } else if (dateFormat.parse(birthDateText).after(new Date())) {
+                    return ResponseEntity.status(415).body("invalidBirthDate");
                 } else {
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+
 
                     searchedUser.setFirstName(firstName.trim());
                     searchedUser.setLastName(lastName.trim());

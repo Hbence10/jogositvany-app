@@ -137,7 +137,7 @@ public class UserController {
                     @SchemaProperty(name = "lastName", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "birthDateText", schema = @Schema(implementation = String.class, description = "")),
+                    @SchemaProperty(name = "birthDate", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "gender", schema = @Schema(implementation = String.class, description = "")),
                     @SchemaProperty(name = "educationId", schema = @Schema(implementation = Integer.class, description = "")),
             }
@@ -155,7 +155,7 @@ public class UserController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId, @RequestBody JsonNode requestBody) {
-        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDateText").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
+        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDate").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
     }
 
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")
