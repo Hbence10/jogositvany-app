@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolationException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -135,14 +136,14 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = File.separator + bannerImg.getOriginalFilename();
+                String filePath = "src/main/resources/static/coverImages" + File.separator + searchedSchool.getId() + bannerImg.getOriginalFilename();
 
                 try {
-//                    FileOutputStream fout = new FileOutputStream(filePath);
-//                    fout.write(bannerImg.getBytes());
-//                    fout.close();
+                    FileOutputStream fout = new FileOutputStream(filePath);
+                    fout.write(bannerImg.getBytes());
+                    fout.close();
 
-                    searchedSchool.setBannerImgPath("assets\\images\\coverImg" + File.separator + bannerImg.getOriginalFilename());
+                    searchedSchool.setBannerImgPath("src/main/resources/static/coverImages/" + searchedSchool.getId() + bannerImg.getOriginalFilename());
                 } catch (Exception e) {
                     return ResponseEntity.internalServerError().body("fileUploadingError");
                 }
@@ -191,7 +192,7 @@ public class SchoolService {
         }
     }
 
-    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id) {
+    public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id, Pageable pageable) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -201,7 +202,8 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedSchool.getSchoolJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() == null).toList());
+                Page<SchoolJoinRequest> returnList = schoolJoinRequestRepository.findBySchoolJoinRequestSchoolAndIsAccepted(searchedSchool, null, pageable);
+                return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();

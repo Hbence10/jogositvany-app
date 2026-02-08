@@ -1,6 +1,9 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
+import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +20,7 @@ public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinReq
     Optional<SchoolJoinRequest> getSchoolJoinRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest")
-    String deleteSchoolJoinRequest(@Param("idIN") Integer id);
+    void deleteSchoolJoinRequest(@Param("idIN") Integer id);
+
+    Page<SchoolJoinRequest> findBySchoolJoinRequestSchoolAndIsAccepted(School wantedInstructor, Boolean isAccepted, Pageable pageable);
 }

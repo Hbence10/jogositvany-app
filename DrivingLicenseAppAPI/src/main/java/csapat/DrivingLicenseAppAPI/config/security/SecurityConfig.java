@@ -50,7 +50,7 @@ public class SecurityConfig {
                         config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
                         config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
                         config.setAllowedHeaders(List.of("*"));                            //A http headerek adjuk meg
-                        config.setExposedHeaders(Arrays.asList("Authorization", "refreshToken", "Bearer "));
+                        config.setExposedHeaders(Arrays.asList("Authorization", "refreshToken", "Bearer ", "PageNumber"));
                         config.setMaxAge(3600L);
                         return config;
                     }
@@ -104,7 +104,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/users/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
                         .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
                         .requestMatchers("/users").hasRole("administrator")
+
+                        //egyeb:
                         .requestMatchers("/pfp/**").permitAll()
+                        .requestMatchers("/coverImages/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs*/**").permitAll()
                         .anyRequest().authenticated()
 
                 )

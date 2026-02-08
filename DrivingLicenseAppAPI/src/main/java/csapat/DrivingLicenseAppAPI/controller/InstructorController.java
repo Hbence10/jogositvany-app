@@ -62,8 +62,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/joinRequest")
-    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id) {
-        return instructorService.getAllJoinRequestByInstructor(id);
+    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
+        return instructorService.getAllJoinRequestByInstructor(id, pageable);
     }
 
     @Operation(summary = "Óra kérelmek lekérdezése", description = "Az adott oktatóhoz tartozó órakérelmek megszerzése")
@@ -78,8 +78,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/drivingLessonRequest")
-    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId) {
-        return instructorService.getDrivingLessonRequestByInstructor(instructorId);
+    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId, Pageable pageable) {
+        return instructorService.getDrivingLessonRequestByInstructor(instructorId, pageable);
     }
 
     @Operation(summary = "Oktató frissitése", description = "Oktató adatainak frissitése.")

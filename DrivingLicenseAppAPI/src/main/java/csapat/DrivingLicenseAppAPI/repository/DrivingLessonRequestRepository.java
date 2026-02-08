@@ -1,6 +1,10 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
+import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
+import csapat.DrivingLicenseAppAPI.entity.Instructors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +21,7 @@ public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLes
     Optional<DrivingLessonRequest> getDrivingLessonRequest(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteDrivingLessonRequest", procedureName = "deleteDrivingLessonRequest")
-    String deleteDrivingLessonRequest(@Param("idIN") Integer id);
+    void deleteDrivingLessonRequest(@Param("idIN") Integer id);
+
+    Page<DrivingLessonRequest> findBydLessonInstructorAndIsAccepted(Instructors wantedInstructor, Boolean isAccepted, Pageable pageable);
 }

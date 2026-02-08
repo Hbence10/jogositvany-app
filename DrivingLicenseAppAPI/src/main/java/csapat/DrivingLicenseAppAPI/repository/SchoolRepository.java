@@ -22,7 +22,7 @@ public interface SchoolRepository extends JpaRepository<School, Integer> {
     Optional<School> getSchool(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteSchool", procedureName = "deleteSchool")
-    String deleteSchool(@Param("idIN") Integer id);
+    void deleteSchool(@Param("idIN") Integer id);
 
     @Procedure(name = "getSchoolBySearch", procedureName = "getSchoolBySearch")
     List<Integer> getSchoolBySearch( @Param("townnameIN") String townName);

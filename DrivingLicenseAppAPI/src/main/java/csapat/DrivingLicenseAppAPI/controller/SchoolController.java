@@ -130,8 +130,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/{id}/joinRequests")
-    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id) {
-        return schoolService.getAllJoinRequest(id);
+    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id, Pageable pageable) {
+        return schoolService.getAllJoinRequest(id, pageable);
     }
 
     @Operation(summary = "Iskola törlése", description = "Az adott iskola törlése id alapján.")

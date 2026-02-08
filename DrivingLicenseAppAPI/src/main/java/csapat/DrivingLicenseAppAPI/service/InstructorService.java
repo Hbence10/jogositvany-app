@@ -10,6 +10,7 @@ import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id) {
+    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id, Pageable pageable) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -86,7 +87,8 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedInstructor.getInstructorJoinRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() == null).toList());
+                Page<InstructorJoinRequest> returnList = instructorJoinRequestRepository.findByInstructorJoinRequestInstructorAndIsAccepted(searchedInstructor, null, pageable);
+                return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +96,7 @@ public class InstructorService {
         }
     }
 
-    public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId) {
+    public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId, Pageable pageable) {
         try {
             if (instructorId == null) {
                 return ResponseEntity.status(422).build();
@@ -104,7 +106,8 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                return ResponseEntity.ok().body(searchedInstructor.getDrivingLessonRequestList().stream().filter(request -> !request.getIsDeleted() && request.getIsAccepted() == null).toList());
+                Page<DrivingLessonRequest> returnList = drivingLessonRequestRepository.findBydLessonInstructorAndIsAccepted(searchedInstructor, null, pageable);
+                return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {
             e.printStackTrace();
