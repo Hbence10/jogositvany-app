@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -47,6 +48,7 @@ public class SchoolService {
     private final EmailSender emailSender;
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleJoinRequest(Integer joinRequestId, String status) {
         try {
             if (joinRequestId == null || status == null) {
@@ -90,6 +92,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateSchool(Integer schoolId, String name, String email, String phone, String country, String town, String address, String promoText) {
         try {
             if (schoolId == null || name == null || email == null || phone == null || country == null || town == null || address == null || promoText == null) {
@@ -125,6 +128,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> changeCoverImg(Integer id, MultipartFile bannerImg) {
         try {
             if (id == null || bannerImg == null) {
@@ -156,6 +160,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateOpeningDetails(Integer id, List<OpeningDetails> updatedOpeningDetails) {
         try {
             if (id == null || updatedOpeningDetails == null) {
@@ -192,6 +197,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(Integer id, Pageable pageable) {
         try {
             if (id == null) {
@@ -211,6 +217,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('administrator', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> deleteSchool(Integer id) {
         try {
             if (id == null) {
@@ -230,6 +237,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<JsonNode>> getSchoolBySearch(String town) {
         try {
             List<Integer> searchedSchoolId = schoolRepository.getSchoolBySearch(town);
@@ -251,6 +259,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<School> getSchoolById(Integer id) {
         try {
             if (id == null) {
@@ -269,6 +278,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> createSchool(School addedSchool) {
         try {
             if (addedSchool == null) {
@@ -308,6 +318,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getMembersOfSchool(Integer schoolId, String role, Pageable pageable) {
         try {
             if (schoolId == null || role == null) {
@@ -345,6 +356,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> kickoutInstructor(Integer instructorId) {
         try {
             if (instructorId == null) {
@@ -370,6 +382,7 @@ public class SchoolService {
         }
     }
 
+    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getAllSchool(Pageable pageable) {
         try {
             Page<School> allSchool = schoolRepository.findAll(pageable);

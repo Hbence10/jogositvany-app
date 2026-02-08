@@ -68,29 +68,29 @@ public class SecurityConfig {
                         .requestMatchers("/instructor/*/drivingLessonRequest").hasRole("instructor")
                         .requestMatchers(HttpMethod.PUT, "/instructor/*").hasRole("instructor")
                         .requestMatchers("/instructor/handleDrivingLessonRequest").hasRole("instructor")
-                        .requestMatchers("/instructor").hasRole("student")
-                        .requestMatchers(HttpMethod.GET,"/instructor/*").permitAll()
+                        .requestMatchers("/instructor").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/instructor/*").authenticated()
                         .requestMatchers("/instructor/*/students").hasRole("instructor")
                         .requestMatchers("/instructor/kickout").hasRole("instructor")
                         //OtherStuffController:
                         .requestMatchers("/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education").permitAll()
                         //RequestController:
-                        .requestMatchers("/request/school").hasAnyRole("instructor")
+                        .requestMatchers("/request/school").hasAnyRole("instructor", "user")
                         .requestMatchers("/request/instructor").hasRole("student")
                         .requestMatchers("/request/drivingLesson").hasRole("student")
                         //ReviewController:
-                        .requestMatchers(HttpMethod.GET, "/review").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/review").authenticated()
                         .requestMatchers(HttpMethod.POST, "/review").hasRole("student")
                         .requestMatchers("/review/*").hasRole("student")
                         //SchoolController:
-                        .requestMatchers(HttpMethod.POST, "/school/*/joinRequest").hasRole("school_admin")
+                        .requestMatchers(HttpMethod.POST, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.PUT, "/school/*").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/*/coverImg").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/*/openingDetails").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.DELETE, "/school/*").hasAnyRole("administrator", "school_owner")
-                        .requestMatchers("/school/search").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/school/*").permitAll()
+                        .requestMatchers("/school/search").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/school/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
@@ -99,10 +99,10 @@ public class SecurityConfig {
                         //StudentController:
                         //UserController
                         .requestMatchers("/users/login", "/users/register", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/user/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-                        .requestMatchers("/users/pfp/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-                        .requestMatchers(HttpMethod.DELETE, "/users/*").hasAnyRole("user", "student", "instructor", "school_admin", "administrator", "school_owner") //az osszes
-                        .requestMatchers(HttpMethod.GET, "/users/*").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/user/*").authenticated()
+                        .requestMatchers("/users/pfp/*").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/users/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/*").authenticated()
                         .requestMatchers("/users").hasRole("administrator")
 
                         //egyeb:

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class ReviewService {
     private final SchoolRepository schoolRepository;
     private final InstructorRepository instructorRepository;
 
+    @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> addReview(String reviewText, Double rating, Integer studentId, Boolean isAnonymous , Integer instructorId, Integer schoolId) {
         try {
             if (reviewText == null || rating == null || studentId == null || (instructorId == 0 && schoolId == 0)) {
@@ -68,6 +70,7 @@ public class ReviewService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getReviews(String about, Integer aboutId) {
         try {
             if (about == null || aboutId == null) {
@@ -102,6 +105,7 @@ public class ReviewService {
         }
     }
 
+    @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> deleteReview(Integer id) {
         try {
             if (id == null) {

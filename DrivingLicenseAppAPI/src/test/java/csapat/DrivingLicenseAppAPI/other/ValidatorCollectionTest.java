@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+//12db
 public class ValidatorCollectionTest {
 
     @Test
@@ -73,9 +74,6 @@ public class ValidatorCollectionTest {
     @Test
     @DisplayName("Phone validator with wrong phone service code")
     public void testPhoneValidationWithWrongPhoneServiceCode() throws Exception {
-        String phone = "06676285232";
-        System.out.println(phone.substring(2,4));
-
         assertFalse(ValidatorCollection.phoneValidator("06676285232"), "06676285232 isn't valid phone number because 67 isn't valid phone service code.");
     }
 

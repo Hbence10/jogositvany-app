@@ -225,6 +225,7 @@ public class UserService {
     }
 
     // update:
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateUser(Integer id, String firstName, String lastName, String email, String phone, String birthDateText, String gender, Integer educationId) {
         try {
             if (id == null || firstName == null || lastName == null || email == null || phone == null || birthDateText == null || gender == null || educationId == null) {
@@ -271,6 +272,7 @@ public class UserService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updatePfp(Integer id, MultipartFile pfpFile) {
         try {
             if (id == null || pfpFile == null) {
@@ -305,6 +307,7 @@ public class UserService {
     }
 
     // delete:
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<String> deleteUser(Integer id) {
         try {
             if (id == null) {
@@ -325,6 +328,7 @@ public class UserService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Users> getUserById(Integer id) {
         try {
             if (id == null) {
