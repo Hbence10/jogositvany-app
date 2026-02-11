@@ -23,11 +23,7 @@ export class DrivingLessonEditorComponent implements OnInit {
   drivingLesson = input.required<DrivingLessons>()
   isPaid: boolean = false
 
-
-
   ngOnInit(): void {
-    console.log(this.drivingLesson())
-
     this.otherService.getAllPaymentMethod().subscribe({
       next: response => this.paymentMethods = response
     })

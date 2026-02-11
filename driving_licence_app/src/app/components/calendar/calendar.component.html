@@ -1,12 +1,12 @@
 <div class="container-fluid mainFont" style="height: 100vh">
-  <div class="row">
+  <div class="row d-lg-flex d-none">
     <div class="col-lg-12 d-flex justify-content-start">
       <input type="date" #dateInput [value]="selectedDate"/>
     </div>
   </div>
-  <div class="row ">
-    <div class="col-lg-12 d-flex">
-      <button class="weekSwitcherButton" (click)="changeWeekWithArrow(false)">
+  <div class="row h-100">
+    <div class="col-lg-12 d-lg-flex align-items-lg-start d-none">
+      <button class="weekSwitcherButton mt-3" (click)="changeWeekWithArrow(false)">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       @for (day of days ; track $index) {
@@ -16,13 +16,13 @@
               <p>{{ day.name }}</p>
             </div>
           </div>
-          <div class="row align-items-center text-center request">
+          <div class="row align-items-center text-center request mb-3">
             <div class="col-lg-12" (click)="sendRequest($index, day.reservedHours)">
                <p>request</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-12 p-0 d-flex flex-column justify-content-center align-items-center lessonBox">
+            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center lessonBox">
                 @for (reservedHour of day.reservedHours; track $index) {
                   <div style="cursor: pointer;" class="lessonItem mb-3" (click)="selectDrivingLesson(reservedHour.drivingLessonId)">
                     <p class="text-center">Foglalt</p>
@@ -33,9 +33,51 @@
           </div>
         </div>
       }
-      <button class="weekSwitcherButton" (click)="changeWeekWithArrow(true)">
+      <button class="weekSwitcherButton mt-3" (click)="changeWeekWithArrow(true)">
         <span class="material-symbols-outlined">arrow_forward</span>
       </button>
+    </div>
+
+    <div class="col-lg-12 d-lg-none d-flex">
+      <div class="container-fluid">
+
+        <div class="row my-4">
+          <div class="col-lg-12 d-flex justify-content-between align-items-center">
+            <button class="daySwitcherButton" (click)="changeDateInPhone(false)">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <span>{{selectedDateInPhoneView | date: "yyyy-MM-dd"}}</span>
+            <button class="daySwitcherButton" (click)="changeDateInPhone(true)">
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-lg-12 d-flex justify-content-center align-items-center">
+            @for (dayOfWeek of datesOfWeek; track $index) {
+              <div class="d-flex flex-column mx-2 w-100" [class.selectedPhoneDate]="dayOfWeek.toDateString() === selectedDateInPhoneView.toDateString()">
+                <span class="w-100 text-center">{{shortDayNames[$index]}}</span>
+                <span class="w-100 text-center">{{dayOfWeek.getDate()}}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 lessonBox px-5">
+            <div (click)="sendRequestInPhone()" class="request mt-5 mb-3" style="width: 100%; border-radius: 8px; height: 75px;">
+              <p class="text-center">Kérelem küldése</p>
+            </div>
+            @for (reservedHour of reservedHoursOfSingleDate; track $index) {
+              <div style="cursor: pointer;" class="lessonItem mb-3" (click)="selectDrivingLesson(reservedHour.drivingLessonId)">
+                <p class="text-center">Foglalt</p>
+                <p class="text-center" style="font-size: 15px;">{{reservedHour.startTime}} - {{reservedHour.endTime}}</p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

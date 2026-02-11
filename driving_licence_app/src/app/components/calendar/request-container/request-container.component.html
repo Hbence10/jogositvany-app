@@ -3,44 +3,42 @@
     <div class="col-lg-12 h-100 w-100 d-flex justify-content-center align-items-center">
       <div class="container-fluid" id="secondContainer">
         <div class="row">
-          <div class="col-lg-12 d-flex justify-content-between">
-            <div></div>
+          <div class="col-lg-12 my-3 d-flex justify-content-between align-items-center">
+            <div style="width: 50px; height: 50px;"></div>
             <h1>Kérelem küldése</h1>
-            <div>
-              <button (click)="close.emit()">X</button>
-            </div>
+            <button id="closeButton" (click)="close.emit()">X</button>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-lg-12">
+        <div class="row mb-4">
+          <div class="col-lg-12 ">
             <form class="container-fluid" [formGroup]="requestForm">
               <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-4 mb-3">
                   <label for="selectedDate">Dátum megadása</label>
-                  <input type="date" formControlName="selectedDate" id="selectedDate" [value]="selectedDate()">
+                  <input class="w-100" type="date" formControlName="selectedDate" id="selectedDate" [value]="selectedDate()">
                 </div>
 
-                <div class="col-lg-3">
+                <div class="col-lg-4 mb-3">
                   <label for="startTime">Mikor szeretnél kezdeni?</label>
-                  <input type="time" formControlName="startTime" name="startTime" id="startTime">
+                  <input class="w-100" type="time" formControlName="startTime" name="startTime" id="startTime">
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4 mb-3">
                   <label for="endTime">Mikor szeretnél végezni?</label>
-                  <input type="time" formControlName="endTime" name="endTime" id="endTime">
+                  <input class="w-100" type="time" formControlName="endTime" name="endTime" id="endTime">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 mb-3">
                   <label for="message">Egyéb üzenet az oktatónak:</label> <br>
-                  <textarea formControlName="message" name="message" id="message"></textarea>
+                  <textarea style="height: 125px;" class="w-100" formControlName="message" name="message" id="message"></textarea>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12">
-                  <button [disabled]="requestForm.invalid" (click)="sendDrivingLessonRequest()">Küldés</button>
+                <div class="col-lg-12 d-flex justify-content-center align-items-center">
+                  <button [disabled]="requestForm.invalid" (click)="sendDrivingLessonRequest()" class="eventButton">Küldés</button>
                 </div>
               </div>
             </form>
@@ -48,10 +46,12 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12">
-            <h3 class="text-center">Szabad időpontok:</h3>
+          <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
+            <h3>Szabad időpontok:</h3>
             @for (availableHour of availableHours; track $index) {
-              <p>{{availableHour[0]}} - {{availableHour[1]}}</p>
+              <div class="availableHourDiv my-2 d-flex justify-content-center align-items-center">
+                <span>{{availableHour[0]}} - {{availableHour[1]}}</span>
+              </div>
             }
           </div>
         </div>

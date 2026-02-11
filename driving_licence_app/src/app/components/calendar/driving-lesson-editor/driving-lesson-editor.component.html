@@ -4,11 +4,9 @@
       <div class="container-fluid d-flex flex-column justify-content-between" id="secondContainer">
         <div class="row">
           <div class="col-lg-12 mt-3 d-flex justify-content-between">
-            <div></div>
+            <div style="width: 50px; height: 50px;"></div>
             <h1 class="text-center">Óra adatainak módósitása</h1>
-            <div>
-              <button (click)="close.emit()">X</button>
-            </div>
+            <button id="closeButton" (click)="close.emit()">X</button>
           </div>
         </div>
 
@@ -17,59 +15,58 @@
             <form [formGroup]="drivingLessonForm" class="container-fluid">
 
               <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <label for="pickUpPlace">Tanuló felvételi helye</label>
-                  <input type="text" name="pickUpPlace" id="pickUpPlace" formControlName="pickUpPlace">
+                  <input placeholder="Hol vetted fel a tanulót?" class="w-100" type="text" name="pickUpPlace" id="pickUpPlace" formControlName="pickUpPlace">
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <label for="dropOffPlace">Tanuló elhelyezési helye</label>
-                  <input type="text" name="dropOffPlace" id="dropOffPlace" formControlName="dropOffPlace">
+                  <input placeholder="Hol raktad le a tanulót?" class="w-100" type="text" name="dropOffPlace" id="dropOffPlace" formControlName="dropOffPlace">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <label for="startKm">Km óra állása kezdéskor:</label>
-                  <input type="number" name="startKm" id="startKm" formControlName="startKm">
+                  <input class="w-100" type="number" name="startKm" id="startKm" formControlName="startKm">
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 mb-3">
                   <label for="endKm">Km óra állása végzéskor</label>
-                  <input type="number" name="endKm" id="endKm" formControlName="endKm">
+                  <input class="w-100" type="number" name="endKm" id="endKm" formControlName="endKm">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-9">
+                <div class="col-lg-8 mb-3">
                   <label for="location">Hol vezetett a diák?</label>
-                  <input type="text" name="location" id="location" formControlName="location">
+                  <input class="w-100" type="text" name="location" id="location" formControlName="location">
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4 mb-3">
                   <label for="lessonHourNumber">Hány órát vezetett a diák</label>
-                  <input type="number" name="lessonHourNumber" id="lessonHourNumber" formControlName="lessonHourNumber">
+                  <input class="w-100" type="number" name="lessonHourNumber" id="lessonHourNumber" formControlName="lessonHourNumber">
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-12">
-                  <div>
-                    <input type="radio" name="isPaid" id="isPaid" (click)="isPaid = !isPaid">
+                <div class="col-lg-12 mb-3 d-flex justify-content-between">
+                  <div class="d-flex justify-content-start align-items-center w-25">
+                    <input type="radio" name="isPaid" id="isPaid" (click)="isPaid = !isPaid" style="margin-right: 15px;">
                     <label for="isPaid">Ki van fizetve?</label>
                   </div>
 
-                  <label for="paymentMethod">Fizetési módszer kiválasztása</label>
-                  <select name="paymentMethod" id="paymentMethod" formControlName="paymentMethod">
-                    @for (paymentMethod of paymentMethods; track $index) {
-                      <option [value]="paymentMethod.id">{{paymentMethod.name}}</option>
-                    }
-                  </select>
+                  <div class="d-flex flex-column justify-content-start align-items-center w-75">
+                    <label for="paymentMethod" class="w-100">Fizetési mód</label>
+                    <select class="w-100" name="paymentMethod" id="paymentMethod" formControlName="paymentMethod">
+                      @for (paymentMethod of paymentMethods; track $index) {
+                        <option [value]="paymentMethod.id">{{paymentMethod.name}}</option>
+                      }
+                    </select>
+                  </div>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-lg-6">
-                  <label for="lessonType">Vezetési óra tipusa:</label>
-                </div>
-                <div class="col-lg-6">
+                <div class="col-lg-12 mb-3 d-flex flex-column">
                   <label for="lessonStatus">Vezetési óra állapota</label>
                   <select name="lessonStatus" id="lessonStatus" formControlName="lessonStatus">
                     @for (status of statusList; track $index) {
@@ -84,8 +81,8 @@
 
         <div class="row mb-3">
           <div class="col-lg-12 d-flex justify-content-center">
-            <button (click)="cancelDrivingLesson()">Lemondás</button>
-            <button (click)="sendSave()">Mentés</button>
+            <button class="eventButton mx-2" (click)="cancelDrivingLesson()">Lemondás</button>
+            <button class="eventButton mx-2" (click)="sendSave()">Mentés</button>
           </div>
         </div>
       </div>

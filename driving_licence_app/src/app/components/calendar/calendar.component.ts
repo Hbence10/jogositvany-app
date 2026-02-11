@@ -13,37 +13,45 @@ import { CommonModule } from '@angular/common';
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.css'
 })
-export class CalendarComponent implements OnInit{
+export class CalendarComponent implements OnInit {
   showRequestContainer: boolean = false
   showEditor: boolean = false
 
   drivingLessonService = inject(DrivingLessonService)
   userService = inject(UsersService)
   schoolService = inject(SchoolServiceService)
-
-  dayNames: string[] = [
-    "Hétfő",
-    "Kedd",
-    "Szerda",
-    "Csütörtök",
-    "Péntek",
-    "Szombat",
-    "Vasárnap"
-  ]
-
+  dayNames: string[] = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]
+  shortDayNames: string[] = ["H", "K", "SZE", "CS", "P", "SZO", "V"]
   days: { name: string, reservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[] }[] = []
   selectedDrivingLesson!: DrivingLessons
   selectedReservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[] = []
-
   selectedDate: Date = new Date()
   datesOfWeek: Date[] = []
   numberOfWeek!: number
   dateForRequest!: Date
+  selectedDateInPhoneView: Date = new Date()
+  reservedHoursOfSingleDate!: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]
 
   ngOnInit(): void {
     this.numberOfWeek = this.getWeekOfYear(this.selectedDate) - 1
     this.getReservedHoursOfWeek(this.numberOfWeek)
+    this.getReservedHoursOfSingleDate(this.selectedDateInPhoneView)
   }
+
+  getReservedHoursOfSingleDate(wantedDate: Date) {
+    console.log("ASd")
+    const formattedDate: string = wantedDate.toLocaleString('hu-HU').replaceAll(". ", "-").substring(0, 10)
+    this.drivingLessonService.getReservedHourByDate(this.userService.loggedUser()?.instructorId!, formattedDate).subscribe({
+      next: response => {
+        this.reservedHoursOfSingleDate = response
+        console.log("----")
+        console.log(response)
+        console.log(this.reservedHoursOfSingleDate)
+        console.log("----")
+      }
+    })
+  }
+
   getReservedHoursOfWeek(numberOfWeek: number) {
     this.days = []
     this.datesOfWeek = this.getWeekDates(numberOfWeek, 2026)
@@ -60,6 +68,7 @@ export class CalendarComponent implements OnInit{
       })
     }
   }
+
   changeWeekWithArrow(isForward: boolean) {
     this.numberOfWeek += isForward ? 1 : -1
     this.getReservedHoursOfWeek(this.numberOfWeek)
@@ -100,13 +109,12 @@ export class CalendarComponent implements OnInit{
   }
 
   selectDrivingLesson(id: number) {
-    if(this.userService.loggedUser()?.role.name == "ROLE_instructor"){
+    if (this.userService.loggedUser()?.role.name == "ROLE_instructor") {
       this.drivingLessonService.getDrivingLessonById(id).subscribe({
         next: response => this.selectedDrivingLesson = response,
         complete: () => this.showEditor = true
       })
     }
-
   }
 
   sendRequest(dateIndex: number, reservedHours: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]) {
@@ -115,4 +123,27 @@ export class CalendarComponent implements OnInit{
     this.showRequestContainer = true
   }
 
+  sendRequestInPhone() {
+    this.dateForRequest = this.selectedDateInPhoneView
+    this.selectedReservedHours = this.reservedHoursOfSingleDate
+    this.showRequestContainer = true
+  }
+
+  changeDateInPhone(isTommorrow: boolean) {
+    const weeksDate = this.datesOfWeek.map((date) => date.toDateString())
+    let nextDate: Date = new Date(this.selectedDateInPhoneView);
+
+    nextDate.setDate(nextDate.getDate() + (isTommorrow ? +1 : -1))
+    console.log(nextDate)
+    if (!weeksDate.includes(nextDate.toDateString())) {
+      console.log("")
+      const nextWeekNumber: number = this.getWeekOfYear(nextDate)
+      console.log(nextWeekNumber)
+      this.datesOfWeek = this.getWeekDates(this.getWeekOfYear(nextDate), 2026)
+      console.log(this.datesOfWeek)
+    }
+
+    this.getReservedHoursOfSingleDate(nextDate)
+    this.selectedDateInPhoneView = nextDate
+  }
 }

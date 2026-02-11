@@ -3,15 +3,16 @@
 }
 
 .lessonBox {
-  height: 500px;
+  height: 700px;
   margin: 0px;
   background-color: #626C99;
   overflow-y: auto;
   overflow: hidden;
+  border-radius: 10px;
 }
 
 .lessonItem {
-  width: 170px;
+  width: 100%;
   height: 90px;
   background-color: #22354f;
   border-radius: 10px;
@@ -24,7 +25,6 @@
 .request {
   height: 60px;
   background-color: #0ACF83;
-  margin: 15px;
   border-radius: 20px;
 }
 
@@ -45,4 +45,29 @@ app-driving-lesson-editor, app-request-container {
   z-index: 1;
   top: 0px;
   left: 0px;
+}
+
+.weekSwitcherButton {
+  height: 80px;
+  border: none;
+  border-radius: 8px;
+  background-color: #22354F;
+  color: white;
+}
+
+.selectedPhoneDate {
+  background-color: #1A99FE;
+  border-radius: 12px;
+}
+
+.daySwitcherButton {
+  background-color: #22354F;
+  border: none;
+  height: 40px;
+  width: 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 }

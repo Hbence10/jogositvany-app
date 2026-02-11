@@ -1,5 +1,3 @@
-import { DrivingLessons } from './driving-lessons.model';
-import { ReservedDate } from './reserved-data.model';
 
 export class ReservedHour {
   constructor(

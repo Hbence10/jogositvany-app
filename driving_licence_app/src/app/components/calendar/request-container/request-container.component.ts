@@ -1,6 +1,7 @@
 import { Component, inject, input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../../services/request.service';
+import { UsersService } from '../../../services/users.service';
 
 @Component({
   selector: 'app-request-container',
@@ -10,7 +11,7 @@ import { RequestService } from '../../../services/request.service';
 })
 export class RequestContainerComponent implements OnChanges {
   requestService = inject(RequestService)
-
+  userService = inject(UsersService)
   requestForm!: FormGroup;
   close = output()
   reservedHours = input.required<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>()
@@ -37,8 +38,8 @@ export class RequestContainerComponent implements OnChanges {
         date: this.requestForm.controls["selectedDate"].value,
         startTime: this.dateFormatter(new Date(`2026-01-21 ${this.requestForm.controls["startTime"].value}`).toISOString()),
         endTime: this.dateFormatter(new Date(`2026-01-21 ${this.requestForm.controls["endTime"].value}`).toISOString()),
-        studentId: 10,
-        instructorId: 4
+        studentId: this.userService.loggedUser()?.studentId!,
+        instructorId: this.userService.loggedUser()?.instructorId!
       }
     ).subscribe({
       next: response => console.log(response),

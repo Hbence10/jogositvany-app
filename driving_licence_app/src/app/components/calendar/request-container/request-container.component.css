@@ -5,8 +5,54 @@
 }
 
 #secondContainer {
+  background-color: #434A6B;
+  color: #DEE0EB;
   height: 850px;
   width: 700px;
+  overflow: auto;
+}
+
+#closeButton {
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: #22354f;
+  color: white;
+  border-radius: 8px;
+}
+
+input, textarea, select {
+  border: none;
   background-color: #626C99;
-  color: #DEE0EB;
+  border-radius: 5px;
+  color: #dee0eb;
+  height: 50px;
+  padding: 0px 15px;
+}
+
+input::placeholder, textarea::placeholder {
+  color: white;
+}
+
+.eventButton {
+  background-color: #22354f;
+  border: none;
+  width: 125px;
+  color: white;
+  height: 50px;
+  border-radius: 8px;
+}
+
+.availableHourDiv {
+  background-color: white;
+  width: 80%;
+  height: 50px;
+  color: #22354f;
+  border-radius: 12px;
+}
+
+@media screen and (max-width: 750px) {
+  #secondContainer {
+    width: 90%;
+  }
 }
