@@ -5,10 +5,8 @@ import { inject, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class RequestService {
-
-
   private http = inject(HttpClient)
-  baseUrl = "http://localhost:8080/users"
+  baseUrl = "http://localhost:8080/request"
 
   constructor() { }
 

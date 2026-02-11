@@ -1,19 +1,20 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { Observable } from 'rxjs';
 import { HomePageUser } from '../models/notEntity/homepageUser.model';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/users';
   private router = inject(Router);
+  private cookieService = inject(CookieService)
   loggedUser =  signal<null | HomePageUser>(null)
 
   constructor() { }
@@ -23,13 +24,13 @@ export class UsersService {
   }
 
   logout(){
+    this.cookieService.deleteAll()
     this.loggedUser.set(null);
     this.router.navigate(['/login']);
   }
 
   registration(user: User, registerAs: "student" | "instructor") : Observable<string> {
-    console.log(user);
-    return this.http.post<string>(`${this.baseUrl}/register${registerAs}`, user);
+    return this.http.post<string>(`${this.baseUrl}/register/${registerAs}`, user);
   }
 
   getVerificationCode(email: string) {
@@ -49,7 +50,7 @@ export class UsersService {
   }
 
   updateUser(userId: number, firstName: string, lastName:string, email: string, phone: string, birthDateText: string, gender: string, educationId: number): Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/update/${userId}`, {
+    return this.http.put<User>(`${this.baseUrl}/${userId}`, {
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -65,10 +66,10 @@ export class UsersService {
   }
 
   deleteUser(userId: number) {
-    return this.http.delete(`${this.baseUrl}/delete/${userId}`)
+    return this.http.delete(`${this.baseUrl}/${userId}`)
   }
 
-  getAllUser(): Observable<{id:number, name: string, imagePath: string, userId: number}[]> {
-    return this.http.get<{id:number, name: string, imagePath: string, userId: number}[]>(`${this.baseUrl}?page=0&size=10`)
+  getAllUser(pageNumber: number = 0): Observable<HttpResponse<any>> {
+    return this.http.get<any>(`${this.baseUrl}?page=${pageNumber}&size=10`, {observe: "response"})
   }
 }
