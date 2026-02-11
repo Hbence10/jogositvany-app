@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllStatus", procedureName = "getAllStatus", resultClasses = Status.class),
         @NamedStoredProcedureQuery(name = "getStatus", procedureName = "getStatus", parameters = {

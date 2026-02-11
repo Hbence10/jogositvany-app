@@ -58,10 +58,13 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        System.out.println(request.getServletPath());
         ArrayList<String> allowedUrlPaths = new ArrayList<String>(Arrays.asList(
-
+                "/users/register/student",
+                "/users/register/instructor",
+                "/users/login"
         ));
 
-        return request.getServletPath().equals("/users/register");
+        return allowedUrlPaths.contains(request.getServletPath());
     }
 }

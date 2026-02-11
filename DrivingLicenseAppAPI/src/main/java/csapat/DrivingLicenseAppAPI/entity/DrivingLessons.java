@@ -18,7 +18,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson", resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "getDrivingLesson", procedureName = "getDrivingLesson", parameters = {
@@ -114,9 +113,10 @@ public class DrivingLessons {
     private Instructors dinstructor;
     //Constructorok:
 
-    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor) {
+    public DrivingLessons(ReservedHour reservedHour, Students dstudent, Instructors dinstructor, Status status) {
         this.reservedHour = reservedHour;
         this.dstudent = dstudent;
         this.dinstructor = dinstructor;
+        this.drivingLessonStatus = status;
     }
 }

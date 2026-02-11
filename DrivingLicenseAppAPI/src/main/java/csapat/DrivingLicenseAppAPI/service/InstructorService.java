@@ -38,6 +38,7 @@ public class InstructorService {
     private final FuelTypeRepository fuelTypeRepository;
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
     private final SchoolRepository schoolRepository;
+    private final StatusRepository statusRepository;
     private final ObjectMapper objectMapper;
     private final DrivingLessonRepository drivingLessonRepository;
     private final EmailSender emailSender;
@@ -180,7 +181,7 @@ public class InstructorService {
                     if (status.equals("accept")) {
                         ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
                         ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
-                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor()));
+                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.findById(1).get()));
                         searchedRequest.setIsAccepted(true);
                     } else if (status.equals("refuse")) {
                         searchedRequest.setIsAccepted(false);

@@ -20,7 +20,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,7 +70,6 @@ public class JwtUtilsService {
                 return null;
             }
         }
-
         return null;
     }
 }

@@ -52,10 +52,6 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).build();
-            }
-
             Users loggedUser = userRepository.findByEmail(email.trim()).orElse(null);
 
             if (loggedUser == null || loggedUser.getIsDeleted()) {

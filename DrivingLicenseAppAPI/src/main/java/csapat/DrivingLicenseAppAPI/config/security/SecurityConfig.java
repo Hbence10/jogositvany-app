@@ -98,7 +98,7 @@ public class SecurityConfig {
 
                         //StudentController:
                         //UserController
-                        .requestMatchers("/users/login", "/users/register", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
+                        .requestMatchers("/users/login", "/users/register/**", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/user/*").authenticated()
                         .requestMatchers("/users/pfp/*").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/users/*").authenticated()
