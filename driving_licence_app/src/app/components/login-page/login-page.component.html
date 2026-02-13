@@ -6,8 +6,10 @@
 
         <div class="row w-100">
           <div class="col-lg-12">
-            <h1 class="text-lg-start text-center mt-5">Bejelentkezés</h1>
-            <p class="text-danger"></p>
+            <h1 class="text-lg-start text-center my-5">Bejelentkezés</h1>
+            @if(showError()) {
+              <p class="text-danger m-0 text-center">Hibás e-mail cím és/vagy jelszó</p>
+            }
               <form [formGroup]="loginForm" class="d-flex flex-column">
                 <input class="textInput" type="text" placeholder="Email" formControlName="email">
                 <input class="textInput" type="password" placeholder="Jelszó" formControlName="password">

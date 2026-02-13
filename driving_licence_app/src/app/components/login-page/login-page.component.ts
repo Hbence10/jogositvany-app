@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../services/users.service';
+import { response } from 'express';
 import { HomePageUser } from '../../models/notEntity/homepageUser.model';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -16,6 +17,7 @@ export class LoginPageComponent {
   private router = inject(Router);
   errorMessage = signal<null | string>(null)
   homePageUser!: HomePageUser
+  showError = signal<boolean>(false)
 
   loginForm = new FormGroup({
     email: new FormControl('testInstructor@gmail.com', [Validators.required, Validators.email]),
@@ -29,7 +31,7 @@ export class LoginPageComponent {
         this.homePageUser = response
       },
       error: error => {
-
+        this.showError.set(true)
       },
       complete: () => {
         this.usersService.loggedUser.set(this.homePageUser)
