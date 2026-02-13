@@ -6,6 +6,7 @@ import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
 import { DrivingLessons } from '../../models/driving-lessons.model';
 import { CommonModule } from '@angular/common';
+import { checkPrimeSync } from 'crypto';
 
 @Component({
   selector: 'app-calendar',
