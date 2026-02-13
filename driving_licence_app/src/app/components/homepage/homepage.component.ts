@@ -22,35 +22,36 @@ export class HomepageComponent implements OnInit {
   private schoolService = inject(SchoolServiceService);
   private router = inject(Router);
   loggedUser!: HomePageUser;
-  schoolList: {id: number, name: string}[] = []
-  userList: {id:number, name: string, imagePath: string, userId: number}[] = []
+  schoolList: { id: number, name: string }[] = []
+  userList: { id: number, name: string, imagePath: string, userId: number }[] = []
   studentList: any[] = []
   showSchoolForm: boolean = false
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser()!;
 
-    if (this.loggedUser.role?.name == "ROLE_student"){
+    if (this.loggedUser.role?.name == "ROLE_student") {
 
     } else if (this.loggedUser.role?.name == "ROLE_administrator") {
-      this.schoolService.getAllSchool().subscribe({
+      this.schoolService.getAllSchool(0).subscribe({
         next: response => {
-          this.schoolList = response
-          console.log(this.schoolList)
+          this.schoolList = response.body
         }
       })
 
       this.userService.getAllUser().subscribe({
-        next: response => this.userList = response
+        next: response => {
+          this.userList = response.body
+        }
       })
     }
   }
 
-  setProfilCardRows(originList: ProfileCard[]): ProfileCard[][]{
+  setProfilCardRows(originList: ProfileCard[]): ProfileCard[][] {
     const rows: ProfileCard[][] = []
-    for (let i: number = 0; i < originList.length; i+=3){
+    for (let i: number = 0; i < originList.length; i += 3) {
       const row: ProfileCard[] = []
-      for (let j = i; j < i+3; j++) {
+      for (let j = i; j < i + 3; j++) {
         if (originList[j] != undefined) {
           row.push(originList[j])
         }
