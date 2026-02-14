@@ -14,6 +14,7 @@ import csapat.DrivingLicenseAppAPI.repository.VehicleRepository;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -325,7 +326,7 @@ public class UserService {
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Users> getUserById(Integer id) {
+    public ResponseEntity<Object> getUserById(Integer id, Boolean isLogin) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -335,6 +336,10 @@ public class UserService {
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
+            }
+
+            if (isLogin) {
+                return ResponseEntity.ok().body(createHomePageObject(searchedUser));
             } else {
                 return ResponseEntity.ok().body(searchedUser);
             }

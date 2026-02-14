@@ -203,8 +203,8 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable("id") Integer id) {
-        return userService.getUserById(id);
+    public ResponseEntity<Object> getUserById(@PathVariable("id") Integer id, @RequestParam(value = "isLogin", defaultValue = "false", required = false) Boolean isLogin) {
+        return userService.getUserById(id, isLogin);
     }
 
     @Operation(summary = "Az összes felhasználó lekérdezése", description = "Az összes felhasználó lekérdezése röviditett formában")
