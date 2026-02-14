@@ -2,7 +2,7 @@
 <suite name="Group Suite">
     <test name="Group Test">
         <classes>
-            <class name="csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection"/>
+            <class name="csapat.DrivingLicenseAppAPI.other.ValidatorCollectionTest"/>
         </classes>
     </test>
 </suite>

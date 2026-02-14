@@ -140,14 +140,14 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                String filePath = "src/main/resources/static/coverImages" + File.separator + searchedSchool.getId() + bannerImg.getOriginalFilename();
+                String filePath = "images/coverImages" + File.separator + searchedSchool.getId() + bannerImg.getOriginalFilename();
 
                 try {
                     FileOutputStream fout = new FileOutputStream(filePath);
                     fout.write(bannerImg.getBytes());
                     fout.close();
 
-                    searchedSchool.setBannerImgPath("src/main/resources/static/coverImages/" + searchedSchool.getId() + bannerImg.getOriginalFilename());
+                    searchedSchool.setBannerImgPath("http://localhost:8080/coverImages/" + searchedSchool.getId() + bannerImg.getOriginalFilename());
                 } catch (Exception e) {
                     return ResponseEntity.internalServerError().body("fileUploadingError");
                 }

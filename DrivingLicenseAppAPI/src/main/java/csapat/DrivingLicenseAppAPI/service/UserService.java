@@ -281,7 +281,7 @@ public class UserService {
                 return ResponseEntity.notFound().build();
             } else {
 
-                String filePath = "src/main/resources/static/pfp" + File.separator + searchedUser.getId() + pfpFile.getOriginalFilename();
+                String filePath = "images/pfp" + File.separator + searchedUser.getId() + pfpFile.getOriginalFilename();
 
                 try {
                     FileOutputStream fout = new FileOutputStream(filePath);
@@ -453,6 +453,7 @@ public class UserService {
                 instructorDetails.add(instructorNode);
             }
             ((ObjectNode) returnObject).put("schoolId", loggedUser.getRole().getName().equals("ROLE_school_admin") ? loggedUser.getAdminSchool().getId() : loggedUser.getOwnedSchool().getId());
+            ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getAdminSchool()));
             ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
             ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
             ArrayNode instructorNode = objectMapper.valueToTree(instructorDetails);
