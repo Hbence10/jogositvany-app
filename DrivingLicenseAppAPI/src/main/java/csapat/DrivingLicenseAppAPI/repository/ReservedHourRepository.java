@@ -23,4 +23,7 @@ public interface ReservedHourRepository extends JpaRepository<ReservedHour, Inte
 
     @Procedure(name = "getReservedHourIdByDateAndInstructor", procedureName = "getReservedHourIdByDateAndInstructor")
     List<Integer> getReservedHourIdByDateAndInstructor(@Param("dateIN") LocalDate date, @Param("instructorIdIN") Integer instructorId);
+
+    @Procedure(name = "getReservedHoursBetweenTwoDate", procedureName = "getReservedHoursBetweenTwoDate")
+    List<Integer> getReservedHoursBetweenTwoDate(@Param("instructorIdIN") Integer instructorId, @Param("startDateIN") Date startDate, @Param("endDateIN") Date endDate);
 }

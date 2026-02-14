@@ -31,6 +31,12 @@ import java.util.Date;
         @NamedStoredProcedureQuery(name = "getReservedHourIdByDateAndInstructor", procedureName = "getReservedHourIdByDateAndInstructor", parameters = {
                 @StoredProcedureParameter(name = "dateIN", type = LocalDate.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "instructorIdIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class),
+
+        @NamedStoredProcedureQuery(name = "getReservedHoursBetweenTwoDate", procedureName = "getReservedHoursBetweenTwoDate", parameters = {
+                @StoredProcedureParameter(name = "instructorIdIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "startDateIN", type = Date.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "endDateIN", type = Date.class, mode = ParameterMode.IN),
         }, resultClasses = Integer.class)
 })
 public class ReservedHour {

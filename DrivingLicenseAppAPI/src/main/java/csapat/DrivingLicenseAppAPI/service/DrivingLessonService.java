@@ -14,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
@@ -87,7 +89,7 @@ public class DrivingLessonService {
                     return ResponseEntity.status(404).body("paymentMethodNotFound");
                 } else if (searchedStatus == null) {
                     return ResponseEntity.status(404).body("statusNotFound");
-                }  else {
+                } else {
                     searchedDrivingLesson.setStartKm(startKm);
                     searchedDrivingLesson.setEndKm(endKm);
                     searchedDrivingLesson.setLocation(location);
@@ -114,14 +116,11 @@ public class DrivingLessonService {
             }
 
             List<Integer> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
-            List<ReservedHour> reservedHours = new ArrayList<ReservedHour>();
-            for (Integer i : reservedHourIdList) {
-                reservedHours.add(reservedHourRepository.findById(i).get());
-            }
+            List<ReservedHour> reservedHours = reservedHourRepository.findAllById(reservedHourIdList);
 
             List<HourCard> returnList = new ArrayList<>();
             for (ReservedHour i : reservedHours) {
-                returnList.add(new HourCard(i.getStartTime(), i.getEndTime(), i.getDrivingLessons().getDstudent().getStudentUser().getFirstName() + i.getDrivingLessons().getDstudent().getStudentUser().getLastName(), i.getDrivingLessons().getId()));
+                returnList.add(new HourCard(i.getStartTime(), i.getEndTime(), i.getDrivingLessons().getDstudent().getStudentUser().getFirstName() + i.getDrivingLessons().getDstudent().getStudentUser().getLastName(), i.getDrivingLessons().getId(), i.getReservedDate().getDate()));
             }
 
             return ResponseEntity.ok().body(returnList);
@@ -145,6 +144,28 @@ public class DrivingLessonService {
                 return ResponseEntity.ok().body(searchedDrivingLesson);
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    public ResponseEntity<Object> getReservedHoursBetweenDates(Integer instructorId, String start, String end) {
+        try {
+            if (instructorId == null || start == null || end == null) {
+                return ResponseEntity.status(422).build();
+            }
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+            List<Integer> idList = reservedHourRepository.getReservedHoursBetweenTwoDate(instructorId, dateFormat.parse(start), dateFormat.parse(end));
+            List<ReservedHour> reservedHours = reservedHourRepository.findAllById(idList);
+
+            List<HourCard> returnList = new ArrayList<>();
+            for (ReservedHour i : reservedHours) {
+                returnList.add(new HourCard(i.getStartTime(), i.getEndTime(), i.getDrivingLessons().getDstudent().getStudentUser().getFirstName() + i.getDrivingLessons().getDstudent().getStudentUser().getLastName(), i.getDrivingLessons().getId(), i.getReservedDate().getDate()));
+            }
+
+            return ResponseEntity.ok().body(returnList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

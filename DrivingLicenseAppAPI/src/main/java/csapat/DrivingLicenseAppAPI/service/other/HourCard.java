@@ -15,4 +15,5 @@ public class HourCard {
     private Date endTime;
     private String name;
     private Integer drivingLessonId;
+    private Date date;
 }

@@ -122,4 +122,9 @@ public class DrivingLessonController {
     public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
         return drivingLessonService.getDrivingLessonById(id);
     }
+
+    @GetMapping("reservedHours")
+    public ResponseEntity<Object> getReservedHoursBetweenDates(@RequestParam("instructorId") Integer instructorId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        return drivingLessonService.getReservedHoursBetweenDates(instructorId, startDate, endDate);
+    }
 }
