@@ -14,28 +14,28 @@
 
         <div class="row">
           <div class="col-lg-12">
-            <form class="container-fluid">
+            <form [formGroup]="schoolForm" class="container-fluid">
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="Iskola neve">
+                  <input type="text" class="w-100 mt-3" placeholder="Iskola neve" formControlName="name">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="E-mail cím">
+                  <input type="text" class="w-100 mt-3" placeholder="E-mail cím" formControlName="email">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="Telefonszám">
+                  <input type="text" class="w-100 mt-3" placeholder="Telefonszám" formControlName="phone">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-4">
-                  <select class="w-100 mt-3">
+                  <select class="w-100 mt-3" formControlName="country">
                     <option value="" selected disabled>Válaszd ki a vármegyét</option>
                     @for (country of varmegyek; track $index) {
                       <option [value]="country">{{country}}</option>
@@ -44,25 +44,25 @@
                 </div>
 
                 <div class="col-lg-8">
-                  <input type="text" class="w-100 mt-3" placeholder="Város" />
+                  <input type="text" class="w-100 mt-3" placeholder="Város" formControlName="town"/>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="Cím">
+                  <input type="text" class="w-100 mt-3" placeholder="Cím" formControlName="address">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <textarea type="text" class="w-100 mt-3 pt-3" style="height: 125px;" placeholder="Bemutatkozó szöveg"></textarea>
+                  <textarea type="text" class="w-100 mt-3 pt-3" style="height: 125px;" placeholder="Bemutatkozó szöveg" formControlName="promoText"></textarea>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <select class="w-100 mt-3">
+                  <select class="w-100 mt-3" formControlName="ownerId">
                     <option value="" selected disabled>Válaszd ki a tulajt</option>
                   </select>
                 </div>
