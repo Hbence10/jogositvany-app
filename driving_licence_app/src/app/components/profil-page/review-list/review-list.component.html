@@ -3,31 +3,29 @@
     <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
       <div class="container-fluid" id="secondContainer">
 
-        <div class="row">
+        <div class="row my-4">
           <div class="col-lg-12">
             <div class="w-100 d-flex justify-content-between align-items-center">
-              <div></div>
-              <h1>Értékelések</h1>
-              <button (click)="closeList.emit()">X</button>
+              <div style="width: 50px; height: 50px;"></div>
+              <h1 class="text-white">Értékelések</h1>
+              <button id="closeButton" (click)="closeList.emit()">X</button>
             </div>
             @if (userService.loggedUser()?.role?.name == "ROLE_student") {
-              <button (click)="showReviewWriter = true">Értékelés írása</button>
+              <div class="d-flex justify-content-center align-items-center">
+                <button id="reviewCreatorButton" (click)="showReviewWriter = true">Értékelés írása</button>
+              </div>
             }
           </div>
         </div>
 
-        <div class="row h-100">
-          <div class="col-lg-12 h-100">
-            <div class="reviewRow">
+        <div class="row">
               @for (reviewColumn of getColumns(); track $index) {
-                <div class="column">
+                <div class="col-lg-4">
                   @for (review of reviewColumn; track $index) {
                     <app-review-card [review]="review" />
                   }
                 </div>
               }
-            </div>
-          </div>
         </div>
       </div>
     </div>
