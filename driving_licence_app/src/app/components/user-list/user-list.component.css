@@ -21,3 +21,18 @@ button {
   border-radius: 5px;
   border: none;
 }
+
+@media screen and (max-width: 300px) {
+  #cardContainer {
+    width: 100%;
+  }
+}
+
+.arrowButton {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}

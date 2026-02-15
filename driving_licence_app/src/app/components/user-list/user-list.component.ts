@@ -12,7 +12,7 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent implements OnInit{
+export class UserListComponent implements OnInit {
   private schoolService = inject(SchoolServiceService)
   private instructorService = inject(InstructorServiceService)
   private userService = inject(UsersService)
@@ -26,6 +26,8 @@ export class UserListComponent implements OnInit{
   deleteText: string = ""
   userType = ""
   title: string = ""
+  availablePages: number[] = []
+  actualPage: number = 1;
 
   ngOnInit(): void {
     let sub: Subscription
@@ -33,42 +35,8 @@ export class UserListComponent implements OnInit{
     this.route.params.subscribe({
       next: parameter => {
         this.userType = parameter["userType"]
-        if (this.userType == "schoolStudent") {
-          this.deleteText = "Diák kirugása"
-          sub = this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "students").subscribe({
-            next: response => this.cardList = response
-          })
-          this.title = "Diákjaink:"
-        } else if (this.userType == "instructors") {
-          this.deleteText = "Oktató kirugása"
-          sub = this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "instructors").subscribe({
-            next: response => this.cardList = response
-          })
-          this.title = "Oktatóink:"
-        } else if (this.userType == "instructorStudents") {
-          this.deleteText = "Diák kirugása"
-          sub = this.instructorService.getStudents(this.userService.loggedUser()?.instructorId!).subscribe({
-            next: response => this.cardList = response
-          })
-          this.title = "Diákjaim"
-        } else if (this.userType === "users") {
-          this.deleteText = "Felhasználó törloése"
-          sub = this.userService.getAllUser().subscribe({
-            next: response => this.cardList = response
-          })
-          this.title = "Felhasználók:"
-        } else if (this.userType === "school") {
-          this.deleteText = "Iskola törloése"
-          sub = this.schoolService.getAllSchool().subscribe({
-            next: response => console.log(response)
-          })
-          this.title = "Iskolák:"
-        }
+        this.changePage(0)
       }
-    })
-
-    this.destroyRef.onDestroy(() => {
-      sub.unsubscribe()
     })
   }
 
@@ -122,6 +90,64 @@ export class UserListComponent implements OnInit{
           this.cardList.splice(index, 1)
         }
       })
+    }
+  }
+
+  changePage(pageNumber: number) {
+    if (this.userType == "schoolStudent") {
+      this.deleteText = "Diák kirugása"
+      this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "students", pageNumber).subscribe({
+        next: response => {
+          this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+          this.cardList = response.body
+        }
+      })
+      this.title = "Diákjaink:"
+    } else if (this.userType == "instructors") {
+      this.deleteText = "Oktató kirugása"
+      this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "instructors", pageNumber).subscribe({
+        next: response => {
+          this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+          this.cardList = response.body
+        }
+      })
+      this.title = "Oktatóink:"
+    } else if (this.userType == "instructorStudents") {
+      this.deleteText = "Diák kirugása"
+      this.instructorService.getStudents(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
+        next: response => {
+          this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+          this.cardList = response.body
+        }
+      })
+      this.title = "Diákjaim"
+    } else if (this.userType === "users") {
+      this.deleteText = "Felhasználó törloése"
+      this.userService.getAllUser(pageNumber).subscribe({
+        next: response => {
+          this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+          this.cardList = response.body
+        }
+      })
+      this.title = "Felhasználók:"
+    } else if (this.userType === "school") {
+      this.deleteText = "Iskola törloése"
+      this.schoolService.getAllSchool(0).subscribe({
+        next: response => {
+          this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+          this.cardList = response.body
+        }
+      })
+      this.title = "Iskolák:"
+    }
+  }
+
+  changePageWithArrow(newPage: 1 | -1) {
+    if (this.availablePages.length == 0 ||(this.actualPage-1) + newPage == -1 || (this.actualPage -1) + newPage == this.availablePages.length ) {
+
+    } else {
+      this.actualPage += newPage
+      this.changePage(this.actualPage-1)
     }
   }
 }

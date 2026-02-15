@@ -1,7 +1,6 @@
  <div class="container-fluid mainFont" id="mainContainer">
   <div class="row h-100 my-0 my-5">
 
-    <!-- Kereso felulet: -->
     <div class="col-lg-6">
       <div class="h-100 container-fluid d-flex flex-column justify-content-center">
         @if(selectedType == "instructor"){
@@ -57,7 +56,6 @@
       </div>
     </div>
 
-    <!-- Eredmeny felulet: -->
     <div class="col-lg-6 my-lg-0 my-5 d-flex justify-content-center align-items-center">
       <div class="container-fluid pb-3 d-flex flex-column justify-content-between" id="resultContainer">
         <div class="row">
@@ -77,7 +75,6 @@
                 </div>
               </div>
             } @else {
-              <!--Oktató adatai  -->
               <div class="row mt-5">
                 <div class="col-12 d-flex justify-content-center align-items-center">
                   <img id="instructorPfp" [src]="selectedInstructor?.instructorUser?.pfpPath" alt="" class="img-fluid mx-2">
@@ -118,12 +115,12 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12 d-flex justify-content-between align-items-center">
+          <div class="col-lg-12 d-flex justify-content-between align-items-center" id="buttonRow">
             <button class="profileBtn" (click)="navigateToProfilePage()">
               <span class="material-symbols-outlined">account_circle</span>
             </button>
             @if((selectedType == "school" && userService.loggedUser()?.role?.name == "ROLE_student") || (selectedType == "instructor" && userService.loggedUser()?.instructorId == null)) {
-              <div class="d-flex justify-content-center align-items-center">
+              <div class="d-flex justify-content-center align-items-center" id="joinDiv">
                 @if (selectedType == "school") {
                   <select id="categorySelect" class="form-select">
                     @for (category of selectedSchool?.licenseCategoryList; track $index) {
