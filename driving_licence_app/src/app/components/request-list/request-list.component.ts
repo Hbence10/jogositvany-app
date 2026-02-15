@@ -27,6 +27,8 @@ export class RequestListComponent implements OnInit {
   ownerType!: "school" | "instructor"
   requestList: (SchoolJoinRequest | DrivingLessonRequest | InstructorJoinRequest)[] = []
   requestRowList: (SchoolJoinRequest | DrivingLessonRequest | InstructorJoinRequest)[][] = []
+  availablePages: number[] = []
+  actualPage: number = 1;
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -38,7 +40,7 @@ export class RequestListComponent implements OnInit {
           this.ownerType = "instructor"
           this.requestType = "instructorJoin"
         }
-        this.changeRequestList()
+        this.changeRequestList(0)
       }
     })
   }
@@ -61,55 +63,81 @@ export class RequestListComponent implements OnInit {
 
   //Keresek kezelese:
   handleRequests(selectedRequest: { requestType: "drivingLesson" | "instructorJoin" | "schoolJoin" | "exam", status: "accept" | "refuse", id: number }) {
+  const index = this.requestList.findIndex(r => r.id == selectedRequest.id)
     if (selectedRequest.requestType == "drivingLesson") {
+
       this.instructorService.handleDrivingLessonRequest(selectedRequest.id, selectedRequest.status).subscribe({
         error: error => { },
-        complete: () => { }
+        complete: () => {
+          this.requestList.splice(index, 1)
+        }
       })
     } else if (selectedRequest.requestType == "instructorJoin") {
       this.instructorService.handleJoinRequest(selectedRequest.id, selectedRequest.status).subscribe({
         error: error => { },
-        complete: () => { }
+        complete: () => {
+          this.requestList.splice(index, 1)
+        }
       })
     } else if (selectedRequest.requestType == "schoolJoin") {
       console.log("handleSchoolJoin")
       this.schoolService.handleJoinRequest(selectedRequest.id, selectedRequest.status).subscribe({
         error: error => { },
-        complete: () => { }
+        complete: () => {
+          this.requestList.splice(index, 1)
+        }
       })
     }
   }
 
-  changeRequestList() {
+  changeRequestList(pageNumber: number) {
     if (this.requestType == "drivingLesson") {
-      this.getAllDrivingLessonRequest()
+      this.getAllDrivingLessonRequest(pageNumber)
     } else if (this.requestType == "instructorJoin") {
-      this.getAllInstructorJoinRequest()
+      this.getAllInstructorJoinRequest(pageNumber)
     } else if (this.requestType == "schoolJoin") {
-      this.getAllSchoolJoinRequest()
+      this.getAllSchoolJoinRequest(pageNumber)
     }
   }
 
   //Keresek lekerese
-  getAllDrivingLessonRequest() {
-    this.instructorService.getDrivingLessonRequestByInstructor(this.userService.loggedUser()?.instructorId!).subscribe({
-      next: response => this.requestList = response,
+  getAllDrivingLessonRequest(pageNumber: number) {
+    this.instructorService.getDrivingLessonRequestByInstructor(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
+      next: response => {
+        this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+        this.requestList = response.body
+      },
       error: error => console.log(error),
     })
   }
 
-  getAllInstructorJoinRequest() {
-    this.instructorService.getAllJoinRequestByInstructor(this.userService.loggedUser()?.instructorId!).subscribe({
-      next: response => this.requestList = response,
+  getAllInstructorJoinRequest(pageNumber: number) {
+    this.instructorService.getAllJoinRequestByInstructor(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
+      next: response => {
+        this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+        this.requestList = response.body
+      },
       error: error => console.log(error),
     })
   }
 
-  getAllSchoolJoinRequest() {
-    this.schoolService.getAllJoinRequest(this.userService.loggedUser()?.schoolId!).subscribe({
-      next: response => this.requestList = response,
+  getAllSchoolJoinRequest(pageNumber: number) {
+    this.schoolService.getAllJoinRequest(this.userService.loggedUser()?.schoolId!, pageNumber).subscribe({
+      next: response => {
+        this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
+        this.requestList = response.body
+      },
       error: error => console.log(error),
       complete: () => console.log(this.requestList)
     })
+  }
+
+   changePageWithArrow(newPage: 1 | -1) {
+    if (this.availablePages.length == 0 || (this.actualPage-1) + newPage == -1 || (this.actualPage -1) + newPage == this.availablePages.length ) {
+
+    } else {
+      this.actualPage += newPage
+      this.changeRequestList(this.actualPage-1)
+    }
   }
 }
