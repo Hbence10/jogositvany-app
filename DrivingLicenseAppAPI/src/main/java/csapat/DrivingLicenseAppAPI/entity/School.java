@@ -137,5 +137,15 @@ public class School {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "schoolCategory")
     private List<SchoolCategory> licenseCategoryList;
 
-
+    public School(String name, String email, String phone, String country, String town, String address, String promoText, Users owner) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.country = country;
+        this.town = town;
+        this.address = address;
+        this.promoText = promoText;
+        this.owner = owner;
+        this.bannerImgPath = "http://localhost:8080/coverImages/defaultCoverImg.jpg";
+    }
 }

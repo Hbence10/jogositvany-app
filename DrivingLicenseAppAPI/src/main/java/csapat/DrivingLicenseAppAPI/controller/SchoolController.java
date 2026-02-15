@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -188,7 +189,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @PostMapping("")
-    private ResponseEntity<Object> createSchool(@RequestBody School addedSchool) {
+    private ResponseEntity<Object> createSchool(@RequestBody SchoolRegisterDto addedSchool) {
         return schoolService.createSchool(addedSchool);
     }
 

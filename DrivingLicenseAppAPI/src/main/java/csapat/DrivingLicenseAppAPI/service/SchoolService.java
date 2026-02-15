@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVReader;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
@@ -279,37 +280,23 @@ public class SchoolService {
     }
 
     @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> createSchool(School addedSchool) {
+    public ResponseEntity<Object> createSchool(SchoolRegisterDto addedSchool) {
         try {
             if (addedSchool == null) {
                 return ResponseEntity.status(422).build();
             }
-            List<String> townName = new ArrayList<String>();
-            try {
-                FileReader fileReader = new FileReader(new File("src/main/java/csapat/DrivingLicenseAppAPI/service/other/townList.csv"));
-                CSVReader reader = new CSVReader(fileReader);
 
-                List<String[]> allRecords = reader.readAll();
-                for (int i = 1; i < allRecords.size(); i++) {
-                    townName.add(allRecords.get(i)[0]);
-                }
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().body("fileHandlingError");
-            }
-
-            Users ownerUser = userRepository.getUser(addedSchool.getOwner().getId()).orElse(null);
-            if (ownerUser == null || ownerUser.getId() != addedSchool.getOwner().getId()) {
+            Users ownerUser = userRepository.getUser(addedSchool.ownerId()).orElse(null);
+            if (ownerUser == null || ownerUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(addedSchool.getEmail().trim())) {
+            } else if (!ValidatorCollection.emailValidator(addedSchool.email().trim())) {
                 return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!ValidatorCollection.phoneValidator(addedSchool.getPhone().trim())) {
+            } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
                 return ResponseEntity.status(415).body("invalidPhone");
-            } else if (!townName.contains(addedSchool.getTown().trim())) {
-                return ResponseEntity.status(415).body("invalidTown");
-            } else {
-                addedSchool.setBannerImgPath("http://localhost:8080/coverImages/defaultCoverImg.jpg");
-                schoolRepository.save(addedSchool);
-                emailSender.sendEmailAboutSchoolRegistration(addedSchool.getEmail());
+            }  else {
+                School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
+                schoolRepository.save(newSchool);
+                emailSender.sendEmailAboutSchoolRegistration(addedSchool.email());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

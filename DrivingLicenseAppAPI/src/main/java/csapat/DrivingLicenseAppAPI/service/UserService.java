@@ -349,7 +349,7 @@ public class UserService {
         }
     }
 
-    @PreAuthorize("hasRole('administrator')")
+    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getAllUser(Pageable pageable) {
         try {
             Page<Users> allUser = userRepository.findAll(pageable);
