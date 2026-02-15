@@ -62,6 +62,7 @@ export class RegistrationPageComponent implements OnInit {
 
   registrationForm!: FormGroup;
   educationList: Education[] = []
+  errorMsg: string = ""
 
   samePasswordValidator = (
     control: AbstractControl
@@ -93,7 +94,6 @@ export class RegistrationPageComponent implements OnInit {
 
     const subscription = this.otherService.getAllEducation().subscribe({
       next: response => this.educationList = response.map(edu => Object.assign(new Education(), edu)),
-      complete: () => {console.log(this.educationList)}
     })
   }
 
@@ -112,6 +112,9 @@ export class RegistrationPageComponent implements OnInit {
 
     this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
+      error: error => {
+        console.log(error)
+      },
       complete: () => {
         this.router.navigate(['/login']);
       }
