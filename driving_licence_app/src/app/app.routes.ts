@@ -7,8 +7,6 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { ProfilPageComponent } from './components/profil-page/profil-page.component';
 import { AboutComponent } from './components/about/about.component';
 import { FaqComponent } from './components/faq/faq.component';
-import { ForSchoolsComponent } from './components/for-schools/for-schools.component';
-import { ForInstructorsComponent } from './components/for-instructors/for-instructors.component';
 import { SchoolRegistrationComponent } from './components/school-registration/school-registration.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
@@ -24,8 +22,6 @@ export const routes: Routes = [
   { path: 'profil/:type/:id', component: ProfilPageComponent },
   { path: 'about', component: AboutComponent },
   { path: 'faq', component: FaqComponent },
-  { path: 'for-schools', component: ForSchoolsComponent },
-  { path: 'for-instructors', component: ForInstructorsComponent },
   { path: 'page-not-found', component: PageNotFoundComponent },
   { path: 'school-registration', component: SchoolRegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
