@@ -1,4 +1,4 @@
-package csapat.DrivingLicenseAppAPI.service.other;
+package csapat.DrivingLicenseAppAPI.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

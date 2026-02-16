@@ -48,8 +48,7 @@ public class RequestService {
                 SchoolJoinRequest newSchoolJoinRequest;
                 if (searchedUser.getRole().getName().equals("ROLE_user")) {
                     DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
-                    if (searchedCategory == null || searchedCategory.getIsDeleted()) {
-                        return ResponseEntity.status(404).body("categoryNotFound");
+                    if (searchedCategory == null) {
                     }
                     Boolean isSchoolNotContainsCategory = searchedSchool.getLicenseCategoryList().stream().filter(category -> category.getLicenseCategory().getId() == categoryId).toList().isEmpty();
                     if (isSchoolNotContainsCategory) {

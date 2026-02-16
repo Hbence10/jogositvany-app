@@ -37,18 +37,6 @@ public class DrivingLicenseCategory {
     @Size(max = 2)
     private Integer minAge;
 
-
-    @Column(name = "is_deleted")
-    @NotNull
-    @JsonIgnore
-    private Boolean isDeleted = false;
-
-    @Column(name = "deleted_at")
-    @Null
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt;
-
     //Kapcsolatok:
     @OneToMany(mappedBy = "joinRequestCategory", fetch = FetchType.LAZY
 

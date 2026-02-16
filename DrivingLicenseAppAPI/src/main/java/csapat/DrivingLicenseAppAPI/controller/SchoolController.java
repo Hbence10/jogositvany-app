@@ -6,7 +6,7 @@ import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
-import csapat.DrivingLicenseAppAPI.service.other.ProfileCard;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

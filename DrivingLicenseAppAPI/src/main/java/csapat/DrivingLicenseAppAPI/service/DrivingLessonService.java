@@ -3,7 +3,7 @@ package csapat.DrivingLicenseAppAPI.service;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.service.other.HourCard;
+import csapat.DrivingLicenseAppAPI.dto.HourCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
