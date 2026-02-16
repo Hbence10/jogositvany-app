@@ -79,7 +79,6 @@ public class DrivingLessons {
 
     @Column(name = "is_cancelled")
     @NotNull
-    @JsonIgnore
     private Boolean isCancelled = false;
 
     @Column(name = "cancelled_at")

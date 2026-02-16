@@ -79,9 +79,6 @@ public class Instructors {
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "instructorsList")
-    private List<DrivingLicenseCategory> categoryList;
-
     //Constructorok:
     public Instructors(String promoText) {
         this.promoText = promoText;

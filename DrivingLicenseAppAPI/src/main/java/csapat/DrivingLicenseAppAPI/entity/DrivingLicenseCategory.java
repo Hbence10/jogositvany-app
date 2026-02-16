@@ -49,11 +49,6 @@ public class DrivingLicenseCategory {
     @JsonIgnore
     private List<School> schoolList;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "instructor_category", joinColumns = @JoinColumn(name = "instructor_id"), inverseJoinColumns = @JoinColumn(name = "driving_license_category_id"))
-    @JsonIgnore
-    private List<Instructors> instructorsList;
-
     @OneToMany(mappedBy = "selectedCategory", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Students> studentsList;
