@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavbarPhoneComponent } from './components/navbar-phone/navbar-phone.component';
+import { UsersService } from './services/users.service';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,6 +13,25 @@ import { NavbarPhoneComponent } from './components/navbar-phone/navbar-phone.com
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'driving_licence_app';
+export class AppComponent implements OnInit{
+  private userService = inject(UsersService)
+  private cookieService = inject(CookieService)
+
+  ngOnInit(): void {
+    let refreshToken: string | null = this.cookieService.get("refreshToken")
+    if (refreshToken != null) {
+      let id: number | null = null;
+      if (sessionStorage.getItem("felutonId") != null) {
+        id = +sessionStorage.getItem("felutonId")!
+      } else if (localStorage.getItem("felutonId") != null) {
+        id = +localStorage.getItem("felutonId")!
+      }
+
+      if (id != null) {
+        this.userService.getUserAfterReload(id).subscribe({
+          next: response => this.userService.loggedUser.set(response)
+        })
+      }
+    }
+  }
 }
