@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +45,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PostMapping("/{id}/joinRequest")
     public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status").asText());
@@ -74,6 +76,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Integer schoolId) {
         return schoolService.updateSchool(schoolId, requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
@@ -93,6 +96,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PatchMapping("/{id}/coverImg")
     public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
@@ -114,6 +118,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PatchMapping("/{id}/openingDetails")
     public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody List<OpeningDetails> updatedOpeningDetails) {
         return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
@@ -130,6 +135,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}/joinRequests")
     private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id, Pageable pageable) {
         return schoolService.getAllJoinRequest(id, pageable);
@@ -143,6 +149,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasAnyRole('administrator', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/{id}")
     private ResponseEntity<Object> deleteSchool(@PathVariable("id") Integer id) {
         return schoolService.deleteSchool(id);
@@ -157,6 +164,7 @@ public class SchoolController {
             )),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/search")
     private ResponseEntity<List<JsonNode>> getSchoolsBySearch(@RequestParam(value = "town", defaultValue = "Budapest") String town) {
         return schoolService.getSchoolBySearch(town);
@@ -173,6 +181,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}")
     private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id) {
         return schoolService.getSchoolById(id);
@@ -188,7 +197,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Endpoint meghívása requestBody nélkul", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
-    @PostMapping("")
+    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    @PostMapping
     private ResponseEntity<Object> createSchool(@RequestBody SchoolRegisterDto addedSchool) {
         return schoolService.createSchool(addedSchool);
     }
@@ -207,6 +217,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Endpoint meghívása parameter nélkul", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/users")
     private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role, Pageable pageable) {
         return schoolService.getMembersOfSchool(id, role, pageable);
@@ -220,6 +231,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "422", description = "Endpoint meghivása parameter nélkül.", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Integer instructorId) {
         return schoolService.kickoutInstructor(instructorId);
@@ -232,7 +244,8 @@ public class SchoolController {
             )),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
     })
-    @GetMapping("")
+    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    @GetMapping
     private ResponseEntity<Object> getAllSchool(Pageable pageable) {
         return schoolService.getAllSchool(pageable);
     }

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,7 +40,8 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghívása parameter(ek) nélkül", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("")
+    @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    @GetMapping
     public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Integer aboutId) {
         return reviewService.getReviews(about, aboutId);
     }
@@ -66,7 +68,8 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása hiányos requestBody-val", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content),
     })
-    @PostMapping("")
+    @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    @PostMapping
     public ResponseEntity<Object> addReview(@RequestBody JsonNode requestBody) {
     return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asInt(), requestBody.get("isAnonymous").asBoolean(false) , requestBody.get("instructorId").asInt(), requestBody.get("schoolId").asInt());
     }
@@ -79,6 +82,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable("id") int id) {
         return reviewService.deleteReview(id);

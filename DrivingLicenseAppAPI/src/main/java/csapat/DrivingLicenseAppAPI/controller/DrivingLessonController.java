@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -53,6 +54,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/cancel/{id}")
     public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
         return drivingLessonService.cancelDrivingLesson(id);
@@ -84,6 +86,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása requestBody nélkül.", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Integer id) {
         return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0));
@@ -102,6 +105,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása parameterek nélkül", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/reservedHour")
     public ResponseEntity<Object> getReservedHoursByDate(@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
         return drivingLessonService.getReservedHoursByDate(instructorId, date);
@@ -118,11 +122,13 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása parameter nélkül", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
     })
+    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
         return drivingLessonService.getDrivingLessonById(id);
     }
 
+    @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("reservedHours")
     public ResponseEntity<Object> getReservedHoursBetweenDates(@RequestParam("instructorId") Integer instructorId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         return drivingLessonService.getReservedHoursBetweenDates(instructorId, startDate, endDate);

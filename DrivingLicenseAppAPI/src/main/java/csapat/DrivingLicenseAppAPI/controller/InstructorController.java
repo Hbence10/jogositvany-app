@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PostMapping("/handleJoinRequest")
     private ResponseEntity<Object> handleJoinRequest(@RequestBody JsonNode requestBody) {
         return instructorService.handleRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
@@ -61,6 +63,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}/joinRequest")
     private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
         return instructorService.getAllJoinRequestByInstructor(id, pageable);
@@ -77,6 +80,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}/drivingLessonRequest")
     private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId, Pageable pageable) {
         return instructorService.getDrivingLessonRequestByInstructor(instructorId, pageable);
@@ -106,6 +110,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PutMapping("/{id}")
     private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Integer instructorId) {
         return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
@@ -126,6 +131,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PostMapping("/handleDrivingLessonRequest")
     private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody) {
         return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
@@ -144,7 +150,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("")
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
+    @GetMapping
     private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Integer fuelTypeId, @RequestParam("school") Integer schoolId, @RequestParam("category") Integer category) {
         return instructorService.getInstructorsBySearch(fuelTypeId, schoolId, category);
     }
@@ -160,6 +167,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
     @GetMapping("/{id}")
     private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
         return instructorService.getInstructorById(id);
@@ -176,12 +184,14 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}/students")
     private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
         return instructorService.getStudentsByInstructor(id, pageable);
     }
 
     @Operation(summary = "", description = "")
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Integer studentId) {
         return instructorService.kickoutStudent(studentId);
