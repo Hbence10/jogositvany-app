@@ -16,6 +16,7 @@ export class UsersService {
   private router = inject(Router);
   private cookieService = inject(CookieService)
   loggedUser =  signal<null | HomePageUser>(null)
+  isRemember: boolean = false;
 
   constructor() { }
 
@@ -25,6 +26,8 @@ export class UsersService {
 
   logout(){
     this.cookieService.deleteAll()
+    sessionStorage.clear()
+    localStorage.clear()
     this.loggedUser.set(null);
     this.router.navigate(['/login']);
   }
@@ -55,7 +58,7 @@ export class UsersService {
       lastName: lastName,
       email: email,
       phone: phone,
-      birthDateText: birthDateText,
+      birthDate: birthDateText,
       gender: gender,
       educationId: educationId
     })
@@ -71,5 +74,13 @@ export class UsersService {
 
   getAllUser(pageNumber: number = 0): Observable<HttpResponse<any>> {
     return this.http.get<any>(`${this.baseUrl}?page=${pageNumber}&size=10`, {observe: "response"})
+  }
+
+  getUserAfterReload(id: number):Observable<HomePageUser> {
+    return this.http.get<HomePageUser>(`${this.baseUrl}/${id}?isLogin=true`)
+  }
+
+  getAllUserWithoutPaginator(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}`)
   }
 }
