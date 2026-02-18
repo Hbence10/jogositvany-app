@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DrivingLessons } from '../models/driving-lessons.model';
 import { SchoolCategory } from '../models/schoolCategory.model';
+import { HourCard } from '../models/notEntity/hourCard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,15 @@ export class DrivingLessonService {
     return this.http.put(`${this.baseUrl}/${id}`, body)
   }
 
-  getReservedHourByDate(instructorId: number, wantedDate: string): Observable<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]> {
-    return this.http.get<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>(`${this.baseUrl}/reservedHour?instructorId=${instructorId}&date=${wantedDate}`)
+  getReservedHourByDate(instructorId: number, wantedDate: string): Observable<HourCard[]> {
+    return this.http.get<HourCard[]>(`${this.baseUrl}/reservedHour?instructorId=${instructorId}&date=${wantedDate}`)
   }
 
   getDrivingLessonById(id: number): Observable<DrivingLessons> {
     return this.http.get<DrivingLessons>(`${this.baseUrl}/${id}`)
+  }
+
+  getReservedHoursBetweenDates(instructorId: number, startDate: string, endDate: string): Observable<HourCard[]> {
+    return this.http.get<HourCard[]>(`${this.baseUrl}/reservedHours?instructorId=${instructorId}&startDate=${startDate}&endDate=${endDate}`)
   }
 }

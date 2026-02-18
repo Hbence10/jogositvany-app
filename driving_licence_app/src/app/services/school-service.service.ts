@@ -46,7 +46,7 @@ export class SchoolServiceService {
     return this.http.delete(`${this.baseUrl}/${schoolId}`)
   }
 
-  createSchool(newSchool: {id: null, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string, owner: User}) {
+  createSchool(newSchool: {schoolName: string, email: string, phoneNumber: string, county: string, town: string, address: string, promoText: string, ownerId: number}) {
     return this.http.post(`${this.baseUrl}`, newSchool)
   }
 

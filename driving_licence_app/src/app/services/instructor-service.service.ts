@@ -31,7 +31,7 @@ export class InstructorServiceService {
   }
 
   updateInstructor(instructorId: number, promoText: string, vehicleId: number, vehicleName: string, licensePlate: string, fuelTypeId: number, vehicleTypeId: number): Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/update/${instructorId}`, {
+    return this.http.put<User>(`${this.baseUrl}/${instructorId}`, {
       promoText: promoText,
       vehicleId: vehicleId,
       vehicleName: vehicleName,
