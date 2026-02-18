@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -154,7 +153,6 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId, @RequestBody JsonNode requestBody) {
         return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDate").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
@@ -174,7 +172,6 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @PatchMapping("/pfp/{id}")
     public ResponseEntity<Object> updatePfp(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file) {
         return userService.updatePfp(id, file);
@@ -189,7 +186,6 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id) {
         return userService.deleteUser(id);
@@ -206,7 +202,6 @@ public class UserController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUserById(@PathVariable("id") Integer id, @RequestParam(value = "isLogin", defaultValue = "false", required = false) Boolean isLogin) {
         return userService.getUserById(id, isLogin);
@@ -219,8 +214,7 @@ public class UserController {
             )),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
-    @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    @GetMapping
+    @GetMapping("")
     public ResponseEntity<Object> getAllUser(Pageable pageable) {
         return userService.getAllUser(pageable);
     }

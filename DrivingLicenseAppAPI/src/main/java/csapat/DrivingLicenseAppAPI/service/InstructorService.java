@@ -46,6 +46,7 @@ public class InstructorService {
     private final ReservedHourRepository reservedHourRepository;
     private final ReservedDateRepository reservedDateRepository;
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
         try {
             if (requestId == null || status == null) {
@@ -78,6 +79,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id, Pageable pageable) {
         try {
             if (id == null) {
@@ -97,6 +99,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId, Pageable pageable) {
         try {
             if (instructorId == null) {
@@ -116,6 +119,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateInstructor(Integer instructorId, String promoText, Integer vehicleId, String vehicleName, String licensePlate, Integer fuelTypeId, Integer vehicleTypeId) {
         try {
             if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
@@ -154,6 +158,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
         try {
             if (requestId == null || status == null) {
@@ -193,6 +198,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
     public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId, Integer categoryId) {
         try {
             if (fuelTypeId == null || schoolId == null) {
@@ -228,6 +234,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
     public ResponseEntity<Instructors> getInstructorById(Integer id) {
         try {
             if (id == null) {
@@ -246,6 +253,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getStudentsByInstructor(Integer id, Pageable pageable) {
         try {
             if (id == null) {
@@ -268,6 +276,7 @@ public class InstructorService {
         }
     }
 
+    @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> kickoutStudent(Integer studentId){
         try {
             if (studentId == null) {
