@@ -1,5 +1,3 @@
-import { DrivingLessons } from './driving-lessons.model';
-
 export class DrivingLicenseCategory {
   constructor(
     public id: number,

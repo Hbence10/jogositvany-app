@@ -1,4 +1,3 @@
-
 export class OpeningDetails {
   constructor(
     public id: number,

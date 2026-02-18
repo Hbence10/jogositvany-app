@@ -1,4 +1,3 @@
-
 export class ReservedHour {
   constructor(
     public id: number,
