@@ -1,0 +1,226 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > RequestController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">csapat.DrivingLicenseAppAPI.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: RequestController (csapat.DrivingLicenseAppAPI.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RequestController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RequestController$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package csapat.DrivingLicenseAppAPI.controller;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
+&nbsp;import csapat.DrivingLicenseAppAPI.service.RequestService;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.media.SchemaProperty;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.web.bind.annotation.PostMapping;
+&nbsp;import org.springframework.web.bind.annotation.RequestBody;
+&nbsp;import org.springframework.web.bind.annotation.RequestMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;
+&nbsp;import java.text.DateFormat;
+&nbsp;import java.text.SimpleDateFormat;
+&nbsp;import java.util.Locale;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/request&quot;)
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class RequestController {
+&nbsp;
+&nbsp;    private final RequestService requestService;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskolához való csatlakozás&quot;, description = &quot;Az iskolához való csatlakozási kérelem küldése.&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = &quot;3db attributuma van a body-nak. A schoolId a kivánt iskolához tartozó id, a userId az adott felhasználóhoz tartozó id, a requestedRole meg a kivánt szerep (student vagy instructor).&quot;, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;schoolId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A csatlakozandó iskola id-ja&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;userId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A felhasználóhoz tartozó id.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;categoryId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A kiválasztott jogsi kategóriához tartozó id.&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kérelem küldés&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskola/felhasználó vagy rossz role-t add meg a felhasználó&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;instructor&#39;, &#39;user&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PostMapping(&quot;/school&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; sendSchoolJoinRequest(@RequestBody JsonNode requestBody) {
+<b class="nc">&nbsp;        return requestService.sendSchoolJoinRequest(requestBody.get(&quot;schoolId&quot;).asInt(), requestBody.get(&quot;userId&quot;).asInt(), requestBody.get(&quot;categoryId&quot;).asInt());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Oktatóhoz való csatlakozás&quot;, description = &quot;Az oktatóhoz való csatlakozási kérelem küldése.&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = &quot;2db attributuma van. A studentId az adott tanulóhoz tartozó id, az instructorId az adott instructorhoz (oktatóhoz) tartozó id.&quot;, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;studentId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A diákhoz tartozó id&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;instructorId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;Az oktatóhoz tartozó id&quot;))
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kérelem küldés&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező student küldi a kérelmet vagy egy nem létező instructor-hoz szeretne csatlakozni a student.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;student&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PostMapping(&quot;/instructor&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; sendInstructorJoinRequest(@RequestBody JsonNode requestBody) {
+<b class="nc">&nbsp;        return requestService.sendInstructorJoinRequest(requestBody.get(&quot;studentId&quot;).asInt(), requestBody.get(&quot;instructorId&quot;).asInt());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Órához való kérelem küldése&quot;, description = &quot;Vezetési óra igénylése az adott oktatótol.&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A kérelem object-je&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;msg&quot;, schema = @Schema(implementation = String.class, description = &quot;Az oktatónak szánt üzenet. (Ez opcionális)&quot;, nullable = true)),
+&nbsp;                    @SchemaProperty(name = &quot;date&quot;, schema = @Schema(implementation = String.class, description = &quot;A kivánt dátum, amikor vezetni szeretne a diák.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;startTime&quot;, schema = @Schema(implementation = String.class, description = &quot;A kivánt kezdési idő.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;endTime&quot;, schema = @Schema(implementation = String.class, description = &quot;A kivánt befejezési idő.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;studentId&quot;, schema = @Schema(implementation = String.class, description = &quot;Az küldő diákhoz tartozó id.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;instructorId&quot;, schema = @Schema(implementation = String.class, description = &quot;A diákhoz tartozó oktatónak az id-ja.&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kérelem küldése&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező oktató vagy diák megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Vagy a küldött object id-ja null, vagy rossz a kezdő és a vég idő, vagy rossz oktató megadása.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;student&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PostMapping(&quot;/drivingLesson&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; sendDrivingLessonRequest(@RequestBody JsonNode requestBody) {
+<b class="nc">&nbsp;        DateFormat dateWithTimeFormat = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;, Locale.GERMAN);</b>
+<b class="nc">&nbsp;        DateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.GERMAN);</b>
+&nbsp;
+&nbsp;        try {
+<b class="nc">&nbsp;            return requestService.sendDrivingLessonRequest(</b>
+<b class="nc">&nbsp;                    requestBody.get(&quot;msg&quot;).asText(),</b>
+<b class="nc">&nbsp;                    dateFormat.parse((requestBody.get(&quot;date&quot;).asText())),</b>
+<b class="nc">&nbsp;                    dateWithTimeFormat.parse((requestBody.get(&quot;startTime&quot;).asText())),</b>
+<b class="nc">&nbsp;                    dateWithTimeFormat.parse((requestBody.get(&quot;endTime&quot;).asText())),</b>
+<b class="nc">&nbsp;                    requestBody.get(&quot;studentId&quot;).asInt(),</b>
+<b class="nc">&nbsp;                    requestBody.get(&quot;instructorId&quot;).asInt());</b>
+&nbsp;
+&nbsp;        } catch (Exception e) {
+<b class="nc">&nbsp;            e.printStackTrace();</b>
+<b class="nc">&nbsp;            return ResponseEntity.internalServerError().build();</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-02-18 19:45</div>
+</div>
+</body>
+</html>

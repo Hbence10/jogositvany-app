@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<suite name="Group Suite">
-    <test name="Group Test">
-        <classes>
-            <class name="csapat.DrivingLicenseAppAPI.other.ValidatorCollectionTest"/>
-        </classes>
-    </test>
-</suite>

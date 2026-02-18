@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,24 +16,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SchoolService {
 
@@ -282,7 +278,7 @@ public class SchoolService {
                 return ResponseEntity.status(415).body("invalidEmail");
             } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
                 return ResponseEntity.status(415).body("invalidPhone");
-            }  else {
+            } else {
                 School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
                 schoolRepository.save(newSchool);
                 emailSender.sendEmailAboutSchoolRegistration(addedSchool.email());
@@ -300,7 +296,7 @@ public class SchoolService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (!role.equals("students") && !role.equals("instructors")){
+            if (!role.equals("students") && !role.equals("instructors")) {
                 return ResponseEntity.status(415).build();
             }
 
@@ -316,7 +312,7 @@ public class SchoolService {
                     returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
                 }
 
-            } else if (role.equals("instructors")){
+            } else if (role.equals("instructors")) {
                 List<Instructors> studentsList = schoolRepository.getAllInstructor(schoolId, pageable).toList();
                 for (Instructors i : studentsList) {
                     returnList.add(new ProfileCard(i.getId(), i.getInstructorUser().getFirstName() + " " + i.getInstructorUser().getLastName(), i.getInstructorUser().getPfpPath(), i.getInstructorUser().getId()));
@@ -342,7 +338,7 @@ public class SchoolService {
                 return ResponseEntity.notFound().build();
             } else {
                 searchedInstructor.setInstructorSchool(null);
-                for (Students i : searchedInstructor.getStudents()){
+                for (Students i : searchedInstructor.getStudents()) {
                     i.setStudentInstructor(null);
                     studentRepository.save(i);
                 }
@@ -369,7 +365,7 @@ public class SchoolService {
             }
 
             HttpHeaders header = new HttpHeaders();
-            header.add("PageNumber", allSchool.getTotalPages()+"");
+            header.add("PageNumber", allSchool.getTotalPages() + "");
 
             return new ResponseEntity<>(returnList, header, HttpStatus.OK);
         } catch (Exception e) {

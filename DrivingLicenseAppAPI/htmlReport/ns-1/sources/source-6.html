@@ -1,0 +1,372 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > SchoolController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">csapat.DrivingLicenseAppAPI.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: SchoolController (csapat.DrivingLicenseAppAPI.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SchoolController</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (2/14)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SchoolController$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    7.7%
+  </span>
+  <span class="absValue">
+    (1/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (2/14)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package csapat.DrivingLicenseAppAPI.controller;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.School;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
+&nbsp;import csapat.DrivingLicenseAppAPI.service.SchoolService;
+&nbsp;import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.Parameter;
+&nbsp;import io.swagger.v3.oas.annotations.Parameters;
+&nbsp;import io.swagger.v3.oas.annotations.enums.ParameterIn;
+&nbsp;import io.swagger.v3.oas.annotations.media.*;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/school&quot;)
+&nbsp;//@RequiredArgsConstructor
+&nbsp;public class SchoolController {
+&nbsp;
+&nbsp;    private final SchoolService schoolService;
+&nbsp;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public SchoolController(SchoolService schoolService) {</b>
+<b class="fc">&nbsp;        this.schoolService = schoolService;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskolához való jelentkezés eldöntése&quot;, description = &quot;Az iskolához való jelentkezési kérelem eldöntése, hogy elfogadja-e a felhasználó jelentkezését vagy nem.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az adott csatlakozási kérelemhez tartozó id.&quot;, in = ParameterIn.PATH)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A kérelemre adott status, hogy elfogadták (accept) vagy hogy elutasították (refuse)&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;status&quot;, schema = @Schema(implementation = String.class, description = &quot;Csak accept vagy refuse lehet&quot;))
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kérelem kezelés.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskolához való borítókép felöltés.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Nem létező status megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PostMapping(&quot;/{id}/joinRequest&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; handleJoinRequest(@PathVariable(&quot;id&quot;) Integer joinRequestId, @RequestBody JsonNode requestBody) {
+<b class="nc">&nbsp;        return schoolService.handleJoinRequest(joinRequestId, requestBody.get(&quot;status&quot;).asText());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola frissitése&quot;, description = &quot;Az iskola adatainak a frissitése. Minden adat frissitése kivéve a boritókép és a nyitvatartás.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az iskolához tartozó id.&quot;, in = ParameterIn.PATH, required = true)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A frissitett iskolának az object-je&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;name&quot;, schema = @Schema(implementation = String.class, description = &quot;Az iskola neve&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;email&quot;, schema = @Schema(implementation = String.class, description = &quot;Az iskola e-mail cime&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;phone&quot;, schema = @Schema(implementation = String.class, description = &quot;Az iskola telefonszáma&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;country&quot;, schema = @Schema(implementation = String.class, description = &quot;Az a vármegye amelyben az iskola tartozkodik&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;town&quot;, schema = @Schema(implementation = String.class, description = &quot;Az a város amelyben az iskola tartozkodik&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;address&quot;, schema = @Schema(implementation = String.class, description = &quot;Az iskola cime&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;promoText&quot;, schema = @Schema(implementation = String.class, description = &quot;Az iskola bemutatkozó szövege&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres frissités.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = School.class, description = &quot;A frissitett iskola object&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskolát szeretett volna a felhasználó frissiteni.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;Már regisztrált email vagy telefonszám megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Felépitésben nem megfelelő email cím vagy telefonszám.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updateSchool(@RequestBody JsonNode requestBody, @PathVariable(&quot;id&quot;) Integer schoolId) {
+<b class="nc">&nbsp;        return schoolService.updateSchool(schoolId, requestBody.get(&quot;name&quot;).asText(null), requestBody.get(&quot;email&quot;).asText(null), requestBody.get(&quot;phone&quot;).asText(null), requestBody.get(&quot;country&quot;).asText(null), requestBody.get(&quot;town&quot;).asText(null), requestBody.get(&quot;address&quot;).asText(null), requestBody.get(&quot;promoText&quot;).asText(null));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola boritókép csere.&quot;)
+&nbsp;    @Parameters({
+&nbsp;            @Parameter(name = &quot;id&quot;, description = &quot;Az adott fiókhoz tartozó id.&quot;, in = ParameterIn.PATH),
+&nbsp;            @Parameter(name = &quot;image&quot;, description = &quot;A feltöltött boritókép.&quot;)
+&nbsp;    })
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres boritókép csere.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = School.class, description = &quot;A frissitett bórítóképpel rendelkezett iskola object-je.&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskolához való borítókép felöltés.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PatchMapping(&quot;/{id}/coverImg&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; changeCoverImg(@PathVariable(&quot;id&quot;) Integer id, @RequestParam(&quot;image&quot;) MultipartFile coverImg) {
+<b class="nc">&nbsp;        return schoolService.changeCoverImg(id, coverImg);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Nyitvatartás modósitása.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az adott iskolához tartozó id.&quot;, in = ParameterIn.PATH)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;Az iskolához tartozó frissitetett nyitvatartási lista&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            array = @ArraySchema(schema = @Schema(implementation = OpeningDetails.class))
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres nyitvatartás frissités.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = School.class, description = &quot;A frissitett nyitvatartást tartalmazó iskola object.&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskolához való nyitvatartás frissités.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Érvénytelen nyitás és zárás óra kombináció.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PatchMapping(&quot;/{id}/openingDetails&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updateOpeningDetails(@PathVariable(&quot;id&quot;) Integer id, @RequestBody List&lt;OpeningDetails&gt; updatedOpeningDetails) {
+<b class="nc">&nbsp;        return schoolService.updateOpeningDetails(id, updatedOpeningDetails);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskalához tartozó csatlakozási kérelmek lekérdezése&quot;, description = &quot;Az adott iskolához tartozó csatlakozás kérelmek lekérdezése&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az adott iskolához tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kérelemek lekérdezése&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = SchoolJoinRequest.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Egy nem létező iskolához tartozó kérelmek lekérdezése&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/{id}/joinRequests&quot;)
+&nbsp;    private ResponseEntity&lt;List&lt;SchoolJoinRequest&gt;&gt; getAllJoinRequest(@PathVariable(&quot;id&quot;) Integer id, Pageable pageable) {
+<b class="nc">&nbsp;        return schoolService.getAllJoinRequest(id, pageable);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola törlése&quot;, description = &quot;Az adott iskola törlése id alapján.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az adott iskolához tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres iskola törlés&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Egy nem létező iskola törlése&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;administrator&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; deleteSchool(@PathVariable(&quot;id&quot;) Integer id) {
+<b class="nc">&nbsp;        return schoolService.deleteSchool(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Kereso
+&nbsp;    @Operation(summary = &quot;Iskolák keresése&quot;, description = &quot;Iskola keresése város alapján&quot;)
+&nbsp;    @Parameter(name = &quot;town&quot;, description = &quot;A keresett iskolához tartozó város.&quot;, in = ParameterIn.QUERY)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/search&quot;)
+&nbsp;    private ResponseEntity&lt;List&lt;JsonNode&gt;&gt; getSchoolsBySearch(@RequestParam(value = &quot;town&quot;, defaultValue = &quot;Budapest&quot;) String town) {
+<b class="nc">&nbsp;        return schoolService.getSchoolBySearch(town);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola id alapján&quot;, description = &quot;Iskola lekérdezése id alapján.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az iskolához tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = School.class, description = &quot;A keresett iskola.&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Egy nem létező iskola lekérdezése&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    private ResponseEntity&lt;School&gt; getSchoolById(@PathVariable(&quot;id&quot;) Integer id) {
+<b class="nc">&nbsp;        return schoolService.getSchoolById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola létrehozása&quot;, description = &quot;&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A létrehozandó iskola objectje&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schema = @Schema(implementation = School.class, description = &quot;Az id-nak null-nak kell hogy legyen&quot;)
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres iskola létrehozás&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Endpoint meghívása requestBody nélkul&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;administrator&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PostMapping
+&nbsp;    private ResponseEntity&lt;Object&gt; createSchool(@RequestBody SchoolRegisterDto addedSchool) {
+<b class="nc">&nbsp;        return schoolService.createSchool(addedSchool);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskola tagjainak lekérdezése&quot;, description = &quot;Az adott iskolához tartozó tagok lekérdezése&quot;)
+&nbsp;    @Parameters({
+&nbsp;            @Parameter(name = &quot;schoolId&quot;, description = &quot;Az iskolához tartozó id.&quot;, in = ParameterIn.QUERY, required = true),
+&nbsp;            @Parameter(name = &quot;role&quot;, description = &quot;A lekérdezni való tagok beosztása. Csak student vagy instructor értéke lehet.&quot;, in = ParameterIn.QUERY, required = true),
+&nbsp;    })
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = ProfileCard.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskola megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Endpoint meghívása parameter nélkul&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/users&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; getMembersOfSchool(@RequestParam(&quot;schoolId&quot;) Integer id, @RequestParam(&quot;role&quot;) String role, Pageable pageable) {
+<b class="nc">&nbsp;        return schoolService.getMembersOfSchool(id, role, pageable);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Oktató kirugása&quot;, description = &quot;Az iskolábol az adott oktató kirugása&quot;)
+&nbsp;    @Parameter(name = &quot;instructorId&quot;, description = &quot;Az adott oktatóhoz tartozó id&quot;, required = true, in = ParameterIn.QUERY)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres kirugás&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező oktatóhoz tartozó id.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Endpoint meghivása parameter nélkül.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;school_admin&#39;, &#39;school_owner&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @DeleteMapping(&quot;/kickout&quot;)
+&nbsp;    private ResponseEntity&lt;Object&gt; kickOutMember(@RequestParam(&quot;instructorId&quot;) Integer instructorId) {
+<b class="nc">&nbsp;        return schoolService.kickoutInstructor(instructorId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Az összes iskola lekérdezése&quot;, description = &quot;Az összes iskola lekérdezése röviditett formában&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;administrator&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping
+&nbsp;    private ResponseEntity&lt;Object&gt; getAllSchool(Pageable pageable) {
+<b class="nc">&nbsp;        return schoolService.getAllSchool(pageable);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-02-18 19:45</div>
+</div>
+</body>
+</html>

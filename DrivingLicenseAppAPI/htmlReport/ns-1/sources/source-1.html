@@ -1,0 +1,250 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > DrivingLessonController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">csapat.DrivingLicenseAppAPI.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: DrivingLessonController (csapat.DrivingLicenseAppAPI.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DrivingLessonController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DrivingLessonController$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package csapat.DrivingLicenseAppAPI.controller;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.SchoolCategory;
+&nbsp;import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
+&nbsp;import csapat.DrivingLicenseAppAPI.dto.HourCard;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.Parameter;
+&nbsp;import io.swagger.v3.oas.annotations.Parameters;
+&nbsp;import io.swagger.v3.oas.annotations.enums.ParameterIn;
+&nbsp;import io.swagger.v3.oas.annotations.media.ArraySchema;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.media.SchemaProperty;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/drivingLesson&quot;)
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class DrivingLessonController {
+&nbsp;
+&nbsp;    private final DrivingLessonService drivingLessonService;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Jogositvány ketegóriák iskola szerint&quot;, description = &quot;Az adott iskolához tartozó kategóriák lekérdezése. (Az árlistához használjuk)&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;Az iskolához tartozó id.&quot;, in = ParameterIn.PATH, required = true, schema = @Schema(implementation = Integer.class))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = SchoolCategory.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező iskolához tartozó id megadása.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghívása parameter nélkül.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/categories/school/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getDrivingLicenseCategoriesBySchool(@PathVariable(&quot;id&quot;) Integer schoolId) {
+<b class="nc">&nbsp;        return drivingLessonService.getDrivingLicenseCategoriesBySchool(schoolId);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Óra lemondása&quot;, description = &quot;Óra lemondása id alapján&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A vezetés órához tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres óra lemondás&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = DrivingLessons.class, description = &quot;A lemondott órának a \&quot;frissitett\&quot; objectje&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Olyan diák adatait szeretné lekérni, amely nem létzik.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;instructor&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @DeleteMapping(&quot;/cancel/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; cancelDrivingLesson(@PathVariable(&quot;id&quot;) Integer id) {
+<b class="nc">&nbsp;        return drivingLessonService.cancelDrivingLesson(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;A vezetési óra frissitése&quot;, description = &quot;A vezetési óra adatainak a frissitése, kivétel az időpont frissitése.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A vezetési órához tartozó id.&quot;, required = true, in = ParameterIn.PATH, schema = @Schema(implementation = Integer.class))
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A frissitett vezetési óra adatait tartalmazó object.&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;startKm&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A kilométer óra állása az óra kezdetekor&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;endKm&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A kilométer óra állása az óra végekor&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;location&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;pickUpPlace&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;dropOffPlace&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;lessonHourNumber&quot;, schema = @Schema(implementation = Integer.class, description = &quot;Az adott vezetési alkalom mennyi órának felel meg.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;isPaid&quot;, schema = @Schema(implementation = Boolean.class, description = &quot;Azt mutatja, hogy fizetve van-e az óra.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;statusId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;Az óra állapotának az id-ja&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;paymentMethodId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;A fizetési tipus id-ja&quot;))
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres frissités.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = DrivingLessons.class, description = &quot;A frissitett óra object-je&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező status vagy fizetési módszer megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Invalid adatok megadása: az object id-ja egyenlő nullal, a startKm nagyobb mint az endKm vagy a lessonHourNumber egyenlő 0-val&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghivása requestBody nélkül.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;instructor&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable(&quot;id&quot;) Integer id) {
+<b class="nc">&nbsp;        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get(&quot;startKm&quot;).asInt(0), updatedDrivingLesson.get(&quot;endKm&quot;).asInt(0), updatedDrivingLesson.get(&quot;location&quot;).asText(null), updatedDrivingLesson.get(&quot;pickUpPlace&quot;).asText(null), updatedDrivingLesson.get(&quot;dropOffPlace&quot;).asText(null), updatedDrivingLesson.get(&quot;lessonHourNumber&quot;).asInt(0), updatedDrivingLesson.get(&quot;isPaid&quot;).asBoolean(), updatedDrivingLesson.get(&quot;statusId&quot;).asInt(0), updatedDrivingLesson.get(&quot;paymentMethodId&quot;).asInt(0));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;A lefoglalt órák lekérdezése&quot;, description = &quot;A lefoglalt órák lekérdezése az adott oktatónak az adott dátum alapján&quot;)
+&nbsp;    @Parameters({
+&nbsp;            @Parameter(name = &quot;instructoroId&quot;, description = &quot;Az adott oktatóhoz tartozó id&quot;, in = ParameterIn.QUERY, required = true, schema = @Schema(implementation = Integer.class)),
+&nbsp;            @Parameter(name = &quot;date&quot;, description = &quot;A dátum amelyikről tudni szeretnénk a lefoglalt órákat.&quot;, in = ParameterIn.QUERY, required = true, schema = @Schema(implementation = String.class))
+&nbsp;    })
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = HourCard.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghivása parameterek nélkül&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;instructor&#39;, &#39;student&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/reservedHour&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getReservedHoursByDate(@RequestParam(&quot;instructorId&quot;) Integer instructorId, @RequestParam(&quot;date&quot;) String date) {
+<b class="nc">&nbsp;        return drivingLessonService.getReservedHoursByDate(instructorId, date);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Vezetési óra lekérdezése id alapján&quot;, description = &quot;&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A vezetési órához tartozó id.&quot;, in = ParameterIn.PATH, required = true)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = DrivingLessons.class)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező vezetési órához tartozó id megadása.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghivása parameter nélkül&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;instructor&#39;, &#39;student&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getDrivingLessonById(@PathVariable(&quot;id&quot;) Integer id) {
+<b class="nc">&nbsp;        return drivingLessonService.getDrivingLessonById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @PreAuthorize(&quot;(hasAnyRole(&#39;instructor&#39;, &#39;student&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;reservedHours&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getReservedHoursBetweenDates(@RequestParam(&quot;instructorId&quot;) Integer instructorId, @RequestParam(&quot;startDate&quot;) String startDate, @RequestParam(&quot;endDate&quot;) String endDate) {
+<b class="nc">&nbsp;        return drivingLessonService.getReservedHoursBetweenDates(instructorId, startDate, endDate);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-02-18 19:45</div>
+</div>
+</body>
+</html>

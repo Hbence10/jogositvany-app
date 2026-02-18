@@ -1,0 +1,341 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > UserController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">csapat.DrivingLicenseAppAPI.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: UserController (csapat.DrivingLicenseAppAPI.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserController</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserController$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/10)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package csapat.DrivingLicenseAppAPI.controller;
+&nbsp;
+&nbsp;import com.fasterxml.jackson.databind.JsonNode;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.Users;
+&nbsp;import csapat.DrivingLicenseAppAPI.service.UserService;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.Parameter;
+&nbsp;import io.swagger.v3.oas.annotations.Parameters;
+&nbsp;import io.swagger.v3.oas.annotations.enums.ParameterIn;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.media.SchemaProperty;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.data.domain.Pageable;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;import org.springframework.web.multipart.MultipartFile;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/users&quot;)
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class UserController {
+&nbsp;
+&nbsp;    private final UserService userService;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Bejelentkezés&quot;, description = &quot;Az email és jelszó alapján visszaad egy User objectet.&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;Az email-t és jelszót tartalmazó object.&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;email&quot;, schema = @Schema(implementation = String.class, description = &quot;A felhasználó által megadott email.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;password&quot;, schema = @Schema(implementation = String.class, description = &quot;A felhasználó általt megadott jelszó.&quot;))
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres bejelentkezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = Users.class)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;A bejelentkezés sikertelen volt és nem talált olyan User-t az adatbázisban.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;A felhasználó felépítésében helytelen email címet adott meg.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghivása requestBody vagy rosszul felépitett requestBody-val&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PostMapping(&quot;/login&quot;)
+&nbsp;    public ResponseEntity&lt;JsonNode&gt; login(@RequestBody JsonNode loginBody) {
+<b class="fc">&nbsp;        return userService.login(loginBody.get(&quot;email&quot;).asText(), loginBody.get(&quot;password&quot;).asText());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Regisztráció&quot;, description = &quot;Új profil létrehozása.&quot;)
+&nbsp;    @Parameter(name = &quot;registerAs&quot;, description = &quot;Megmutatja, hogy miként fog a felhasználó regisztrálni. Az értéke csak student vagy instructor lehet.&quot;, in = ParameterIn.PATH, required = true)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, description = &quot;Az új felhasználó objectje. Az object id attributumának null-nak kell, hogy legyen.&quot;, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schema = @Schema(implementation = Users.class)
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres regisztráció.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező education attributumnál.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;Már regisztrált e-maillel vagy telefonszámmal történő regisztrálás&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PostMapping(&quot;/register/{registerAs}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; register(@RequestBody Users newUser, @PathVariable(&quot;registerAs&quot;) String registerAs) {
+<b class="fc">&nbsp;        return userService.register(newUser, registerAs);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //password reset
+&nbsp;    @Operation(summary = &quot;Verifikációs kód megszerzése&quot;, description = &quot;A password resetkor ez az endpoint generál egy hitelesitő kódot. Az endpoint email alapján azonosítja be a user-t.&quot;)
+&nbsp;    @Parameters({
+&nbsp;            @Parameter(name = &quot;email&quot;, description = &quot;Az az email cím amelyre a felhasználó szeretné megszerezni a hitelesitő kódót&quot;, required = true)
+&nbsp;    })
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres regisztráció.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Nem létező education attributumnál.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/getVerificationCode&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getVerificationCode(@RequestParam(&quot;email&quot;) String email) {
+<b class="fc">&nbsp;        return userService.getVerificationCode(email);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Verifikációs kód ellenőrzése&quot;, description = &quot;Az adott verifikációs kód helyességét ellenőrzi. Az endpoint az adott kódot és egy email címet fog bekérni.&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;vCode&quot;, schema = @Schema(implementation = String.class, description = &quot;A user által beírt hitelesitő kód.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;email&quot;, schema = @Schema(implementation = String.class, description = &quot;Az email cím amelyre kapta a hitelesitő kódot.&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Helyes hitelesitő kód megadása.&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = Boolean.class, name = &quot;success&quot;, description = &quot;Azt mutatja meg, hogy megfelelő kódot adott-e meg a felhasználó.&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Ha a user által beírt hitelesitő kód nem megfelelő&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Ha a felhasználó felépítésében helytelen jelszavat, email címet vagy telefonszámot add meg.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PostMapping(&quot;/checkVerificationCode&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; checkVerificationCode(@RequestBody JsonNode body) {
+<b class="fc">&nbsp;        return userService.checkVerificationCode(body.get(&quot;vCode&quot;).asText(null), body.get(&quot;email&quot;).asText(null));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Jelszó módosítás&quot;, description = &quot;Jelszó módosítás&quot;)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A módositáshoz szükséges adatokat tárolja. A fiókhoz tartozó email-t és az új jelszót.&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;email&quot;, schema = @Schema(implementation = String.class, description = &quot;A felhasználó által megadott e-mail cím. Az e-mail címnek szerepelnie kell az adatbázisban.&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;newPassword&quot;, schema = @Schema(implementation = String.class, description = &quot;A felhasználó által megadott új jelszó. A jelszó legalább 8, legfeljebb 16 karakter hosszú lehet. Tartalmaznia kell kisbetűt, nagybetűt, számot és speciális karaktert.&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres jelszó módositás&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;A felhasználó által megadott fiók nem létezik&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;Szerkezetileg helytelen e-mail cím vagy jelszó&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Az endpoint meghivása request body nélkül&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PatchMapping(&quot;/passwordReset&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updatePassword(@RequestBody JsonNode body) {
+<b class="fc">&nbsp;        return userService.updatePassword(body.get(&quot;email&quot;).asText(), body.get(&quot;newPassword&quot;).asText());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Frissitesek:
+&nbsp;    @Operation(summary = &quot;Profil frissitése&quot;, description = &quot;Az adott profilnak az adatait változtatja meg.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A felhasználóhoz tartozó id.&quot;, in = ParameterIn.PATH, required = true)
+&nbsp;    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = &quot;A frisstet fiók User object-je.&quot;, required = true, content = @Content(
+&nbsp;            mediaType = &quot;application/json&quot;,
+&nbsp;            schemaProperties = {
+&nbsp;                    @SchemaProperty(name = &quot;firstName&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;lastName&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;email&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;phone&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;birthDate&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;gender&quot;, schema = @Schema(implementation = String.class, description = &quot;&quot;)),
+&nbsp;                    @SchemaProperty(name = &quot;educationId&quot;, schema = @Schema(implementation = Integer.class, description = &quot;&quot;)),
+&nbsp;            }
+&nbsp;    ))
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres adat(ok) frissités&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = Users.class)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;Már regisztrált email vagy telefonszám megadása&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;415&quot;, description = &quot;A felhasználó felépítésében helytelen email címet, jelszót vagy telefonszámot adott meg.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updateUser(@PathVariable(&quot;id&quot;) Integer userId, @RequestBody JsonNode requestBody) {
+<b class="fc">&nbsp;        return userService.updateUser(userId, requestBody.get(&quot;firstName&quot;).asText(null), requestBody.get(&quot;lastName&quot;).asText(null), requestBody.get(&quot;email&quot;).asText(null), requestBody.get(&quot;phone&quot;).asText(null), requestBody.get(&quot;birthDate&quot;).asText(null), requestBody.get(&quot;gender&quot;).asText(null), requestBody.get(&quot;educationId&quot;).asInt());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Profilkép cseréje&quot;, description = &quot;Az adott profilnak a profilképjét változtatja meg.&quot;)
+&nbsp;    @Parameters({
+&nbsp;            @Parameter(name = &quot;id&quot;, description = &quot;A felhasználóhoz tartozó id.&quot;, required = true, in = ParameterIn.PATH),
+&nbsp;            @Parameter(name = &quot;image&quot;, description = &quot;A fekhasználó által kiválasztott új profilkép fájla.&quot;, required = true, in = ParameterIn.QUERY, schema = @Schema(implementation = MultipartFile.class))
+&nbsp;    })
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres adat(ok) frissités&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = Users.class, description = &quot;A frissitett profilképpel rendelkező fiók.&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Olyan fiókot szeretne frissiteni, amely nem létzik vagy olyan végzettséget szeretne amely nem létezik.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @PatchMapping(&quot;/pfp/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; updatePfp(@PathVariable(&quot;id&quot;) Integer id, @RequestParam(&quot;image&quot;) MultipartFile file) {
+<b class="nc">&nbsp;        return userService.updatePfp(id, file);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Torles
+&nbsp;    @Operation(summary = &quot;Profilok törlése&quot;, description = &quot;Id alapján töröl egy User-t.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A felhasználóhoz tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres fiók törlés&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Olyan fiókot szeretne törölni, amely nem létzik.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; deleteUser(@PathVariable(&quot;id&quot;) Integer id) {
+<b class="fc">&nbsp;        return userService.deleteUser(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;User id alapján&quot;, description = &quot;User-t id alapján returnol.&quot;)
+&nbsp;    @Parameter(name = &quot;id&quot;, description = &quot;A felhasználóhoz tartozó id.&quot;, required = true, in = ParameterIn.PATH)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres fiók lekérés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    schema = @Schema(implementation = Users.class, description = &quot;A keresett felhasználó object-je&quot;)
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;Olyan fiókot szeretne lekérni, amely nem létzik.&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;422&quot;, description = &quot;Hiányzó parameter vagy requestBody&quot;, content = @Content),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(isAuthenticated() and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping(&quot;/{id}&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; getUserById(@PathVariable(&quot;id&quot;) Integer id, @RequestParam(value = &quot;isLogin&quot;, defaultValue = &quot;false&quot;, required = false) Boolean isLogin) {
+<b class="fc">&nbsp;        return userService.getUserById(id, isLogin);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Az összes felhasználó lekérdezése&quot;, description = &quot;Az összes felhasználó lekérdezése röviditett formában&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @PreAuthorize(&quot;(hasRole(&#39;administrator&#39;) and @environment.acceptsProfiles(&#39;prod&#39;)) or @environment.acceptsProfiles(&#39;test&#39;) or @environment.acceptsProfiles(&#39;dev&#39;)&quot;)
+&nbsp;    @GetMapping
+&nbsp;    public ResponseEntity&lt;Object&gt; getAllUser(Pageable pageable) {
+<b class="nc">&nbsp;        return userService.getAllUser(pageable);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-02-18 19:45</div>
+</div>
+</body>
+</html>

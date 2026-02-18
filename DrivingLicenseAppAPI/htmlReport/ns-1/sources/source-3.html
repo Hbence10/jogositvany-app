@@ -1,0 +1,205 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > OtherStuffController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">csapat.DrivingLicenseAppAPI.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: OtherStuffController (csapat.DrivingLicenseAppAPI.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OtherStuffController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package csapat.DrivingLicenseAppAPI.controller;
+&nbsp;
+&nbsp;import csapat.DrivingLicenseAppAPI.entity.*;
+&nbsp;import csapat.DrivingLicenseAppAPI.service.OtherStuffService;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.media.ArraySchema;
+&nbsp;import io.swagger.v3.oas.annotations.media.Content;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponse;
+&nbsp;import io.swagger.v3.oas.annotations.responses.ApiResponses;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.GetMapping;
+&nbsp;import org.springframework.web.bind.annotation.RestController;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequiredArgsConstructor
+&nbsp;public class OtherStuffController {
+&nbsp;
+&nbsp;    private final OtherStuffService otherStuffService;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Fizetési módszerek lekérdezése&quot;, description = &quot;Az összes fizetési módszer lekérdezése.&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = PaymentMethod.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba.&quot;, content = @Content),
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/paymentMethod&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;PaymentMethod&gt;&gt; getAllPaymentMethod() {
+<b class="nc">&nbsp;        return otherStuffService.getAllPaymentMethod();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Üzemanyag tipusok lekérdezése&quot;, description = &quot;Az összes üzemanyag tipus lekérdezése.&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = FuelType.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/fuelType&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;FuelType&gt;&gt; getAllFuelType() {
+<b class="nc">&nbsp;        return otherStuffService.getAllFuelType();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Iskolai végzettségek lekérdezése&quot;, description = &quot;Az összes iskolai végzettség lekérdezése.&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = Education.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/education&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Education&gt;&gt; getAllEducation() {
+<b class="nc">&nbsp;        return otherStuffService.getAllEducation();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Városok lekérdezése&quot;, description = &quot;Az összes magyar város lekérdezése&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = String.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/town&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;String&gt;&gt; getAllTown() {
+<b class="nc">&nbsp;        return otherStuffService.getAllTown();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Státuszok lekérdezése&quot;, description = &quot;Az összes státusz lekérdezése.&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = Status.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/status&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Status&gt;&gt; getAllStatus() {
+<b class="nc">&nbsp;        return otherStuffService.getAllStatus();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Jármű típusok lekérdezése&quot;, description = &quot;Az összes jármű típus lekérdezése&quot;)
+&nbsp;    @ApiResponses({
+&nbsp;            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;Sikeres lekérdezés&quot;, content = @Content(
+&nbsp;                    mediaType = &quot;application/json&quot;,
+&nbsp;                    array = @ArraySchema(schema = @Schema(implementation = VehicleType.class))
+&nbsp;            )),
+&nbsp;            @ApiResponse(responseCode = &quot;500&quot;, description = &quot;A server okozta hiba&quot;, content = @Content)
+&nbsp;    })
+&nbsp;    @GetMapping(&quot;/vehicleType&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;VehicleType&gt;&gt; getAllVehicleType() {
+<b class="nc">&nbsp;        return otherStuffService.getAllVehicleType();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-02-18 19:45</div>
+</div>
+</body>
+</html>
