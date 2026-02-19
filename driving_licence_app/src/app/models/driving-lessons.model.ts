@@ -21,7 +21,8 @@ export class DrivingLessons {
     public paymentMethod: PaymentMethod,
     public reservedHour: ReservedHour,
     public dStudent: Students,
-    public dInstructor: Instructors
+    public dInstructor: Instructors,
+    public isCancelled: boolean
   ) {}
 
   get getStartKm(): number {

@@ -1,38 +1,41 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { HomePageUser } from '../../models/notEntity/homepageUser.model';
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
 import { ProfilCardComponent } from '../profil-card/profil-card.component';
 import { SchoolRegistrationComponent } from '../school-registration/school-registration.component';
+import { HourPipe } from '../../pipe/HourPipe';
 
 
 @Component({
   selector: 'app-homepage',
-  imports: [MatDatepickerModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent],
+  imports: [MatDatepickerModule, RouterModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent, CommonModule, HourPipe],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
 
 })
 export class HomepageComponent implements OnInit {
-  private userService = inject(UsersService);
+  userService = inject(UsersService);
   private schoolService = inject(SchoolServiceService);
   private router = inject(Router);
-  loggedUser!: HomePageUser;
+  loggedUser: HomePageUser | null = null;
   schoolList: { id: number, name: string }[] = []
   userList: { id: number, name: string, imagePath: string, userId: number }[] = []
   studentList: any[] = []
   showSchoolForm: boolean = false
 
   ngOnInit(): void {
-    this.loggedUser = this.userService.loggedUser()!;
+    this.loggedUser = this.userService.loggedUser();
+    console.log(this.userService.loggedUser())
 
-    if (this.loggedUser.role?.name == "ROLE_student") {
+    if (this.loggedUser?.role?.name == "ROLE_student") {
 
-    } else if (this.loggedUser.role?.name == "ROLE_administrator") {
+    } else if (this.loggedUser?.role?.name == "ROLE_administrator") {
       this.schoolService.getAllSchool(0).subscribe({
         next: response => {
           this.schoolList = response.body
