@@ -44,3 +44,27 @@ app-navbar:hover ~ .sidebar-overlay {
   visibility: visible;
 }
 
+
+#alertRow {
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+}
+
+#alertCol {
+  z-index: 9999;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.success {
+  background-color: #8BFF8E;
+  border: 2px solid #008C05;
+  color: #004A02 !important;
+}
+
+.error {
+  background-color: #FF8B8B;
+  border: 2px solid #FF3737;
+  color: #892222 !important;
+}

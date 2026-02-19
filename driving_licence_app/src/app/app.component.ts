@@ -1,10 +1,11 @@
-import { Component, DestroyRef, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NavbarPhoneComponent } from './components/navbar-phone/navbar-phone.component';
 import { UsersService } from './services/users.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AlertServiceService } from './services/alert-service.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class AppComponent implements OnInit{
   private userService = inject(UsersService)
   private cookieService = inject(CookieService)
+  alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     let refreshToken: string | null = this.cookieService.get("refreshToken")

@@ -27,5 +27,12 @@
   </div>
 </div>
 
+@if(alertService.alert.isShow) {
+  <div id="alertRow" class="d-flex justify-content-end align-items-center">
+    <div id="alertCol" class="px-4 py-2 rounded mx-4 mt-4" [class.success]="alertService.alert.type == 'success'" [class.error]="alertService.alert.type == 'error'">
+      <p class="m-0 fw-bold">{{alertService.alert.message}}</p>
+    </div>
+  </div>
+}
 
 
