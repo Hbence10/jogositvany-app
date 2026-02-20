@@ -6,6 +6,7 @@ import { UsersService } from '../../../services/users.service';
 import { ReviewService } from '../../../services/review.service';
 import { ReviewWriterComponent } from '../review-writer/review-writer.component';
 import { ReviewCardComponent } from '../review-card/review-card.component';
+import { AlertServiceService } from '../../../services/alert-service.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class ReviewListComponent implements OnInit{
   reviewList: Review[] = []
   showReviewWriter: boolean = false
   closeList = output()
+  private alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     this.reviewService.getReviews(this.reviewType() == "Oktató" ? "instructor" : "school", this.aboutObject().id).subscribe({
@@ -41,7 +43,12 @@ export class ReviewListComponent implements OnInit{
       instructorId: this.reviewType() == "Oktató" ? this.aboutObject().id : null,
       schoolId: this.reviewType() == "Iskola" ? this.aboutObject().id : null
     }).subscribe({
-      next: response => this.reviewList.push(response),
+      next: response => {
+        this.reviewList.push(response)
+        this.alertService.setAlert("Sikeres vélemény írás!", "success")
+      }, error: () => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      }
     })
   }
 

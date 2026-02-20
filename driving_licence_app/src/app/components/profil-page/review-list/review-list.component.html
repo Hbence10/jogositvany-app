@@ -3,13 +3,16 @@
     <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
       <div class="container-fluid" id="secondContainer">
 
-        <div class="row my-4">
+        <div class="row">
+          <div class="col-lg-12 d-flex justify-content-end mt-2">
+            <button class="closeButton" (click)="closeList.emit()">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        </div>
+        <div class="row mb-4">
           <div class="col-lg-12">
-            <div class="w-100 d-flex justify-content-between align-items-center">
-              <div style="width: 50px; height: 50px;"></div>
-              <h1 class="text-white">Értékelések</h1>
-              <button id="closeButton" (click)="closeList.emit()">X</button>
-            </div>
+              <h1 class="text-white text-center">Értékelések</h1>
             @if (userService.loggedUser()?.role?.name == "ROLE_student") {
               <div class="d-flex justify-content-center align-items-center">
                 <button id="reviewCreatorButton" (click)="showReviewWriter = true">Értékelés írása</button>

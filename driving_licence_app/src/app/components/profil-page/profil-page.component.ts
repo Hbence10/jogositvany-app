@@ -13,10 +13,12 @@ import { ProfilEditorComponent } from './profil-editor/profil-editor.component';
 import { ReviewListComponent } from './review-list/review-list.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
+import { HourPipe } from '../../pipe/HourPipe';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
   selector: 'app-profil-page',
-  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent],
+  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent, HourPipe],
   templateUrl: './profil-page.component.html',
   styleUrl: './profil-page.component.css'
 })
@@ -25,6 +27,7 @@ export class ProfilPageComponent implements OnInit {
   userService = inject(UsersService)
   private schoolService = inject(SchoolServiceService)
   private requestService = inject(RequestService)
+  private alertService = inject(AlertServiceService)
   private router = inject(Router)
 
   searchedUser: User | null = null
@@ -33,6 +36,7 @@ export class ProfilPageComponent implements OnInit {
   type = signal("")
   roleName!: string
   errorMsg: string = ""
+  selectedId!: number
 
   showEditor: boolean = false
   showReviews: boolean = false
@@ -49,8 +53,9 @@ export class ProfilPageComponent implements OnInit {
         this.searchedUser = null
         this.type.set(parameters["type"])
 
+        this.selectedId = parameters["id"]
         if (this.type() == "user") {
-          this.userService.getUserById(parameters["id"]).subscribe({
+          this.userService.getUserById(this.selectedId).subscribe({
             next: response => this.searchedUser = response,
             error: error => {
               if (error.status == 404) {
@@ -64,13 +69,14 @@ export class ProfilPageComponent implements OnInit {
                 this.roleName = "Tanuló"
               } else if (this.searchedUser?.role?.name == "ROLE_instructor") {
                 this.roleName = "Oktató",
-                this.instructorDetails = this.searchedUser.instructor!
+                  this.instructorDetails = this.searchedUser.instructor!
               }
             }
           })
         } else if (this.type() == "school") {
-          this.schoolService.getSchoolById(parameters["id"]).subscribe({
+          this.schoolService.getSchoolById(this.selectedId).subscribe({
             next: response => {
+              console.log(response)
               this.searchedSchool = response
             },
             error: error => {
@@ -88,6 +94,7 @@ export class ProfilPageComponent implements OnInit {
       }
     })
   }
+
   changeImages(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -95,11 +102,23 @@ export class ProfilPageComponent implements OnInit {
       formData.append("image", file)
       if (this.type() == "user") {
         this.userService.changePfp(this.searchedUser?.id!, formData).subscribe({
-          next: response => this.searchedUser = response
+          next: response => {
+            this.searchedUser = response
+            this.userService.loggedUser()!.pfpPath = this.searchedUser.pfpPath
+          }, error: () => {
+            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          }, complete: () => {
+            this.alertService.setAlert("Profilképe sikeresen frissült!", "success")
+          }
         })
       } else if (this.type() == "school") {
         this.schoolService.changeBannerImg(this.searchedSchool?.id!, formData).subscribe({
-          next: response => this.searchedSchool = response
+          next: response => { this.searchedSchool = response },
+          error: () => {
+            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          }, complete: () => {
+            this.alertService.setAlert("Boritóképe sikeresen frissült!", "success")
+          }
         })
       }
     }
@@ -109,19 +128,19 @@ export class ProfilPageComponent implements OnInit {
     if (this.type() == "user") {
       this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()!.studentId!, this.searchedUser!.instructor!.id).subscribe({
         error: error => {
-          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
-          alert("Sikeres kérelem küldés.")
+          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
         }
       })
     } else if (this.type() == "school") {
       this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id, this.selectedCategory!).subscribe({
         error: error => {
-          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
-          alert("Sikeres kérelem küldés.")
+          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
         }
       })
     }
@@ -131,15 +150,24 @@ export class ProfilPageComponent implements OnInit {
     if (this.type() == "user") {
       this.userService.deleteUser(this.searchedUser?.id!).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
           this.showDeleteConfirmation = false
+          //logout logika
+          this.alertService.setAlert("Fiókodat sikeresen törölted", "success")
         }
       })
     } else if (this.type() == "school") {
       this.schoolService.deleteSchool(this.searchedSchool?.id!).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
           this.showDeleteConfirmation = false
+          this.alertService.setAlert("Az iskolát sikeresen törölted", "success")
         }
       })
     }
@@ -161,12 +189,18 @@ export class ProfilPageComponent implements OnInit {
     return rows
   }
 
-  setChanges(updatedObject: User | School) {
+  setChanges() {
     this.showEditor = false
     if (this.type() == "user") {
-      this.searchedUser = updatedObject as User
+      this.userService.getUserById(this.selectedId).subscribe({
+        next: response => this.searchedUser = response
+      })
     } else {
-      this.searchedSchool = updatedObject as School
+      this.schoolService.getSchoolById(this.selectedId).subscribe({
+        next: response => this.searchedSchool = response
+      })
     }
+
+
   }
 }
