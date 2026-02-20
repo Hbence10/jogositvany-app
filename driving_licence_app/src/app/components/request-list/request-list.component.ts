@@ -9,6 +9,7 @@ import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
 import { RequestCardComponent } from './request-card/request-card.component';
 import { DrivingLessonService } from '../../services/driving-lesson.service';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
   selector: 'app-request-list',
@@ -29,6 +30,7 @@ export class RequestListComponent implements OnInit {
   requestRowList: (SchoolJoinRequest | DrivingLessonRequest | InstructorJoinRequest)[][] = []
   availablePages: number[] = []
   actualPage: number = 1;
+  private alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -67,23 +69,32 @@ export class RequestListComponent implements OnInit {
     if (selectedRequest.requestType == "drivingLesson") {
 
       this.instructorService.handleDrivingLessonRequest(selectedRequest.id, selectedRequest.status).subscribe({
-        error: error => { },
+        error: error => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert(`Sikeres ${selectedRequest.status == "accept" ? "elfogadtad" : "elutasítottad"} a kérelmet!`, "success")
           this.requestList.splice(index, 1)
         }
       })
     } else if (selectedRequest.requestType == "instructorJoin") {
       this.instructorService.handleJoinRequest(selectedRequest.id, selectedRequest.status).subscribe({
-        error: error => { },
+        error: error => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert(`Sikeres ${selectedRequest.status == "accept" ? "elfogadtad" : "elutasítottad"} a kérelmet!`, "success")
           this.requestList.splice(index, 1)
         }
       })
     } else if (selectedRequest.requestType == "schoolJoin") {
       console.log("handleSchoolJoin")
       this.schoolService.handleJoinRequest(selectedRequest.id, selectedRequest.status).subscribe({
-        error: error => { },
+        error: error => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert(`Sikeres ${selectedRequest.status == "accept" ? "elfogadtad" : "elutasítottad"} a kérelmet!`, "success")
           this.requestList.splice(index, 1)
         }
       })

@@ -16,7 +16,7 @@
               </form>
               <div class="d-flex justify-content-between align-items-center mt-3">
                 <div class="d-flex justify-content-center align-items-center">
-                  <input type="checkbox" name="rememberMe" id="rememberMe">
+                  <input type="checkbox" name="rememberMe" id="rememberMe" (change)="isRemember = !isRemember">
                   <label for="rememberMe" class="mx-3">Emlékezzen rám</label>
                 </div>
                 <a id="forgotten" class="d-lg-block d-none" routerLink="/password-reset">Elfelejtette a jelszavát?</a>

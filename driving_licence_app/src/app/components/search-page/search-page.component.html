@@ -2,7 +2,7 @@
   <div class="row h-100 my-0 my-5">
 
     <div class="col-lg-6">
-      <div class="h-100 container-fluid d-flex flex-column justify-content-center">
+      <div class="h-100 container-fluid d-flex flex-column justify-content-between">
         @if(selectedType == "instructor"){
           <div class="row mb-3">
             <div class="col-lg-12 d-flex justify-content-center">
@@ -28,7 +28,7 @@
             </div>
           </div>
         } @else {
-          <div class="row my-4">
+          <div class="row">
             <div class="col-lg-12">
               <div class="searchContainer">
                 <input type="text" placeholder="Város" class="searchInput" [(ngModel)]="selectedTown" (input)="filterTown()"/>
@@ -40,7 +40,7 @@
               </div>
             </div>
           </div>
-          <div class="row my-4">
+          <div class="row">
             <div class="col-lg-12">
               <div class="searchContainer">
                 <input #schoolName (input)="filterSchoolName(schoolName.value)" type="text" class="searchInput" [placeholder]="'Az iskola neve'" />

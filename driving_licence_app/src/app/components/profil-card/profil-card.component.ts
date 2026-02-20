@@ -13,11 +13,6 @@ export class ProfilCardComponent {
   profilCardData = input.required<ProfileCard>()
   role = input.required<string>()
 
-  ngOnInit(): void {
-    console.log(this.profilCardData())
-    console.log(this.role())
-  }
-
   checkProfile(){
     this.router.navigate(["profil", "user", this.profilCardData().id])
   }

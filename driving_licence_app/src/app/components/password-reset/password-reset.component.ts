@@ -3,6 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from "@angular/router";
 import { UsersService } from '../../services/users.service';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 
 function validatePassword(control: AbstractControl): { [key: string]: any } | null {
@@ -42,10 +43,10 @@ export class PasswordResetComponent implements OnInit {
   private router = inject(Router)
   isShowPassword = signal<boolean>(false)
   isShowPasswordAgain = signal<boolean>(false)
-
   isCorrectVCode = signal<boolean>(false)
   isSuccessfullReset = signal<boolean>(false)
   form!: FormGroup
+  private alertService = inject(AlertServiceService)
 
   emailErrorMsg = signal<string>("")
   vCodeErrorMsg = signal<string>("")
@@ -78,7 +79,11 @@ export class PasswordResetComponent implements OnInit {
           this.emailErrorMsg.set("Nincs ilyen email címmel létező fiók. Próbáld meg újra!")
         } else if (error.status == 417) {
           this.emailErrorMsg.set("Érvénytelen email címet adtál meg. Próbáld meg újra!")
+        } else {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         }
+      }, complete: () => {
+        this.alertService.setAlert("Az ellenőrző kódot sikeresen elküldtük!", "success")
       }
     })
   }
@@ -104,7 +109,13 @@ export class PasswordResetComponent implements OnInit {
   sendReset(vCode: string) {
     this.userService.passwordReset(this.form.controls["email"].value, this.form.controls["password"].value, vCode).subscribe({
       next: response => console.log(response),
-      complete: () => { this.router.navigate(["/login"]) }
+      error: () => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      },
+      complete: () => {
+        this.alertService.setAlert("Jelszava sikeresen frissült!", "success")
+        this.router.navigate(["/login"])
+      }
     })
   }
 

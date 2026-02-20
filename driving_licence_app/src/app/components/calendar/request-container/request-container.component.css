@@ -12,15 +12,6 @@
   overflow: auto;
 }
 
-#closeButton {
-  width: 50px;
-  height: 50px;
-  border: none;
-  background-color: #22354f;
-  color: white;
-  border-radius: 8px;
-}
-
 input, textarea, select {
   border: none;
   background-color: #626C99;

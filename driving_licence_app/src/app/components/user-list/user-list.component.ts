@@ -5,6 +5,7 @@ import { InstructorServiceService } from '../../services/instructor-service.serv
 import { SchoolServiceService } from '../../services/school-service.service';
 import { StudentService } from '../../services/student.service';
 import { UsersService } from '../../services/users.service';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
   selector: 'app-user-list',
@@ -21,6 +22,7 @@ export class UserListComponent implements OnInit {
 
   private route = inject(ActivatedRoute)
   private router = inject(Router)
+  private alertService = inject(AlertServiceService)
 
   cardList: { id: number, name: string, imagePath: string, userId: number }[] = []
   deleteText: string = ""
@@ -65,28 +67,44 @@ export class UserListComponent implements OnInit {
     if (this.userType == "schoolStudent") {
       this.studentService.deleteStudent(selectedCard.id).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
         }
       })
     } else if (this.userType == "instructors") {
       this.schoolService.kickOutInstructor(selectedCard.id).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
         }
       })
     } else if (this.userType == "instructorStudents") {
       this.instructorService.kickoutStudent(selectedCard.id).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
         }
       })
     } else if (this.userType == "users") {
       this.userService.deleteUser(selectedCard.id).subscribe({
         next: response => console.log(response),
+        error: () => {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        },
         complete: () => {
+          this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
         }
       })

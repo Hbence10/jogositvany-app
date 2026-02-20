@@ -10,6 +10,7 @@ import { UsersService } from '../../services/users.service';
 import { RequestService } from '../../services/request.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
   selector: 'app-search-page',
@@ -41,6 +42,7 @@ export class SearchPageComponent implements OnInit {
   instructorList: { id: number, name: string }[] = []
   filteredInstructorList: { id: number, name: string }[] = []
   selectedCategoryId: number = 1
+  private alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     this.selectedSchool = null
@@ -128,19 +130,19 @@ export class SearchPageComponent implements OnInit {
     if (this.selectedType == "instructor") {
       this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()?.studentId!, this.selectedInstructor?.id!).subscribe({
         error: error => {
-          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
-          alert("Sikeres kérelem küldés.")
+          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
         }
       })
     } else if (this.selectedType == "school") {
       this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!, this.selectedCategoryId!).subscribe({
         error: error => {
-          alert("Hiba merült fel!. Kérlek próbáld meg újra.")
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
-          alert("Sikeres kérelem küldés.")
+          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
         }
       })
     }

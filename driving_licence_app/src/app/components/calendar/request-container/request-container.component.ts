@@ -2,6 +2,7 @@ import { Component, inject, input, OnChanges, output, SimpleChanges } from '@ang
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RequestService } from '../../../services/request.service';
 import { UsersService } from '../../../services/users.service';
+import { AlertServiceService } from '../../../services/alert-service.service';
 
 @Component({
   selector: 'app-request-container',
@@ -16,14 +17,18 @@ export class RequestContainerComponent implements OnChanges {
   close = output()
   reservedHours = input.required<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>()
   availableHours: string[][] = []
-  selectedDate = input.required<Date>()
+  inputDate = input.required<Date>()
+  selectedDate!: Date
+  private alertService = inject(AlertServiceService)
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.reservedHours().length != 0){
       this.getAvailableHours()
     }
+
+    this.selectedDate = this.inputDate()
     this.requestForm = new FormGroup({
-      selectedDate: new FormControl(this.selectedDate(), [Validators.required]),
+      selectedDate: new FormControl(this.selectedDate, [Validators.required]),
       startTime: new FormControl("", [Validators.required]),
       endTime: new FormControl("", [Validators.required]),
       message: new FormControl("", [])
@@ -43,7 +48,11 @@ export class RequestContainerComponent implements OnChanges {
       }
     ).subscribe({
       next: response => console.log(response),
+      error: () => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      },
       complete: () => {
+        this.alertService.setAlert("Sikeres kérelem küldés!", "success")
         this.close.emit()
       }
     })
@@ -90,5 +99,9 @@ export class RequestContainerComponent implements OnChanges {
 
   dateFormatter(isoDateString: string): string {
     return isoDateString.replaceAll("T", " ").substring(0, 19);
+  }
+
+  setDate(date: string) {
+    this.requestForm.controls["selectedDate"].setValue(new Date(date))
   }
 }

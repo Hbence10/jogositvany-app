@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { User } from '../../models/user.model';
 import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
 import { Education } from '../../models/education.model';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 function validatePassword(control: AbstractControl): { [key: string]: any } | null {
   const password: string = control.value;
@@ -59,6 +60,7 @@ export class RegistrationPageComponent implements OnInit {
   private usersService = inject(UsersService);
   private otherService = inject(OtherStuffServiceService);
   private router = inject(Router)
+  private alertService = inject(AlertServiceService)
 
   registrationForm!: FormGroup;
   educationList: Education[] = []
@@ -113,9 +115,11 @@ export class RegistrationPageComponent implements OnInit {
     this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
       error: error => {
-        console.log(error)
+        // Egyeb form errort
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
       },
       complete: () => {
+        this.alertService.setAlert("Sikeres regisztráció!", "success")
         this.router.navigate(['/login']);
       }
     });

@@ -1,10 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { UsersService } from '../../services/users.service';
-import { response } from 'express';
 import { HomePageUser } from '../../models/notEntity/homepageUser.model';
-import { CookieService } from 'ngx-cookie-service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-login-page',
@@ -18,6 +16,7 @@ export class LoginPageComponent {
   errorMessage = signal<null | string>(null)
   homePageUser!: HomePageUser
   showError = signal<boolean>(false)
+  isRemember: boolean = false
 
   loginForm = new FormGroup({
     email: new FormControl('testInstructor@gmail.com', [Validators.required, Validators.email]),
@@ -35,6 +34,11 @@ export class LoginPageComponent {
       },
       complete: () => {
         this.usersService.loggedUser.set(this.homePageUser)
+        if (this.isRemember) {
+          localStorage.setItem("felutonId", this.usersService.loggedUser()?.id!+"")
+        } else {
+          sessionStorage.setItem("felutonId", this.usersService.loggedUser()?.id!+"")
+        }
         this.router.navigateByUrl('/home');
       }
     });

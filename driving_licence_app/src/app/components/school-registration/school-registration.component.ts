@@ -2,9 +2,6 @@ import { Component, inject, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
-import { School } from '../../models/school.model';
-import { User } from '../../models/user.model';
-import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({

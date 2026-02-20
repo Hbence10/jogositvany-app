@@ -5,6 +5,7 @@ import { Status } from '../../../models/status.model';
 import { DrivingLessonService } from '../../../services/driving-lesson.service';
 import { OtherStuffServiceService } from '../../../services/other-stuff-service.service';
 import { DrivingLessons } from '../../../models/driving-lessons.model';
+import { AlertServiceService } from '../../../services/alert-service.service';
 
 @Component({
   selector: 'app-driving-lesson-editor',
@@ -22,6 +23,7 @@ export class DrivingLessonEditorComponent implements OnInit {
   drivingLessonForm!: FormGroup;
   drivingLesson = input.required<DrivingLessons>()
   isPaid: boolean = false
+  private alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     this.otherService.getAllPaymentMethod().subscribe({
@@ -31,6 +33,8 @@ export class DrivingLessonEditorComponent implements OnInit {
     this.otherService.getAllStatus().subscribe({
       next: response => this.statusList = response
     })
+    console.log(this.isPaid)
+    this.isPaid = this.drivingLesson().isPaid
 
     this.drivingLessonForm = new FormGroup({
       startKm: new FormControl(this.drivingLesson().startKm, []),
@@ -39,8 +43,8 @@ export class DrivingLessonEditorComponent implements OnInit {
       pickUpPlace: new FormControl(this.drivingLesson().pickUpPlace, []),
       dropOffPlace: new FormControl(this.drivingLesson().dropOffPlace, []),
       lessonHourNumber: new FormControl(this.drivingLesson().lessonHourNumber, []),
-      paymentMethod: new FormControl(this.paymentMethods.indexOf(this.paymentMethods.find(method => method.id == this.drivingLesson().paymentMethod.id)!), []),
-      lessonStatus: new FormControl(this.statusList.indexOf(this.statusList.find(status => status.id == this.drivingLesson().drivingLessonStatus.id)!), [])
+      paymentMethod: new FormControl( this.drivingLesson().paymentMethod.id, []),
+      lessonStatus: new FormControl(this.drivingLesson().drivingLessonStatus.id, [])
     })
   }
 
@@ -53,19 +57,29 @@ export class DrivingLessonEditorComponent implements OnInit {
       dropOffPlace: this.drivingLessonForm.controls["dropOffPlace"].value,
       lessonHourNumber: +this.drivingLessonForm.controls["lessonHourNumber"].value,
       isPaid: this.isPaid,
-      statusId: this.statusList[this.drivingLessonForm.controls["lessonStatus"].value]?.id,
-      paymentMethodId: this.paymentMethods[this.drivingLessonForm.controls["paymentMethod"].value]?.id
+      statusId: this.drivingLessonForm.controls["lessonStatus"].value,
+      paymentMethodId: this.drivingLessonForm.controls["paymentMethod"].value
     }
 
     this.drivingLessonService.updateDrivingLesson(this.drivingLesson().id, body).subscribe({
       next: response => console.log(response),
-      complete: () => this.close.emit()
+      error: () => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      },
+      complete: () => {
+        this.alertService.setAlert("Sikeres frissités!", "success")
+        this.close.emit()
+      }
     })
   }
 
   cancelDrivingLesson() {
     this.drivingLessonService.cancelDrivingLesson(this.drivingLesson().id).subscribe({
+      error: () => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      },
       complete: () => {
+        this.alertService.setAlert("Sikeresen lemondtad az órád!", "success")
         this.close.emit()
       }
     })
