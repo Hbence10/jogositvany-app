@@ -22,5 +22,5 @@ public interface InstructorJoinRequestRepository extends JpaRepository<Instructo
     @Procedure(name = "deleteInstructorJoinRequest", procedureName = "deleteInstructorJoinRequest")
     void deleteInstructorJoinRequest(@Param("idIN") Integer id);
 
-    Page<InstructorJoinRequest> findByInstructorJoinRequestInstructorAndIsAccepted(Instructors wantedInstructor, Boolean isAccepted, Pageable pageable);
+    Page<InstructorJoinRequest> findByInstructorJoinRequestInstructorAndIsAcceptedAndIsDeleted(Instructors wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
 }

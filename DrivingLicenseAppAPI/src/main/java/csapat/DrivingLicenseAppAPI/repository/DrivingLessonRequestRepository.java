@@ -23,5 +23,5 @@ public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLes
     @Procedure(name = "deleteDrivingLessonRequest", procedureName = "deleteDrivingLessonRequest")
     void deleteDrivingLessonRequest(@Param("idIN") Integer id);
 
-    Page<DrivingLessonRequest> findBydLessonInstructorAndIsAccepted(Instructors wantedInstructor, Boolean isAccepted, Pageable pageable);
+    Page<DrivingLessonRequest> findBydLessonInstructorAndIsAcceptedAndIsDeleted(Instructors wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
 }

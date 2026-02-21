@@ -90,7 +90,7 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                Page<InstructorJoinRequest> returnList = instructorJoinRequestRepository.findByInstructorJoinRequestInstructorAndIsAccepted(searchedInstructor, null, pageable);
+                Page<InstructorJoinRequest> returnList = instructorJoinRequestRepository.findByInstructorJoinRequestInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
                 return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class InstructorService {
             if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                Page<DrivingLessonRequest> returnList = drivingLessonRequestRepository.findBydLessonInstructorAndIsAccepted(searchedInstructor, null, pageable);
+                Page<DrivingLessonRequest> returnList = drivingLessonRequestRepository.findBydLessonInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
                 return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {
@@ -167,6 +167,8 @@ public class InstructorService {
                 DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
                 if (searchedRequest == null || searchedRequest.getIsDeleted()) {
                     return ResponseEntity.notFound().build();
+                } else if (searchedRequest.getDate().before(new Date())) {
+                    return ResponseEntity.status(415).body("invalidDate");
                 }
 
                 List<Integer> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
@@ -198,7 +200,7 @@ public class InstructorService {
         }
     }
 
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId, Integer categoryId) {
         try {
             if (fuelTypeId == null || schoolId == null) {
@@ -234,7 +236,7 @@ public class InstructorService {
         }
     }
 
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')\"")
+    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Instructors> getInstructorById(Integer id) {
         try {
             if (id == null) {

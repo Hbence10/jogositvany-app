@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -203,7 +204,8 @@ public class SchoolService {
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {
-                Page<SchoolJoinRequest> returnList = schoolJoinRequestRepository.findBySchoolJoinRequestSchoolAndIsAccepted(searchedSchool, null, pageable);
+                //
+                Page<SchoolJoinRequest> returnList = schoolJoinRequestRepository.findBySchoolJoinRequestSchoolAndIsAcceptedAndIsDeleted(searchedSchool, null, false, pageable);
                 return ResponseEntity.ok().body(returnList.toList());
             }
         } catch (Exception e) {

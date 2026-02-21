@@ -22,5 +22,5 @@ public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinReq
     @Procedure(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest")
     void deleteSchoolJoinRequest(@Param("idIN") Integer id);
 
-    Page<SchoolJoinRequest> findBySchoolJoinRequestSchoolAndIsAccepted(School wantedInstructor, Boolean isAccepted, Pageable pageable);
+    Page<SchoolJoinRequest> findBySchoolJoinRequestSchoolAndIsAcceptedAndIsDeleted(School wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
 }

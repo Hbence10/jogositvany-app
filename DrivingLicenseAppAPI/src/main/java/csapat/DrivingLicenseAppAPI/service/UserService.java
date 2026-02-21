@@ -422,7 +422,9 @@ public class UserService {
         } else if (loggedUser.getRole().getName().equals("ROLE_instructor")) {
             ((ObjectNode) returnObject).put("instructorId", loggedUser.getInstructor().getId());
 
-            ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getInstructor().getInstructorSchool()));
+            if (loggedUser.getInstructor().getInstructorSchool() != null) {
+                ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getInstructor().getInstructorSchool()));
+            }
             ArrayList<JsonNode> studentDetails = new ArrayList<>();
 
             for (Students student : loggedUser.getInstructor().getStudents()) {
