@@ -160,6 +160,8 @@ public class DrivingLessonService {
             if (instructorId == null || start == null || end == null) {
                 return ResponseEntity.status(422).build();
             }
+
+            //validaciok:
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
             List<Integer> idList = reservedHourRepository.getReservedHoursBetweenTwoDate(instructorId, dateFormat.parse(start), dateFormat.parse(end));
             List<ReservedHour> reservedHours = reservedHourRepository.findAllById(idList);

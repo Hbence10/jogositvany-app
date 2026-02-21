@@ -136,7 +136,7 @@ public class SecurityConfig {
                         config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
                         config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
                         config.setAllowedHeaders(Collections.singletonList("*"));                            //A http headerek adjuk meg
-                        config.setExposedHeaders(Arrays.asList("Authorization", "Access-Control-Expose-Headers"));
+                        config.setExposedHeaders(Arrays.asList("Authorization", "refreshToken", "Bearer ", "PageNumber"));
                         config.setMaxAge(3600L);
                         return config;
                     }
