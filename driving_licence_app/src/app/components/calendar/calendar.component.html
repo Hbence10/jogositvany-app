@@ -1,33 +1,34 @@
 <div class="container-fluid mainFont" style="height: 100vh">
   <div class="row d-lg-flex d-none">
     <div class="col-lg-12 d-flex justify-content-start">
-      <input type="date" #dateInput [value]="selectedDate"/>
+      <input type="date" #dateInput [valueAsDate]="selectedDate" (change)="changeWeekWithInput(dateInput.value)"/>
     </div>
   </div>
   <div class="row h-100">
-    <!-- Dekstop nézet -->
     <div class="col-lg-12 d-lg-flex align-items-lg-start d-none">
       <button class="weekSwitcherButton mt-3" (click)="changeWeekWithArrow(false)">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
       @for (day of days ; track $index) {
         <div class="container-fluid mx-3 d-flex flex-column">
-          <div class="row align-items-center text-center days">
+          <div class="row align-items-center text-center days ">
             <div class="col-lg-12">
               <p>{{ day.name }}</p>
             </div>
           </div>
-          <div class="row align-items-center text-center request mb-3">
-            <div class="col-lg-12" (click)="sendRequest($index, day.reservedHours)">
-               <p>request</p>
+          @if (userService.loggedUser()?.role?.name == "ROLE_student") {
+            <div class="row align-items-center text-center request mb-3">
+              <div class="col-lg-12" (click)="sendRequest($index, day.reservedHours)">
+                 <p>request</p>
+              </div>
             </div>
-          </div>
+          }
           <div class="row">
-            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center lessonBox">
+            <div class="col-lg-12 d-flex flex-column justify-content-start align-items-center lessonBox p-3 cardShadow">
                 @for (reservedHour of day.reservedHours; track $index) {
-                  <div style="cursor: pointer;" class="lessonItem mb-3" (click)="selectDrivingLesson(reservedHour.drivingLessonId)">
+                  <div style="cursor: pointer;" class="lessonItem mb-3 d-flex flex-column justify-content-center align-items-center" (click)="selectDrivingLesson(reservedHour.drivingLessonId)">
                     <p class="text-center">Foglalt</p>
-                    <p class="text-center" style="font-size: 15px;">{{reservedHour.startTime}} - {{reservedHour.endTime}}</p>
+                    <p class="text-center" style="font-size: 15px;">{{reservedHour.startTime+"" | hour}} - {{reservedHour.endTime+"" | hour}}</p>
                   </div>
                 }
             </div>
@@ -39,7 +40,6 @@
       </button>
     </div>
 
-    <!-- Mobil nézet: -->
     <div class="col-lg-12 d-lg-none d-flex">
       <div class="container-fluid">
 
@@ -57,10 +57,10 @@
 
         <div class="row mb-4">
           <div class="col-lg-12 d-flex justify-content-center align-items-center">
-            @for (dayOfWeek of datesOfWeek; track $index) {
+            @for (dayOfWeek of datesOfWeek(); track $index) {
               <div class="d-flex flex-column mx-2 w-100" [class.selectedPhoneDate]="dayOfWeek.toDateString() === selectedDateInPhoneView.toDateString()">
                 <span class="w-100 text-center">{{shortDayNames[$index]}}</span>
-                <span class="w-100 text-center">{{dayOfWeek.getDate()}}</span>
+                <span class="w-100 text-center">{{dayOfWeek.getUTCDate()}}</span>
               </div>
             }
           </div>
@@ -90,5 +90,5 @@
 }
 
 @if (showRequestContainer) {
-  <app-request-container [selectedDate]="dateForRequest" [reservedHours]="selectedReservedHours" (close)="showRequestContainer = false"/>
+  <app-request-container [inputDate]="dateForRequest" [reservedHours]="selectedReservedHours" (close)="showRequestContainer = false"/>
 }
