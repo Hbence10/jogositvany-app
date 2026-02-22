@@ -15,7 +15,7 @@ public class EmailTemplateConfiguration {
     @Primary
     ITemplateResolver thymeleafTemplateResolver() { //Azt oldja meg, hogy az email-ek template-jeinek a helyét beazonositja
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix("email-templates/");
+        templateResolver.setPrefix("mail-templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
         templateResolver.setCharacterEncoding("UTF-8");

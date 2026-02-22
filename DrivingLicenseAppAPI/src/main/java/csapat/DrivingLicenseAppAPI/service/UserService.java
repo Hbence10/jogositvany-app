@@ -13,6 +13,7 @@ import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.repository.VehicleRepository;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -101,8 +102,10 @@ public class UserService {
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
                 try {
-                    emailSender.sendEmailAboutRegistration(newUser.getEmail());
-                } catch (MailSendException mailException) {
+                    emailSender.sendEmailAboutRegistration(newUser.getEmail(), newUser.getFirstName() + " " + newUser.getLastName());
+                } catch (MessagingException mailException) {
+                    mailException.printStackTrace();
+                    System.out.println("Email error");
                 }
 
                 newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");

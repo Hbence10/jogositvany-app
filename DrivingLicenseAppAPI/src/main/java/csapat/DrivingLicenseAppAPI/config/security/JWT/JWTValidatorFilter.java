@@ -62,7 +62,8 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
         ArrayList<String> allowedUrlPaths = new ArrayList<String>(Arrays.asList(
                 "/users/register/student",
                 "/users/register/instructor",
-                "/users/login"
+                "/users/login",
+                "/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education"
         ));
 
         return allowedUrlPaths.contains(request.getServletPath());

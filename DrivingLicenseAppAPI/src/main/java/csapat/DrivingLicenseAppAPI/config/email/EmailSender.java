@@ -1,14 +1,18 @@
 package csapat.DrivingLicenseAppAPI.config.email;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -23,17 +27,21 @@ public class EmailSender {
     private String fromEmail;
 
     public void sendVerificationCodeEmail(String toEmail, String verificationCode){
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom(fromEmail);
-        msg.setText("adsads");
-        mailSender.send(msg);
     }
 
-    public void sendEmailAboutRegistration(String toEmail){
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom(fromEmail);
-        msg.setText("adsads");
-        mailSender.send(msg);
+    public void sendEmailAboutRegistration(String toEmail, String newUsersName) throws MessagingException {
+            MimeMessage msg = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+            helper.setFrom(fromEmail);
+            helper.setSubject("Sikeres regisztráció!");
+            helper.setTo(toEmail);
+
+            Map<String, Object> emailObject = new HashMap<>();
+            emailObject.put("fullName", newUsersName);
+
+            helper.setText(getHtmlBody("RegistrationTemplate.html", emailObject), true);
+
+            mailSender.send(msg);
     }
 
     public void sendEmailAboutDrivingLessonCanceled(String toEmail) {
