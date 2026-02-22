@@ -12,6 +12,7 @@
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
+
 #mainDiv {
   position: relative;
   z-index: 1;
@@ -170,7 +171,8 @@ input[type="range"]::-moz-range-track {
   margin: 15px;
 }
 
-app-review-list, app-profil-editor, #deleteContainer, app-price-list {
+/**/
+app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-setter {
   position: fixed;
   top: 0px;
   left: 0px;

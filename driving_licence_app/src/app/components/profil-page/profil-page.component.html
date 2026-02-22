@@ -1,5 +1,4 @@
 <div id="mainDiv" class="container-fluid mainFont" style="min-height: 100vh">
-  <!-- Editor sor: -->
   <div class="row my-4">
     <div class="col-lg-12 d-flex justify-content-lg-end justify-content-center">
       @if (searchedUser?.id === userService.loggedUser()?.id || (searchedSchool?.id === userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name === "ROLE_school_owner")) {
@@ -7,6 +6,12 @@
           <i class="material-icons">delete</i>
         </button>
       }
+      @if ((searchedSchool?.id === userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name === "ROLE_school_owner")) {
+        <button (click)="showAdminSetter = true" class="editorButton mx-2">
+          <span class="material-symbols-outlined">account_circle</span>
+        </button>
+      }
+
       @if(type() == "school") {
         <button class="editorButton mx-2" (click)="showPriceList = true">
           <i class="material-icons">info</i>
@@ -141,7 +146,6 @@
                           </div>
                         </div>
                       } @else if (searchedUser?.role?.name == "ROLE_student") {
-                        <!-- <div class="w-100 d-flex justify-content-center"> -->
                         <div class="w-100">
                           <div id="progressBar" class="w-100 p-4">
                             <input id="bar" type="range" min="0" max="30" value="9" disabled/>
@@ -259,4 +263,8 @@
 }
 @if (showPriceList) {
   <app-price-list [schoolId]="searchedSchool?.id!" (close)="showPriceList = false"/>
+}
+
+@if (showAdminSetter) {
+  <app-admin-setter [schoolId]="searchedSchool?.id!" (close)="showAdminSetter = false" />
 }

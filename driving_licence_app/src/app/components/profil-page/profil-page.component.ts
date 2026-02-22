@@ -15,10 +15,11 @@ import { PriceListComponent } from './price-list/price-list.component';
 import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { HourPipe } from '../../pipe/HourPipe';
 import { AlertServiceService } from '../../services/alert-service.service';
+import { AdminSetterComponent } from './admin-setter/admin-setter.component';
 
 @Component({
   selector: 'app-profil-page',
-  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent, HourPipe],
+  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent, HourPipe, AdminSetterComponent],
   templateUrl: './profil-page.component.html',
   styleUrl: './profil-page.component.css'
 })
@@ -43,6 +44,7 @@ export class ProfilPageComponent implements OnInit {
   showDeleteConfirmation: boolean = false
   showPriceList: boolean = false
   selectedCategory: number | null = null
+  showAdminSetter: boolean = false;
 
   ngOnInit(): void {
     this.route.params.subscribe({
