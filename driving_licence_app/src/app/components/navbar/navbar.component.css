@@ -158,6 +158,11 @@
   transition: width 0.5s ease, height 0.5s ease;
 }
 
+img {
+  width: 70px !important;
+  height: 70px !important;
+}
+
 .profil:hover {
   cursor: pointer;
   width: 90px;

@@ -1,4 +1,3 @@
-
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DrivingLessonRequest } from '../../models/driving-lesson-request.model';
@@ -115,6 +114,7 @@ export class RequestListComponent implements OnInit {
   getAllDrivingLessonRequest(pageNumber: number) {
     this.instructorService.getDrivingLessonRequestByInstructor(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
       next: response => {
+        console.log(response.body[0])
         this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
         this.requestList = response.body
       },

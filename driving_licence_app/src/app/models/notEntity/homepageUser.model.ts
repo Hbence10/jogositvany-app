@@ -1,6 +1,5 @@
 import { Role } from "../role.model";
 import { School } from "../school.model";
-import { Vehicle } from "../vehicle.model";
 import { ProfileCard } from "./profileCard.model";
 
 export class HomePageUser {

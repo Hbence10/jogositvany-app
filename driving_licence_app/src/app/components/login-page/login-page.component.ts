@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { HomePageUser } from '../../models/notEntity/homepageUser.model';
 import { UsersService } from '../../services/users.service';
+import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
   selector: 'app-login-page',
@@ -13,6 +14,7 @@ import { UsersService } from '../../services/users.service';
 export class LoginPageComponent {
   usersService = inject(UsersService);
   private router = inject(Router);
+  private alertService = inject(AlertServiceService)
   errorMessage = signal<null | string>(null)
   homePageUser!: HomePageUser
   showError = signal<boolean>(false)
@@ -30,7 +32,11 @@ export class LoginPageComponent {
         this.homePageUser = response
       },
       error: error => {
-        this.showError.set(true)
+        if (error.status == 500) {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        } else {
+          this.showError.set(true)
+        }
       },
       complete: () => {
         this.usersService.loggedUser.set(this.homePageUser)

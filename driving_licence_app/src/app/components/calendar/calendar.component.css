@@ -16,6 +16,7 @@
   height: 90px;
   background-color: #22354f;
   border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .lessons {
@@ -26,6 +27,7 @@
   height: 60px;
   background-color: #0ACF83;
   border-radius: 20px;
+  cursor: pointer;
 }
 
 .days {
@@ -33,6 +35,7 @@
   background-color: #22354F;
   margin: 15px;
   border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 p{
@@ -53,6 +56,7 @@ app-driving-lesson-editor, app-request-container {
   border-radius: 8px;
   background-color: #22354F;
   color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .selectedPhoneDate {

@@ -128,6 +128,7 @@ export class ProfilPageComponent implements OnInit {
     if (this.type() == "user") {
       this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()!.studentId!, this.searchedUser!.instructor!.id).subscribe({
         error: error => {
+          console.log(error)
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
@@ -137,6 +138,7 @@ export class ProfilPageComponent implements OnInit {
     } else if (this.type() == "school") {
       this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id, this.selectedCategory!).subscribe({
         error: error => {
+          console.log(error)
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {

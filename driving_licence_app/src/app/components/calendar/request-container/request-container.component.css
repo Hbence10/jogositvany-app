@@ -6,10 +6,10 @@
 
 #secondContainer {
   background-color: #434A6B;
-  color: #DEE0EB;
   height: 850px;
   width: 700px;
   overflow: auto;
+  border-radius: 12px;
 }
 
 input, textarea, select {
@@ -19,6 +19,7 @@ input, textarea, select {
   color: #dee0eb;
   height: 50px;
   padding: 0px 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 input::placeholder, textarea::placeholder {

@@ -15,7 +15,7 @@ import { AlertServiceService } from '../../../services/alert-service.service';
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css'
 })
-export class ReviewListComponent implements OnInit{
+export class ReviewListComponent implements OnInit {
   userService = inject(UsersService)
   reviewType = input.required<string>()
   aboutObject = input.required<School | Instructors>()
@@ -24,12 +24,21 @@ export class ReviewListComponent implements OnInit{
   reviewList: Review[] = []
   showReviewWriter: boolean = false
   closeList = output()
+  showReviewWriterButton: boolean = false
   private alertService = inject(AlertServiceService)
 
   ngOnInit(): void {
     this.reviewService.getReviews(this.reviewType() == "Oktató" ? "instructor" : "school", this.aboutObject().id).subscribe({
       next: response => this.reviewList = response,
-      error: error => console.log(error)
+      error: error => {
+        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        this.closeList.emit()
+      },
+      complete: () => {
+        this.showReviewWriterButton =
+          this.userService.loggedUser()?.role.name == "ROLE_student" &&
+          !this.reviewList.map(r => r.reviewAuthor?.id).includes(this.userService.loggedUser()?.studentId)
+      }
     })
   }
 

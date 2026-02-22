@@ -33,6 +33,7 @@ export class CalendarComponent implements OnInit {
   dateForRequest!: Date
   selectedDateInPhoneView: Date = new Date()
   reservedHoursOfSingleDate!: { startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]
+  minDate = new Date()
 
   ngOnInit(): void {
     this.numberOfWeek = this.getWeekOfYear(this.selectedDate)
@@ -69,8 +70,6 @@ export class CalendarComponent implements OnInit {
         }
       }
     })
-
-
   }
 
   changeWeekWithArrow(isForward: boolean) {

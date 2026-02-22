@@ -9,6 +9,7 @@
   color: #DEE0EB;
   height: 850px;
   width: 700px;
+  border-radius: 12px;
 }
 
 #closeButton {
@@ -27,6 +28,7 @@ input, textarea, select {
   color: #dee0eb;
   height: 50px;
   padding: 0px 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 input::placeholder, textarea::placeholder {
@@ -40,7 +42,11 @@ input::placeholder, textarea::placeholder {
   color: white;
   height: 50px;
   border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
 
+input[type="radio"] {
+  box-shadow: none !important;
 }
 
 @media screen and (max-width: 750px) {

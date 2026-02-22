@@ -8,7 +8,7 @@ export class DrivingLessonRequest {
     public msg: string,
     public startTime: Date,
     public endTime: Date,
-    public dLessonRequestStudent: Students,
+    public dlessonRequestStudent: Students,
     public dLessonInstructor: Instructors,
     public sentAt: Date = new Date(),
     public isAccepted: boolean | null = null,
@@ -20,19 +20,5 @@ export class DrivingLessonRequest {
   }
   set setDate(value: Date) {
     this.date = value;
-  }
-
-  get getDLessonRequestStudent(): Students {
-    return this.dLessonRequestStudent;
-  }
-  set setDLessonRequestStudent(value: Students) {
-    this.dLessonRequestStudent = value;
-  }
-
-  get getDLessonInstructor(): Instructors {
-    return this.dLessonInstructor;
-  }
-  set setDLessonInstructor(value: Instructors) {
-    this.dLessonInstructor = value;
   }
 }

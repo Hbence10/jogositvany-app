@@ -89,6 +89,6 @@
   <app-driving-lesson-editor [drivingLesson]="selectedDrivingLesson" (close)="showEditor = false"/>
 }
 
-@if (showRequestContainer) {
+@if (showRequestContainer && dateForRequest.getTime() > minDate.getTime()) {
   <app-request-container [inputDate]="dateForRequest" [reservedHours]="selectedReservedHours" (close)="showRequestContainer = false"/>
 }

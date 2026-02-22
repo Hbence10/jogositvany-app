@@ -8,7 +8,7 @@ body {
 }
 
 
-app-navbar{
+app-navbar {
   position: fixed;
   top: 0;
   left: 0;
@@ -32,8 +32,8 @@ app-navbar{
   pointer-events: none;
 }
 
-.navbar-wrapper:hover ~ .sidebar-overlay,
-app-navbar:hover ~ .sidebar-overlay {
+.navbar-wrapper:hover~.sidebar-overlay,
+app-navbar:hover~.sidebar-overlay {
   opacity: 1;
   visibility: visible;
   transition: width 0.5s ease;
@@ -50,21 +50,11 @@ app-navbar:hover ~ .sidebar-overlay {
   right: 0px;
   top: 0px;
   width: 100%;
+  z-index: 9999 !important;
 }
 
 #alertCol {
-  z-index: 9999;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  z-index: 9999 !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-.success {
-  background-color: #8BFF8E;
-  border: 2px solid #008C05;
-  color: #004A02 !important;
-}
-
-.error {
-  background-color: #FF8B8B;
-  border: 2px solid #FF3737;
-  color: #892222 !important;
-}

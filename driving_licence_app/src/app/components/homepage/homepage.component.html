@@ -60,7 +60,7 @@
                           <span>Csütörtök:</span>
                           <span>{{userService.loggedUser()?.school?.openingDetails![3].openingTime+"" | hour}} - {{userService.loggedUser()?.school?.openingDetails![3].closeTime+"" | hour}}</span>
                         </div>
-                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between">
+                        <div class="w-100 px-3 py-2 text-white openingDiv d-flex align-items-center justify-content-between" style="border-bottom-left-radius: 12px !important; border-bottom-right-radius: 12px !important;">
                           <span>Péntek:</span>
                           <span>{{userService.loggedUser()?.school?.openingDetails![4].openingTime+"" | hour}} - {{userService.loggedUser()?.school?.openingDetails![4].closeTime+"" | hour}}</span>
                         </div>
@@ -77,7 +77,7 @@
                   <div class="row mt">
                     <div class="col-lg-12">
                       <div id="studentInstructorDiv" class="container-fluid my-lg-0 my-4 cardShadow" [class.warning]="userService.loggedUser()?.role?.name != 'ROLE_student' || userService.loggedUser()?.instructor == null">
-                        @if (userService.loggedUser()?.role?.name == "ROLE_student" || userService.loggedUser()?.instructor != null){
+                        @if (userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor != null){
                         <div class="row">
                           <div class="col-lg-12">
                             <h3 class="text-center mainFont mt-3">{{userService.loggedUser()?.instructor?.firstName}} {{userService.loggedUser()?.instructor?.lastName}}</h3>

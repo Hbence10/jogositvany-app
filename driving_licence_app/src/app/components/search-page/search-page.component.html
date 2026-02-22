@@ -119,12 +119,12 @@
             <button class="profileBtn" (click)="navigateToProfilePage()">
               <span class="material-symbols-outlined">account_circle</span>
             </button>
-            @if((selectedType == "school" && userService.loggedUser()?.role?.name == "ROLE_student") || (selectedType == "instructor" && userService.loggedUser()?.instructorId == null)) {
+            @if((selectedType == "school" && userService.loggedUser()?.role?.name == "ROLE_user") || (selectedType == "instructor" && userService.loggedUser()?.instructorId == null)) {
               <div class="d-flex justify-content-center align-items-center" id="joinDiv">
                 @if (selectedType == "school") {
-                  <select id="categorySelect" class="form-select">
+                  <select id="categorySelect" class="form-select" #categorySelect (change)="selectedCategoryId = +categorySelect.value">
                     @for (category of selectedSchool?.licenseCategoryList; track $index) {
-                      <option value="">{{category.licenseCategory.name}}</option>
+                      <option [value]="category.id">{{category.licenseCategory.name}}</option>
                     }
                   </select>
                 }

@@ -65,3 +65,19 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background: #22354f;
 }
+
+.success {
+  background-color: #8BFF8E;
+  border: 2px solid #008C05;
+  color: #004A02 !important;
+}
+
+.error {
+  background-color: #FF8B8B;
+  border: 2px solid #FF3737;
+  color: #892222 !important;
+}
+
+button:disabled {
+  opacity: 0.6;
+}

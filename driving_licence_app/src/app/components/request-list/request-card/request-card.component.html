@@ -1,8 +1,8 @@
-<div class="container-fluid cardContainer my-3">
+<div class="container-fluid cardContainer cardShadow my-3">
   <div class="row h-100" style="min-height: 150px;">
     <div class="col-lg-12 d-flex justify-content-center w-100">
       <div class="d-flex justify-content-center align-items-center imgContainer" style="min-height: 150px;">
-        <img [src]="pfpPath" alt="" class="img-fluid"/>
+        <img [src]="pfpPath" alt="" class="img-fluid weakShadow"/>
       </div>
       <div class="textContainer container-fluid d-flex flex-column justify-content-center align-items-lg-start align-items-center">
         <div class="row">
@@ -14,10 +14,10 @@
         </div>
         <div class="row my-2 d-lg-flex d-none">
           <div class="col-lg-12">
-            <button class="statusButton acceptButton" (click)="handleRequest('accept')">
+            <button class="statusButton acceptButton weakShadow" (click)="handleRequest('accept')">
               <span class="material-symbols-outlined">check</span>
             </button>
-            <button class="statusButton mx-2 refuseButton" (click)="handleRequest('refuse')">
+            <button class="statusButton mx-2 refuseButton weakShadow" (click)="handleRequest('refuse')">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>

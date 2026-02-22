@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OpeningDetails } from '../models/opening-details.model';
+import { SchoolJoinRequest } from '../models/school-join-request.model';
 import { School } from '../models/school.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,11 @@ export class SchoolServiceService {
   }
 
   handleJoinRequest(id: number, status: "accept" | "refuse") {
-    return this.http.post(`${this.baseUrl}/${id}/joinRequests`, {status: status})
+    return this.http.post(`${this.baseUrl}/${id}/joinRequest`, {status: status})
   }
 
   getAllJoinRequest(id: number, pageNumber: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}joinRequests?page=${pageNumber}&size=10`, {observe: "response"})
+    return this.http.get<any>(`${this.baseUrl}/${id}/joinRequests?page=${pageNumber}&size=10`, {observe: "response"})
   }
 
   updateSchool(schoolId: number, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string): Observable<School> {

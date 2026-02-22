@@ -1,8 +1,9 @@
 <div class="container-fluid" id="mainContainer">
   <div class="row h-100">
-    <div class="col-lg-12 h-100 d-flex justify-content-center align-items-center">
+    <div
+      class="col-lg-12 h-100 d-flex justify-content-center align-items-center"
+    >
       <div class="container-fluid" id="secondContainer">
-
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-end mt-2">
             <button class="closeButton" (click)="closeList.emit()">
@@ -12,23 +13,25 @@
         </div>
         <div class="row mb-4">
           <div class="col-lg-12">
-              <h1 class="text-white text-center">Értékelések</h1>
-            @if (userService.loggedUser()?.role?.name == "ROLE_student") {
+            <h1 class="text-white text-center">Értékelések</h1>
+            @if (showReviewWriterButton) {
               <div class="d-flex justify-content-center align-items-center">
-                <button id="reviewCreatorButton" (click)="showReviewWriter = true">Értékelés írása</button>
+                <button id="reviewCreatorButton" (click)="showReviewWriter = true">
+                  Értékelés írása
+                </button>
               </div>
             }
           </div>
         </div>
 
         <div class="row">
-              @for (reviewColumn of getColumns(); track $index) {
-                <div class="col-lg-4">
-                  @for (review of reviewColumn; track $index) {
-                    <app-review-card [review]="review" />
-                  }
-                </div>
+          @for (reviewColumn of getColumns(); track $index) {
+            <div class="col-lg-4">
+              @for (review of reviewColumn; track $index) {
+                <app-review-card [review]="review" />
               }
+            </div>
+          }
         </div>
       </div>
     </div>
@@ -36,5 +39,8 @@
 </div>
 
 @if (showReviewWriter) {
-  <app-review-writer (close)="showReviewWriter = false" (createReview)="createReview($event)"/>
+  <app-review-writer
+    (close)="showReviewWriter = false"
+    (createReview)="createReview($event)"
+  />
 }

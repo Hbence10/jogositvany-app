@@ -130,6 +130,7 @@ export class SearchPageComponent implements OnInit {
     if (this.selectedType == "instructor") {
       this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()?.studentId!, this.selectedInstructor?.id!).subscribe({
         error: error => {
+          console.log(error)
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {
@@ -139,6 +140,7 @@ export class SearchPageComponent implements OnInit {
     } else if (this.selectedType == "school") {
       this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!, this.selectedCategoryId!).subscribe({
         error: error => {
+          console.log(error)
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         },
         complete: () => {

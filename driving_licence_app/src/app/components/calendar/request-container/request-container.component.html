@@ -22,7 +22,7 @@
               <div class="row">
                 <div class="col-lg-4 mb-3">
                   <label for="selectedDate">Dátum megadása</label>
-                  <input class="w-100" type="date" id="selectedDate" [valueAsDate]="selectedDate" #dateInput (change)="setDate(dateInput.value)">
+                  <input class="w-100" [min]="minDate" [max]="maxDate" type="date" id="selectedDate" [valueAsDate]="selectedDate" #dateInput (change)="setDate(dateInput.value)">
                 </div>
 
                 <div class="col-lg-4 mb-3">

@@ -4,7 +4,7 @@
       <div class="container-fluid d-flex flex-column justify-content-between" id="secondContainer">
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-end">
-            <button id="closeButton" (click)="close.emit()">
+            <button class="closeButton" (click)="close.emit()">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
@@ -16,7 +16,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row h-100">
           <div class="col-lg-12">
             <form [formGroup]="drivingLessonForm" class="container-fluid">
 
@@ -87,7 +87,7 @@
 
         <div class="row mb-3">
           <div class="col-lg-12 d-flex justify-content-center">
-            <button class="eventButton mx-2" (click)="cancelDrivingLesson()" [disabled]="drivingLesson().isEnd">Lemondás</button>
+            <button class="eventButton mx-2" (click)="cancelDrivingLesson()" [disabled]="drivingLesson().isEnd || drivingLesson().isCancelled">Lemondás</button>
             <button class="eventButton mx-2" (click)="sendSave()">Mentés</button>
           </div>
         </div>

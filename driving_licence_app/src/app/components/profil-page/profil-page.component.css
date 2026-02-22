@@ -9,6 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 #mainDiv {
@@ -48,7 +49,6 @@
   background-color: #22354f;
   border-radius: 20px;
   padding: 25px;
-  /* width: 1100px; */
 }
 
 #avatar {
@@ -61,19 +61,17 @@
   display: block;
   transition: .5s ease;
   backface-visibility: hidden;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 #progressBar #bar {
-  /* width: 850px; */
   height: 20px;
   margin: 0px;
 }
 
 #progressBar {
   background-color: #636da1;
-  /* padding: 25px; */
   border-radius: 16px;
-  /* width: 900px; */
   color: white;
 }
 
@@ -84,6 +82,7 @@
   border: none;
   background-color: #636da1;
   color: #dee0eb;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 label {
@@ -171,7 +170,6 @@ input[type="range"]::-moz-range-track {
   margin: 15px;
 }
 
-/**/
 app-review-list, app-profil-editor, #deleteContainer, app-price-list {
   position: fixed;
   top: 0px;
@@ -188,6 +186,7 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list {
   background-color: #626c99;
   border-radius: 8px;
   height: 400px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 #instructorList {
@@ -215,10 +214,24 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list {
   height: 60px;
   border: none;
   border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 @media screen and (max-width: 1650px) {
   #progressBar {
     width: 100%;
   }
+}
+
+.instructorInfoBox {
+  background-color: #626C99 !important;
+  border-radius: 12px;
+  height: 300px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.vehicleInfo {
+  background-color: #22354f;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }

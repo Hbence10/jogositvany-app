@@ -43,7 +43,7 @@ export class DrivingLessonEditorComponent implements OnInit {
       pickUpPlace: new FormControl(this.drivingLesson().pickUpPlace, []),
       dropOffPlace: new FormControl(this.drivingLesson().dropOffPlace, []),
       lessonHourNumber: new FormControl(this.drivingLesson().lessonHourNumber, []),
-      paymentMethod: new FormControl( this.drivingLesson().paymentMethod.id, []),
+      paymentMethod: new FormControl( this.drivingLesson()?.paymentMethod?.id, []),
       lessonStatus: new FormControl(this.drivingLesson().drivingLessonStatus.id, [])
     })
   }

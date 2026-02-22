@@ -9,19 +9,6 @@ export class AuthGuard implements CanMatch {
   router = inject(Router)
 
   canMatch(route: Route, segments: UrlSegment[]) {
-    let id: number | null = null;
-      if (sessionStorage.getItem("felutonId") != null) {
-        id = +sessionStorage.getItem("felutonId")!
-      } else if (localStorage.getItem("felutonId") != null) {
-        id = +localStorage.getItem("felutonId")!
-      }
-
-      if (id != null) {
-        this.userService.getUserAfterReload(id).subscribe({
-          next: response => this.userService.loggedUser.set(response)
-        })
-      }
-
     if (this.userService.loggedUser() != null) {
       return true
     }

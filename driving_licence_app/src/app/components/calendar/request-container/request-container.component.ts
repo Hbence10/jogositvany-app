@@ -18,8 +18,10 @@ export class RequestContainerComponent implements OnChanges {
   reservedHours = input.required<{ startTime: Date, endTime: Date, name: string, drivingLessonId: number }[]>()
   availableHours: string[][] = []
   inputDate = input.required<Date>()
-  selectedDate!: Date
   private alertService = inject(AlertServiceService)
+  selectedDate!: Date
+  minDate: string = "";
+  maxDate: string = "";
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.reservedHours().length != 0){
@@ -33,6 +35,13 @@ export class RequestContainerComponent implements OnChanges {
       endTime: new FormControl("", [Validators.required]),
       message: new FormControl("", [])
     })
+
+    const now = new Date()
+    this.minDate = now.toLocaleDateString().replace(". ", "-").replace(". ", "-").replace(".", "")
+
+    const oneMonthAfter = new Date()
+    oneMonthAfter.setMonth(now.getMonth() + 1)
+    this.maxDate = oneMonthAfter.toLocaleDateString().replace(". ", "-").replace(". ", "-").replace(".", "")
   }
 
   sendDrivingLessonRequest() {

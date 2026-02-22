@@ -29,7 +29,7 @@ export class UserListComponent implements OnInit {
   userType = ""
   title: string = ""
   availablePages: number[] = []
-  actualPage: number = 1;
+  actualPage: number = 0;
 
   ngOnInit(): void {
     let sub: Subscription
@@ -161,7 +161,7 @@ export class UserListComponent implements OnInit {
   }
 
   changePageWithArrow(newPage: 1 | -1) {
-    if (this.availablePages.length == 0 ||(this.actualPage-1) + newPage == -1 || (this.actualPage -1) + newPage == this.availablePages.length ) {
+    if (newPage + this.actualPage == this.availablePages.length || newPage + this.actualPage == -1) {
 
     } else {
       this.actualPage += newPage
