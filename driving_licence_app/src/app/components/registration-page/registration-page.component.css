@@ -32,10 +32,15 @@ option:disabled {
   border: none;
   background-color: #626C99;
   color: #DEE0EB;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .inputs::placeholder{
   color: #DEE0EB;
+}
+
+.inputs:focus {
+  outline: none;
 }
 
 #register-button {
@@ -50,7 +55,12 @@ option:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.error {
-  border: 2px solid rgb(226, 34, 34) !important;
+.ng-invalid:not(form).ng-touched:not(form) {
+  border: 1.7px solid rgb(226, 34, 34) !important;
   color: rgb(226, 34, 34) !important;
+}
+
+.ng-invalid:not(form).ng-touched:not(form)::placeholder {
+  color: rgb(226, 34, 34) !important;
+  /* font-weight: 400; */
 }

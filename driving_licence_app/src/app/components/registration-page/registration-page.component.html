@@ -95,6 +95,10 @@
                       <label for="instructor" class="mx-1">Oktatóként</label>
                       <input (click)="registrationForm.controls['registerAs'].setValue('instructor')" type="radio" name="registerAs" id="instructor">
                     </div>
+                    <div class="mx-2">
+                      <label for="user" class="mx-1">Felhasználóként</label>
+                      <input (click)="registrationForm.controls['registerAs'].setValue('student')" type="radio" name="registerAs" id="user">
+                    </div>
                   </div>
                 </div>
               </div>

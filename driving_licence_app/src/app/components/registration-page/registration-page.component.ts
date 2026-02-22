@@ -49,7 +49,6 @@ function validatePhone(control: AbstractControl): { [key: string]: any } | null 
   }
 }
 
-
 @Component({
   selector: 'app-registration-page',
   imports: [ReactiveFormsModule, RouterModule],
@@ -115,6 +114,8 @@ export class RegistrationPageComponent implements OnInit {
     this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
       error: error => {
+        console.log(error)
+
         // Egyeb form errort
         this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
       },
