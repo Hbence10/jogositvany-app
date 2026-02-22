@@ -237,4 +237,9 @@ public class SchoolController {
     private ResponseEntity<Object> getAllSchool(Pageable pageable) {
         return schoolService.getAllSchool(pageable);
     }
+
+    @PatchMapping("/admin")
+    private ResponseEntity<Object> setAdmin(@RequestBody JsonNode requestBody) {
+        return schoolService.setAdmin(requestBody.get("email").asText(), requestBody.get("schoolId").asInt());
+    }
 }

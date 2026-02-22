@@ -1,5 +1,8 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -16,13 +19,19 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //37
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -39,39 +48,64 @@ public class SchoolControllerIT {
     private final PasswordEncoder passwordEncoder;
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public SchoolControllerIT(MockMvc mockMvc, SchoolRepository schoolRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, SchoolJoinRequestRepository schoolJoinRequestRepository, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository) {
+    public SchoolControllerIT(MockMvc mockMvc, SchoolRepository schoolRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, SchoolJoinRequestRepository schoolJoinRequestRepository, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, ObjectMapper objectMapper) {
         this.mockMvc = mockMvc;
         this.schoolRepository = schoolRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.schoolJoinRequestRepository = schoolJoinRequestRepository;
         this.drivingLicenseCategoryRepository = drivingLicenseCategoryRepository;
+        this.objectMapper = objectMapper;
     }
 
     private Integer testSchoolId;
     private Integer testJoinRequestId;
+    private String BASEURL = "http://localhost:8080/school";
 
     @BeforeEach
     public void setup() {
         Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users testUser = userRepository.save(new Users("testUser2", "registerStudent2", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users testInstructor = userRepository.save(new Users("testUser2", "registerStudent2", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Dombóvár", "sfafsafasf", "afsfassaf", owner));
         testSchoolId = testSchool.getId();
 
-        SchoolJoinRequest testRequest = schoolJoinRequestRepository.save(new SchoolJoinRequest(testUser, testSchool, drivingLicenseCategoryRepository.findById(0).get()));
+
+        SchoolJoinRequest testRequest = schoolJoinRequestRepository.save(new SchoolJoinRequest(testUser, testSchool, drivingLicenseCategoryRepository.findById(1).get()));
+        testUser.setSchoolJoinRequestList(new ArrayList<>(Arrays.asList(testRequest)));
+        userRepository.save(testUser);
+
         testJoinRequestId = testRequest.getId();
+        System.out.println(testJoinRequestId);
     }
 
     @Test
-    @DisplayName("Accept existent join Request")
-    public void acceptExistentJoinRequest() throws Exception {
+    @DisplayName("Accept existent join Request from user")
+    public void acceptExistentJoinRequestFromUser() throws Exception {
+        mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Refuse existent join")
+    public void refuseExistentJoinRequestFromUser() throws Exception {
+
     }
 
     @Test
     @DisplayName("")
-    public void refuseExistentJoinRequest() throws Exception {
+    public void acceptExistentJoinRequestFromInstructor() throws Exception {
+
+    }
+
+    @Test
+    @DisplayName("")
+    public void refuseExistentJoinRequestFromInstructor() throws Exception {
+
     }
 
     @Test
@@ -82,6 +116,13 @@ public class SchoolControllerIT {
     @Test
     @DisplayName("")
     public void handleNonExistentJoinRequest() throws Exception {
+    }
+
+    private JsonNode createBodyForJoinRequestHandling(String status) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("status", status);
+
+        return returnObject;
     }
 
     @Test

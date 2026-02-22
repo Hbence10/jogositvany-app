@@ -98,4 +98,9 @@ public class OtherStuffController {
     public ResponseEntity<List<VehicleType>> getAllVehicleType() {
         return otherStuffService.getAllVehicleType();
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<String>> getAllEmail() {
+        return otherStuffService.getAllEmail();
+    }
 }

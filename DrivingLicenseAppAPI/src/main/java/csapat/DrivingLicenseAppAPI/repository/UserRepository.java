@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
+import csapat.DrivingLicenseAppAPI.entity.Role;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +33,6 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     @Query("select count(u) from Users u where u.isDeleted = ?1")
     Long countNotDeletedUsers(Boolean isDeleted);
+
+    List<Users> findByRoleAndIsDeleted(Role role, Boolean isDeleted);
 }

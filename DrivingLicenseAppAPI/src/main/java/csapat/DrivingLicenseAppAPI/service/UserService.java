@@ -6,12 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import csapat.DrivingLicenseAppAPI.repository.VehicleRepository;
-import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +80,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            if (!registerAs.equals("student") && !registerAs.equals("instructor")) {
+            if (!registerAs.equals("student") && !registerAs.equals("instructor") && !registerAs.equals("user")) {
                 return ResponseEntity.status(415).body("invalidParameter");
             }
 
@@ -117,6 +117,8 @@ public class UserService {
                     newInstructor.setInstructorUser(newUser);
                     instructorRepository.save(newInstructor);
                     userRepository.setRoleOfUser(newUser.getId(), 3);
+                } else if (registerAs.equals("student")) {
+
                 }
             }
             return ResponseEntity.ok().build();

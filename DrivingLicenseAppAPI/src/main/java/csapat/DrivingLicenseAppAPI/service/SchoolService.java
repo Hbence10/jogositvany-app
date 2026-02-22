@@ -84,7 +84,7 @@ public class SchoolService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -382,6 +382,33 @@ public class SchoolService {
             header.add("PageNumber", allSchool.getTotalPages() + "");
 
             return new ResponseEntity<>(returnList, header, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    public ResponseEntity<Object> setAdmin(String email, Integer schoolID) {
+        try {
+            if (email == null || schoolID == null) {
+                return ResponseEntity.status(422).build();
+            }
+
+            Users searchedUser = userRepository.findByEmail(email).orElse(null);
+            School searchedSchool = schoolRepository.findById(schoolID).orElse(null);
+
+            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+                return ResponseEntity.status(404).body("schoolNotFound");
+            } else if (searchedUser == null || searchedUser.getIsDeleted()) {
+                return ResponseEntity.status(404).body("userNotFound");
+            }
+
+            searchedUser.setRole(new Role(4, "ROLE_school_admin"));
+            searchedUser.setAdminSchool(searchedSchool);
+            userRepository.save(searchedUser);
+
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

@@ -23,6 +23,7 @@ public class OtherStuffService {
     private final FuelTypeRepository fuelTypeRepository;
     private final StatusRepository statusRepository;
     private final VehicleTypeRepository vehicleTypeRepository;
+    private final UserRepository userRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         try {
@@ -80,6 +81,20 @@ public class OtherStuffService {
     public ResponseEntity<List<VehicleType>> getAllVehicleType() {
         try {
             return ResponseEntity.ok().body(vehicleTypeRepository.getAllVehicleType());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public  ResponseEntity<List<String>> getAllEmail() {
+        try {
+            List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1, "ROLE_user"), false);
+            List<String> returnList = new ArrayList<>();
+            for (Users i : users) {
+                returnList.add(i.getEmail());
+            }
+            return ResponseEntity.ok(returnList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

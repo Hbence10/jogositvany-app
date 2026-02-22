@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/instructor/*/students").hasRole("instructor")
                         .requestMatchers("/instructor/kickout").hasRole("instructor")
                         //OtherStuffController:
-                        .requestMatchers("/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education").permitAll()
+                        .requestMatchers("/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education", "/email").permitAll()
                         //RequestController:
                         .requestMatchers("/request/school").hasAnyRole("instructor", "user")
                         .requestMatchers("/request/instructor").hasRole("student")
@@ -95,6 +95,7 @@ public class SecurityConfig {
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
+                        .requestMatchers("/school/admin").hasRole("school_owner")
 
                         //StudentController:
                         //UserController
