@@ -21,5 +21,5 @@ public interface StudentRepository extends JpaRepository<Students, Integer> {
     String deleteStudent(@Param("idIN") Integer id);
 
     @Query("select count(s) from Students s where s.isDeleted = ?1")
-    Long countNotDeletedUsers(Boolean isDeleted);
+    Long countNotDeletedStudents(Boolean isDeleted);
 }

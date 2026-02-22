@@ -8,10 +8,12 @@ import csapat.DrivingLicenseAppAPI.repository.DrivingLicenseCategoryRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -56,6 +58,8 @@ public class StudentControllerIT {
         Users testUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Dombóvár", "sfafsafasf", "afsfassaf", testUser));
         Students testStudent = studentRepository.save(new Students(testUser, testSchool, drivingLicenseCategoryRepository.findById(1).get()));
+
+        testId = testStudent.getId();
     }
 
     @Test
@@ -73,21 +77,30 @@ public class StudentControllerIT {
     @Test
     @DisplayName("Delete existent student by id.")
     public void deleteExistentStudent() throws Exception {
+        Long sizeBeforeDelete = studentRepository.countNotDeletedStudents(false);
+        mockMvc.perform(delete(BASEURL + "/" + testId))
+                .andExpect(status().isOk());
+        Long sizeAfterDelete = studentRepository.countNotDeletedStudents(false);
+        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
     }
 
     @Test
     @DisplayName("Delete non-existent student by id.")
     public void deleteNonExistentStudent() throws Exception {
-        Long sizeBeforeDelete = studentRepository.countNotDeletedUsers(false);
+        Long sizeBeforeDelete = studentRepository.countNotDeletedStudents(false);
         mockMvc.perform(delete(BASEURL + "/" + 21314))
                 .andExpect(status().isNotFound());
-        Long sizeAfterDelete = studentRepository.countNotDeletedUsers(false);
+        Long sizeAfterDelete = studentRepository.countNotDeletedStudents(false);
         Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
     @DisplayName("Get existent student by id.")
     public void getExistentStudentById() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + testId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(testId)));
     }
 
     @Test

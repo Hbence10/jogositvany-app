@@ -56,7 +56,7 @@ public class StudentService {
                 return ResponseEntity.status(422).build();
             }
 
-            Students searchedStudent = studentRepository.getStudent(id).orElse(null);
+            Students searchedStudent = studentRepository.findById(id).orElse(null);
             if (searchedStudent == null || searchedStudent.getIsDeleted()) {
                 return ResponseEntity.notFound().build();
             } else {

@@ -7,35 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" th:href="style.css">
+
     <title>Document</title>
 </head>
-<style>
-    body {
-        height: 100vh;
-        background-color: #434A6B;
-    }
-
-    .container-fluid {
-        width: 800px;
-    }
-
-    * {
-        font-family: "Bebas Neue", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-        color: #DEE0EB;
-    }
-
-    #footerText {
-        font-size: 12px;
-    }
-</style>
 <body class="d-flex flex-column justify-content-center">
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="text-center">Tisztelt <span th:text="${fullName}"></span> </h1>
+                <h1 class="text-center">Tisztelt <span th:text="${fullName}"></span>!</h1>
                 <p class="text-center">Az alábbiakban értesitjük, hogy sikeresen regisztrált az oldalunkra. Amennyiben nem maga hajtotta végre a frissitést, kérjük vegye fel a kapcsolatot az oldal adminisztrátoraival</p>
                 <p class="text-center">Kérjük további adatait minnél előbb adja meg. Ezt a profilja oldalán tudja megtenni.</p>
             </div>
