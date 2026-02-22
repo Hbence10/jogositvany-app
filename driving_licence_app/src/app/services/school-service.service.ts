@@ -61,4 +61,8 @@ export class SchoolServiceService {
   getAllSchool(pageNumber: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}?page=${pageNumber}&size=10`, {observe: "response"})
   }
+
+  setAdmin(email: string, schoolId: number) {
+    return this.http.patch(`${this.baseUrl}/admin`, {email: email, schoolId: schoolId})
+  }
 }

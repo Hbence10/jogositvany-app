@@ -39,4 +39,8 @@ export class OtherStuffServiceService {
   getAllStatus(): Observable<Status[]> {
     return this.http.get<Status[]>(`${this.baseUrl}/status`)
   }
+
+  getAllEmail(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/email`)
+  }
 }
