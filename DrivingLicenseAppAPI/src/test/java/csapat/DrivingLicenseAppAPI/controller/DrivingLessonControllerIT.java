@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 public class DrivingLessonControllerIT {
 
-    private final String BASEURL = "http://localhost:8080/drivingLesson"
+    private final String BASEURL = "http://localhost:8080/drivingLesson";
 
     @Autowired
     MockMvc mockMvc;

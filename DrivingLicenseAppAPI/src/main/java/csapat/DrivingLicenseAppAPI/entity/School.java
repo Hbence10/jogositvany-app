@@ -120,17 +120,11 @@ public class School {
     @JsonIgnore
     private List<Review> reviewList;
 
-    @OneToMany(
-            mappedBy = "studentSchool",
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "studentSchool", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"studentSchool", "studentInstructor"})
     private List<Students> studentsList;
 
-    @OneToMany(
-            mappedBy = "schoolJoinRequestSchool",
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "schoolJoinRequestSchool", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
