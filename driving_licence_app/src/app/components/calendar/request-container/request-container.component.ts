@@ -22,9 +22,10 @@ export class RequestContainerComponent implements OnChanges {
   selectedDate!: Date
   minDate: string = "";
   maxDate: string = "";
+  invalidTimeRange: boolean = false
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(this.reservedHours().length != 0){
+    if (this.reservedHours().length != 0) {
       this.getAvailableHours()
     }
 
@@ -45,8 +46,16 @@ export class RequestContainerComponent implements OnChanges {
   }
 
   sendDrivingLessonRequest() {
+    const startTime = new Date(`2026-01-21 ${this.requestForm.controls["startTime"].value}`);
+    const endTime = new Date(`2026-01-21 ${this.requestForm.controls["endTime"].value}`);
+    if (startTime.getTime() >= endTime.getTime()) {
+      this.invalidTimeRange = true;
+      this.alertService.setAlert("A kezdési időpontot későbbre adtad meg mint a végzésit!", "error")
+      return
+    }
 
     this.requestService.sendDrivingLessonRequest(
+
       {
         msg: this.requestForm.controls["message"].value,
         date: this.requestForm.controls["selectedDate"].value,
@@ -77,7 +86,7 @@ export class RequestContainerComponent implements OnChanges {
       if (this.convertToValidDate(this.reservedHours()[listIndex].startTime).getHours() == i) {
         const baseDate = this.convertToValidDate(this.reservedHours()[listIndex].startTime)
         for (let j = 0; j < 60; j++) {
-          if (baseDate.getMinutes() == j){
+          if (baseDate.getMinutes() == j) {
             const endDate = this.convertToValidDate(this.reservedHours()[listIndex].startTime)
             this.availableHours.push([
               `${startDate.getHours() < 10 ? "0" : ""}${startDate.getHours()}:${startDate.getMinutes() < 10 ? "0" : ""}${startDate.getMinutes()}`,
@@ -92,10 +101,10 @@ export class RequestContainerComponent implements OnChanges {
           }
         }
         if (isBreak) {
-           this.availableHours.push([
-              `${startDate.getHours() < 10 ? "0" : ""}${startDate.getHours()}:${startDate.getMinutes() < 10 ? "0" : ""}${startDate.getMinutes()}`,
-              `22:00`
-            ])
+          this.availableHours.push([
+            `${startDate.getHours() < 10 ? "0" : ""}${startDate.getHours()}:${startDate.getMinutes() < 10 ? "0" : ""}${startDate.getMinutes()}`,
+            `22:00`
+          ])
           break;
         }
       }

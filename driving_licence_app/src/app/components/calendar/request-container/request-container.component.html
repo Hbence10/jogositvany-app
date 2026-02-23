@@ -26,12 +26,12 @@
                 </div>
 
                 <div class="col-lg-4 mb-3">
-                  <label for="startTime">Mikor szeretnél kezdeni?</label>
-                  <input class="w-100" type="time" formControlName="startTime" name="startTime" id="startTime">
+                  <label for="startTime" [class.error]="invalidTimeRange">Mikor szeretnél kezdeni?</label>
+                  <input class="w-100" [class.error]="invalidTimeRange" type="time" formControlName="startTime" name="startTime" id="startTime">
                 </div>
                 <div class="col-lg-4 mb-3">
-                  <label for="endTime">Mikor szeretnél végezni?</label>
-                  <input class="w-100" type="time" formControlName="endTime" name="endTime" id="endTime">
+                  <label for="endTime" [class.error]="invalidTimeRange">Mikor szeretnél végezni?</label>
+                  <input class="w-100" [class.error]="invalidTimeRange" type="time" formControlName="endTime" name="endTime" id="endTime">
                 </div>
               </div>
 
