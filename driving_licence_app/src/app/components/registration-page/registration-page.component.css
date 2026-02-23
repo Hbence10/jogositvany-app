@@ -15,7 +15,7 @@ a {
 
 #secondContainer {
   border-radius: 20px;
-  height: 900px;
+  height: 950px;
   width: 650px;
   background-color: #22354F;
   color: #DEE0EB;
@@ -55,12 +55,12 @@ option:disabled {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.ng-invalid:not(form).ng-touched:not(form) {
+.ng-invalid:not(form).ng-touched:not(form), .error {
   border: 1.7px solid rgb(226, 34, 34) !important;
   color: rgb(226, 34, 34) !important;
 }
 
-.ng-invalid:not(form).ng-touched:not(form)::placeholder {
+.ng-invalid:not(form).ng-touched:not(form)::placeholder, .error::placeholder {
   color: rgb(226, 34, 34) !important;
   /* font-weight: 400; */
 }

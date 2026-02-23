@@ -60,10 +60,12 @@ export class RegistrationPageComponent implements OnInit {
   private otherService = inject(OtherStuffServiceService);
   private router = inject(Router)
   private alertService = inject(AlertServiceService)
+  now = new Date()
 
   registrationForm!: FormGroup;
   educationList: Education[] = []
   errorMsg: string = ""
+  showPasswordReq: boolean = false
 
   samePasswordValidator = (
     control: AbstractControl
@@ -114,10 +116,19 @@ export class RegistrationPageComponent implements OnInit {
     this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
       error: error => {
-        console.log(error)
-
-        // Egyeb form errort
-        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        console.log(error.error.statusText)
+        if (error.error.statusText === "duplicateEmail") {
+          this.errorMsg = "duplicateEmail"
+          this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
+        } else if (error.error.statusText === "duplicatePhone") {
+          this.errorMsg = "duplicatePhone"
+          this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
+        } else if (error.error.statusText === "invalidDate") {
+          this.errorMsg = "invalidDate"
+          this.alertService.setAlert("A jővőben nem születhettél!", "error")
+        } else {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        }
       },
       complete: () => {
         this.alertService.setAlert("Sikeres regisztráció!", "success")
