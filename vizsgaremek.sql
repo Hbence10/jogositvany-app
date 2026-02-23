@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Feb 15. 16:58
+-- Létrehozás ideje: 2026. Feb 23. 12:20
 -- Kiszolgáló verziója: 5.7.24
--- PHP verzió: 8.3.1
+-- PHP verzió: 8.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `vizsgaremek`
+-- Adatbázis: `vizsgaremek_11.0`
 --
 
 DELIMITER $$
@@ -413,7 +413,39 @@ INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_p
 (1, 214, 4235, 'asfsafsaf', NULL, NULL, 2341, 0, 2, 6, 1, 52, 11, 0, 1, '2026-02-14 20:01:42'),
 (2, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 7, 1, 52, 11, 0, 0, NULL),
 (3, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 8, 1, 52, 8, 0, 0, NULL),
-(4, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 12, 1, 52, 24, 0, 0, NULL);
+(4, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 12, 1, 52, 24, 0, 0, NULL),
+(5, 37338, 37382, 'Szekszárd', 'Dombóvár', 'Szekszárd', 4, 0, 3, 7, 1, 19, 10, 0, 0, NULL),
+(6, 0, 20, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 12, 1, 18, 18, 0, 0, NULL),
+(7, 20, 60, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 3, 13, 1, 18, 18, 0, 0, NULL),
+(8, 50, 72, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 14, 1, 18, 18, 0, 0, NULL),
+(9, 72, 141, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 1, 15, 1, 18, 18, 0, 0, NULL),
+(10, 141, 169, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 0, 2, 16, 1, 18, 18, 0, 0, NULL),
+(11, 170, 203, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 0, 2, 17, 1, 18, 18, 0, 0, NULL),
+(12, 204, 256, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 3, 18, 1, 18, 18, 0, 0, NULL),
+(13, 257, 289, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 1, 19, 1, 18, 18, 0, 0, NULL),
+(14, 290, 348, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 2, 20, 1, 18, 18, 0, 0, NULL),
+(15, 349, 391, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 21, 1, 18, 18, 0, 0, NULL),
+(16, 392, 423, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 22, 1, 18, 18, 0, 0, NULL),
+(17, 423, 484, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 23, 1, 18, 18, 0, 0, NULL),
+(18, 485, 509, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 24, 1, 18, 18, 0, 0, NULL),
+(19, 510, 546, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 25, 1, 18, 18, 0, 0, NULL),
+(20, 547, 587, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 26, 1, 18, 18, 0, 0, NULL),
+(21, 588, 610, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 27, 1, 18, 18, 0, 0, NULL),
+(22, 611, 654, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 28, 1, 18, 18, 0, 0, NULL),
+(23, 655, 695, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 29, 1, 18, 18, 0, 0, NULL),
+(24, 696, 733, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 30, 1, 18, 18, 0, 0, NULL),
+(25, 734, 768, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 31, 1, 18, 18, 0, 0, NULL),
+(26, 767, 800, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 32, 1, 18, 18, 0, 0, NULL),
+(27, 801, 837, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 33, 1, 18, 18, 0, 0, NULL),
+(28, 838, 870, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 3, 34, 1, 18, 18, 0, 0, NULL),
+(29, 871, 898, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 35, 1, 18, 18, 0, 0, NULL),
+(30, 899, 924, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, NULL, 36, 1, 18, 18, 0, 0, NULL),
+(31, 925, 952, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 37, 1, 18, 18, 0, 0, NULL),
+(37, 953, 987, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 38, 1, 18, 18, 0, 0, NULL),
+(38, 988, 1017, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 39, 1, 18, 18, 0, 0, NULL),
+(39, 1018, 1052, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 40, 1, 18, 18, 0, 0, NULL),
+(40, 1053, 1086, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 3, 41, 1, 18, 18, 0, 0, NULL),
+(41, 1087, 1105, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 42, 1, 18, 18, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -704,7 +736,37 @@ CREATE TABLE `reserved_date` (
 
 INSERT INTO `reserved_date` (`id`, `date`, `is_full`, `is_deleted`, `deleted_at`) VALUES
 (6, '2026-02-10', 0, 0, NULL),
-(10, '2026-02-12', 0, 0, NULL);
+(10, '2026-02-12', 0, 0, NULL),
+(11, '2026-02-23', 0, 0, NULL),
+(12, '2026-02-24', 0, 0, NULL),
+(13, '2026-02-25', 0, 0, NULL),
+(18, '2026-02-26', 0, 0, NULL),
+(19, '2026-02-27', 0, 0, NULL),
+(20, '2026-02-28', 0, 0, NULL),
+(21, '2026-03-01', 0, 0, NULL),
+(22, '2026-03-02', 0, 0, NULL),
+(23, '2026-03-03', 0, 0, NULL),
+(24, '2026-03-04', 0, 0, NULL),
+(25, '2026-03-05', 0, 0, NULL),
+(26, '2026-03-06', 0, 0, NULL),
+(27, '2026-03-07', 0, 0, NULL),
+(28, '2026-03-08', 0, 0, NULL),
+(29, '2026-03-09', 0, 0, NULL),
+(30, '2026-03-10', 0, 0, NULL),
+(31, '2026-03-11', 0, 0, NULL),
+(32, '2026-03-12', 0, 0, NULL),
+(33, '2026-03-13', 0, 0, NULL),
+(34, '2026-03-14', 0, 0, NULL),
+(35, '2026-03-15', 0, 0, NULL),
+(36, '2026-03-16', 0, 0, NULL),
+(37, '2026-03-17', 0, 0, NULL),
+(38, '2026-03-18', 0, 0, NULL),
+(39, '2026-03-19', 0, 0, NULL),
+(40, '2026-03-20', 0, 0, NULL),
+(41, '2026-03-21', 0, 0, NULL),
+(42, '2026-03-22', 0, 0, NULL),
+(43, '2026-03-23', 0, 0, NULL),
+(44, '2026-03-24', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -729,7 +791,37 @@ INSERT INTO `reserved_hour` (`id`, `date_id`, `start_time`, `end_time`, `is_dele
 (6, 6, '13:45:00', '14:45:00', 1, '2026-02-14 20:01:42'),
 (7, 6, '10:00:00', '12:00:00', 0, NULL),
 (8, 6, '18:00:00', '20:00:00', 0, NULL),
-(12, 10, '12:20:00', '15:23:00', 0, NULL);
+(12, 10, '12:20:00', '15:23:00', 0, NULL),
+(13, 11, '12:00:00', '14:00:00', 0, NULL),
+(14, 12, '12:00:00', '14:00:00', 0, NULL),
+(15, 13, '12:00:00', '14:00:00', 0, NULL),
+(16, 18, '12:00:00', '14:00:00', 0, NULL),
+(17, 19, '12:00:00', '14:00:00', 0, NULL),
+(18, 20, '12:00:00', '14:00:00', 0, NULL),
+(19, 21, '12:00:00', '14:00:00', 0, NULL),
+(20, 22, '12:00:00', '14:00:00', 0, NULL),
+(21, 23, '12:00:00', '14:00:00', 0, NULL),
+(22, 24, '12:00:00', '14:00:00', 0, NULL),
+(23, 25, '12:00:00', '14:00:00', 0, NULL),
+(24, 26, '12:00:00', '14:00:00', 0, NULL),
+(25, 27, '12:00:00', '14:00:00', 0, NULL),
+(26, 28, '12:00:00', '14:00:00', 0, NULL),
+(27, 29, '12:00:00', '14:00:00', 0, NULL),
+(28, 30, '12:00:00', '14:00:00', 0, NULL),
+(29, 31, '12:00:00', '14:00:00', 0, NULL),
+(30, 32, '12:00:00', '14:00:00', 0, NULL),
+(31, 33, '12:00:00', '14:00:00', 0, NULL),
+(32, 34, '12:00:00', '14:00:00', 0, NULL),
+(33, 35, '12:00:00', '14:00:00', 0, NULL),
+(34, 36, '12:00:00', '14:00:00', 0, NULL),
+(35, 37, '12:00:00', '14:00:00', 0, NULL),
+(36, 38, '12:00:00', '14:00:00', 0, NULL),
+(37, 39, '12:00:00', '14:00:00', 0, NULL),
+(38, 40, '12:00:00', '14:00:00', 0, NULL),
+(39, 41, '12:00:00', '14:00:00', 0, NULL),
+(40, 42, '12:00:00', '14:00:00', 0, NULL),
+(41, 43, '12:00:00', '14:00:00', 0, NULL),
+(42, 44, '12:00:00', '14:00:00', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1293,7 +1385,7 @@ ALTER TABLE `vehicle_type`
 -- AUTO_INCREMENT a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
@@ -1353,13 +1445,13 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT a táblához `reserved_date`
 --
 ALTER TABLE `reserved_date`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT a táblához `review`
