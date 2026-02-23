@@ -1,4 +1,4 @@
-#mainContainer{
+#mainContainer {
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.6);
@@ -12,16 +12,20 @@
   border-radius: 12px;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   border: none;
   background-color: #626C99;
   border-radius: 5px;
   color: #dee0eb;
   height: 50px;
   padding: 0px 15px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: white;
 }
 
@@ -31,10 +35,24 @@ input::placeholder, textarea::placeholder {
   width: 300px;
   border: none;
   border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 @media screen and (max-width: 860px) {
   #secondContainer {
     width: 90%;
   }
+}
+
+.ng-invalid:not(form).ng-touched:not(form), .error {
+  border: 1.7px solid rgb(226, 34, 34) !important;
+  color: rgb(226, 34, 34) !important;
+}
+
+.ng-invalid:not(form).ng-touched:not(form)::placeholder, .error::placeholder {
+  color: rgb(226, 34, 34) !important;
+}
+
+label.error {
+  color: rgb(226, 34, 34) !important;
 }

@@ -2,6 +2,9 @@ import { Component, inject, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchoolServiceService } from '../../services/school-service.service';
 import { UsersService } from '../../services/users.service';
+import { School } from '../../models/school.model';
+import { User } from '../../models/user.model';
+import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { AlertServiceService } from '../../services/alert-service.service';
 
 @Component({
@@ -18,6 +21,7 @@ export class SchoolRegistrationComponent implements OnInit {
   userList: any[] = []
   private alertService = inject(AlertServiceService)
   varmegyek = ["Bács-Kiskun", "Baranya", "Békés", "Borsod-Abaúj-Zemplén", "Csongrád-Csanád", "Fejér", "Győr-Moson-Sopron", "Hajdú-Bihar", "Heves", "Jász-Nagykun-Szolnok", "Komárom-Esztergom", "Nógrád", "Pest", "Somogy", "Szabolcs-Szatmár-Bereg", "Tolna", "Vas", "Veszprém", "Zala"];
+  errorMsg: string = ""
 
   ngOnInit(): void {
     this.schoolForm = new FormGroup({
@@ -51,8 +55,16 @@ export class SchoolRegistrationComponent implements OnInit {
     }).subscribe({
       next: response => {
         this.close.emit()
-      }, error: () => {
-        this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+      }, error: (error) => {
+        if (error.error.statusText === "duplicateEmail") {
+          this.errorMsg = "duplicateEmail"
+          this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
+        } else if (error.error.statusText === "duplicatePhone") {
+          this.errorMsg = "duplicatePhone"
+          this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
+        } else {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        }
       }, complete: () => {
         this.alertService.setAlert("Sikeresen létrehoztad az iskolát!", "success")
       }

@@ -26,13 +26,13 @@
 
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="E-mail cím" formControlName="email">
+                  <input [class.error]="errorMsg === 'duplicateEmail'" type="text" class="w-100 mt-3" placeholder="E-mail cím" formControlName="email">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-lg-12">
-                  <input type="text" class="w-100 mt-3" placeholder="Telefonszám" formControlName="phone">
+                  <input [class.error]="errorMsg === 'duplicatePhone'" type="text" class="w-100 mt-3" placeholder="Telefonszám" formControlName="phone">
                 </div>
               </div>
 
