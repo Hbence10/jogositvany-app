@@ -1,3 +1,4 @@
+
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from "@angular/router";
@@ -76,7 +77,7 @@ export class PasswordResetComponent implements OnInit {
       error: error => {
         if (error.status == 404) {
           this.emailErrorMsg.set("Nincs ilyen email címmel létező fiók. Próbáld meg újra!")
-        } else if (error.status == 417) {
+        } else if (error.status == 415) {
           this.emailErrorMsg.set("Érvénytelen email címet adtál meg. Próbáld meg újra!")
         } else {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
