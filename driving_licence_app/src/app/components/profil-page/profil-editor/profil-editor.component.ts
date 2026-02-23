@@ -40,7 +40,9 @@ export class ProfilEditorComponent implements OnInit {
 
   openingDetailsForm!: FormGroup
   dayNames: string[] = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek"]
+  errorMsg: string = ""
   private alertService = inject(AlertServiceService)
+  invalidTimeCombinationIndex: number = 0;
 
   ngOnInit(): void {
     if (this.objectType() == "user") {
@@ -115,8 +117,16 @@ export class ProfilEditorComponent implements OnInit {
           this.alertService.setAlert("Sikeres frissités", "success")
           this.update.emit(response)
         },
-        error: () => {
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        error: (error) => {
+          if (error.error.statusText === "duplicateEmail") {
+            this.errorMsg = "duplicateEmail"
+            this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
+          } else if (error.error.statusText === "duplicatePhone") {
+            this.errorMsg = "duplicatePhone"
+            this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
+          }  else {
+            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          }
         }
       })
     } else {
@@ -124,8 +134,19 @@ export class ProfilEditorComponent implements OnInit {
         next: response => {
           this.alertService.setAlert("Sikeres frissités", "success")
           this.update.emit(response)
-        }, error: () => {
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        }, error: (error) => {
+          if (error.error.statusText === "duplicateEmail") {
+            this.errorMsg = "duplicateEmail"
+            this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
+          } else if (error.error.statusText === "duplicatePhone") {
+            this.errorMsg = "duplicatePhone"
+            this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
+          } else if (error.error.statusText === "invalidDate") {
+            this.errorMsg = "invalidDate"
+            this.alertService.setAlert("A jővőben nem születhettél!", "error")
+          } else {
+            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          }
         }
       })
     }
@@ -134,12 +155,19 @@ export class ProfilEditorComponent implements OnInit {
   saveInstructorChanges() {
     this.instructorService.updateInstructor((this.wantedObject() as User).instructor?.id!, this.instructorForm.controls["promoText"].value, (this.wantedObject() as User).instructor?.vehicle.id!, this.instructorForm.controls["vehicleName"].value, this.instructorForm.controls["licensePlate"].value, this.instructorForm.controls["fuelType"].value, this.instructorForm.controls["vehicleType"].value).subscribe({
       next: response => console.log(response),
+      error: (error) => {
+        if (error.error.statusText === "duplicateLicensePlate") {
+          this.errorMsg = "duplicateLicensePlate"
+          this.alertService.setAlert("Regisztrálták már ezt a rendszámot!", "error")
+        } else {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        }
+      },
       complete: () => {
         console.log("instructorChanges vege")
       }
     })
   }
-
 
   saveOpeningChanges() {
     const cloneList: OpeningDetails[] = []
@@ -147,10 +175,16 @@ export class ProfilEditorComponent implements OnInit {
       const detail: OpeningDetails = (this.wantedObject() as School).openingDetails[i]
       detail.openingTime = new Date("2025-01-01 " + this.openingDetailsForm.controls[`${this.dayNames[i]}Start`].value)
       detail.closeTime = new Date("2025-01-01 " + this.openingDetailsForm.controls[`${this.dayNames[i]}End`].value)
+      if (detail.openingTime.getTime() > detail.closeTime.getTime()) {
+        this.invalidTimeCombinationIndex = i;
+        this.alertService.setAlert(`${this.dayNames[i]}i napon rosszul adtad meg a nyitás zárás időt.`, "error")
+        return
+      }
+
       cloneList.push(detail)
     }
 
-    this.schoolService.updateOpeningDetails(this.wantedObject().id! ,cloneList).subscribe({
+    this.schoolService.updateOpeningDetails(this.wantedObject().id!, cloneList).subscribe({
       next: response => console.log(response)
     })
   }

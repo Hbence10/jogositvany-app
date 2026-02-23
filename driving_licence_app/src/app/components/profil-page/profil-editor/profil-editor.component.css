@@ -44,3 +44,16 @@ input::placeholder, textarea::placeholder {
     width: 90%;
   }
 }
+
+.ng-invalid:not(form).ng-touched:not(form), .error {
+  border: 1.7px solid rgb(226, 34, 34) !important;
+  color: rgb(226, 34, 34) !important;
+}
+
+.ng-invalid:not(form).ng-touched:not(form)::placeholder, .error::placeholder {
+  color: rgb(226, 34, 34) !important;
+}
+
+label.error {
+  color: rgb(226, 34, 34) !important;
+}
