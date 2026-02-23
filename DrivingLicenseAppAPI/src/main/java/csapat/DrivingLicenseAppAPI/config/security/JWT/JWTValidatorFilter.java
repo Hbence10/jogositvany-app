@@ -63,7 +63,8 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                 "/users/register/student",
                 "/users/register/instructor",
                 "/users/login",
-                "/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education"
+                "/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education",
+                "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset"
         ));
 
         return allowedUrlPaths.contains(request.getServletPath());

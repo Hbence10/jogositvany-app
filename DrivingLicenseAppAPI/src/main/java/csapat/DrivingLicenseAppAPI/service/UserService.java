@@ -25,13 +25,19 @@ import org.springframework.mail.MailSendException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.ConstraintViolationException;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.UndeclaredThrowableException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -75,7 +81,7 @@ public class UserService {
     }
 
     public ResponseEntity<Object> register(Users newUser, String registerAs) {
-        try {
+
             if (newUser == null) {
                 return ResponseEntity.status(422).build();
             }
@@ -98,7 +104,7 @@ public class UserService {
             } else if (newUser.getId() != null) {
                 return ResponseEntity.status(415).body("invalidObject");
             } else if (newUser.getBirthDate().after(new Date())) {
-                return ResponseEntity.status(415).body("invalidBirthDate");
+                return ResponseEntity.status(415).body(Map.of("statusText", "invalidDate"));
             } else {
                 newUser.setPassword(passwordEncoder.encode(newUser.getPassword().trim()));
                 try {
@@ -109,31 +115,20 @@ public class UserService {
                 }
 
                 newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
-                newUser = userRepository.save(newUser);
 
-                if (registerAs.equals("instructor")) {
-                    Instructors newInstructor = new Instructors();
-                    newInstructor.setVehicle(vehicleRepository.save(new Vehicle()));
-                    newInstructor.setInstructorUser(newUser);
-                    instructorRepository.save(newInstructor);
-                    userRepository.setRoleOfUser(newUser.getId(), 3);
-                } else if (registerAs.equals("student")) {
+                    newUser = userRepository.save(newUser);
 
-                }
+                    if (registerAs.equals("instructor")) {
+                        Instructors newInstructor = new Instructors();
+                        newInstructor.setVehicle(vehicleRepository.save(new Vehicle()));
+                        newInstructor.setInstructorUser(newUser);
+                        instructorRepository.save(newInstructor);
+                        userRepository.setRoleOfUser(newUser.getId(), 3);
+                    }
+
             }
             return ResponseEntity.ok().build();
-        } catch (DataIntegrityViolationException e) {
-            if (e.getMessage().contains("Duplicate entry '" + newUser.getEmail() + "' for key 'email'")) {
-                return ResponseEntity.status(409).body("duplicateEmail");
-            } else if (e.getMessage().contains("Duplicate entry '" + newUser.getPhone() + "' for key 'phone'")) {
-                return ResponseEntity.status(409).body("duplicatePhone");
-            } else {
-                return ResponseEntity.internalServerError().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+
     }
 
     //password reset
@@ -249,10 +244,8 @@ public class UserService {
                 } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")) {
                     return ResponseEntity.status(415).body("invalidGender");
                 } else if (dateFormat.parse(birthDateText).after(new Date())) {
-                    return ResponseEntity.status(415).body("invalidBirthDate");
+                    return ResponseEntity.status(415).body(Map.of("statusText", "invalidDate"));
                 } else {
-
-
                     searchedUser.setFirstName(firstName.trim());
                     searchedUser.setLastName(lastName.trim());
                     searchedUser.setEmail(email.trim());
@@ -263,11 +256,7 @@ public class UserService {
                     return ResponseEntity.ok(userRepository.save(searchedUser));
                 }
             }
-        } catch (DataIntegrityViolationException e) {
-            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.status(409).body(errorMsg);
-        } catch (Exception e) {
+        }  catch (ParseException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }

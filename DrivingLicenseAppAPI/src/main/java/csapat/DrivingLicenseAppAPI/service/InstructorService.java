@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -121,40 +121,33 @@ public class InstructorService {
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateInstructor(Integer instructorId, String promoText, Integer vehicleId, String vehicleName, String licensePlate, Integer fuelTypeId, Integer vehicleTypeId) {
-        try {
-            if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
-                return ResponseEntity.status(422).build();
-            }
+        if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
+            return ResponseEntity.status(422).build();
+        }
 
-            Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElse(null);
-            Vehicle searchedVehicle = vehicleRepository.getVehicle(vehicleId).orElse(null);
-            FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
-            VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(vehicleTypeId).orElse(null);
+        Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElse(null);
+        Vehicle searchedVehicle = vehicleRepository.getVehicle(vehicleId).orElse(null);
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
+        VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(vehicleTypeId).orElse(null);
 
-            if (searchedInstructors == null || searchedInstructors.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (searchedVehicle == null || searchedVehicle.getIsDeleted()) {
-                return ResponseEntity.status(404).body("vehicleNotFound");
-            } else if (searchedFuelType == null) {
-                return ResponseEntity.status(404).body("fuelTypeNotFound");
-            } else if (searchedVehicleType == null) {
-                return ResponseEntity.status(404).body("vehicleTypeNotFound");
-            } else if (licensePlate.length() != 7 && licensePlate.length() != 9) {
-                return ResponseEntity.status(415).build();
-            } else {
-                searchedInstructors.setPromoText(promoText.trim());
-                searchedVehicle.setLicensePlate(licensePlate);
-                searchedVehicle.setName(vehicleName);
-                searchedVehicle.setFuelType(searchedFuelType);
-                searchedVehicle.setVehicleType(searchedVehicleType);
-                searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));
-                return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors).getInstructorUser());
-            }
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(409).body("duplicateLicensePlate");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        if (searchedInstructors == null || searchedInstructors.getIsDeleted()) {
+            return ResponseEntity.status(404).body("instructorNotFound");
+        } else if (searchedVehicle == null || searchedVehicle.getIsDeleted()) {
+            return ResponseEntity.status(404).body("vehicleNotFound");
+        } else if (searchedFuelType == null) {
+            return ResponseEntity.status(404).body("fuelTypeNotFound");
+        } else if (searchedVehicleType == null) {
+            return ResponseEntity.status(404).body("vehicleTypeNotFound");
+        } else if (licensePlate.length() != 7 && licensePlate.length() != 9) {
+            return ResponseEntity.status(415).build();
+        } else {
+            searchedInstructors.setPromoText(promoText.trim());
+            searchedVehicle.setLicensePlate(licensePlate);
+            searchedVehicle.setName(vehicleName);
+            searchedVehicle.setFuelType(searchedFuelType);
+            searchedVehicle.setVehicleType(searchedVehicleType);
+            searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));
+            return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors).getInstructorUser());
         }
     }
 
@@ -279,7 +272,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> kickoutStudent(Integer studentId){
+    public ResponseEntity<Object> kickoutStudent(Integer studentId) {
         try {
             if (studentId == null) {
                 return ResponseEntity.status(422).build();

@@ -10,7 +10,6 @@ import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -90,38 +88,29 @@ public class SchoolService {
 
     @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateSchool(Integer schoolId, String name, String email, String phone, String country, String town, String address, String promoText) {
-        try {
-            if (schoolId == null || name == null || email == null || phone == null || country == null || town == null || address == null || promoText == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-
-            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(email.trim())) {
-                System.out.println("invalidEmail");
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
-                System.out.println("invalidPhone");
-                return ResponseEntity.status(415).body("invalidPhone");
-            }
-            searchedSchool.setName(name.trim());
-            searchedSchool.setEmail(email.trim());
-            searchedSchool.setPhone(phone.trim());
-            searchedSchool.setCountry(country.trim());
-            searchedSchool.setTown(town.trim());
-            searchedSchool.setAddress(address.trim());
-            searchedSchool.setPromoText(promoText.trim());
-            return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
-        } catch (DataIntegrityViolationException e) {
-            String errorMsg = e.getMessage().contains("Duplicate entry") && e.getMessage().contains("for key 'email'") ? "emailDuplicate" : "phoneDuplicate";
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return ResponseEntity.status(409).body(errorMsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        if (schoolId == null || name == null || email == null || phone == null || country == null || town == null || address == null || promoText == null) {
+            return ResponseEntity.status(422).build();
         }
+
+        School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+
+        if (searchedSchool == null || searchedSchool.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (!ValidatorCollection.emailValidator(email.trim())) {
+            System.out.println("invalidEmail");
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
+            System.out.println("invalidPhone");
+            return ResponseEntity.status(415).body("invalidPhone");
+        }
+        searchedSchool.setName(name.trim());
+        searchedSchool.setEmail(email.trim());
+        searchedSchool.setPhone(phone.trim());
+        searchedSchool.setCountry(country.trim());
+        searchedSchool.setTown(town.trim());
+        searchedSchool.setAddress(address.trim());
+        searchedSchool.setPromoText(promoText.trim());
+        return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
     }
 
     @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
@@ -277,27 +266,22 @@ public class SchoolService {
 
     @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> createSchool(SchoolRegisterDto addedSchool) {
-        try {
-            if (addedSchool == null) {
-                return ResponseEntity.status(422).build();
-            }
+        if (addedSchool == null) {
+            return ResponseEntity.status(422).build();
+        }
 
-            Users ownerUser = userRepository.getUser(addedSchool.ownerId()).orElse(null);
-            if (ownerUser == null || ownerUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else if (!ValidatorCollection.emailValidator(addedSchool.email().trim())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
-                return ResponseEntity.status(415).body("invalidPhone");
-            } else {
-                School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
-                schoolRepository.save(newSchool);
-                emailSender.sendEmailAboutSchoolRegistration(addedSchool.email());
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        Users ownerUser = userRepository.getUser(addedSchool.ownerId()).orElse(null);
+        if (ownerUser == null || ownerUser.getIsDeleted()) {
+            return ResponseEntity.notFound().build();
+        } else if (!ValidatorCollection.emailValidator(addedSchool.email().trim())) {
+            return ResponseEntity.status(415).body("invalidEmail");
+        } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
+            return ResponseEntity.status(415).body("invalidPhone");
+        } else {
+            School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
+            schoolRepository.save(newSchool);
+            emailSender.sendEmailAboutSchoolRegistration(addedSchool.email());
+            return ResponseEntity.ok().build();
         }
     }
 
