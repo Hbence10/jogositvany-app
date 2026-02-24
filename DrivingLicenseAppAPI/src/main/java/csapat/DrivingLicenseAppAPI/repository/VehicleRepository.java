@@ -17,5 +17,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     Optional<Vehicle> getVehicle(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteVehicle", procedureName = "deleteVehicle")
-    String deleteVehicle(@Param("idIN") Integer id);
+    void deleteVehicle(@Param("idIN") Integer id);
 }

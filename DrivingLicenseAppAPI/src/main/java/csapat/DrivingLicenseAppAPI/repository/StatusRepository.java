@@ -17,5 +17,5 @@ public interface StatusRepository extends JpaRepository<Status, Integer> {
     Optional<Status> getStatus(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteStatus", procedureName = "deleteStatus")
-    String deleteStatus(@Param("idIN") Integer id);
+    void deleteStatus(@Param("idIN") Integer id);
 }

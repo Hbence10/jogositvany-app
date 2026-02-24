@@ -17,5 +17,5 @@ public interface OpeningDetailRepository extends JpaRepository<OpeningDetails, I
     Optional<OpeningDetails> getOpeningDetail(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteOpeningDetail", procedureName = "deleteOpeningDetail")
-    String deleteOpeningDetail(@Param("idIN") Integer id);
+    void deleteOpeningDetail(@Param("idIN") Integer id);
 }

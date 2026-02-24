@@ -17,5 +17,5 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, In
     Optional<PaymentMethod> getPaymentMethod(@Param("idIN") Integer id);
 
     @Procedure(name = "deletePaymentMethod", procedureName = "deletePaymentMethod")
-    String deletePaymentMethod(@Param("idIN") Integer id);
+    void deletePaymentMethod(@Param("idIN") Integer id);
 }

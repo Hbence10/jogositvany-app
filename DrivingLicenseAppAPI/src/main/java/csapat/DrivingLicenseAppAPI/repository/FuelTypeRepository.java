@@ -17,5 +17,5 @@ public interface FuelTypeRepository extends JpaRepository<FuelType, Integer> {
     Optional<FuelType> getFuelType(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteFuelType", procedureName = "deleteFuelType")
-    String deleteFuelType(@Param("idIN") Integer id);
+    void deleteFuelType(@Param("idIN") Integer id);
 }

@@ -16,5 +16,5 @@ public interface DrivingLicenseCategoryRepository extends JpaRepository<DrivingL
     Optional<DrivingLicenseCategory> getDrivingLicenseCategory(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory")
-    String deleteDrivingLicenseCategory(@Param("idIN") Integer id);
+    void deleteDrivingLicenseCategory(@Param("idIN") Integer id);
 }

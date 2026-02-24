@@ -19,7 +19,7 @@ public interface ReservedHourRepository extends JpaRepository<ReservedHour, Inte
     Optional<ReservedHour> getReservedHour(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReservedHour", procedureName = "deleteReservedHour")
-    String deleteReservedHour(@Param("idIN") Integer id);
+    void deleteReservedHour(@Param("idIN") Integer id);
 
     @Procedure(name = "getReservedHourIdByDateAndInstructor", procedureName = "getReservedHourIdByDateAndInstructor")
     List<Integer> getReservedHourIdByDateAndInstructor(@Param("dateIN") LocalDate date, @Param("instructorIdIN") Integer instructorId);

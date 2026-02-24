@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 public class StudentService {
 
     private final StudentRepository studentRepository;
@@ -40,7 +40,7 @@ public class StudentService {
             } else {
                 Map<String, Integer> responseBody = new HashMap<>();
                 responseBody.put("paidLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
-                responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
+                responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsEnd()    ).toList().size());
                 responseBody.put("totalLessonNumber", searchedStudent.getDrivingLessons().size());
                 return ResponseEntity.ok().body(responseBody);
             }
@@ -84,6 +84,20 @@ public class StudentService {
             } else {
                 return ResponseEntity.ok().body(searchedStudent);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    public ResponseEntity<Object> getDrivingHistory(Integer id) {
+        try {
+            Students searchedStudent = studentRepository.getStudent(id).orElse(null);
+            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

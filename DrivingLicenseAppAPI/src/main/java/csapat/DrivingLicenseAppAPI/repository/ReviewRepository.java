@@ -17,5 +17,5 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     Optional<Review> getReview(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReview", procedureName = "deleteReview")
-    String deleteReview(@Param("idIN") Integer id);
+    void deleteReview(@Param("idIN") Integer id);
 }

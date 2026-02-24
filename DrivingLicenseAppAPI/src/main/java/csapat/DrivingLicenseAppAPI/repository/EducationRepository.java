@@ -16,5 +16,5 @@ public interface EducationRepository extends JpaRepository<Education, Integer> {
     Optional<Education> getEducation(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteEducation", procedureName = "deleteEducation")
-    String deleteEducation(@Param("idIN") Integer id);
+    void deleteEducation(@Param("idIN") Integer id);
 }

@@ -18,7 +18,7 @@ public interface ReservedDateRepository extends JpaRepository<ReservedDate, Inte
     Optional<ReservedDate> getReservedDate(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteReservedDate", procedureName = "deleteReservedDate")
-    String deleteReservedDate(@Param("idIN") Integer id);
+    void deleteReservedDate(@Param("idIN") Integer id);
 
     @Procedure(name = "getReservedDateByDate", procedureName = "getReservedDateByDate")
     Optional<ReservedDate> getReservedDateByDate(@Param("wantedDateIN") Date wantedDate);

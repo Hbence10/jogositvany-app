@@ -18,7 +18,7 @@ public interface StudentRepository extends JpaRepository<Students, Integer> {
     Optional<Students> getStudent(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteStudent", procedureName = "deleteStudent")
-    String deleteStudent(@Param("idIN") Integer id);
+    void deleteStudent(@Param("idIN") Integer id);
 
     @Query("select count(s) from Students s where s.isDeleted = ?1")
     Long countNotDeletedStudents(Boolean isDeleted);

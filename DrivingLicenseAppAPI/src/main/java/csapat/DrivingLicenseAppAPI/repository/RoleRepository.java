@@ -17,5 +17,5 @@ public interface RoleRepository extends JpaRepository<Role, Integer> {
     Optional<Role> getRole(@Param("idIN") Integer id);
 
     @Procedure(name = "deleteRole", procedureName = "deleteRole")
-    String deleteRole(@Param("idIN") Integer id);
+    void deleteRole(@Param("idIN") Integer id);
 }
