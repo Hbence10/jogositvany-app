@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -12,8 +13,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ExceptionHandler {
-
-
 
         @org.springframework.web.bind.annotation.ExceptionHandler(DataIntegrityViolationException.class)
         public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
