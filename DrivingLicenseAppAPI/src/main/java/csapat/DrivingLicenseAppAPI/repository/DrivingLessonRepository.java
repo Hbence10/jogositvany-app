@@ -1,6 +1,8 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
+import csapat.DrivingLicenseAppAPI.entity.Students;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +24,7 @@ public interface DrivingLessonRepository extends JpaRepository<DrivingLessons, I
 
     @Procedure(name = "getDrivingLessonBetweenHour", procedureName = "getDrivingLessonBetweenHour")
     List<Integer> getDrivingLessonBetweenHour(@Param("dateIN") Date date, @Param("startHourIN") Date startHour, @Param("endHourIN") Date endHour, @Param("instructorIDIN") Integer instructorId);
+
+    @Procedure(name = "getDrivingLessonByStudentId", procedureName = "getDrivingLessonByStudentId")
+    List<DrivingLessons> getDrivingLessonByStudentId(@Param("idIN") Integer id);
 }

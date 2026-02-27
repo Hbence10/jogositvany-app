@@ -1,21 +1,21 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import csapat.DrivingLicenseAppAPI.entity.Role;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonCard;
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.entity.Students;
 import csapat.DrivingLicenseAppAPI.entity.Users;
+import csapat.DrivingLicenseAppAPI.repository.DrivingLessonRepository;
 import csapat.DrivingLicenseAppAPI.repository.RoleRepository;
 import csapat.DrivingLicenseAppAPI.repository.StudentRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,6 +26,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final DrivingLessonRepository drivingLessonRepository;
 
     public ResponseEntity<Map<String, Integer>> getLessonDetails(Integer id) {
         try {
@@ -40,7 +41,7 @@ public class StudentService {
             } else {
                 Map<String, Integer> responseBody = new HashMap<>();
                 responseBody.put("paidLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsPaid()).toList().size());
-                responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsEnd()    ).toList().size());
+                responseBody.put("drivenLesson", searchedStudent.getDrivingLessons().stream().filter(lesson -> lesson.getIsEnd()).toList().size());
                 responseBody.put("totalLessonNumber", searchedStudent.getDrivingLessons().size());
                 return ResponseEntity.ok().body(responseBody);
             }
@@ -97,7 +98,13 @@ public class StudentService {
                 return ResponseEntity.notFound().build();
             }
 
-            return ResponseEntity.ok().build();
+            List<DrivingLessons> drivingLessons = drivingLessonRepository.getDrivingLessonByStudentId(id);
+            List<DrivingLessonCard> returnList = new ArrayList<>();
+            for (DrivingLessons i : drivingLessons) {
+                returnList.add(new DrivingLessonCard(i.getReservedHour().getReservedDate().getDate().toString(), i.getReservedHour().getStartTime().toString(), i.getReservedHour().getEndTime().toString(), i.getLocation(), i.getEndKm() - i.getStartKm()));
+            }
+
+            return ResponseEntity.ok().body(returnList);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

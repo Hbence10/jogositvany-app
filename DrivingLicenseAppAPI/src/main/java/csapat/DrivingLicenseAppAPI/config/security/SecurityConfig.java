@@ -98,6 +98,11 @@ public class SecurityConfig {
                         .requestMatchers("/school/admin").hasRole("school_owner")
 
                         //StudentController:
+                        .requestMatchers("/students/lessonDetails/*").hasRole("student")
+                        .requestMatchers(HttpMethod.DELETE, "/students/*").hasRole("administrator")
+                        .requestMatchers(HttpMethod.GET, "/students/*").permitAll()
+                        .requestMatchers("/students/*/history").hasRole("student")
+
                         //UserController
                         .requestMatchers("/users/login", "/users/register/**", "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/user/*").authenticated()

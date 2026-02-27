@@ -60,4 +60,9 @@ public class StudentController {
     private ResponseEntity<Object> getStudentById(@PathVariable("id") Integer id) {
         return studentService.getStudentById(id);
     }
+
+    @GetMapping("/{id}/history")
+    private ResponseEntity<Object> getDrivingHistory(@PathVariable("id") Integer studentId) {
+        return studentService.getDrivingHistory(studentId);
+    }
 }

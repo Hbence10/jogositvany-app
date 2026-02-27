@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -31,7 +30,10 @@ import java.util.Date;
                 @StoredProcedureParameter(name = "startHourIN", type = Date.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "endHourIN", type = Date.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "instructorIDIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Integer.class)
+        }, resultClasses = Integer.class),
+        @NamedStoredProcedureQuery(name = "getDrivingLessonByStudentId", procedureName = "getDrivingLessonByStudentId", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+        }, resultClasses = DrivingLessons.class)
 })
 public class DrivingLessons {
 
