@@ -13,8 +13,8 @@ export class StudentService {
 
   constructor() { }
 
-  getLessonDetailsForHomePage(studentId: number){
-    return this.http.get(`${this.baseUrl}/lessonDetails/${studentId}`)
+  getLessonDetailsForHomePage(studentId: number): Observable<{paidLesson: number, drivenLesson: number, totalLessonNumber: number}>{
+    return this.http.get<{paidLesson: number, drivenLesson: number, totalLessonNumber: number}>(`${this.baseUrl}/lessonDetails/${studentId}`)
   }
 
   getStudentById(id: number): Observable<Students> {
@@ -25,4 +25,7 @@ export class StudentService {
     return this.http.delete(`${this.baseUrl}/${studentId}`)
   }
 
+  getDrivingHistory(id: number):Observable<{date: string, startHour: string, endHour: string, town: string, km: number}[]> {
+    return this.http.get<{date: string, startHour: string, endHour: string, town: string, km: number}[]>(`${this.baseUrl}/${id}/history`)
+  }
 }
