@@ -16,6 +16,8 @@ import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { HourPipe } from '../../pipe/HourPipe';
 import { AlertServiceService } from '../../services/alert-service.service';
 import { AdminSetterComponent } from './admin-setter/admin-setter.component';
+import { DrivingLessons } from '../../models/driving-lessons.model';
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-profil-page',
@@ -27,6 +29,7 @@ export class ProfilPageComponent implements OnInit {
   private route = inject(ActivatedRoute)
   userService = inject(UsersService)
   private schoolService = inject(SchoolServiceService)
+  private studentService = inject(StudentService)
   private requestService = inject(RequestService)
   private alertService = inject(AlertServiceService)
   private router = inject(Router)
@@ -45,6 +48,7 @@ export class ProfilPageComponent implements OnInit {
   showPriceList: boolean = false
   selectedCategory: number | null = null
   showAdminSetter: boolean = false;
+  drivingLessons: {date: string, startHour: string, endHour: string, town: string, km: number}[] = []
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -69,6 +73,13 @@ export class ProfilPageComponent implements OnInit {
             complete: () => {
               if (this.searchedUser?.role?.name == "ROLE_student") {
                 this.roleName = "Tanuló"
+                if (this.searchedUser.id == this.userService.loggedUser()?.id) {
+                  this.studentService.getDrivingHistory(this.userService.loggedUser()?.studentId!).subscribe({
+                    next: response => {
+                      this.drivingLessons = response
+                    }
+                  })
+                }
               } else if (this.searchedUser?.role?.name == "ROLE_instructor") {
                 this.roleName = "Oktató",
                   this.instructorDetails = this.searchedUser.instructor!
@@ -204,7 +215,5 @@ export class ProfilPageComponent implements OnInit {
         next: response => this.searchedSchool = response
       })
     }
-
-
   }
 }

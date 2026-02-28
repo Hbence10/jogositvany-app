@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 
@@ -26,7 +26,7 @@
   position: relative;
 }
 
-#editDiv{
+#editDiv {
   width: auto;
   transition: .5s ease;
   opacity: 0;
@@ -62,7 +62,7 @@
   display: block;
   transition: .5s ease;
   backface-visibility: hidden;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 #progressBar #bar {
@@ -83,7 +83,7 @@
   border: none;
   background-color: #636da1;
   color: #dee0eb;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 label {
@@ -115,6 +115,7 @@ input[type="range"]::-moz-range-progress {
   height: 20px;
   border-radius: 9999px;
 }
+
 input[type="range"]::-moz-range-track {
   background-color: #b8bdd2;
   height: 20px;
@@ -167,12 +168,15 @@ input[type="range"]::-moz-range-track {
   margin: 15px;
 }
 
-#profDel h3{
+#profDel h3 {
   margin: 15px;
 }
 
-/**/
-app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-setter {
+app-review-list,
+app-profil-editor,
+#deleteContainer,
+app-price-list,
+app-admin-setter {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -184,11 +188,12 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-
   height: 100vh;
 }
 
-#openingDetails, #instructorList {
+#openingDetails,
+#instructorList {
   background-color: #626c99;
   border-radius: 8px;
   height: 400px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 #instructorList {
@@ -198,14 +203,17 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-
 #instructorList::-webkit-scrollbar {
   width: 6px;
 }
+
 #instructorList::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
+
 #instructorList::-webkit-scrollbar-thumb {
   background: #22354f;
   border-radius: 10px;
 }
+
 #instructorList::-webkit-scrollbar-thumb:hover {
   background: #434a6b;
 }
@@ -216,7 +224,7 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-
   height: 60px;
   border: none;
   border-radius: 8px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 @media screen and (max-width: 1650px) {
@@ -229,11 +237,27 @@ app-review-list, app-profil-editor, #deleteContainer, app-price-list, app-admin-
   background-color: #626C99 !important;
   border-radius: 12px;
   height: 300px !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .vehicleInfo {
   background-color: #22354f;
   border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+#historyContainer {
+  background-color: #B3B8D1;
+  height: 220px;
+  width: 80%;
+  overflow-y: auto;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.drivingLessonCard {
+  background-color: #626C99;
+  border-radius: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }

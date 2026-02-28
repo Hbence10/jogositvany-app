@@ -58,7 +58,7 @@
               <button class="infoButton mb-2 eventButton text-white">
                 <span class="material-icons">mail</span>
               </button>
-              @if ((type() == "school" &&(userService.loggedUser()?.role?.name == "ROLE_user" ||userService.loggedUser()?.role?.name == "ROLE_instructor") ||type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == null)){
+              @if ((type() == "school" && (userService.loggedUser()?.role?.name == "ROLE_user" ||userService.loggedUser()?.role?.name == "ROLE_instructor") ||type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == null)){
                 <button id="signButton" (click)="sendJoinRequest()" [disabled]="type() == 'school' && selectedCategory == null && userService.loggedUser()?.role?.name == 'ROLE_user'">Jelentkezés</button>
                 @if (userService.loggedUser()?.role?.name == "ROLE_user") {
                   <select #categorySelect (change)="selectedCategory = +categorySelect.value">
@@ -146,6 +146,7 @@
                           </div>
                         </div>
                       } @else if (searchedUser?.role?.name == "ROLE_student") {
+
                         <div class="w-100">
                           <div id="progressBar" class="w-100 p-4">
                             <input id="bar" type="range" min="0" max="30" value="9" disabled/>
@@ -162,6 +163,17 @@
                             </div>
                             <div class="lesson-info-item lesson-info-required d-lg-block d-none">
                               Kötelező órák: <span>21</span>
+                            </div>
+                          </div>
+
+                          <div class="d-flex justify-content-center align-items-start">
+                            <div id="historyContainer" class="p-3">
+                              @for (drivingLesson of drivingLessons; track $index) {
+                                <div class="drivingLessonCard px-3 py-2 mb-3">
+                                  <p class="text-lg-start text-center m-0">{{drivingLesson.date}} {{drivingLesson.startHour}}-{{drivingLesson.endHour}}</p>
+                                  <p class="text-lg-start text-center m-0">{{drivingLesson.town}} - {{drivingLesson.km}} km</p>
+                                </div>
+                              }
                             </div>
                           </div>
                         </div>
