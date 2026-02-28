@@ -89,7 +89,7 @@ public class OtherStuffService {
 
     public  ResponseEntity<List<String>> getAllEmail() {
         try {
-            List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1, "ROLE_user"), false);
+            List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1L, "ROLE_user"), false);
             List<String> returnList = new ArrayList<>();
             for (Users i : users) {
                 returnList.add(i.getEmail());

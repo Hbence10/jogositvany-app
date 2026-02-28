@@ -8,14 +8,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface StatusRepository extends JpaRepository<Status, Integer> {
+public interface StatusRepository extends JpaRepository<Status, Long> {
 
     @Procedure(name = "getAllStatus", procedureName = "getAllStatus")
     List<Status> getAllStatus();
 
     @Procedure(name = "getStatus", procedureName = "getStatus")
-    Optional<Status> getStatus(@Param("idIN") Integer id);
+    Optional<Status> getStatus(@Param("idIN") Long id);
 
-    @Procedure(name = "deleteStatus", procedureName = "deleteStatus")
-    void deleteStatus(@Param("idIN") Integer id);
 }

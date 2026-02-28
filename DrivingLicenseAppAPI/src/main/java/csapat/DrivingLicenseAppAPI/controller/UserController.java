@@ -154,8 +154,8 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") Integer userId, @RequestBody JsonNode requestBody) {
-        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDate").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asInt());
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Long userId, @RequestBody JsonNode requestBody) {
+        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDate").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asLong());
     }
 
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")
@@ -173,7 +173,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PatchMapping("/pfp/{id}")
-    public ResponseEntity<Object> updatePfp(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile file) {
+    public ResponseEntity<Object> updatePfp(@PathVariable("id") Long id, @RequestParam("image") MultipartFile file) {
         return userService.updatePfp(id, file);
     }
 
@@ -187,7 +187,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         return userService.deleteUser(id);
     }
 
@@ -203,7 +203,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable("id") Integer id, @RequestParam(value = "isLogin", defaultValue = "false", required = false) Boolean isLogin) {
+    public ResponseEntity<Object> getUserById(@PathVariable("id") Long id, @RequestParam(value = "isLogin", defaultValue = "false", required = false) Boolean isLogin) {
         return userService.getUserById(id, isLogin);
     }
 

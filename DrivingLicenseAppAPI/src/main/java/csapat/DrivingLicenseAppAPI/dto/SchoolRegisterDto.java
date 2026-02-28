@@ -8,7 +8,7 @@ public record SchoolRegisterDto(
         String town,
         String address,
         String promoText,
-        Integer ownerId
+        Long ownerId
 
 ) {
 }

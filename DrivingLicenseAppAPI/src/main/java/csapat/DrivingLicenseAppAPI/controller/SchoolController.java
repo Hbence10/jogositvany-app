@@ -46,7 +46,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @PostMapping("/{id}/joinRequest")
-    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Integer joinRequestId, @RequestBody JsonNode requestBody) {
+    public ResponseEntity<Object> handleJoinRequest(@PathVariable("id") Long joinRequestId, @RequestBody JsonNode requestBody) {
         return schoolService.handleJoinRequest(joinRequestId, requestBody.get("status").asText());
     }
 
@@ -76,7 +76,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Integer schoolId) {
+    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Long schoolId) {
         return schoolService.updateSchool(schoolId, requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
     }
 
@@ -95,7 +95,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A fájl-lal való műveletek során hiba keletkezett/A server okozta hiba.", content = @Content)
     })
     @PatchMapping("/{id}/coverImg")
-    public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Integer id, @RequestParam("image") MultipartFile coverImg) {
+    public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Long id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
 
@@ -116,7 +116,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PatchMapping("/{id}/openingDetails")
-    public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Integer id, @RequestBody List<OpeningDetails> updatedOpeningDetails) {
+    public ResponseEntity<Object> updateOpeningDetails(@PathVariable("id") Long id, @RequestBody List<OpeningDetails> updatedOpeningDetails) {
         return schoolService.updateOpeningDetails(id, updatedOpeningDetails);
     }
 
@@ -132,7 +132,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/{id}/joinRequests")
-    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Integer id, Pageable pageable) {
+    private ResponseEntity<List<SchoolJoinRequest>> getAllJoinRequest(@PathVariable("id") Long id, Pageable pageable) {
         return schoolService.getAllJoinRequest(id, pageable);
     }
 
@@ -145,7 +145,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deleteSchool(@PathVariable("id") Integer id) {
+    private ResponseEntity<Object> deleteSchool(@PathVariable("id") Long id) {
         return schoolService.deleteSchool(id);
     }
 
@@ -175,7 +175,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/{id}")
-    private ResponseEntity<School> getSchoolById(@PathVariable("id") Integer id) {
+    private ResponseEntity<School> getSchoolById(@PathVariable("id") Long id) {
         return schoolService.getSchoolById(id);
     }
 
@@ -209,7 +209,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/users")
-    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Integer id, @RequestParam("role") String role, Pageable pageable) {
+    private ResponseEntity<Object> getMembersOfSchool(@RequestParam("schoolId") Long id, @RequestParam("role") String role, Pageable pageable) {
         return schoolService.getMembersOfSchool(id, role, pageable);
     }
 
@@ -222,7 +222,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/kickout")
-    private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Integer instructorId) {
+    private ResponseEntity<Object> kickOutMember(@RequestParam("instructorId") Long instructorId) {
         return schoolService.kickoutInstructor(instructorId);
     }
 
@@ -240,6 +240,6 @@ public class SchoolController {
 
     @PatchMapping("/admin")
     private ResponseEntity<Object> setAdmin(@RequestBody JsonNode requestBody) {
-        return schoolService.setAdmin(requestBody.get("email").asText(), requestBody.get("schoolId").asInt());
+        return schoolService.setAdmin(requestBody.get("email").asText(), requestBody.get("schoolId").asLong());
     }
 }

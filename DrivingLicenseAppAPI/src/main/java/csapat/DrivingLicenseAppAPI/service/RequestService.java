@@ -31,7 +31,7 @@ public class RequestService {
     private final EmailSender emailSender;
 
     @PreAuthorize("(hasAnyRole('instructor', 'user') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> sendSchoolJoinRequest(Integer schoolId, Integer userId, Integer categoryId) {
+    public ResponseEntity<Object> sendSchoolJoinRequest(Long schoolId, Long userId, Long categoryId) {
         try {
             if (schoolId == null || userId == null || categoryId == null) {
                 return ResponseEntity.status(422).build();
@@ -71,7 +71,7 @@ public class RequestService {
     }
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> sendInstructorJoinRequest(Integer studentId, Integer instructorId) {
+    public ResponseEntity<Object> sendInstructorJoinRequest(Long studentId, Long instructorId) {
         try {
             if (studentId == null || instructorId == null) {
                 return ResponseEntity.status(422).build();
@@ -99,7 +99,7 @@ public class RequestService {
     }
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> sendDrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Integer studentId, Integer instructorId) {
+    public ResponseEntity<Object> sendDrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Long studentId, Long instructorId) {
         try {
             Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
             Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);

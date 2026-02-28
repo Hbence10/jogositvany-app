@@ -1,14 +1,9 @@
-package csapat.DrivingLicenseAppAPI.controller;
+package csapat.DrivingLicenseAppAPI.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
 import java.util.Map;
 
 @RestControllerAdvice

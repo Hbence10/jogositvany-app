@@ -38,7 +38,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/categories/school/{id}")
-    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(@PathVariable("id") Integer schoolId) {
+    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(@PathVariable("id") Long schoolId) {
         return drivingLessonService.getDrivingLicenseCategoriesBySchool(schoolId);
     }
 
@@ -54,7 +54,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/cancel/{id}")
-    public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Integer id) {
+    public ResponseEntity<Object> cancelDrivingLesson(@PathVariable("id") Long id) {
         return drivingLessonService.cancelDrivingLesson(id);
     }
 
@@ -103,7 +103,7 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @GetMapping("/reservedHour")
-    public ResponseEntity<Object> getReservedHoursByDate(@RequestParam("instructorId") Integer instructorId, @RequestParam("date") String date) {
+    public ResponseEntity<Object> getReservedHoursByDate(@RequestParam("instructorId") Long instructorId, @RequestParam("date") String date) {
         return drivingLessonService.getReservedHoursByDate(instructorId, date);
     }
 
@@ -119,12 +119,12 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Object> getDrivingLessonById(@PathVariable("id") Long id) {
         return drivingLessonService.getDrivingLessonById(id);
     }
 
     @GetMapping("reservedHours")
-    public ResponseEntity<Object> getReservedHoursBetweenDates(@RequestParam("instructorId") Integer instructorId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+    public ResponseEntity<Object> getReservedHoursBetweenDates(@RequestParam("instructorId") Long instructorId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         return drivingLessonService.getReservedHoursBetweenDates(instructorId, startDate, endDate);
     }
 }

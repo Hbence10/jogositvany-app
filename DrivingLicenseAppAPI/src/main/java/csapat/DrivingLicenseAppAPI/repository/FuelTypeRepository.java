@@ -8,14 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface FuelTypeRepository extends JpaRepository<FuelType, Integer> {
+public interface FuelTypeRepository extends JpaRepository<FuelType, Long> {
 
     @Procedure(name = "getAllFuelType", procedureName = "getAllFuelType")
     List<FuelType> getAllFuelType();
 
     @Procedure(name = "getFuelType", procedureName = "getFuelType")
-    Optional<FuelType> getFuelType(@Param("idIN") Integer id);
-
-    @Procedure(name = "deleteFuelType", procedureName = "deleteFuelType")
-    void deleteFuelType(@Param("idIN") Integer id);
+    Optional<FuelType> getFuelType(@Param("idIN") Long id);
 }

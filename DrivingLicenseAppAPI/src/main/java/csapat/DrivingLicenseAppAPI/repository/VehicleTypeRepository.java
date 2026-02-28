@@ -8,14 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface VehicleTypeRepository extends JpaRepository<VehicleType, Integer> {
+public interface VehicleTypeRepository extends JpaRepository<VehicleType, Long> {
 
     @Procedure(name = "getAllVehicleType", procedureName = "getAllVehicleType")
     List<VehicleType> getAllVehicleType();
 
     @Procedure(name = "getVehicleType", procedureName = "getVehicleType")
-    Optional<VehicleType> getVehicleType(@Param("idIN") Integer id);
-
-    @Procedure(name = "deleteVehicleType", procedureName = "deleteVehicleType")
-    void deleteVehicleType(@Param("idIN") Integer id);
+    Optional<VehicleType> getVehicleType(@Param("idIN") Long id);
 }

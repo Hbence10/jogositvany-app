@@ -14,6 +14,6 @@ public class HourCard {
     private Date startTime;
     private Date endTime;
     private String name;
-    private Integer drivingLessonId;
+    private Long drivingLessonId;
     private Date date;
 }

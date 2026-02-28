@@ -35,7 +35,7 @@ public class DrivingLessonService {
     private final PaymentMethodRepository paymentMethodRepository;
     private final EmailSender emailSender;
 
-    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(Integer schoolId) {
+    public ResponseEntity<Object> getDrivingLicenseCategoriesBySchool(Long schoolId) {
         try {
             if (schoolId == null) {
                 return ResponseEntity.status(422).build();
@@ -52,7 +52,7 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> cancelDrivingLesson(Integer drivingLessonId) {
+    public ResponseEntity<Object> cancelDrivingLesson(Long drivingLessonId) {
         try {
             if (drivingLessonId == null) {
                 return ResponseEntity.status(422).build();
@@ -113,13 +113,13 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getReservedHoursByDate(Integer instructorId, String wantedDate) {
+    public ResponseEntity<Object> getReservedHoursByDate(Long instructorId, String wantedDate) {
         try {
             if (instructorId == null || wantedDate == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            List<Integer> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
+            List<Long> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
             List<ReservedHour> reservedHours = reservedHourRepository.findAllById(reservedHourIdList);
 
             List<HourCard> returnList = new ArrayList<>();
@@ -135,7 +135,7 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getDrivingLessonById(Integer id) {
+    public ResponseEntity<Object> getDrivingLessonById(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -155,7 +155,7 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getReservedHoursBetweenDates(Integer instructorId, String start, String end) {
+    public ResponseEntity<Object> getReservedHoursBetweenDates(Long instructorId, String start, String end) {
         try {
             if (instructorId == null || start == null || end == null) {
                 return ResponseEntity.status(422).build();
@@ -163,7 +163,7 @@ public class DrivingLessonService {
 
             //validaciok:
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
-            List<Integer> idList = reservedHourRepository.getReservedHoursBetweenTwoDate(instructorId, dateFormat.parse(start), dateFormat.parse(end));
+            List<Long> idList = reservedHourRepository.getReservedHoursBetweenTwoDate(instructorId, dateFormat.parse(start), dateFormat.parse(end));
             List<ReservedHour> reservedHours = reservedHourRepository.findAllById(idList);
 
             List<HourCard> returnList = new ArrayList<>();

@@ -8,13 +8,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface DrivingLicenseCategoryRepository extends JpaRepository<DrivingLicenseCategory, Integer> {
+public interface DrivingLicenseCategoryRepository extends JpaRepository<DrivingLicenseCategory, Long> {
     @Procedure(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory")
     List<DrivingLicenseCategory> getAllDrivingLicenseCategory();
 
     @Procedure(name = "getDrivingLicenseCategory", procedureName = "getDrivingLicenseCategory")
-    Optional<DrivingLicenseCategory> getDrivingLicenseCategory(@Param("idIN") Integer id);
+    Optional<DrivingLicenseCategory> getDrivingLicenseCategory(@Param("idIN") Long id);
 
     @Procedure(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory")
-    void deleteDrivingLicenseCategory(@Param("idIN") Integer id);
+    void deleteDrivingLicenseCategory(@Param("idIN") Long id);
 }

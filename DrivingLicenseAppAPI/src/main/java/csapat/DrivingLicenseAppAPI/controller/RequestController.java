@@ -44,7 +44,7 @@ public class RequestController {
     })
     @PostMapping("/school")
     private ResponseEntity<Object> sendSchoolJoinRequest(@RequestBody JsonNode requestBody) {
-        return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asInt(), requestBody.get("userId").asInt(), requestBody.get("categoryId").asInt());
+        return requestService.sendSchoolJoinRequest(requestBody.get("schoolId").asLong(), requestBody.get("userId").asLong(), requestBody.get("categoryId").asLong());
     }
 
     @Operation(summary = "Oktatóhoz való csatlakozás", description = "Az oktatóhoz való csatlakozási kérelem küldése.")
@@ -63,7 +63,7 @@ public class RequestController {
     })
     @PostMapping("/instructor")
     private ResponseEntity<Object> sendInstructorJoinRequest(@RequestBody JsonNode requestBody) {
-        return requestService.sendInstructorJoinRequest(requestBody.get("studentId").asInt(), requestBody.get("instructorId").asInt());
+        return requestService.sendInstructorJoinRequest(requestBody.get("studentId").asLong(), requestBody.get("instructorId").asLong());
     }
 
     @Operation(summary = "Órához való kérelem küldése", description = "Vezetési óra igénylése az adott oktatótol.")
@@ -96,8 +96,8 @@ public class RequestController {
                     dateFormat.parse((requestBody.get("date").asText())),
                     dateWithTimeFormat.parse((requestBody.get("startTime").asText())),
                     dateWithTimeFormat.parse((requestBody.get("endTime").asText())),
-                    requestBody.get("studentId").asInt(),
-                    requestBody.get("instructorId").asInt());
+                    requestBody.get("studentId").asLong(),
+                    requestBody.get("instructorId").asLong());
 
         } catch (Exception e) {
             e.printStackTrace();

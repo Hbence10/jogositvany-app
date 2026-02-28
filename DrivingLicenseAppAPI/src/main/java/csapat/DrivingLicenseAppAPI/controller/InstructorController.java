@@ -47,7 +47,7 @@ public class InstructorController {
     })
     @PostMapping("/handleJoinRequest")
     private ResponseEntity<Object> handleJoinRequest(@RequestBody JsonNode requestBody) {
-        return instructorService.handleRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
+        return instructorService.handleRequest(requestBody.get("requestId").asLong(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Oktatóhoz tartozó csatlakozási kérelmek", description = "Az adott oktatóhoz tartozó kérelmek lekérdezése")
@@ -62,7 +62,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/joinRequest")
-    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
+    private ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(@PathVariable("id") Long id, Pageable pageable) {
         return instructorService.getAllJoinRequestByInstructor(id, pageable);
     }
 
@@ -78,7 +78,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/drivingLessonRequest")
-    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Integer instructorId, Pageable pageable) {
+    private ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(@PathVariable("id") Long instructorId, Pageable pageable) {
         return instructorService.getDrivingLessonRequestByInstructor(instructorId, pageable);
     }
 
@@ -107,8 +107,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Integer instructorId) {
-        return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asInt(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asInt(), requestBody.get("vehicleTypeId").asInt());
+    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Long instructorId) {
+        return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asLong(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asLong(), requestBody.get("vehicleTypeId").asLong());
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
@@ -128,7 +128,7 @@ public class InstructorController {
     })
     @PostMapping("/handleDrivingLessonRequest")
     private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody) {
-        return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asInt(), requestBody.get("status").asText());
+        return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asLong(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Oktatók keresése", description = "")
@@ -145,7 +145,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("")
-    private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Integer fuelTypeId, @RequestParam("school") Integer schoolId, @RequestParam("category") Integer category) {
+    private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Long fuelTypeId, @RequestParam("school") Long schoolId, @RequestParam("category") Long category) {
         return instructorService.getInstructorsBySearch(fuelTypeId, schoolId, category);
     }
 
@@ -161,7 +161,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}")
-    private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Integer id) {
+    private ResponseEntity<Instructors> getInstructorById(@PathVariable("id") Long id) {
         return instructorService.getInstructorById(id);
     }
 
@@ -177,13 +177,13 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/{id}/students")
-    private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Integer id, Pageable pageable) {
+    private ResponseEntity<Object> getStudentsByInstructor(@PathVariable("id") Long id, Pageable pageable) {
         return instructorService.getStudentsByInstructor(id, pageable);
     }
 
     @Operation(summary = "", description = "")
     @DeleteMapping("/kickout")
-    private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Integer studentId) {
+    private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Long studentId) {
         return instructorService.kickoutStudent(studentId);
     }
 }

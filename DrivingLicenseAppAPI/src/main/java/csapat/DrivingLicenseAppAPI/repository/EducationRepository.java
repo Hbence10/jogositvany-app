@@ -8,13 +8,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface EducationRepository extends JpaRepository<Education, Integer> {
+public interface EducationRepository extends JpaRepository<Education, Long> {
     @Procedure(name = "getAllEducation", procedureName = "getAllEducation")
     List<Education> getAllEducation();
 
     @Procedure(name = "getEducation", procedureName = "getEducation")
-    Optional<Education> getEducation(@Param("idIN") Integer id);
-
-    @Procedure(name = "deleteEducation", procedureName = "deleteEducation")
-    void deleteEducation(@Param("idIN") Integer id);
+    Optional<Education> getEducation(@Param("idIN") Long id);
 }

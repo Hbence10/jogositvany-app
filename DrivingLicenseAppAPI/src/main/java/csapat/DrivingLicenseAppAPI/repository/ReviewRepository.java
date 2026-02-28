@@ -8,14 +8,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReviewRepository extends JpaRepository<Review, Integer> {
+public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Procedure(name = "getAllReview", procedureName = "getAllReview")
     List<Review> getAllReview();
 
     @Procedure(name = "getReview", procedureName = "getReview")
-    Optional<Review> getReview(@Param("idIN") Integer id);
+    Optional<Review> getReview(@Param("idIN") Long id);
 
     @Procedure(name = "deleteReview", procedureName = "deleteReview")
-    void deleteReview(@Param("idIN") Integer id);
+    void deleteReview(@Param("idIN") Long id);
 }

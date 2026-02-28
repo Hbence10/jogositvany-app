@@ -47,7 +47,7 @@ public class InstructorService {
     private final ReservedDateRepository reservedDateRepository;
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> handleRequest(Integer requestId, String status) {
+    public ResponseEntity<Object> handleRequest(Long requestId, String status) {
         try {
             if (requestId == null || status == null) {
                 return ResponseEntity.status(422).build();
@@ -80,7 +80,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Integer id, Pageable pageable) {
+    public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Long id, Pageable pageable) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -100,7 +100,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Integer instructorId, Pageable pageable) {
+    public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Long instructorId, Pageable pageable) {
         try {
             if (instructorId == null) {
                 return ResponseEntity.status(422).build();
@@ -120,7 +120,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateInstructor(Integer instructorId, String promoText, Integer vehicleId, String vehicleName, String licensePlate, Integer fuelTypeId, Integer vehicleTypeId) {
+    public ResponseEntity<Object> updateInstructor(Long instructorId, String promoText, Long vehicleId, String vehicleName, String licensePlate, Long fuelTypeId, Long vehicleTypeId) {
         if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
             return ResponseEntity.status(422).build();
         }
@@ -152,7 +152,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> handleDrivingLessonRequest(Integer requestId, String status) {
+    public ResponseEntity<Object> handleDrivingLessonRequest(Long requestId, String status) {
         try {
             if (requestId == null || status == null) {
                 return ResponseEntity.status(422).build();
@@ -164,7 +164,7 @@ public class InstructorService {
                     return ResponseEntity.status(415).body("invalidDate");
                 }
 
-                List<Integer> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
+                List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
                 if (!drivingLessonsAtThisTime.isEmpty()) {
                     return ResponseEntity.status(400).body("reservedAppointment");
                 }
@@ -175,7 +175,7 @@ public class InstructorService {
                     if (status.equals("accept")) {
                         ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
                         ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
-                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.findById(1).get()));
+                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.getStatus(1L).get()));
                         searchedRequest.setIsAccepted(true);
                     } else if (status.equals("refuse")) {
                         searchedRequest.setIsAccepted(false);
@@ -194,7 +194,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getInstructorsBySearch(Integer fuelTypeId, Integer schoolId, Integer categoryId) {
+    public ResponseEntity<Object> getInstructorsBySearch(Long fuelTypeId, Long schoolId, Long categoryId) {
         try {
             if (fuelTypeId == null || schoolId == null) {
                 return ResponseEntity.status(422).build();
@@ -208,10 +208,10 @@ public class InstructorService {
             } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else {
-                List<Integer> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId, categoryId);
+                List<Long> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId, categoryId);
                 List<JsonNode> searchedInstructors = new ArrayList<>();
 
-                for (Integer id : searchedInstructorsId) {
+                for (Long id : searchedInstructorsId) {
                     Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
                     if (searchedInstructor != null) {
                         JsonNode instructorNode = objectMapper.createObjectNode();
@@ -230,7 +230,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Instructors> getInstructorById(Integer id) {
+    public ResponseEntity<Instructors> getInstructorById(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -249,7 +249,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getStudentsByInstructor(Integer id, Pageable pageable) {
+    public ResponseEntity<Object> getStudentsByInstructor(Long id, Pageable pageable) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -272,7 +272,7 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> kickoutStudent(Integer studentId) {
+    public ResponseEntity<Object> kickoutStudent(Long studentId) {
         try {
             if (studentId == null) {
                 return ResponseEntity.status(422).build();

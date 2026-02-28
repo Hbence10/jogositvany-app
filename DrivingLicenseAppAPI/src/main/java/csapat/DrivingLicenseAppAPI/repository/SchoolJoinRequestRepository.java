@@ -11,16 +11,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinRequest, Integer> {
+public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinRequest, Long> {
 
     @Procedure(name = "getAllSchoolJoinRequest", procedureName = "getAllSchoolJoinRequest")
     List<SchoolJoinRequest> getAllSchoolJoinRequest();
 
     @Procedure(name = "getSchoolJoinRequest", procedureName = "getSchoolJoinRequest")
-    Optional<SchoolJoinRequest> getSchoolJoinRequest(@Param("idIN") Integer id);
+    Optional<SchoolJoinRequest> getSchoolJoinRequest(@Param("idIN") Long id);
 
     @Procedure(name = "deleteSchoolJoinRequest", procedureName = "deleteSchoolJoinRequest")
-    void deleteSchoolJoinRequest(@Param("idIN") Integer id);
+    void deleteSchoolJoinRequest(@Param("idIN") Long id);
 
     Page<SchoolJoinRequest> findBySchoolJoinRequestSchoolAndIsAcceptedAndIsDeleted(School wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
 }

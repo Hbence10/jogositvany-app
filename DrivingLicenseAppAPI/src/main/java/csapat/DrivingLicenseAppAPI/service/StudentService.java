@@ -28,7 +28,7 @@ public class StudentService {
     private final UserRepository userRepository;
     private final DrivingLessonRepository drivingLessonRepository;
 
-    public ResponseEntity<Map<String, Integer>> getLessonDetails(Integer id) {
+    public ResponseEntity<Map<String, Integer>> getLessonDetails(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -51,7 +51,7 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<Object> deleteStudent(Integer id) {
+    public ResponseEntity<Object> deleteStudent(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -62,7 +62,7 @@ public class StudentService {
                 return ResponseEntity.notFound().build();
             } else {
                 Users user = searchedStudent.getStudentUser();
-                user.setRole(roleRepository.getRole(1).get());
+                user.setRole(roleRepository.getRole(1L).get());
                 user.setStudent(null);
                 userRepository.save(user);
                 studentRepository.deleteStudent(id);
@@ -74,7 +74,7 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<Object> getStudentById(Integer id) {
+    public ResponseEntity<Object> getStudentById(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -91,7 +91,7 @@ public class StudentService {
         }
     }
 
-    public ResponseEntity<Object> getDrivingHistory(Integer id) {
+    public ResponseEntity<Object> getDrivingHistory(Long id) {
         try {
             Students searchedStudent = studentRepository.getStudent(id).orElse(null);
             if (searchedStudent == null || searchedStudent.getIsDeleted()) {

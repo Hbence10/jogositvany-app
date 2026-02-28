@@ -40,7 +40,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("")
-    public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Integer aboutId) {
+    public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Long aboutId) {
         return reviewService.getReviews(about, aboutId);
     }
 
@@ -68,7 +68,7 @@ public class ReviewController {
     })
     @PostMapping("")
     public ResponseEntity<Object> addReview(@RequestBody JsonNode requestBody) {
-    return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asInt(), requestBody.get("isAnonymous").asBoolean(false) , requestBody.get("instructorId").asInt(), requestBody.get("schoolId").asInt());
+    return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asLong(), requestBody.get("isAnonymous").asBoolean(false) , requestBody.get("instructorId").asLong(), requestBody.get("schoolId").asLong());
     }
 
     @Operation(summary = "Review törlése", description = "A keresett review-t kitörli")
@@ -80,7 +80,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteReview(@PathVariable("id") int id) {
+    public ResponseEntity<Object> deleteReview(@PathVariable("id") Long id) {
         return reviewService.deleteReview(id);
     }
 }

@@ -9,16 +9,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReservedDateRepository extends JpaRepository<ReservedDate, Integer> {
+public interface ReservedDateRepository extends JpaRepository<ReservedDate, Long> {
 
     @Procedure(name = "getAllReservedDate", procedureName = "getAllReservedDate")
     List<ReservedDate> getAllReservedDate();
 
     @Procedure(name = "getReservedDate", procedureName = "getReservedDate")
-    Optional<ReservedDate> getReservedDate(@Param("idIN") Integer id);
+    Optional<ReservedDate> getReservedDate(@Param("idIN") Long id);
 
     @Procedure(name = "deleteReservedDate", procedureName = "deleteReservedDate")
-    void deleteReservedDate(@Param("idIN") Integer id);
+    void deleteReservedDate(@Param("idIN") Long id);
 
     @Procedure(name = "getReservedDateByDate", procedureName = "getReservedDateByDate")
     Optional<ReservedDate> getReservedDateByDate(@Param("wantedDateIN") Date wantedDate);

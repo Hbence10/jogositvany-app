@@ -39,7 +39,7 @@ public class StudentController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @GetMapping("/lessonDetails/{id}")
-    public ResponseEntity<Map<String, Integer>> getLessonDetails(@PathVariable("id") int studentId) {
+    public ResponseEntity<Map<String, Integer>> getLessonDetails(@PathVariable("id") Long studentId) {
         return studentService.getLessonDetails(studentId);
     }
 
@@ -52,17 +52,17 @@ public class StudentController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @DeleteMapping("/{id}")
-    private ResponseEntity<Object> deleteStudent(@PathVariable("id") Integer id) {
+    private ResponseEntity<Object> deleteStudent(@PathVariable("id") Long id) {
         return studentService.deleteStudent(id);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Object> getStudentById(@PathVariable("id") Integer id) {
+    private ResponseEntity<Object> getStudentById(@PathVariable("id") Long id) {
         return studentService.getStudentById(id);
     }
 
     @GetMapping("/{id}/history")
-    private ResponseEntity<Object> getDrivingHistory(@PathVariable("id") Integer studentId) {
+    private ResponseEntity<Object> getDrivingHistory(@PathVariable("id") Long studentId) {
         return studentService.getDrivingHistory(studentId);
     }
 }

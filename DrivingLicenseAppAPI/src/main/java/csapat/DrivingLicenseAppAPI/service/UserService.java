@@ -107,7 +107,7 @@ public class UserService {
                 newInstructor.setVehicle(vehicleRepository.save(new Vehicle()));
                 newInstructor.setInstructorUser(newUser);
                 instructorRepository.save(newInstructor);
-                userRepository.setRoleOfUser(newUser.getId(), 3);
+                userRepository.setRoleOfUser(newUser.getId(), 3L);
             }
 
         }
@@ -206,7 +206,7 @@ public class UserService {
 
     // update:
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateUser(Integer id, String firstName, String lastName, String email, String phone, String birthDateText, String gender, Integer educationId) {
+    public ResponseEntity<Object> updateUser(Long id, String firstName, String lastName, String email, String phone, String birthDateText, String gender, Long educationId) {
         try {
             if (id == null || firstName == null || lastName == null || email == null || phone == null || birthDateText == null || gender == null || educationId == null) {
                 return ResponseEntity.status(422).build();
@@ -247,7 +247,7 @@ public class UserService {
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updatePfp(Integer id, MultipartFile pfpFile) {
+    public ResponseEntity<Object> updatePfp(Long id, MultipartFile pfpFile) {
         try {
             if (id == null || pfpFile == null) {
                 return ResponseEntity.status(422).build();
@@ -282,7 +282,7 @@ public class UserService {
 
     // delete:
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<String> deleteUser(Integer id) {
+    public ResponseEntity<String> deleteUser(Long id) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();
@@ -303,7 +303,7 @@ public class UserService {
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> getUserById(Integer id, Boolean isLogin) {
+    public ResponseEntity<Object> getUserById(Long id, Boolean isLogin) {
         try {
             if (id == null) {
                 return ResponseEntity.status(422).build();

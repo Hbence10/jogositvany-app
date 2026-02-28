@@ -12,16 +12,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLessonRequest, Integer> {
+public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLessonRequest, Long> {
 
     @Procedure(name = "getAllDrivingLessonRequest", procedureName = "getAllDrivingLessonRequest")
     List<DrivingLessonRequest> getAllDrivingLessonRequest();
 
     @Procedure(name = "getDrivingLessonRequest", procedureName = "getDrivingLessonRequest")
-    Optional<DrivingLessonRequest> getDrivingLessonRequest(@Param("idIN") Integer id);
+    Optional<DrivingLessonRequest> getDrivingLessonRequest(@Param("idIN") Long id);
 
     @Procedure(name = "deleteDrivingLessonRequest", procedureName = "deleteDrivingLessonRequest")
-    void deleteDrivingLessonRequest(@Param("idIN") Integer id);
+    void deleteDrivingLessonRequest(@Param("idIN") Long id);
 
     Page<DrivingLessonRequest> findBydLessonInstructorAndIsAcceptedAndIsDeleted(Instructors wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
 }

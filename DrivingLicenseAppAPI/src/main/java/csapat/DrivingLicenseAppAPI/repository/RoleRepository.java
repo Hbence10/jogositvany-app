@@ -8,14 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository<Role, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
     @Procedure(name = "getAllRole", procedureName = "getAllRole")
     List<Role> getAllRole();
 
     @Procedure(name = "getRole", procedureName = "getRole")
-    Optional<Role> getRole(@Param("idIN") Integer id);
-
-    @Procedure(name = "deleteRole", procedureName = "deleteRole")
-    void deleteRole(@Param("idIN") Integer id);
+    Optional<Role> getRole(@Param("idIN") Long id);
 }

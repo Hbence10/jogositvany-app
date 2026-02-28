@@ -8,14 +8,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface OpeningDetailRepository extends JpaRepository<OpeningDetails, Integer> {
+public interface OpeningDetailRepository extends JpaRepository<OpeningDetails, Long> {
 
     @Procedure(name = "getAllOpeningDetail", procedureName = "getAllOpeningDetail")
     List<OpeningDetails> getAllOpeningDetail();
 
     @Procedure(name = "getOpeningDetail", procedureName = "getOpeningDetail")
-    Optional<OpeningDetails> getOpeningDetail(@Param("idIN") Integer id);
+    Optional<OpeningDetails> getOpeningDetail(@Param("idIN") Long id);
 
     @Procedure(name = "deleteOpeningDetail", procedureName = "deleteOpeningDetail")
-    void deleteOpeningDetail(@Param("idIN") Integer id);
+    void deleteOpeningDetail(@Param("idIN") Long id);
 }

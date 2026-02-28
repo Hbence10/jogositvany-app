@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProfileCard {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String imagePath;
-    private Integer userId;
+    private Long userId;
 }
