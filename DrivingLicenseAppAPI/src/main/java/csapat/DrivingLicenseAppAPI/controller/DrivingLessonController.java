@@ -85,8 +85,8 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Integer id) {
-        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asInt(0), updatedDrivingLesson.get("paymentMethodId").asInt(0));
+    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Long id) {
+        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asLong(0), updatedDrivingLesson.get("paymentMethodId").asLong(0));
     }
 
     @Operation(summary = "A lefoglalt órák lekérdezése", description = "A lefoglalt órák lekérdezése az adott oktatónak az adott dátum alapján")

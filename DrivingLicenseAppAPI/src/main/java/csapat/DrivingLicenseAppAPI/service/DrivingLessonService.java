@@ -76,7 +76,7 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateDrivingLesson(Integer id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Integer statusId, Integer paymentMethodId) {
+    public ResponseEntity<Object> updateDrivingLesson(Long id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Long statusId, Long paymentMethodId) {
         try {
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(id).orElse(null);
             if (searchedDrivingLesson == null) {
