@@ -107,10 +107,10 @@ export class ProfilEditorComponent implements OnInit {
       this.saveOpeningChanges()
     }
 
-    this.saveProfilChanges()
+    this.saveUserChanges()
   }
 
-  saveProfilChanges() {
+  saveSchoolChanges() {
     if (this.objectType() == "school") {
       this.schoolService.updateSchool(this.wantedObject().id!, this.profilForm.controls["name"].value, this.profilForm.controls["email"].value, this.profilForm.controls["phone"].value, this.profilForm.controls["country"].value, this.profilForm.controls["town"].value, this.profilForm.controls["address"].value, this.profilForm.controls["promoText"].value).subscribe({
         next: response => {
@@ -124,32 +124,34 @@ export class ProfilEditorComponent implements OnInit {
           } else if (error.error.statusText === "duplicatePhone") {
             this.errorMsg = "duplicatePhone"
             this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
-          }  else {
-            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-          }
-        }
-      })
-    } else {
-      this.userService.updateUser(this.wantedObject().id!, this.profilForm.controls["firstName"].value, this.profilForm.controls["lastName"].value, this.profilForm.controls["email"].value, this.profilForm.controls["phone"].value, this.profilForm.controls["birthDate"].value, this.profilForm.controls["gender"].value, this.profilForm.controls["education"].value).subscribe({
-        next: response => {
-          this.alertService.setAlert("Sikeres frissités", "success")
-          this.update.emit(response)
-        }, error: (error) => {
-          if (error.error.statusText === "duplicateEmail") {
-            this.errorMsg = "duplicateEmail"
-            this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
-          } else if (error.error.statusText === "duplicatePhone") {
-            this.errorMsg = "duplicatePhone"
-            this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
-          } else if (error.error.statusText === "invalidDate") {
-            this.errorMsg = "invalidDate"
-            this.alertService.setAlert("A jővőben nem születhettél!", "error")
           } else {
             this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
           }
         }
       })
     }
+  }
+
+  saveUserChanges() {
+    this.userService.updateUser(this.wantedObject().id!, this.profilForm.controls["firstName"].value, this.profilForm.controls["lastName"].value, this.profilForm.controls["email"].value, this.profilForm.controls["phone"].value, this.profilForm.controls["birthDate"].value, this.profilForm.controls["gender"].value, this.profilForm.controls["education"].value).subscribe({
+      next: response => {
+        this.alertService.setAlert("Sikeres frissités", "success")
+        this.update.emit(response)
+      }, error: (error) => {
+        if (error.error.statusText === "duplicateEmail") {
+          this.errorMsg = "duplicateEmail"
+          this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
+        } else if (error.error.statusText === "duplicatePhone") {
+          this.errorMsg = "duplicatePhone"
+          this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
+        } else if (error.error.statusText === "invalidDate") {
+          this.errorMsg = "invalidDate"
+          this.alertService.setAlert("A jővőben nem születhettél!", "error")
+        } else {
+          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        }
+      }
+    })
   }
 
   saveInstructorChanges() {
@@ -164,7 +166,7 @@ export class ProfilEditorComponent implements OnInit {
         }
       },
       complete: () => {
-        console.log("instructorChanges vege")
+        this.saveUserChanges()
       }
     })
   }
@@ -180,12 +182,14 @@ export class ProfilEditorComponent implements OnInit {
         this.alertService.setAlert(`${this.dayNames[i]}i napon rosszul adtad meg a nyitás zárás időt.`, "error")
         return
       }
-
       cloneList.push(detail)
     }
 
     this.schoolService.updateOpeningDetails(this.wantedObject().id!, cloneList).subscribe({
-      next: response => console.log(response)
+      next: response => console.log(response),
+      complete: () => {
+        this.saveSchoolChanges()
+      }
     })
   }
 
