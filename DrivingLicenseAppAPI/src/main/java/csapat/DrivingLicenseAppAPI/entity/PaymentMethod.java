@@ -19,13 +19,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class), @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = PaymentMethod.class), @NamedStoredProcedureQuery(name = "deletePaymentMethod", procedureName = "deletePaymentMethod", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class),
+        @NamedStoredProcedureQuery(name = "getPaymentMethod", procedureName = "getPaymentMethod", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = PaymentMethod.class)
+})
 public class PaymentMethod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @Size(max = 100)
@@ -38,7 +43,7 @@ public class PaymentMethod {
     private List<DrivingLessons> drivingLessonsList;
 
     //Constructorok:
-    public PaymentMethod(int id, String name) {
+    public PaymentMethod(Long id, String name) {
         this.id = id;
         this.name = name;
     }

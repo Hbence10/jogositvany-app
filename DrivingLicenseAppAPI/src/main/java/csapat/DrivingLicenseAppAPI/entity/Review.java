@@ -22,18 +22,18 @@ import java.util.Date;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllReview", procedureName = "getAllReview", resultClasses = Review.class),
         @NamedStoredProcedureQuery(name = "getReview", procedureName = "getReview", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = Users.class),
         @NamedStoredProcedureQuery(name = "deleteReview", procedureName = "deleteReview", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        })
 })
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "text")
     @NotNull

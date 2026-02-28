@@ -20,18 +20,18 @@ import java.util.Date;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllInstructorJoinRequest", procedureName = "getAllInstructorJoinRequest", resultClasses = InstructorJoinRequest.class),
         @NamedStoredProcedureQuery(name = "getInstructorJoinRequest", procedureName = "getInstructorJoinRequest", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = InstructorJoinRequest.class),
         @NamedStoredProcedureQuery(name = "deleteInstructorJoinRequest", procedureName = "deleteInstructorJoinRequest", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        })
 })
 public class InstructorJoinRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "is_accepted")
     @Null

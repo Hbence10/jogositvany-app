@@ -23,21 +23,21 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllSchool", procedureName = "getAllSchool", resultClasses = School.class),
         @NamedStoredProcedureQuery(name = "getSchool", procedureName = "getSchool", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = School.class),
         @NamedStoredProcedureQuery(name = "deleteSchool", procedureName = "deleteSchool", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }),
         @NamedStoredProcedureQuery(name = "getSchoolBySearch", procedureName = "getSchoolBySearch", parameters = {
                 @StoredProcedureParameter(name = "townnameIN", type = String.class, mode = ParameterMode.IN),
-        }, resultClasses = Integer.class)
+        }, resultClasses = Long.class)
 })
 public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @NotNull

@@ -19,13 +19,25 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class), @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Instructors.class), @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class), @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {@StoredProcedureParameter(name = "fuelTypeIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "schoolIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "categoryIdIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Integer.class)})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllIntructor", procedureName = "getAllIntructor", resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "getInstructor", procedureName = "getInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Instructors.class),
+        @NamedStoredProcedureQuery(name = "deleteInstructor", procedureName = "deleteInstructor", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }),
+        @NamedStoredProcedureQuery(name = "getInstructorBySearch", procedureName = "getInstructorBySearch", parameters = {
+                @StoredProcedureParameter(name = "fuelTypeIdIN", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "schoolIdIN", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "categoryIdIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Integer.class)})
 public class Instructors {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "promo_text")
     @Null

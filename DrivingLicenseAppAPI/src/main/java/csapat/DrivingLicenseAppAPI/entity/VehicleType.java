@@ -22,18 +22,18 @@ import java.util.List;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllVehicleType", procedureName = "getAllVehicleType", resultClasses = VehicleType.class),
         @NamedStoredProcedureQuery(name = "getVehicleType", procedureName = "getVehicleType", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = VehicleType.class),
         @NamedStoredProcedureQuery(name = "deleteVehicleType", procedureName = "deleteVehicleType", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        })
 })
 public class VehicleType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @NotNull

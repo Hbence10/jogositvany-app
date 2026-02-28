@@ -16,9 +16,23 @@ import java.util.List;
 
 @Entity
 @Table(name = "user")
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {@StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class), @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class), @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class),
-
-        @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {@StoredProcedureParameter(name = "userIdIN", type = Integer.class, mode = ParameterMode.IN), @StoredProcedureParameter(name = "roleIdIN", type = Integer.class, mode = ParameterMode.IN)})})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getUserByEmail", procedureName = "getUserByEmail", parameters = {
+                @StoredProcedureParameter(name = "emailIN", type = String.class, mode = ParameterMode.IN)
+        }, resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "getAllEmail", procedureName = "getAllEmail", resultClasses = String.class),
+        @NamedStoredProcedureQuery(name = "getAllUser", procedureName = "getAllUser", resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "getUser", procedureName = "getUser", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Users.class),
+        @NamedStoredProcedureQuery(name = "deleteUser", procedureName = "deleteUser", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }),
+        @NamedStoredProcedureQuery(name = "setRoleOfUser", procedureName = "setRoleOfUser", parameters = {
+                @StoredProcedureParameter(name = "userIdIN", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "roleIdIN", type = Long.class, mode = ParameterMode.IN)}
+        )
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,7 +41,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "first_name")
     @NotNull
@@ -96,7 +110,7 @@ public class Users {
     @ManyToOne(cascade = {})
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
-    private Role role = new Role(1, "ROLE_user");
+    private Role role = new Role(1L, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser")
     @JsonIgnoreProperties({"instructorUser", "reviewList", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"})
@@ -147,7 +161,7 @@ public class Users {
         this.userEducation = userEducation;
     }
 
-    public Users(Integer id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
+    public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -171,7 +185,7 @@ public class Users {
         this.vCode = vCode;
     }
 
-    public Users(Integer id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, String vCode) {
+    public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, String vCode) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

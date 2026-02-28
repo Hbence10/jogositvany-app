@@ -21,22 +21,22 @@ import java.util.List;
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
-                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Integer.class)
+                @StoredProcedureParameter(name = "userIdIN", mode = ParameterMode.IN, type = Long.class)
         }, resultClasses = {Students.class}),
         @NamedStoredProcedureQuery(name = "getAllStudent", procedureName = "getAllStudent", resultClasses = Students.class),
         @NamedStoredProcedureQuery(name = "getStudent", procedureName = "getStudent", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = Students.class),
         @NamedStoredProcedureQuery(name = "deleteStudent", procedureName = "deleteStudent", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        })
 })
 public class Students {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "is_deleted")
     @NotNull
@@ -93,7 +93,7 @@ public class Students {
         this.selectedCategory = selectedCategory;
     }
 
-    public Students(Integer id) {
+    public Students(Long id) {
         this.id = id;
     }
 }

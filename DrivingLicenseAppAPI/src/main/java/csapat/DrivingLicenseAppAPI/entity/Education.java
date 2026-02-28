@@ -16,13 +16,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class), @NamedStoredProcedureQuery(name = "getEducation", procedureName = "getEducation", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Education.class), @NamedStoredProcedureQuery(name = "deleteEducation", procedureName = "deleteEducation", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class),
+        @NamedStoredProcedureQuery(name = "getEducation", procedureName = "getEducation", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Education.class)
+})
 public class Education {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @NotNull
@@ -38,7 +43,7 @@ public class Education {
         this.name = name;
     }
 
-    public Education(Integer id, String name) {
+    public Education(Long id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -19,13 +19,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class), @NamedStoredProcedureQuery(name = "getFuelType", procedureName = "getFuelType", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = FuelType.class), @NamedStoredProcedureQuery(name = "deleteFuelType", procedureName = "deleteFuelType", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class),
+        @NamedStoredProcedureQuery(name = "getFuelType", procedureName = "getFuelType", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = FuelType.class)
+})
 public class FuelType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @NotNull

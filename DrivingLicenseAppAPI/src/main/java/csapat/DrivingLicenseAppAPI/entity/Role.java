@@ -19,13 +19,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @ToString
-@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(name = "getAllRole", procedureName = "getAllRole", resultClasses = Role.class), @NamedStoredProcedureQuery(name = "getRole", procedureName = "getRole", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = Users.class), @NamedStoredProcedureQuery(name = "deleteRole", procedureName = "deleteRole", parameters = {@StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)}, resultClasses = String.class)})
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "getAllRole", procedureName = "getAllRole", resultClasses = Role.class),
+        @NamedStoredProcedureQuery(name = "getRole", procedureName = "getRole", parameters = {
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Users.class)
+})
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "name")
     @NotNull
@@ -53,7 +58,7 @@ public class Role {
         this.name = name;
     }
 
-    public Role(int id, String name) {
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }

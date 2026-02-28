@@ -22,29 +22,29 @@ import java.util.Date;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllReservedHour", procedureName = "getAllReservedHour", resultClasses = ReservedHour.class),
         @NamedStoredProcedureQuery(name = "getReservedHour", procedureName = "getReservedHour", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = ReservedHour.class),
         @NamedStoredProcedureQuery(name = "deleteReservedHour", procedureName = "deleteReservedHour", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }),
 
         @NamedStoredProcedureQuery(name = "getReservedHourIdByDateAndInstructor", procedureName = "getReservedHourIdByDateAndInstructor", parameters = {
                 @StoredProcedureParameter(name = "dateIN", type = LocalDate.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "instructorIdIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Integer.class),
+                @StoredProcedureParameter(name = "instructorIdIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Long.class),
 
         @NamedStoredProcedureQuery(name = "getReservedHoursBetweenTwoDate", procedureName = "getReservedHoursBetweenTwoDate", parameters = {
-                @StoredProcedureParameter(name = "instructorIdIN", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "instructorIdIN", type = Long.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "startDateIN", type = Date.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "endDateIN", type = Date.class, mode = ParameterMode.IN),
-        }, resultClasses = Integer.class)
+        }, resultClasses = Long.class)
 })
 public class ReservedHour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "start_time")
     @NotNull

@@ -20,19 +20,19 @@ import java.util.Date;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson", resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "getDrivingLesson", procedureName = "getDrivingLesson", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "deleteDrivingLesson", procedureName = "deleteDrivingLesson", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = String.class),
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
+        }),
         @NamedStoredProcedureQuery(name = "getDrivingLessonBetweenHour", procedureName = "getDrivingLessonBetweenHour", parameters = {
                 @StoredProcedureParameter(name = "dateIN", type = Date.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "startHourIN", type = Date.class, mode = ParameterMode.IN),
                 @StoredProcedureParameter(name = "endHourIN", type = Date.class, mode = ParameterMode.IN),
-                @StoredProcedureParameter(name = "instructorIDIN", type = Integer.class, mode = ParameterMode.IN)
-        }, resultClasses = Integer.class),
+                @StoredProcedureParameter(name = "instructorIDIN", type = Long.class, mode = ParameterMode.IN)
+        }, resultClasses = Long.class),
         @NamedStoredProcedureQuery(name = "getDrivingLessonByStudentId", procedureName = "getDrivingLessonByStudentId", parameters = {
-                @StoredProcedureParameter(name = "idIN", type = Integer.class, mode = ParameterMode.IN)
+                @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         }, resultClasses = DrivingLessons.class)
 })
 public class DrivingLessons {
@@ -40,7 +40,7 @@ public class DrivingLessons {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @Column(name = "start_km")
     @Null
