@@ -51,11 +51,11 @@ public class UserControllerIT {
     }
 
     private final String BASE_URL = "http://localhost:8080/users";
-    int testUserId;
+    Long testUserId;
 
     @BeforeEach
     public void setup() {
-        Users newUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users newUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         testUserId = newUser.getId();
     }
 
@@ -95,7 +95,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with valid datas as student.")
     public void registerWithValidDatasAsStudent() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
 
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
@@ -109,7 +109,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with valid datas as instructor.")
     public void registerWithValidDatasAsInstructor() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         long instructorsSizeBeforeRegistration = instructorRepository.count();
 
@@ -126,7 +126,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with non-existent role.")
     public void registerAsNonExistentRole() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/admin").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -139,7 +139,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with invalid Users object. (id attribute isn't null)")
     public void registerWithInvalidObject() throws Exception {
-        Users newUser = new Users(4132, "registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users(4132L, "registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -152,7 +152,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with invalid gender. Gender isn't equal to male, female or other.")
     public void registerWithInvalidGender() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "non-binary", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "non-binary", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -165,7 +165,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with invalid e-mail.")
     public void registerWithInvalidEmail() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "registergmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "registergmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -179,7 +179,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with invalid phone.")
     public void registerWithInvalidPhone() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06787412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06787412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -192,7 +192,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with invalid password.")
     public void registerWithInvalidPassword() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "tes.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "tes.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -206,7 +206,7 @@ public class UserControllerIT {
     @DisplayName("Registration with invalid birthDate. It must be in the past.")
     public void registerWithInvalidBirthDate() throws Exception {
         LocalDate birthDate = LocalDate.now().plusYears(2);
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant()), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", Date.from(birthDate.atStartOfDay(ZoneId.systemDefault()).toInstant()), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -219,7 +219,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with non-existent education")
     public void registerWithNonExistentEducation() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(432, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(432L, "Általános Iskola"));
         long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -233,7 +233,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with registered e-mail.")
     public void registerWithDuplicatedEmail() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "test@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "test@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
 //        long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
@@ -246,7 +246,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Registration with registered phone.")
     public void registerWithDuplicatedPhone() throws Exception {
-        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06701111111", new Date(), "male", "test5.Asd", new Education(1, "Általános Iskola"));
+        Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06701111111", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
 //        long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())

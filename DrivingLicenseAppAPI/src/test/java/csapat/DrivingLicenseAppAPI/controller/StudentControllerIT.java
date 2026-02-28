@@ -41,7 +41,7 @@ public class StudentControllerIT {
     private PasswordEncoder passwordEncoder;
     private final String BASEURL = "http://localhost:8080/students";
 
-    int testId;
+    Long testId;
 
     @Autowired
     public StudentControllerIT(MockMvc mockMvc, UserRepository userRepository, SchoolRepository schoolRepository, StudentRepository studentRepository, PasswordEncoder passwordEncoder, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository) {
@@ -55,9 +55,9 @@ public class StudentControllerIT {
 
     @BeforeEach
     public void setup() {
-        Users testUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users testUser = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Dombóvár", "sfafsafasf", "afsfassaf", testUser));
-        Students testStudent = studentRepository.save(new Students(testUser, testSchool, drivingLicenseCategoryRepository.findById(1).get()));
+        Students testStudent = studentRepository.save(new Students(testUser, testSchool, drivingLicenseCategoryRepository.findById(1L).get()));
 
         testId = testStudent.getId();
     }
