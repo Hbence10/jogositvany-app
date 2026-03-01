@@ -1,43 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="style.css">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body class="d-flex flex-column justify-content-center">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-center">Tisztelt <span th:text="${fullName}"></span>!</h1>
-                <p class="text-center">Az alábbiakban értesitjük, hogy sikeresen regisztrált az oldalunkra. Amennyiben nem maga hajtotta végre a frissitést, kérjük vegye fel a kapcsolatot az oldal adminisztrátoraival</p>
-                <p class="text-center">Kérjük további adatait minnél előbb adja meg. Ezt a profilja oldalán tudja megtenni.</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <p class="text-center">Ezen a <a href="http://localhost:4200/login">linken</a> tud bejelentkezni.</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <p>Tisztelettel, <br> Félúton csapata.</p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <p id="footerText">(Ez egy automatikusan generált e-mail kérem ne válaszoljon rá)</p>
-            </div>
-        </div>
-    </div>
-</body>
+  </head>
+  <body
+    style="
+      background-color: #434a6b;
+      color: #dee0eb;
+      font-family: &quot;Bebas Neue&quot;, Arial, sans-serif;
+      padding: 20px 0px;
+    "
+  >
+    <h1 style="text-align: center">
+      Tisztelt <span th:text="${fullName}"></span>!
+    </h1>
+    <p style="text-align: center">
+      Az alábbiakban értesitjük, hogy sikeresen regisztrált az oldalunkra.
+      Amennyiben nem maga hajtotta végre a frissitést, kérjük vegye fel a
+      kapcsolatot az oldal adminisztrátoraival
+    </p>
+    <p style="text-align: center">
+      Kérjük további adatait minnél előbb adja meg. Ezt a profilja oldalán tudja
+      megtenni.
+    </p>
+    <p style="text-align: center">
+      Ezen a
+      <a
+        href="http://localhost:4200/login"
+        style="color: white; font-weight: 600; text-decoration: none"
+        >linken</a
+      >
+      tud bejelentkezni.
+    </p>
+    <p style="text-align: center">
+      Tisztelettel, <br />
+      Félúton csapata.
+    </p>
+    <p style="font-size: 12px; text-align: center">
+      (Ez egy automatikusan generált e-mail kérem ne válaszoljon rá)
+    </p>
+  </body>
 </html>
