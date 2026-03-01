@@ -9,6 +9,7 @@ import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +63,14 @@ public class SchoolService {
                         newStudent.getStudentUser().setRole(new Role(2L, "ROLE_student"));
                         newStudent.setSelectedCategory(searchedSchoolJoinRequest.getJoinRequestCategory());
                         studentRepository.save(newStudent);
+
+                        for (SchoolJoinRequest i : searchedSchoolJoinRequest.getSchoolJoinRequestUser().getSchoolJoinRequestList()) {
+                            if (i.getId() != searchedSchoolJoinRequest.getId()) {
+                                i.setIsDeleted(true);
+                                i.setDeletedAt(new Date());
+                                schoolJoinRequestRepository.save(i);
+                            }
+                        }
                     } else {
                         Instructors senderInstructor = searchedSchoolJoinRequest.getSchoolJoinRequestUser().getInstructor();
                         senderInstructor.setInstructorSchool(searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
@@ -77,7 +86,11 @@ public class SchoolService {
                 }
                 searchedSchoolJoinRequest.setAcceptedAt(new Date());
                 schoolJoinRequestRepository.save(searchedSchoolJoinRequest);
-                emailSender.sendEmailAboutSchoolJoinRequestToUser(searchedSchoolJoinRequest.getSchoolJoinRequestUser().getEmail());
+                try {
+                    emailSender.sendEmailAboutSchoolJoinRequestToUser(searchedSchoolJoinRequest, status);
+                } catch (MessagingException e) {
+
+                }
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

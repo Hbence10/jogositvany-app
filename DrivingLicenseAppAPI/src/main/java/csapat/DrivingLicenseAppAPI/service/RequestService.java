@@ -50,17 +50,17 @@ public class RequestService {
                     DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
                     if (searchedCategory == null) {
                     }
-                    Boolean isSchoolNotContainsCategory = searchedSchool.getLicenseCategoryList().stream().filter(category -> category.getLicenseCategory().getId() == categoryId).toList().isEmpty();
-                    if (isSchoolNotContainsCategory) {
-                        return ResponseEntity.status(415).body("invalidCategory");
-                    }
+//                    Boolean isSchoolNotContainsCategory = searchedSchool.getLicenseCategoryList().stream().filter(category -> category.getLicenseCategory().getId() == categoryId).toList().isEmpty();
+//                    if (isSchoolNotContainsCategory) {
+//                        return ResponseEntity.status(415).body("invalidCategory");
+//                    }
 
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
                 } else {
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
                 }
 
-                emailSender.sendEmailAboutSchoolJoinRequestToSchool(searchedSchool.getEmail());
+                emailSender.sendEmailAboutSchoolJoinRequestToSchool(searchedSchool.getEmail(), newSchoolJoinRequest);
                 schoolJoinRequestRepository.save(newSchoolJoinRequest);
                 return ResponseEntity.ok().build();
             }
