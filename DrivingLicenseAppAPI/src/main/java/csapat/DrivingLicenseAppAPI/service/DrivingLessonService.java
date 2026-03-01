@@ -4,6 +4,7 @@ import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.dto.HourCard;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -66,7 +67,10 @@ public class DrivingLessonService {
             } else {
                 reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);
-                emailSender.sendEmailAboutDrivingLessonCanceled(searchedDrivingLesson.getDstudent().getStudentUser().getEmail());
+                try {
+                    emailSender.sendEmailAboutDrivingLessonCanceled(searchedDrivingLesson.getDstudent().getStudentUser().getEmail(), searchedDrivingLesson);
+                } catch (MessagingException e) {
+                }
                 return ResponseEntity.ok().body(drivingLessonRepository.getDrivingLesson(drivingLessonId).get());
             }
         } catch (Exception e) {

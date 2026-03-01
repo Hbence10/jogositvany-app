@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.config.email;
 
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
+import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import jakarta.mail.MessagingException;
@@ -54,13 +56,54 @@ public class EmailSender {
         mailSender.send(msg);
     }
 
-    public void sendEmailAboutDrivingLessonCanceled(String toEmail) {
+    public void sendEmailAboutDrivingLessonCanceled(String toEmail, DrivingLessons drivingLessons) throws MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setFrom(fromEmail);
+        helper.setSubject("Óra lemondás!");
+        helper.setTo(toEmail);
+
+        Map<String, Object> emailObject = new HashMap<>();
+        emailObject.put("studentName", drivingLessons.getDstudent().getStudentUser().getFirstName() + " " + drivingLessons.getDstudent().getStudentUser().getLastName());
+        emailObject.put("instructorName", drivingLessons.getDinstructor().getInstructorUser().getFirstName() + " " + drivingLessons.getDinstructor().getInstructorUser().getLastName());
+        emailObject.put("startTime", drivingLessons.getReservedHour().getReservedDate().getDate() + " " + drivingLessons.getReservedHour().getStartTime());
+
+        helper.setText(getHtmlBody("DrivingLessonCancelTemplate.html", emailObject), true);
+        mailSender.send(msg);
     }
 
-    public void sendEmailAboutDrivingLessonRequestToInstructor(String toEmail) {
+    public void sendEmailAboutDrivingLessonRequestToInstructor(String toEmail, DrivingLessonRequest request) throws MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setFrom(fromEmail);
+        helper.setSubject("Vezetési óra kérelem!");
+        helper.setTo(toEmail);
+
+        Map<String, Object> emailObject = new HashMap<>();
+        emailObject.put("instructorName", request.getDLessonInstructor().getInstructorUser().getFirstName() + " " + request.getDLessonInstructor().getInstructorUser().getLastName());
+        emailObject.put("studentName", request.getDLessonRequestStudent().getStudentUser().getFirstName() + " " +  request.getDLessonRequestStudent().getStudentUser().getLastName());
+        emailObject.put("date", request.getDate());
+        emailObject.put("startHour", request.getStartTime());
+        emailObject.put("endHour", request.getEndTime());
+
+        helper.setText(getHtmlBody("DrivingLessonRequestInstructor.html", emailObject), true);
+        mailSender.send(msg);
     }
 
-    public void sendEmailAboutDrivingLessonRequestToStudent(String toEmail) {
+    public void sendEmailAboutDrivingLessonRequestToStudent(String toEmail, DrivingLessonRequest request, String answer) throws MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setFrom(fromEmail);
+        helper.setSubject("Vezetési óra kérelem!");
+        helper.setTo(toEmail);
+
+        Map<String, Object> emailObject = new HashMap<>();
+        emailObject.put("studentName", request.getDLessonRequestStudent().getStudentUser().getFirstName() + " " + request.getDLessonRequestStudent().getStudentUser().getLastName());
+        emailObject.put("answer", answer);
+        emailObject.put("sentAt", request.getSentAt());
+
+        helper.setText(getHtmlBody("DrivingLessonRequestStudentTemplate.html", emailObject), true);
+        mailSender.send(msg);
     }
 
     public void sendEmailAboutInstructorJoinRequestToInstructor(String toEmail, String instructorName, String studentName) throws MessagingException    {

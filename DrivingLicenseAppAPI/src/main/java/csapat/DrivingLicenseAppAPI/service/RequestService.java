@@ -108,14 +108,14 @@ public class RequestService {
                 return ResponseEntity.status(404).body("studentNotFound");
             } else if (searchedInstructor == null) {
                 return ResponseEntity.status(404).body("instructorNotFound");
-            } else if ( searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() || searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()) {
+            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() || searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()) {
                 return ResponseEntity.status(415).body("invalidInstructor");
             } else if (date.before(new Date())) {
                 return ResponseEntity.status(415).body("invalidDate");
             } else {
                 DrivingLessonRequest newRequest = new DrivingLessonRequest(msg, date, startTime, endTime, searchedStudent, searchedInstructor);
-                drivingLessonRequestRepository.save(newRequest);
-                emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail());
+                newRequest = drivingLessonRequestRepository.save(newRequest);
+                emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), newRequest);
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {

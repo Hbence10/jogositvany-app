@@ -188,7 +188,10 @@ public class InstructorService {
                     searchedRequest.setAcceptedAt(new Date());
                     drivingLessonRequestRepository.save(searchedRequest);
 
-                    emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail());
+                    try {
+                        emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
+                    } catch (MessagingException e) {
+                    }
                     return ResponseEntity.ok().build();
                 }
             }
