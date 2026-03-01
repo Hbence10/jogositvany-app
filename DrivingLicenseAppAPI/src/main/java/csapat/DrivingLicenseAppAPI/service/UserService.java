@@ -311,7 +311,7 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
 
-            Users searchedUser = userRepository.getUser(id).orElse(null);
+            Users searchedUser = userRepository.findById(id).orElse(null);
 
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.notFound().build();

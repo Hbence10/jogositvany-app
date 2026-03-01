@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.config.email;
 
+import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -62,10 +63,34 @@ public class EmailSender {
     public void sendEmailAboutDrivingLessonRequestToStudent(String toEmail) {
     }
 
-    public void sendEmailAboutInstructorJoinRequestToInstructor(String toEmail) {
+    public void sendEmailAboutInstructorJoinRequestToInstructor(String toEmail, String instructorName, String studentName) throws MessagingException    {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setFrom(fromEmail);
+        helper.setSubject("Csatlkozási kérelem!");
+        helper.setTo(toEmail);
+
+        Map<String, Object> emailObject = new HashMap<>();
+        emailObject.put("instructorName", instructorName);
+        emailObject.put("studentName", studentName);
+        helper.setText(getHtmlBody("InstructorRequestInstructorTemplate.html", emailObject), true);
+        mailSender.send(msg);
     }
 
-    public void sendEmailAboutInstructorJoinRequestToStudent(String toEmail) {
+    public void sendEmailAboutInstructorJoinRequestToStudent(String toEmail, InstructorJoinRequest request, String answer) throws  MessagingException {
+        MimeMessage msg = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
+        helper.setFrom(fromEmail);
+        helper.setSubject("Csatlkozási kérelem!");
+        helper.setTo(toEmail);
+
+        Map<String, Object> emailObject = new HashMap<>();
+        emailObject.put("instructorName", request.getInstructorJoinRequestInstructor().getInstructorUser().getFirstName() + " " + request.getInstructorJoinRequestInstructor().getInstructorUser().getLastName());
+        emailObject.put("studentName", request.getInstructorJoinRequestStudent().getStudentUser().getFirstName() + " " + request.getInstructorJoinRequestStudent().getStudentUser().getLastName());
+        emailObject.put("answer", answer.equals("accept") ? "elfogadta" : "elutasitotta");
+        emailObject.put("thirdPhrase", answer.equals("accept") ? "Mostantól elkezdhetsz vezeteni!" : "Próbálkozz később vagy keress fel egy másik oktatót");
+        helper.setText(getHtmlBody("InstructorRequestStudentTemplate.html", emailObject), true);
+        mailSender.send(msg);
     }
 
     public void sendEmailAboutSchoolRegistration(String toEmail) {

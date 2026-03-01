@@ -7,7 +7,9 @@ import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.apache.hc.core5.http.MessageConstraintException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +72,10 @@ public class InstructorService {
                     searchedJoinRequest.setIsAccepted(false);
                 }
                 searchedJoinRequest.setAcceptedAt(new Date());
-                emailSender.sendEmailAboutInstructorJoinRequestToStudent(searchedJoinRequest.getInstructorJoinRequestStudent().getStudentUser().getEmail());
+                try {
+                    emailSender.sendEmailAboutInstructorJoinRequestToStudent(searchedJoinRequest.getInstructorJoinRequestStudent().getStudentUser().getEmail(), searchedJoinRequest, status);
+                } catch (MessagingException e) {
+                }
                 return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
             }
         } catch (Exception e) {

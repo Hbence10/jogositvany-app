@@ -89,7 +89,7 @@ public class RequestService {
             } else {
                 InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
                 instructorJoinRequestRepository.save(instructorJoinRequest);
-                emailSender.sendEmailAboutInstructorJoinRequestToInstructor(searchedInstructor.getInstructorUser().getEmail());
+                emailSender.sendEmailAboutInstructorJoinRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), searchedInstructor.getInstructorUser().getFirstName() + " " + searchedInstructor.getInstructorUser().getLastName(), searchedStudent.getStudentUser().getFirstName() + " " + searchedStudent.getStudentUser().getLastName());
                 return ResponseEntity.ok().build();
             }
         } catch (Exception e) {
