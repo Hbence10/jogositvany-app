@@ -134,9 +134,11 @@ public class UserService {
                 userRepository.save(searchedUser);
                 System.out.println(vCode);
                 try {
-                    emailSender.sendVerificationCodeEmail(email, vCode);
-                } catch (MailSendException mailException) {
+                    emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName() ,vCode);
+                } catch (MessagingException mailException) {
                 }
+
+
 
                 return ResponseEntity.ok().build();
             }
@@ -193,7 +195,7 @@ public class UserService {
                 searchedUser.setPassword(hashedPassword);
                 userRepository.save(searchedUser);
                 try {
-                    emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail());
+                    emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail(), searchedUser.getFirstName() + " " + searchedUser.getLastName());
                 } catch (MailSendException e) {
                 }
                 return ResponseEntity.ok().build();
