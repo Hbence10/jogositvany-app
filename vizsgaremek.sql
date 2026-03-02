@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Feb 23. 12:20
+-- Létrehozás ideje: 2026. Már 02. 10:04
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.1.0
 
@@ -411,9 +411,7 @@ CREATE TABLE `driving_lesson` (
 
 INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
 (1, 214, 4235, 'asfsafsaf', NULL, NULL, 2341, 0, 2, 6, 1, 52, 11, 0, 1, '2026-02-14 20:01:42'),
-(2, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 7, 1, 52, 11, 0, 0, NULL),
 (3, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 8, 1, 52, 8, 0, 0, NULL),
-(4, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 12, 1, 52, 24, 0, 0, NULL),
 (5, 37338, 37382, 'Szekszárd', 'Dombóvár', 'Szekszárd', 4, 0, 3, 7, 1, 19, 10, 0, 0, NULL),
 (6, 0, 20, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 12, 1, 18, 18, 0, 0, NULL),
 (7, 20, 60, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 3, 13, 1, 18, 18, 0, 0, NULL),
@@ -439,7 +437,7 @@ INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_p
 (27, 801, 837, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 33, 1, 18, 18, 0, 0, NULL),
 (28, 838, 870, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 3, 34, 1, 18, 18, 0, 0, NULL),
 (29, 871, 898, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 35, 1, 18, 18, 0, 0, NULL),
-(30, 899, 924, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, NULL, 36, 1, 18, 18, 0, 0, NULL),
+(30, 899, 924, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 36, 1, 18, 18, 0, 0, NULL),
 (31, 925, 952, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 37, 1, 18, 18, 0, 0, NULL),
 (37, 953, 987, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 38, 1, 18, 18, 0, 0, NULL),
 (38, 988, 1017, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 39, 1, 18, 18, 0, 0, NULL),
@@ -1135,7 +1133,11 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (77, 'ujfiok', 'ujfiok', 'ujfiok@gmail.com', '701239876', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$+xrSIWHFjt7dHsZaZbFC6w$XP76wE2Zhmr1+UBuN8h9SY9jCyH4xld9ZVePLq/oAR8', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-04 12:10:53', '2026-01-04 12:22:53', 0, NULL, NULL, 4, NULL),
 (79, 'testStudent', 'testStudent', 'testStudent@gmail.com', '06706285232', '2006-08-02', 'female', '$argon2id$v=19$m=4096,t=3,p=1$ZICovAjj+Yx50ms242b+JQ$qzk5hYu643qh6QOPWjLPONL4dAmOTkAYGxkHbRXBIkw', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-24 13:17:17', '2026-02-14 12:21:54', 0, NULL, NULL, 1, NULL),
 (82, 'testInstructor', 'testInstructor', 'testInstructor@gmail.com', '06707777777', '2006-07-26', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Cpjd4QZMmvNgpirTx1g/Sw$g4ZzzQCLikuNUQXbsgXqyA9C+EkRuuQ5OONrQtCYxQg', 3, 'http://localhost:8080/pfp/82464575951_1052396213349316_1062152384838969430_n.jpg', '2026-01-24 13:21:24', '2026-02-15 16:48:07', 0, NULL, NULL, 2, NULL),
-(84, 'asdasf', 'asfasffas', 'bzhalmai412@gmail.com', '06206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jUCm62psGg5S6EsT5pyd0Q$HZJeoJ9TmoTr74wo6Iq1dZ56HvFzLmwZCvsiNRxBSNw', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-10 18:57:45', '2026-02-10 20:54:04', 0, NULL, NULL, 2, NULL);
+(84, 'asdasf', 'asfasffas', 'bzhalmai412@gmail.com', '06206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jUCm62psGg5S6EsT5pyd0Q$HZJeoJ9TmoTr74wo6Iq1dZ56HvFzLmwZCvsiNRxBSNw', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-10 18:57:45', '2026-02-10 20:54:04', 0, NULL, NULL, 2, NULL),
+(85, 'instructor4.5', 'instructor4.5', 'instructor4.5@gmal.com', '706280035', '2006-08-02', 'male', 'asd', 3, 'asd', '2026-03-02 09:58:32', NULL, 0, NULL, NULL, 5, NULL),
+(86, 'school_owner_1.5', 'school_owner_1.5', 'school_owner_1.5@gmail.com', '706281005', '2006-08-02', 'male', 'asd', 6, 'asd', '2026-03-02 10:01:51', NULL, 0, NULL, NULL, 6, NULL),
+(87, 'diak2.0', 'diak2.0', 'diak2.0@gmail.com', '706285110', '2006-08-02', 'male', 'asd', 2, 'asd', '2026-03-02 10:03:53', NULL, 0, NULL, NULL, 1, NULL),
+(88, 'diak2.1', 'diak2.1', 'diak2.1@gmail.com', '706285111', '2006-08-02', 'male', 'asd', 2, 'asd', '2026-03-02 10:03:53', NULL, 0, NULL, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1499,7 +1501,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle`
