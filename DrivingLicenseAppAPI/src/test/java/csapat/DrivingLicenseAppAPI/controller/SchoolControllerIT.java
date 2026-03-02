@@ -11,11 +11,8 @@ import csapat.DrivingLicenseAppAPI.repository.DrivingLicenseCategoryRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolJoinRequestRepository;
 import csapat.DrivingLicenseAppAPI.repository.SchoolRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.hamcrest.core.Is;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,9 +66,9 @@ public class SchoolControllerIT {
     public void setup() {
         Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users testUser = userRepository.save(new Users("testUser2", "registerStudent2", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
-        Users testInstructor = userRepository.save(new Users("testUser2", "registerStudent2", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users testInstructor = userRepository.save(new Users("testUser2", "registerStudent2", "test3@gmail.com", "06701111113", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
 
-        School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Dombóvár", "sfafsafasf", "afsfassaf", owner));
+        School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", owner));
         testSchoolId = testSchool.getId();
 
 
@@ -88,34 +85,35 @@ public class SchoolControllerIT {
     public void acceptExistentJoinRequestFromUser() throws Exception {
         mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
                 .andExpect(status().isOk());
+
+        Assertions.assertEquals(true, schoolJoinRequestRepository.findById(testJoinRequestId).get().getIsAccepted(), "It should be accepted");
     }
 
     @Test
-    @DisplayName("Refuse existent join")
+    @DisplayName("Refuse existent join request from user")
     public void refuseExistentJoinRequestFromUser() throws Exception {
+        mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("refuse"))))
+                .andExpect(status().isOk());
 
+        Assertions.assertEquals(false, schoolJoinRequestRepository.findById(testJoinRequestId).get().getIsAccepted(), "It should be refused");
     }
 
     @Test
-    @DisplayName("")
-    public void acceptExistentJoinRequestFromInstructor() throws Exception {
-
-    }
-
-    @Test
-    @DisplayName("")
-    public void refuseExistentJoinRequestFromInstructor() throws Exception {
-
-    }
-
-    @Test
-    @DisplayName("")
+    @DisplayName("Handle existent request with invalid status")
     public void handleJoinRequestWithInvalidStatus() throws Exception {
+        mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("asfas"))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidStatus")))
+        ;
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Handle non-existent request")
     public void handleNonExistentJoinRequest() throws Exception {
+        mockMvc.perform(post(BASEURL + "/" + 3214124 + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
+                .andExpect(status().isNotFound())
+        ;
     }
 
     private JsonNode createBodyForJoinRequestHandling(String status) {
@@ -126,37 +124,37 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with existent datas")
     public void updateExistentSchoolWithValidDatas() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update none existent school.")
     public void updateNonExistentSchool() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with invalid phone")
     public void updateExistentSchoolWithInvalidPhone() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with invalid email")
     public void updateExistentSchoolWithInvalidEmail() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with duplicated name")
     public void updateExistentSchoolWithDuplicatedName() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with duplicated phone")
     public void updateExistentSchoolWithDuplicatedPhone() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school with duplicated email")
     public void updateExistentSchoolWithDuplicatedEmail() throws Exception {
     }
 
@@ -191,9 +189,14 @@ public class SchoolControllerIT {
     public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {
     }
 
+    public JsonNode createRequestBodyForUpdate() {
+        return null;
+    }
+
     @Test
     @DisplayName("")
     public void getAllJoinRequestOfExistentSchool() throws Exception {
+
     }
 
     @Test
@@ -202,13 +205,29 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Delete existent user by id")
     public void deleteExistentSchool() throws Exception {
+        Long sizeBeforeDelete = schoolRepository.countNotDeletedSchool(false);
+
+        mockMvc.perform(delete(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
+                .andExpect(status().isOk())
+        ;
+
+        Long sizeAfterDelete = schoolRepository.countNotDeletedSchool(false);
+        Assertions.assertEquals(sizeBeforeDelete - 1, sizeAfterDelete);
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Delete non-existent user")
     public void deleteNonExistentSchool() throws Exception {
+        Long sizeBeforeDelete = schoolRepository.countNotDeletedSchool(false);
+
+        mockMvc.perform(delete(BASEURL + "/" + (testSchoolId + 1)).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
+                .andExpect(status().isNotFound())
+        ;
+
+        Long sizeAfterDelete = schoolRepository.countNotDeletedSchool(false);
+        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete);
     }
 
     @Test
@@ -222,13 +241,19 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get Existent school by id")
     public void getExistentSchoolById() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + testSchoolId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testSchoolId + ""))));
     }
 
     @Test
     @DisplayName("")
     public void getNonExistentSchoolById() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (testSchoolId + 1)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -249,6 +274,10 @@ public class SchoolControllerIT {
     @Test
     @DisplayName("")
     public void createSchoolWithInvalidPhone() throws Exception {
+    }
+
+    public JsonNode createRequestBodyForSchoolCreation() {
+        return null;
     }
 
     @Test

@@ -100,7 +100,7 @@ public class StudentControllerIT {
         mockMvc.perform(get(BASEURL + "/" + testId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(testId)));
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testId + ""))));
     }
 
     @Test

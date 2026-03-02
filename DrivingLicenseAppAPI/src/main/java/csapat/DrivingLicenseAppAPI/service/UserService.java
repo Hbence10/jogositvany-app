@@ -52,6 +52,10 @@ public class UserService {
                 return ResponseEntity.status(422).build();
             }
             Users loggedUser = userRepository.findByEmail(email.trim()).orElse(null);
+            if (loggedUser == null) {
+                return ResponseEntity.notFound().build();
+            }
+
             boolean successFullLogin = passwordEncoder.matches(password.trim(), loggedUser.getPassword());
             loggedUser.setLastLogin(new Date());
             userRepository.save(loggedUser);

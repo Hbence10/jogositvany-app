@@ -66,7 +66,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(testUserId)));
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId + ""))));
     }
 
     @Test
@@ -211,7 +211,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidBirthDate")));
+                .andExpect(jsonPath("$.statusText", Is.is("invalidDate")));
         long usersSizeAfterRegistration = userRepository.count();
         Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
@@ -238,7 +238,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", Is.is("duplicateEmail")));
+                .andExpect(jsonPath("$.statusText", Is.is("duplicateEmail")));
 //        long usersSizeAfterRegistration = userRepository.count();
 //        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
@@ -251,7 +251,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", Is.is("duplicatePhone")));
+                .andExpect(jsonPath("$.statusText", Is.is("duplicatePhone")));
 //        long usersSizeAfterRegistration = userRepository.count();
 //        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
@@ -379,7 +379,7 @@ public class UserControllerIT {
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(testUserId)))
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId + ""))))
                 .andExpect(jsonPath("$.firstName", Is.is("testUserUpdate1")))
                 .andExpect(jsonPath("$.lastName", Is.is("registerStudent1")))
                 .andExpect(jsonPath("$.email", Is.is("test@gmail.com")))
@@ -432,7 +432,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06701111111", "2029-08-02", "male", 1);
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidBirthDate")));
+                .andExpect(jsonPath("$.statusText", Is.is("invalidDate")));
     }
 
     @Test
@@ -507,7 +507,7 @@ public class UserControllerIT {
         mockMvc.perform(get(BASE_URL + "/" + testUserId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(testUserId)));
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId+""))));
     }
 
     @Test

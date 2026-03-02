@@ -32,4 +32,7 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
     @Query("select i from School s JOIN s.instructorsList i where s.id = ?1 and i.isDeleted = false")
     Page<Instructors> getAllInstructor(Long id, Pageable pageable);
+
+    @Query("select count(s) from School s where s.isDeleted = ?1")
+    Long countNotDeletedSchool(Boolean isDeleted);
 }
