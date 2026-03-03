@@ -1,7 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
+import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,8 +75,8 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSchool(@RequestBody JsonNode requestBody, @PathVariable("id") Long schoolId) {
-        return schoolService.updateSchool(schoolId, requestBody.get("name").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("country").asText(null), requestBody.get("town").asText(null), requestBody.get("address").asText(null), requestBody.get("promoText").asText(null));
+    public ResponseEntity<Object> updateSchool(@RequestBody SchoolDto updatedSchool, @PathVariable("id") Long schoolId) {
+        return schoolService.updateSchool(schoolId, updatedSchool);
     }
 
     @Operation(summary = "Iskola boritókép csere.")
@@ -98,7 +97,6 @@ public class SchoolController {
     public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Long id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
-
     @Operation(summary = "Nyitvatartás modósitása.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az iskolához tartozó frissitetett nyitvatartási lista", required = true, content = @Content(
@@ -190,7 +188,7 @@ public class SchoolController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @PostMapping("")
-    private ResponseEntity<Object> createSchool(@RequestBody SchoolRegisterDto addedSchool) {
+    private ResponseEntity<Object> createSchool(@RequestBody SchoolDto addedSchool) {
         return schoolService.createSchool(addedSchool);
     }
 

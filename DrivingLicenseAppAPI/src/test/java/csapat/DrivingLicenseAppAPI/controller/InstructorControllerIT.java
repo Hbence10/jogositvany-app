@@ -28,6 +28,7 @@ public class InstructorControllerIT {
 
     }
 
+    //Csatlakozási kérelmek
     @Test
     public void acceptExistentJoinRequest() throws Exception {
     }
@@ -52,6 +53,7 @@ public class InstructorControllerIT {
     public void getAllJoinRequestByNonExistentInstructor() throws Exception {
     }
 
+    //Vezetési óra kérelmek
     @Test
     public void getAllDrivingLessonRequestByExistentInstructor() throws Exception {
     }
@@ -60,6 +62,23 @@ public class InstructorControllerIT {
     public void getAllDrivingLessonRequestByNonExistentInstructor() throws Exception {
     }
 
+    @Test
+    public void acceptExistentDrivingLessonRequest() throws Exception {
+    }
+
+    @Test
+    public void refuseExistentDrivingLessonRequest() throws Exception {
+    }
+
+    @Test
+    public void handleNonExistentDrivingLessonRequest() throws Exception {
+    }
+
+    @Test
+    public void handleDrivingLessonWithInvalidStatus() throws Exception {
+    }
+
+    //Frissites
     @Test
     public void updateExistentInstructorWithValidData() throws Exception {
     }
@@ -84,22 +103,7 @@ public class InstructorControllerIT {
     public void updateExistentVehicleWithInvalidLicensePlate() throws Exception {
     }
 
-    @Test
-    public void acceptExistentDrivingLessonRequest() throws Exception {
-    }
-
-    @Test
-    public void refuseExistentDrivingLessonRequest() throws Exception {
-    }
-
-    @Test
-    public void handleNonExistentDrivingLessonRequest() throws Exception {
-    }
-
-    @Test
-    public void handleDrivingLessonWithInvalidStatus() throws Exception {
-    }
-
+    //
     @Test
     public void searchInstructorWithValidDatas() throws Exception {
     }
@@ -116,6 +120,7 @@ public class InstructorControllerIT {
     public void searchInstructorWithNonExistentLicenseCategory() throws Exception {
     }
 
+    //
     @Test
     public void getExistentInstructorById() throws Exception {
     }

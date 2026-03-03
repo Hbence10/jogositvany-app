@@ -1,6 +1,6 @@
 package csapat.DrivingLicenseAppAPI.dto;
 
-public record SchoolRegisterDto(
+public record SchoolDto(
         String schoolName,
         String email,
         String phoneNumber,
@@ -9,6 +9,5 @@ public record SchoolRegisterDto(
         String address,
         String promoText,
         Long ownerId
-
 ) {
 }

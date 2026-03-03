@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
-import csapat.DrivingLicenseAppAPI.dto.SchoolRegisterDto;
+import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
@@ -100,8 +100,8 @@ public class SchoolService {
     }
 
     @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateSchool(Long schoolId, String name, String email, String phone, String country, String town, String address, String promoText) {
-        if (schoolId == null || name == null || email == null || phone == null || country == null || town == null || address == null || promoText == null) {
+    public ResponseEntity<Object> updateSchool(Long schoolId, SchoolDto updatedSchool) {
+        if (schoolId == null || updatedSchool == null) {
             return ResponseEntity.status(422).build();
         }
 
@@ -109,20 +109,20 @@ public class SchoolService {
 
         if (searchedSchool == null || searchedSchool.getIsDeleted()) {
             return ResponseEntity.notFound().build();
-        } else if (!ValidatorCollection.emailValidator(email.trim())) {
+        } else if (!ValidatorCollection.emailValidator(updatedSchool.email().trim())) {
             System.out.println("invalidEmail");
             return ResponseEntity.status(415).body("invalidEmail");
-        } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
+        } else if (!ValidatorCollection.phoneValidator(updatedSchool.phoneNumber().trim())) {
             System.out.println("invalidPhone");
             return ResponseEntity.status(415).body("invalidPhone");
         }
-        searchedSchool.setName(name.trim());
-        searchedSchool.setEmail(email.trim());
-        searchedSchool.setPhone(phone.trim());
-        searchedSchool.setCountry(country.trim());
-        searchedSchool.setTown(town.trim());
-        searchedSchool.setAddress(address.trim());
-        searchedSchool.setPromoText(promoText.trim());
+        searchedSchool.setName(updatedSchool.schoolName().trim());
+        searchedSchool.setEmail(updatedSchool.email().trim());
+        searchedSchool.setPhone(updatedSchool.phoneNumber().trim());
+        searchedSchool.setCountry(updatedSchool.county().trim());
+        searchedSchool.setTown(updatedSchool.town().trim());
+        searchedSchool.setAddress(updatedSchool.address().trim());
+        searchedSchool.setPromoText(updatedSchool.promoText().trim());
         return ResponseEntity.ok().body(schoolRepository.save(searchedSchool));
     }
 
@@ -278,7 +278,7 @@ public class SchoolService {
     }
 
     @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> createSchool(SchoolRegisterDto addedSchool) {
+    public ResponseEntity<Object> createSchool(SchoolDto addedSchool) {
         if (addedSchool == null) {
             return ResponseEntity.status(422).build();
         }
