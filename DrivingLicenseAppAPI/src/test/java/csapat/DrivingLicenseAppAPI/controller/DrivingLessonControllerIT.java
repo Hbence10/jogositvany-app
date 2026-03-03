@@ -31,7 +31,13 @@ public class DrivingLessonControllerIT {
 
     @BeforeEach
     public void setup() {
-
+        /*
+        * DrivingLesson
+        * Instructor + User
+        * Student + User
+        * School
+        * ReservedHour, ReservedDate
+        * */
     }
 
     @Test

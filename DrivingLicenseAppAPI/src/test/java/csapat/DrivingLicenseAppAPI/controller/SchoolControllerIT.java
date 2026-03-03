@@ -29,6 +29,7 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.*;
 
 //37
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -77,7 +78,6 @@ public class SchoolControllerIT {
         userRepository.save(testUser);
 
         testJoinRequestId = testRequest.getId();
-        System.out.println(testJoinRequestId);
     }
 
     @Test
@@ -194,14 +194,18 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get all join request of existent school")
     public void getAllJoinRequestOfExistentSchool() throws Exception {
-
+        mockMvc.perform(get(BASEURL + "/" + testSchoolId + "/joinRequests"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get all join request of non existent school")
     public void getAllJoinRequestOfNonExistentSchool() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (testSchoolId + 1) + "/joinRequests"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -231,13 +235,21 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Search school by registered town")
     public void searchSchoolsByExistentTown() throws Exception {
+        mockMvc.perform(get(BASEURL + "/search?town=Nagykónyi"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+        ;
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Search school by non registered town")
     public void searchSchoolByNonExistentTown() throws Exception {
+        mockMvc.perform(get(BASEURL + "/search?town=dasdasda"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)))
+        ;
     }
 
     @Test
@@ -288,6 +300,7 @@ public class SchoolControllerIT {
     @Test
     @DisplayName("")
     public void getAllStudentsOfExistentSchool() throws Exception {
+
     }
 
     @Test
