@@ -7,7 +7,6 @@ import { Students } from '../models/students.model';
   providedIn: 'root'
 })
 export class StudentService {
-
   private http = inject(HttpClient)
   private baseUrl = "http://localhost:8080/students"
 

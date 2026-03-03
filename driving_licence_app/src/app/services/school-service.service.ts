@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OpeningDetails } from '../models/opening-details.model';
-import { SchoolJoinRequest } from '../models/school-join-request.model';
 import { School } from '../models/school.model';
-import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +29,7 @@ export class SchoolServiceService {
   }
 
   updateSchool(schoolId: number, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string): Observable<School> {
-    return this.http.put<School>(`${this.baseUrl}/${schoolId}`, {name: name, email: email, phone:phone, country: country, town: town, address:address, promoText: promoText})
+    return this.http.put<School>(`${this.baseUrl}/${schoolId}`, {schoolName: name, email: email, phoneNumber:phone, country: country, town: town, address:address, promoText: promoText})
   }
 
   updateOpeningDetails(schoolId: number, updatedOpeningDetails: OpeningDetails[]): Observable<School> {

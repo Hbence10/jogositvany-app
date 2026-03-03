@@ -10,7 +10,6 @@ import { Instructors } from '../models/instructors.model';
   providedIn: 'root',
 })
 export class InstructorServiceService {
-
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/instructor';
 

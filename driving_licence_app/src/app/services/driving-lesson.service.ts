@@ -12,7 +12,6 @@ export class DrivingLessonService {
   private http = inject(HttpClient)
   baseUrl = "http://localhost:8080/drivingLesson"
 
-
   getDrivingLicenseCategoriesBySchool(schoolId: number): Observable<SchoolCategory[]> {
     return this.http.get<SchoolCategory[]>(`${this.baseUrl}/categories/school/${schoolId}`)
   }
