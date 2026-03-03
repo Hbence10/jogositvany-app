@@ -40,7 +40,7 @@ export class RequestCardComponent implements OnChanges {
     } else if (this.requestType() == "schoolJoin") {
       const schoolRequest = this.requestDetail() as SchoolJoinRequest
       this.lines = [
-        `${schoolRequest.schoolJoinRequestUser.firstName} ${schoolRequest.schoolJoinRequestUser.lastName} szeretne csatlakozni mint ${schoolRequest.requestedRole}`,
+        `${schoolRequest.schoolJoinRequestUser.firstName} ${schoolRequest.schoolJoinRequestUser.lastName} szeretne csatlakozni mint ${schoolRequest.schoolJoinRequestUser.role!.name == "ROLE_user" ? "diák." : "oktatók."}`,
         `Küldte ekkor: ${schoolRequest.sentAt}`
       ]
       this.pfpPath = schoolRequest.schoolJoinRequestUser.pfpPath

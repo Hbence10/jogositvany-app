@@ -101,13 +101,11 @@ export class ProfilEditorComponent implements OnInit {
   saveChanges() {
     if (this.isInstructor) {
       this.saveInstructorChanges()
-    }
-
-    if (this.objectType() == "school") {
+    } else if (this.objectType() == "school") {
       this.saveOpeningChanges()
+    } else {
+      this.saveUserChanges()
     }
-
-    this.saveUserChanges()
   }
 
   saveSchoolChanges() {

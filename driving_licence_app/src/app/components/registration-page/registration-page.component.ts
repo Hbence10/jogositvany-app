@@ -15,7 +15,6 @@ import { AlertServiceService } from '../../services/alert-service.service';
 
 function validatePassword(control: AbstractControl): { [key: string]: any } | null {
   const password: string = control.value;
-
   const specialCharacters: string = '!@#$%^&*()-_=+[]{};:,.?/';
   const numberTexts: string = '1234567890';
   const checkerList: boolean[] = [false, false, false, false];
@@ -60,8 +59,8 @@ export class RegistrationPageComponent implements OnInit {
   private otherService = inject(OtherStuffServiceService);
   private router = inject(Router)
   private alertService = inject(AlertServiceService)
-  now = new Date()
 
+  now = new Date()
   registrationForm!: FormGroup;
   educationList: Education[] = []
   errorMsg: string = ""
@@ -94,7 +93,6 @@ export class RegistrationPageComponent implements OnInit {
     this.registrationForm.controls['confirmPassword'].addValidators(
       this.samePasswordValidator
     );
-
     const subscription = this.otherService.getAllEducation().subscribe({
       next: response => this.educationList = response.map(edu => Object.assign(new Education(), edu)),
     })

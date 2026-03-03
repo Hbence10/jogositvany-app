@@ -19,7 +19,6 @@ import { AlertServiceService } from '../../services/alert-service.service';
   styleUrl: './search-page.component.css'
 })
 export class SearchPageComponent implements OnInit {
-
   private otherStuffService = inject(OtherStuffServiceService)
   private schoolService = inject(SchoolServiceService)
   private instructorService = inject(InstructorServiceService)

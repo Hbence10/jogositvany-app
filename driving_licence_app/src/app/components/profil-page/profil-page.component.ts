@@ -16,7 +16,6 @@ import { ProfileCard } from '../../models/notEntity/profileCard.model';
 import { HourPipe } from '../../pipe/HourPipe';
 import { AlertServiceService } from '../../services/alert-service.service';
 import { AdminSetterComponent } from './admin-setter/admin-setter.component';
-import { DrivingLessons } from '../../models/driving-lessons.model';
 import { StudentService } from '../../services/student.service';
 
 @Component({
@@ -41,7 +40,6 @@ export class ProfilPageComponent implements OnInit {
   roleName!: string
   errorMsg: string = ""
   selectedId!: number
-
   showEditor: boolean = false
   showReviews: boolean = false
   showDeleteConfirmation: boolean = false
@@ -80,6 +78,7 @@ export class ProfilPageComponent implements OnInit {
                     }
                   })
                 }
+
               } else if (this.searchedUser?.role?.name == "ROLE_instructor") {
                 this.roleName = "Oktató",
                   this.instructorDetails = this.searchedUser.instructor!

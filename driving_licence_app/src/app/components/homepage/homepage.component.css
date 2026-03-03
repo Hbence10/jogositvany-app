@@ -1,7 +1,6 @@
 #littleCard {
   background-color: #22354F;
   border-radius: 12px;
-
   .material-symbols-outlined {
     font-size: 55px;
     color: #E6EBF7;
@@ -69,10 +68,8 @@
   background-color: #636da1;
   padding: 25px;
   border-radius: 16px;
-  /* width: 900px; */
   color: white;
 }
-
 
 input[type="range"] {
   appearance: none;
@@ -95,8 +92,6 @@ input[type="range"]::-webkit-slider-thumb {
 
 input[type="range"]::-moz-range-progress {
   background-color: #349eff;
-  height: 20px;
-  border-radius: 9999px;
 }
 
 input[type="range"]::-moz-range-track {
@@ -207,7 +202,7 @@ app-school-registration {
   align-items: center;
 }
 
- #logginButton {
+#logginButton {
   text-align: center;
   width: 400px;
   height: 50px;

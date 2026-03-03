@@ -8,7 +8,6 @@ import { ReviewWriterComponent } from '../review-writer/review-writer.component'
 import { ReviewCardComponent } from '../review-card/review-card.component';
 import { AlertServiceService } from '../../../services/alert-service.service';
 
-
 @Component({
   selector: 'app-review-list',
   imports: [ReviewCardComponent, ReviewWriterComponent],

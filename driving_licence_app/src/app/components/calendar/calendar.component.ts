@@ -98,7 +98,6 @@ export class CalendarComponent implements OnInit {
       d.setDate(weekStart.getDate() + i);
       days.push(d);
     }
-
     return days;
   }
 
@@ -142,7 +141,6 @@ export class CalendarComponent implements OnInit {
       console.log("")
       const nextWeekNumber: number = this.getWeekOfYear(nextDate)
       console.log(nextWeekNumber)
-
       console.log(this.datesOfWeek())
     }
 

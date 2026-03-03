@@ -1,4 +1,4 @@
-import { Component, DestroyRef, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -6,7 +6,6 @@ import { NavbarPhoneComponent } from './components/navbar-phone/navbar-phone.com
 import { UsersService } from './services/users.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertServiceService } from './services/alert-service.service';
-
 
 @Component({
   selector: 'app-root',

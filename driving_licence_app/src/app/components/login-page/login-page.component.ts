@@ -32,6 +32,7 @@ export class LoginPageComponent {
         this.homePageUser = response
       },
       error: error => {
+        console.log(error)
         if (error.status == 500) {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
         } else {

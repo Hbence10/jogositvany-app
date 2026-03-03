@@ -1,14 +1,11 @@
-
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from "@angular/router";
 import { UsersService } from '../../services/users.service';
 import { AlertServiceService } from '../../services/alert-service.service';
 
-
 function validatePassword(control: AbstractControl): { [key: string]: any } | null {
   const password: string = control.value
-
   const specialCharacters: string = "!@#$%^&*()-_=+[]{};:,.?/"
   const numberTexts: string = "1234567890"
   const checkerList: boolean[] = [false, false, false, false]
@@ -67,7 +64,6 @@ export class PasswordResetComponent implements OnInit {
       password: new FormControl("", [Validators.required, validatePassword]),
       passwordAgain: new FormControl("", [Validators.required])
     })
-
     this.form.controls["passwordAgain"].addValidators(this.samePasswordValidator)
   }
 
@@ -94,7 +90,6 @@ export class PasswordResetComponent implements OnInit {
         next: response => this.isCorrectVCode.set(response),
         error: error => {
           if (error.status == 417) {
-
           }
         },
         complete: () => {

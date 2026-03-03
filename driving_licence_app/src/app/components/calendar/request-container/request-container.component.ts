@@ -81,7 +81,6 @@ export class RequestContainerComponent implements OnChanges {
     let startDate: Date = new Date("2026-01-11 06:00:00")
     let isBreak = false
 
-
     for (let i = 6; i < 21; i++) {
       if (this.convertToValidDate(this.reservedHours()[listIndex].startTime).getHours() == i) {
         const baseDate = this.convertToValidDate(this.reservedHours()[listIndex].startTime)

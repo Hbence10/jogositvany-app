@@ -19,7 +19,6 @@
   transition: width 0.5s ease, height 0.5s ease;
 }
 
-
 #navbar:hover {
   background-color: #22354f;
   color: white;
@@ -51,7 +50,6 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   margin: 15px 0px 15px 0px;
   font-size: 32px;
-
 }
 
 #navbar:hover .navItem:hover .navIconContainer {
@@ -69,8 +67,6 @@
   transition: width 0.5s ease, height 0.5s ease;
 }
 
-
-
 #navbar:hover .navItem {
   margin: 15px 0px 15px 15px;
   cursor: pointer;
@@ -87,8 +83,6 @@
   background-color: #434a6b;
   transition: width 0.5s ease, height 0.5s ease;
 }
-
-/*------------------*/
 
 .navbar:hover .homePage {
   font-weight: bold;
@@ -118,8 +112,6 @@
   transition: width 0.5s ease, height 0.5s ease;
 }
 
-/*------------------*/
-
 .login {
   float: bottom;
   transition: width 0.5s ease;
@@ -138,7 +130,6 @@
   border-radius: 100px;
   transition: width 0.5s ease, height 0.5s ease;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
 }
 
 #navbar:hover #avatar {
@@ -147,7 +138,6 @@
   background-color: #22354f;
   border-radius: 20px;
   transition: width 0.5s ease, height 0.5s ease;
-
 }
 
 #navbar #avatar {
@@ -187,7 +177,6 @@ img {
   padding: 0px;
   transition: width 0.5s ease, height 0.5s ease;
 }
-
 
 #navbar .navItem {
   padding: 0px 25px 0px 25px;

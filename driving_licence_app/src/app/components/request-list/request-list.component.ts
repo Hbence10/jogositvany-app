@@ -58,11 +58,9 @@ export class RequestListComponent implements OnInit {
       }
       rows.push(row)
     }
-
     return rows
   }
 
-  //Keresek kezelese:
   handleRequests(selectedRequest: { requestType: "drivingLesson" | "instructorJoin" | "schoolJoin" | "exam", status: "accept" | "refuse", id: number }) {
   const index = this.requestList.findIndex(r => r.id == selectedRequest.id)
     if (selectedRequest.requestType == "drivingLesson") {
@@ -110,7 +108,6 @@ export class RequestListComponent implements OnInit {
     }
   }
 
-  //Keresek lekerese
   getAllDrivingLessonRequest(pageNumber: number) {
     this.instructorService.getDrivingLessonRequestByInstructor(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
       next: response => {
@@ -143,7 +140,7 @@ export class RequestListComponent implements OnInit {
     })
   }
 
-   changePageWithArrow(newPage: 1 | -1) {
+  changePageWithArrow(newPage: 1 | -1) {
     if (this.availablePages.length == 0 || (this.actualPage-1) + newPage == -1 || (this.actualPage -1) + newPage == this.availablePages.length ) {
 
     } else {

@@ -36,6 +36,4 @@ export class NavbarComponent {
     this.alertService.setAlert("Sikeresen kijelentkeztél!", "success")
     this.userService.logout()
   }
-
-
 }

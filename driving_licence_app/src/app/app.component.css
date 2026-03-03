@@ -7,7 +7,6 @@ body {
   --bs-gutter-x: 0;
 }
 
-
 app-navbar {
   position: fixed;
   top: 0;
@@ -16,7 +15,6 @@ app-navbar {
   z-index: 1000;
   transition: width 0.5s ease;
 }
-
 
 .sidebar-overlay {
   position: fixed;
@@ -43,7 +41,6 @@ app-navbar:hover~.sidebar-overlay {
   opacity: 1;
   visibility: visible;
 }
-
 
 #alertRow {
   position: fixed;

@@ -10,30 +10,35 @@ import { UsersService } from '../../services/users.service';
 import { ProfilCardComponent } from '../profil-card/profil-card.component';
 import { SchoolRegistrationComponent } from '../school-registration/school-registration.component';
 import { HourPipe } from '../../pipe/HourPipe';
-
+import { StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-homepage',
   imports: [MatDatepickerModule, RouterModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent, CommonModule, HourPipe],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css',
-
 })
 export class HomepageComponent implements OnInit {
   userService = inject(UsersService);
   private schoolService = inject(SchoolServiceService);
   private router = inject(Router);
+  private studentService = inject(StudentService)
   loggedUser: HomePageUser | null = null;
   schoolList: { id: number, name: string }[] = []
   userList: { id: number, name: string, imagePath: string, userId: number }[] = []
   studentList: any[] = []
   showSchoolForm: boolean = false
+  lessonDetails!: {paidLesson: number, drivenLesson: number, totalLessonNumber: number}
 
   ngOnInit(): void {
     this.loggedUser = this.userService.loggedUser();
-    console.log(this.userService.loggedUser())
 
     if (this.loggedUser?.role?.name == "ROLE_student") {
+      this.studentService.getLessonDetailsForHomePage(this.userService.loggedUser()?.studentId!).subscribe({
+        next: response => {
+          this.lessonDetails = response
+        }
+      })
 
     } else if (this.loggedUser?.role?.name == "ROLE_administrator") {
       this.schoolService.getAllSchool(0).subscribe({

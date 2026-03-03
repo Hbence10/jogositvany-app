@@ -98,11 +98,11 @@
                     </div>
                     <div class="uData mt-0 px-3">
                       <span class="fw-bold">E-mail:</span>
-                      <span>{{ searchedUser == null ? searchedSchool!.email : searchedUser.email }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool?.email : searchedUser.email }}</span>
                     </div>
                     <div class="uData mt-0 px-3">
                       <span class="fw-bold">Telefonszám: </span>
-                      <span>{{ searchedUser == null ? searchedSchool!.phone : searchedUser.phone }}</span>
+                      <span>{{ searchedUser == null ? searchedSchool?.phone : searchedUser.phone }}</span>
                     </div>
                     @if (type() == "user" &&searchedUser?.role?.name == "ROLE_instructor") {
                       <div class="uData mt-0 px-3">

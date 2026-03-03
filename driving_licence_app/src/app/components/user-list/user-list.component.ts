@@ -57,7 +57,6 @@ export class UserListComponent implements OnInit {
       }
       rows.push(row)
     }
-
     return rows
   }
 
@@ -73,6 +72,7 @@ export class UserListComponent implements OnInit {
         complete: () => {
           this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
+          this.changePage(this.actualPage)
         }
       })
     } else if (this.userType == "instructors") {
@@ -84,6 +84,7 @@ export class UserListComponent implements OnInit {
         complete: () => {
           this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
+          this.changePage(this.actualPage)
         }
       })
     } else if (this.userType == "instructorStudents") {
@@ -95,6 +96,7 @@ export class UserListComponent implements OnInit {
         complete: () => {
           this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
+          this.changePage(this.actualPage)
         }
       })
     } else if (this.userType == "users") {
@@ -106,6 +108,7 @@ export class UserListComponent implements OnInit {
         complete: () => {
           this.alertService.setAlert("Sikeresen kirugásra került!", "success")
           this.cardList.splice(index, 1)
+          this.changePage(this.actualPage)
         }
       })
     }
