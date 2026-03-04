@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.UserUpdate;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -154,8 +155,8 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") Long userId, @RequestBody JsonNode requestBody) {
-        return userService.updateUser(userId, requestBody.get("firstName").asText(null), requestBody.get("lastName").asText(null), requestBody.get("email").asText(null), requestBody.get("phone").asText(null), requestBody.get("birthDate").asText(null), requestBody.get("gender").asText(null), requestBody.get("educationId").asLong());
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Long userId, @RequestBody UserUpdate requestBody) {
+        return userService.updateUser(userId, requestBody);
     }
 
     @Operation(summary = "Profilkép cseréje", description = "Az adott profilnak a profilképjét változtatja meg.")

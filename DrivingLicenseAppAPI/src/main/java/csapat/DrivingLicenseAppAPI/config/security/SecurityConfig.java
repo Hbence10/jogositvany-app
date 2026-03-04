@@ -90,12 +90,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.DELETE, "/school/*").hasAnyRole("administrator", "school_owner")
                         .requestMatchers("/school/search").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/school/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
                         .requestMatchers("/school/admin").hasRole("school_owner")
+                        .requestMatchers(HttpMethod.GET, "/school/*").authenticated()
 
                         //StudentController:
                         .requestMatchers("/students/lessonDetails/*").hasRole("student")
@@ -113,7 +113,7 @@ public class SecurityConfig {
 
                         //egyeb:
                         .requestMatchers("/pfp/**").permitAll()
-                        .requestMatchers("/coverImages/**").permitAll()
+                        .requestMatchers("/coverImg/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs*/**").permitAll()
                         .anyRequest().authenticated()

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
@@ -125,15 +126,15 @@ public class InstructorService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateInstructor(Long instructorId, String promoText, Long vehicleId, String vehicleName, String licensePlate, Long fuelTypeId, Long vehicleTypeId) {
-        if (instructorId == null || promoText == null || vehicleId == null || vehicleName == null || licensePlate == null || fuelTypeId == null || vehicleTypeId == null) {
+    public ResponseEntity<Object> updateInstructor(Long instructorId, InstructorUpdate updatedInstructor) {
+        if (instructorId == null || updatedInstructor == null) {
             return ResponseEntity.status(422).build();
         }
 
         Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElse(null);
-        Vehicle searchedVehicle = vehicleRepository.getVehicle(vehicleId).orElse(null);
-        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
-        VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(vehicleTypeId).orElse(null);
+        Vehicle searchedVehicle = vehicleRepository.getVehicle(updatedInstructor.vehicleId()).orElse(null);
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(updatedInstructor.fuelTypeId()).orElse(null);
+        VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(updatedInstructor.vehicleTypeId()).orElse(null);
 
         if (searchedInstructors == null || searchedInstructors.getIsDeleted()) {
             return ResponseEntity.status(404).body("instructorNotFound");
@@ -143,12 +144,12 @@ public class InstructorService {
             return ResponseEntity.status(404).body("fuelTypeNotFound");
         } else if (searchedVehicleType == null) {
             return ResponseEntity.status(404).body("vehicleTypeNotFound");
-        } else if (licensePlate.length() != 7 && licensePlate.length() != 9) {
+        } else if (updatedInstructor.licensePlate().length() != 7 && updatedInstructor.licensePlate().length() != 9) {
             return ResponseEntity.status(415).build();
         } else {
-            searchedInstructors.setPromoText(promoText.trim());
-            searchedVehicle.setLicensePlate(licensePlate);
-            searchedVehicle.setName(vehicleName);
+            searchedInstructors.setPromoText(updatedInstructor.promoText().trim());
+            searchedVehicle.setLicensePlate(updatedInstructor.licensePlate());
+            searchedVehicle.setName(updatedInstructor.vehicleName());
             searchedVehicle.setFuelType(searchedFuelType);
             searchedVehicle.setVehicleType(searchedVehicleType);
             searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));

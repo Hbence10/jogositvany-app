@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonUpdate;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.entity.SchoolCategory;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
@@ -85,8 +86,8 @@ public class DrivingLessonController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody JsonNode updatedDrivingLesson, @PathVariable("id") Long id) {
-        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson.get("startKm").asInt(0), updatedDrivingLesson.get("endKm").asInt(0), updatedDrivingLesson.get("location").asText(null), updatedDrivingLesson.get("pickUpPlace").asText(null), updatedDrivingLesson.get("dropOffPlace").asText(null), updatedDrivingLesson.get("lessonHourNumber").asInt(0), updatedDrivingLesson.get("isPaid").asBoolean(), updatedDrivingLesson.get("statusId").asLong(0), updatedDrivingLesson.get("paymentMethodId").asLong(0));
+    public ResponseEntity<Object> updateDrivingLessonsData(@RequestBody DrivingLessonUpdate updatedDrivingLesson, @PathVariable("id") Long id) {
+        return drivingLessonService.updateDrivingLesson(id, updatedDrivingLesson);
     }
 
     @Operation(summary = "A lefoglalt órák lekérdezése", description = "A lefoglalt órák lekérdezése az adott oktatónak az adott dátum alapján")

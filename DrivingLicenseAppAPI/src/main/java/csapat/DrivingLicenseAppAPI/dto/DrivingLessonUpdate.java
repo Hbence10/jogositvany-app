@@ -8,7 +8,7 @@ public record DrivingLessonUpdate(
         String dropOffPlace,
         Integer lessonHourNumber,
         Boolean isPaid,
-        Integer statusId,
-        Integer paymentMethodId
+        Long statusId,
+        Long paymentMethodId
 ) {
 }

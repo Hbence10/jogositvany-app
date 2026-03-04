@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.dto.HourCard;
@@ -80,31 +81,31 @@ public class DrivingLessonService {
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateDrivingLesson(Long id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Long statusId, Long paymentMethodId) {
+    public ResponseEntity<Object> updateDrivingLesson(Long id, DrivingLessonUpdate updatedLesson) {
         try {
             DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(id).orElse(null);
             if (searchedDrivingLesson == null) {
                 return ResponseEntity.status(404).body("lessonNotFound");
             } else {
-                PaymentMethod searchedPayment = paymentMethodRepository.getPaymentMethod(paymentMethodId).orElse(null);
-                Status searchedStatus = statusRepository.getStatus(statusId).orElse(null);
+                PaymentMethod searchedPayment = paymentMethodRepository.getPaymentMethod(updatedLesson.paymentMethodId()).orElse(null);
+                Status searchedStatus = statusRepository.getStatus(updatedLesson.statusId()).orElse(null);
 
-                if (endKm <= startKm) {
+                if (updatedLesson.startKm() >= updatedLesson.endKm()) {
                     return ResponseEntity.status(415).body("invalidStartEndKm");
-                } else if (lessonHourNumber <= 0) {
+                } else if (updatedLesson.lessonHourNumber() <= 0) {
                     return ResponseEntity.status(415).body("invalidLessonHourNumber");
                 } else if (searchedPayment == null) {
                     return ResponseEntity.status(404).body("paymentMethodNotFound");
                 } else if (searchedStatus == null) {
                     return ResponseEntity.status(404).body("statusNotFound");
                 } else {
-                    searchedDrivingLesson.setStartKm(startKm);
-                    searchedDrivingLesson.setEndKm(endKm);
-                    searchedDrivingLesson.setLocation(location);
-                    searchedDrivingLesson.setPickUpPlace(pickUpPlace);
-                    searchedDrivingLesson.setDropOffPlace(dropOffPlace);
-                    searchedDrivingLesson.setLessonHourNumber(lessonHourNumber);
-                    searchedDrivingLesson.setIsPaid(isPaid);
+                    searchedDrivingLesson.setStartKm(updatedLesson.startKm());
+                    searchedDrivingLesson.setEndKm(updatedLesson.endKm());
+                    searchedDrivingLesson.setLocation(updatedLesson.location());
+                    searchedDrivingLesson.setPickUpPlace(updatedLesson.pickUpPlace());
+                    searchedDrivingLesson.setDropOffPlace(updatedLesson.dropOffPlace());
+                    searchedDrivingLesson.setLessonHourNumber(updatedLesson.lessonHourNumber());
+                    searchedDrivingLesson.setIsPaid(updatedLesson.isPaid());
                     searchedDrivingLesson.setPaymentMethod(searchedPayment);
                     searchedDrivingLesson.setDrivingLessonStatus(searchedStatus);
                     return ResponseEntity.ok().body(drivingLessonRepository.save(searchedDrivingLesson));

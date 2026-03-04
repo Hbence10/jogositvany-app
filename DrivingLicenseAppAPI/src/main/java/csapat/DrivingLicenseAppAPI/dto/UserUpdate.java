@@ -7,6 +7,6 @@ public record UserUpdate(
         String phone,
         String birthDate,
         String gender,
-        Integer educationId
+        Long educationId
 ) {
 }

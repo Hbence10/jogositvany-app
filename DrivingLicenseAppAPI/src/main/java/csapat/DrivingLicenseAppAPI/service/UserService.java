@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
+import csapat.DrivingLicenseAppAPI.dto.UserUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
@@ -212,9 +213,9 @@ public class UserService {
 
     // update:
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> updateUser(Long id, String firstName, String lastName, String email, String phone, String birthDateText, String gender, Long educationId) {
+    public ResponseEntity<Object> updateUser(Long id, UserUpdate updatedUser) {
         try {
-            if (id == null || firstName == null || lastName == null || email == null || phone == null || birthDateText == null || gender == null || educationId == null) {
+            if (id == null || updatedUser == null) {
                 return ResponseEntity.status(422).build();
             }
 
@@ -224,24 +225,24 @@ public class UserService {
             if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
             } else {
-                Education searchedEducation = educationRepository.getEducation(educationId).orElse(null);
+                Education searchedEducation = educationRepository.getEducation(updatedUser.educationId()).orElse(null);
                 if (searchedEducation == null) {
                     return ResponseEntity.status(404).body("educationNotFound");
-                } else if (!ValidatorCollection.phoneValidator(phone.trim())) {
+                } else if (!ValidatorCollection.phoneValidator(updatedUser.phone().trim())) {
                     return ResponseEntity.status(415).body("invalidPhone");
-                } else if (!ValidatorCollection.emailValidator(email.trim())) {
+                } else if (!ValidatorCollection.emailValidator(updatedUser.email().trim())) {
                     return ResponseEntity.status(415).body("invalidEmail");
-                } else if (!gender.equals("male") && !gender.equals("female") && !gender.equals("other")) {
+                } else if (!updatedUser.gender().equals("male") && !updatedUser.gender().equals("female") && !updatedUser.gender().equals("other")) {
                     return ResponseEntity.status(415).body("invalidGender");
-                } else if (dateFormat.parse(birthDateText).after(new Date())) {
+                } else if (dateFormat.parse(updatedUser.birthDate()).after(new Date())) {
                     return ResponseEntity.status(415).body(Map.of("statusText", "invalidDate"));
                 } else {
-                    searchedUser.setFirstName(firstName.trim());
-                    searchedUser.setLastName(lastName.trim());
-                    searchedUser.setEmail(email.trim());
-                    searchedUser.setPhone(phone.trim());
-                    searchedUser.setBirthDate(dateFormat.parse(birthDateText));
-                    searchedUser.setGender(gender);
+                    searchedUser.setFirstName(updatedUser.firstName().trim());
+                    searchedUser.setLastName(updatedUser.lastName().trim());
+                    searchedUser.setEmail(updatedUser.email().trim());
+                    searchedUser.setPhone(updatedUser.phone().trim());
+                    searchedUser.setBirthDate(dateFormat.parse(updatedUser.birthDate()));
+                    searchedUser.setGender(updatedUser.gender());
                     searchedUser.setUserEducation(searchedEducation);
                     return ResponseEntity.ok(userRepository.save(searchedUser));
                 }

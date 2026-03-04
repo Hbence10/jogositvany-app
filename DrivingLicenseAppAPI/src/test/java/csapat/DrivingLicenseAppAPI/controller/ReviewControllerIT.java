@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,7 +26,7 @@ public class ReviewControllerIT {
 
     @BeforeEach
     public void setup() {
-
+//        Diak, oktato, iskola
     }
 
     @Test
@@ -78,5 +79,10 @@ public class ReviewControllerIT {
 
     @Test
     public void createReviewByExistentStudentAboutNonExistentSchool() throws Exception {
+    }
+
+
+    public NewReview createRequestBodyForReviewCreation() {
+        return null;
     }
 }

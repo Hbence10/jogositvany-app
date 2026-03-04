@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
@@ -107,8 +108,8 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PutMapping("/{id}")
-    private ResponseEntity<Object> updateInstructor(@RequestBody JsonNode requestBody, @PathVariable("id") Long instructorId) {
-        return instructorService.updateInstructor(instructorId, requestBody.get("promoText").asText(), requestBody.get("vehicleId").asLong(), requestBody.get("vehicleName").asText(), requestBody.get("licensePlate").asText(), requestBody.get("fuelTypeId").asLong(), requestBody.get("vehicleTypeId").asLong());
+    private ResponseEntity<Object> updateInstructor(@RequestBody InstructorUpdate requestBody, @PathVariable("id") Long instructorId) {
+        return instructorService.updateInstructor(instructorId, requestBody);
     }
 
     @Operation(summary = "Vezetési óra kérelem kezelés", description = "Az oktató eldöntheti, hogy elfogadja vagy elutasitja a diák vezetési óra kérelmét.")
