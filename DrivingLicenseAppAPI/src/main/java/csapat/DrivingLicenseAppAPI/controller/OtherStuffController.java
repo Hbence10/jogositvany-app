@@ -99,6 +99,14 @@ public class OtherStuffController {
         return otherStuffService.getAllVehicleType();
     }
 
+    @Operation(summary = "E-mail cimek lekérdezése", description = "Az összes felhasználó rangú felhasználó e-mail cimének a lekérdezése")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
+                    mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = String.class))
+            )),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
+    })
     @GetMapping("/email")
     public ResponseEntity<List<String>> getAllEmail() {
         return otherStuffService.getAllEmail();

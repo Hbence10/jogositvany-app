@@ -236,7 +236,7 @@ public class SchoolService {
         }
     }
 
-    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+//    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<JsonNode>> getSchoolBySearch(String town) {
         try {
             List<Long> searchedSchoolId = schoolRepository.getSchoolBySearch(town);
@@ -386,14 +386,14 @@ public class SchoolService {
     }
 
     @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> setAdmin(String email, Long schoolID) {
+    public ResponseEntity<Object> setAdmin(String email, Long schoolId) {
         try {
-            if (email == null || schoolID == null) {
+            if (email == null || schoolId == null) {
                 return ResponseEntity.status(422).build();
             }
 
             Users searchedUser = userRepository.findByEmail(email).orElse(null);
-            School searchedSchool = schoolRepository.findById(schoolID).orElse(null);
+            School searchedSchool = schoolRepository.findById(schoolId).orElse(null);
 
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");

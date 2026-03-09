@@ -89,7 +89,7 @@ public class SecurityConfig {
                         .requestMatchers("/school/*/openingDetails").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.DELETE, "/school/*").hasAnyRole("administrator", "school_owner")
-                        .requestMatchers("/school/search").authenticated()
+                        .requestMatchers("/school/search").permitAll()
                         .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")

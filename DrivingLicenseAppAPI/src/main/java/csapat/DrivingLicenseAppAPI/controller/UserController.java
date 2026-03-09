@@ -39,6 +39,7 @@ public class UserController {
                     mediaType = "application/json",
                     schema = @Schema(implementation = Users.class)
             )),
+            @ApiResponse(responseCode = "401", description = "A bejelentkezés sikertelen volt és nem talált olyan User-t az adatbázisban.", content = @Content),
             @ApiResponse(responseCode = "404", description = "A bejelentkezés sikertelen volt és nem talált olyan User-t az adatbázisban.", content = @Content),
             @ApiResponse(responseCode = "415", description = "A felhasználó felépítésében helytelen email címet adott meg.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása requestBody vagy rosszul felépitett requestBody-val", content = @Content),
@@ -133,15 +134,7 @@ public class UserController {
     @Parameter(name = "id", description = "A felhasználóhoz tartozó id.", in = ParameterIn.PATH, required = true)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frisstet fiók User object-je.", required = true, content = @Content(
             mediaType = "application/json",
-            schemaProperties = {
-                    @SchemaProperty(name = "firstName", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "lastName", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "birthDate", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "gender", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "educationId", schema = @Schema(implementation = Integer.class, description = "")),
-            }
+            schema = @Schema(implementation = UserUpdate.class, description = "A frissitéshez tartozó információk")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres adat(ok) frissités", content = @Content(

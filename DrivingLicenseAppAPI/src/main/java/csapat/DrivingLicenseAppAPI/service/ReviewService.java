@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.service;
 
+import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.entity.School;
@@ -33,36 +34,36 @@ public class ReviewService {
     private final InstructorRepository instructorRepository;
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> addReview(String reviewText, Double rating, Long studentId, Boolean isAnonymous , Long instructorId, Long schoolId) {
+    public ResponseEntity<Object> addReview(NewReview newReviewDto) {
         try {
-            if (reviewText == null || rating == null || studentId == null || (instructorId == 0 && schoolId == 0)) {
+            if (newReviewDto == null) {
                 return ResponseEntity.status(422).build();
             }
 
-            Students author = studentRepository.getStudent(studentId).orElse(null);
+            Students author = studentRepository.getStudent(newReviewDto.studentId()).orElse(null);
             if (author == null || author.getIsDeleted()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("studentNotFound");
             }
 
-            if (rating < 0 || rating > 5) {
+            if (newReviewDto.rating() < 0 || newReviewDto.rating() > 5) {
                 return ResponseEntity.status(415).body("invalidRating");
             }
 
-            Review newReview = new Review(reviewText, rating, author);
-            if (schoolId == 0 && instructorId != 0) {
-                Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+            Review newReview = new Review(newReviewDto.reviewText(), newReviewDto.rating(), author);
+            if (newReviewDto.schoolId() == 0 && newReviewDto.instructorId() != 0) {
+                Instructors searchedInstructor = instructorRepository.getInstructor(newReviewDto.instructorId()).orElse(null);
                 if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("instructorNotFound");
                 }
                 newReview.setAboutInstructor(searchedInstructor);
-            } else if (instructorId == 0 && schoolId != 0) {
-                School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
+            } else if (newReviewDto.instructorId() == 0 && newReviewDto.schoolId() != 0) {
+                School searchedSchool = schoolRepository.getSchool(newReviewDto.schoolId()).orElse(null);
                 if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("schoolNotFound");
                 }
                 newReview.setAboutSchool(searchedSchool);
             }
-            newReview.setIsAnonymous(isAnonymous);
+            newReview.setIsAnonymous(newReviewDto.isAnonymous());
             return ResponseEntity.ok().body(reviewRepository.save(newReview));
         } catch (Exception e) {
             e.printStackTrace();

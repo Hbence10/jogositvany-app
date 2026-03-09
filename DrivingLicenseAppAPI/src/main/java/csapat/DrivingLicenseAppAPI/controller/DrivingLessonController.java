@@ -63,17 +63,7 @@ public class DrivingLessonController {
     @Parameter(name = "id", description = "A vezetési órához tartozó id.", required = true, in = ParameterIn.PATH, schema = @Schema(implementation = Integer.class))
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett vezetési óra adatait tartalmazó object.", required = true, content = @Content(
             mediaType = "application/json",
-            schemaProperties = {
-                    @SchemaProperty(name = "startKm", schema = @Schema(implementation = Integer.class, description = "A kilométer óra állása az óra kezdetekor")),
-                    @SchemaProperty(name = "endKm", schema = @Schema(implementation = Integer.class, description = "A kilométer óra állása az óra végekor")),
-                    @SchemaProperty(name = "location", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "pickUpPlace", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "dropOffPlace", schema = @Schema(implementation = String.class, description = "")),
-                    @SchemaProperty(name = "lessonHourNumber", schema = @Schema(implementation = Integer.class, description = "Az adott vezetési alkalom mennyi órának felel meg.")),
-                    @SchemaProperty(name = "isPaid", schema = @Schema(implementation = Boolean.class, description = "Azt mutatja, hogy fizetve van-e az óra.")),
-                    @SchemaProperty(name = "statusId", schema = @Schema(implementation = Integer.class, description = "Az óra állapotának az id-ja")),
-                    @SchemaProperty(name = "paymentMethodId", schema = @Schema(implementation = Integer.class, description = "A fizetési tipus id-ja"))
-            }
+            schema = @Schema(implementation = DrivingLessonUpdate.class, description = "A frissitéshez szükséges adatokat tároló object.")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités.", content = @Content(

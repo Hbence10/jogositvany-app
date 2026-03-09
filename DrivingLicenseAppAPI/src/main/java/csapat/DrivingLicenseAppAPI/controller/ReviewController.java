@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,28 +48,21 @@ public class ReviewController {
     @Operation(summary = "Értékelés létrehozása", description = "Értékelés létrehozása")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "", required = true, content = @Content(
             mediaType = "application/json",
-            schemaProperties = {
-                    @SchemaProperty(name = "reviewText", schema = @Schema(implementation = String.class, description = "Az értékelés szövege", defaultValue = "0")),
-                    @SchemaProperty(name = "rating", schema = @Schema(implementation = Double.class, description = "Az értékelés értéke, minimum 0 és maximum 5 lehet.", defaultValue = "0")),
-                    @SchemaProperty(name = "studentId", schema = @Schema(implementation = Integer.class, description = "Az író diákhoz tartozó id.", defaultValue = "0")),
-                    @SchemaProperty(name = "isAnonymous", schema = @Schema(implementation = Boolean.class, description = "Azt mutatja, hogy az író névtelenül szeretné közzé tenni a véleményt.", defaultValue = "0")),
-                    @SchemaProperty(name = "instructorId", schema = @Schema(implementation = Integer.class, description = "A véleményhez tartozó oktatónak az id-ja", defaultValue = "0")),
-                    @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "A véleményhez tartozó iskola id-ja.", defaultValue = "0")),
-            }
+            schema = @Schema(implementation = NewReview.class, description = "Az új értékelés adatait tartalmazó object.")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres létrehozás", content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = Review.class)
             )),
-            @ApiResponse(responseCode = "404", description = "", content = @Content),
-            @ApiResponse(responseCode = "415", description = "", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskola/diák/oktató megadása", content = @Content),
+            @ApiResponse(responseCode = "415", description = "Az értékelés értéke nem 0 és 5 között van.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása hiányos requestBody-val", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content),
     })
     @PostMapping("")
-    public ResponseEntity<Object> addReview(@RequestBody JsonNode requestBody) {
-    return reviewService.addReview(requestBody.get("reviewText").asText(), requestBody.get("rating").asDouble(), requestBody.get("studentId").asLong(), requestBody.get("isAnonymous").asBoolean(false) , requestBody.get("instructorId").asLong(), requestBody.get("schoolId").asLong());
+    public ResponseEntity<Object> addReview(@RequestBody NewReview newReview) {
+    return reviewService.addReview(newReview);
     }
 
     @Operation(summary = "Review törlése", description = "A keresett review-t kitörli")

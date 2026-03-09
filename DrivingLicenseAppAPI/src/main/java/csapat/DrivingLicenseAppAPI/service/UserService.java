@@ -116,7 +116,7 @@ public class UserService {
             }
 
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Map.of("statusText", "successfullyRegistration"));
 
     }
 

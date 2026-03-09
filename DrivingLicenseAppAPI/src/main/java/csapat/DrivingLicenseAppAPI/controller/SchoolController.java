@@ -1,17 +1,20 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import csapat.DrivingLicenseAppAPI.service.SchoolService;
-import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -53,15 +56,7 @@ public class SchoolController {
     @Parameter(name = "id", description = "Az iskolához tartozó id.", in = ParameterIn.PATH, required = true)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitett iskolának az object-je", required = true, content = @Content(
             mediaType = "application/json",
-            schemaProperties = {
-                    @SchemaProperty(name = "name", schema = @Schema(implementation = String.class, description = "Az iskola neve")),
-                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "Az iskola e-mail cime")),
-                    @SchemaProperty(name = "phone", schema = @Schema(implementation = String.class, description = "Az iskola telefonszáma")),
-                    @SchemaProperty(name = "country", schema = @Schema(implementation = String.class, description = "Az a vármegye amelyben az iskola tartozkodik")),
-                    @SchemaProperty(name = "town", schema = @Schema(implementation = String.class, description = "Az a város amelyben az iskola tartozkodik")),
-                    @SchemaProperty(name = "address", schema = @Schema(implementation = String.class, description = "Az iskola cime")),
-                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "Az iskola bemutatkozó szövege")),
-            }
+            schema = @Schema(implementation = SchoolDto.class, description = "A frissitéshez szükséges adatokat tároló classok.")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités.", content = @Content(
@@ -97,6 +92,7 @@ public class SchoolController {
     public ResponseEntity<Object> changeCoverImg(@PathVariable("id") Long id, @RequestParam("image") MultipartFile coverImg) {
         return schoolService.changeCoverImg(id, coverImg);
     }
+
     @Operation(summary = "Nyitvatartás modósitása.")
     @Parameter(name = "id", description = "Az adott iskolához tartozó id.", in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Az iskolához tartozó frissitetett nyitvatartási lista", required = true, content = @Content(
@@ -180,7 +176,7 @@ public class SchoolController {
     @Operation(summary = "Iskola létrehozása", description = "")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A létrehozandó iskola objectje", required = true, content = @Content(
             mediaType = "application/json",
-            schema = @Schema(implementation = School.class, description = "Az id-nak null-nak kell hogy legyen")
+            schema = @Schema(implementation = SchoolDto.class, description = "Az id-nak null-nak kell hogy legyen")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres iskola létrehozás", content = @Content),
@@ -236,6 +232,20 @@ public class SchoolController {
         return schoolService.getAllSchool(pageable);
     }
 
+    @Operation(summary = "Iskolának adminisztrátor beállitása", description = "Az adott iskolának admin hozzáadás")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(
+            mediaType = "application/json",
+            schemaProperties = {
+                    @SchemaProperty(name = "email", schema = @Schema(implementation = String.class, description = "A kiválasztott felhasználóhoz tartozó e-mail cím.")),
+                    @SchemaProperty(name = "schoolId", schema = @Schema(implementation = Integer.class, description = "Az adott iskolához tartozó id.")),
+            }
+    ))
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres művelet.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező iskola vagy felhasználó megadása.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Hiányos requestBody megadása.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
+    })
     @PatchMapping("/admin")
     private ResponseEntity<Object> setAdmin(@RequestBody JsonNode requestBody) {
         return schoolService.setAdmin(requestBody.get("email").asText(), requestBody.get("schoolId").asLong());

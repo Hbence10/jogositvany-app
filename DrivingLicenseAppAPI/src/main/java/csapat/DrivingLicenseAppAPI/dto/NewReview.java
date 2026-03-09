@@ -3,9 +3,9 @@ package csapat.DrivingLicenseAppAPI.dto;
 public record NewReview(
         String reviewText,
         Double rating,
-        Integer studentId,
+        Long studentId,
         Boolean isAnonymous,
-        Integer instructorId,
-        Integer schoolId
+        Long instructorId,
+        Long schoolId
 ) {
 }

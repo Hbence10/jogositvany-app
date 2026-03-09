@@ -87,14 +87,7 @@ public class InstructorController {
     @Parameter(name = "id", description = "Az adott oktatóhoz tartozó id.", required = true, in = ParameterIn.PATH)
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A frissitet oktatóhoz tartozó object.", required = true, content = @Content(
             mediaType = "application/json",
-            schemaProperties = {
-                    @SchemaProperty(name = "promoText", schema = @Schema(implementation = String.class, description = "Az oktatóhoz tartozó bemutatkozó szöveg.")),
-                    @SchemaProperty(name = "vehicleId", schema = @Schema(implementation = Integer.class, description = "Az oktatóhoz tartozó jármű id-ja.")),
-                    @SchemaProperty(name = "vehicleName", schema = @Schema(implementation = String.class, description = "Az oktatóhoz tartozó jármű neve.")),
-                    @SchemaProperty(name = "licensePlate", schema = @Schema(implementation = String.class, description = "Az oktató járművének a rendszáma. A felépitése a következő lehet: AAA-111 vagy AAAA-1111.")),
-                    @SchemaProperty(name = "fuelTypeId", schema = @Schema(implementation = Integer.class, description = "Az oktató járművének a tankolási tipusához tartozó id.")),
-                    @SchemaProperty(name = "vehicleTypeId", schema = @Schema(implementation = Integer.class, description = "Az oktató járművének a tipusához tartozó id."))
-            }
+            schema = @Schema(implementation = InstructorUpdate.class, description = "A frissitéshez szükséges adatokat tároló object.")
     ))
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres frissités", content = @Content(
@@ -182,8 +175,17 @@ public class InstructorController {
         return instructorService.getStudentsByInstructor(id, pageable);
     }
 
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Tanuló kirugása", description = "Tanuló kirugása")
+
     @DeleteMapping("/kickout")
+    @Parameter(name = "studentId", description = "A tanulóhoz tartozó id.", in = ParameterIn.QUERY)
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Nem létező diák megadása", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Az endpoint meghivása paraméter nélkül.", content = @Content),
+            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
+
+    })
     private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Long studentId) {
         return instructorService.kickoutStudent(studentId);
     }
