@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import com.opencsv.CSVReader;
+import csapat.DrivingLicenseAppAPI.dto.UserCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -87,12 +88,12 @@ public class OtherStuffService {
         }
     }
 
-    public  ResponseEntity<List<String>> getAllEmail() {
+    public ResponseEntity<List<UserCard>> getAllUser() {
         try {
             List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1L, "ROLE_user"), false);
-            List<String> returnList = new ArrayList<>();
+            List<UserCard> returnList = new ArrayList<>();
             for (Users i : users) {
-                returnList.add(i.getEmail());
+                returnList.add(new UserCard(i.getId(), i.getEmail(), i.getFirstName() + " " + i.getLastName()));
             }
             return ResponseEntity.ok(returnList);
         } catch (Exception e) {

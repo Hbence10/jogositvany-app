@@ -1,5 +1,6 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.dto.UserCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.service.OtherStuffService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,93 +23,51 @@ public class OtherStuffController {
     private final OtherStuffService otherStuffService;
 
     @Operation(summary = "Fizetési módszerek lekérdezése", description = "Az összes fizetési módszer lekérdezése.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = PaymentMethod.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PaymentMethod.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),})
     @GetMapping("/paymentMethod")
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         return otherStuffService.getAllPaymentMethod();
     }
 
     @Operation(summary = "Üzemanyag tipusok lekérdezése", description = "Az összes üzemanyag tipus lekérdezése.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = FuelType.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FuelType.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
     @GetMapping("/fuelType")
     public ResponseEntity<List<FuelType>> getAllFuelType() {
         return otherStuffService.getAllFuelType();
     }
 
     @Operation(summary = "Iskolai végzettségek lekérdezése", description = "Az összes iskolai végzettség lekérdezése.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = Education.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Education.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
     @GetMapping("/education")
     public ResponseEntity<List<Education>> getAllEducation() {
         return otherStuffService.getAllEducation();
     }
 
     @Operation(summary = "Városok lekérdezése", description = "Az összes magyar város lekérdezése")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = String.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
     @GetMapping("/town")
     public ResponseEntity<List<String>> getAllTown() {
         return otherStuffService.getAllTown();
     }
 
     @Operation(summary = "Státuszok lekérdezése", description = "Az összes státusz lekérdezése.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = Status.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Status.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
     @GetMapping("/status")
     public ResponseEntity<List<Status>> getAllStatus() {
         return otherStuffService.getAllStatus();
     }
 
     @Operation(summary = "Jármű típusok lekérdezése", description = "Az összes jármű típus lekérdezése")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = VehicleType.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = VehicleType.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
     @GetMapping("/vehicleType")
     public ResponseEntity<List<VehicleType>> getAllVehicleType() {
         return otherStuffService.getAllVehicleType();
     }
 
     @Operation(summary = "E-mail cimek lekérdezése", description = "Az összes felhasználó rangú felhasználó e-mail cimének a lekérdezése")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = String.class))
-            )),
-            @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
-    })
-    @GetMapping("/email")
-    public ResponseEntity<List<String>> getAllEmail() {
-        return otherStuffService.getAllEmail();
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class)))), @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)})
+    @GetMapping("/user")
+    public ResponseEntity<List<UserCard>> getAllUser() {
+        return otherStuffService.getAllUser();
     }
 }

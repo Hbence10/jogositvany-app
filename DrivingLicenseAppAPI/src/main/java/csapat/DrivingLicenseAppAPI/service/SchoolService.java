@@ -293,6 +293,8 @@ public class SchoolService {
         } else {
             School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
             schoolRepository.save(newSchool);
+            userRepository.setRoleOfUser(ownerUser.getId(), 6L);
+
             emailSender.sendEmailAboutSchoolRegistration(addedSchool.email());
             return ResponseEntity.ok().build();
         }
