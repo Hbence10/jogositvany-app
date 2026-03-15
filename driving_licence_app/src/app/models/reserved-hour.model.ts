@@ -3,7 +3,5 @@ export class ReservedHour {
     public id: number,
     public startTime: Date,
     public endTime: Date,
-
   ) {}
-
 }

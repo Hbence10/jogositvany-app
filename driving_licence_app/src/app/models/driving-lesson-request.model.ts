@@ -14,11 +14,4 @@ export class DrivingLessonRequest {
     public isAccepted: boolean | null = null,
     public acceptedAt: Date | null = null,
   ) {}
-
-  get getDate(): Date {
-    return this.date;
-  }
-  set setDate(value: Date) {
-    this.date = value;
-  }
 }
