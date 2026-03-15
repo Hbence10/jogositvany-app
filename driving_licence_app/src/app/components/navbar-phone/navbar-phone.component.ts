@@ -44,7 +44,7 @@ export class NavbarPhoneComponent {
     if (this.userService.loggedUser() == null) {
       this.router.navigate(["/login"])
     } else {
-
+      this.router.navigate([`profil/user/${this.userService.loggedUser()?.id}`])
     }
   }
 }
