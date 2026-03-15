@@ -66,8 +66,12 @@ export class RequestListComponent implements OnInit {
     if (selectedRequest.requestType == "drivingLesson") {
 
       this.instructorService.handleDrivingLessonRequest(selectedRequest.id, selectedRequest.status).subscribe({
-        error: error => {
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+        error: (error) => {
+          if (error.status == 400) {
+            this.alertService.setAlert("Ebben az időben már van órád!", "error")
+          } else {
+            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          }
         },
         complete: () => {
           this.alertService.setAlert(`Sikeres ${selectedRequest.status == "accept" ? "elfogadtad" : "elutasítottad"} a kérelmet!`, "success")
