@@ -24,6 +24,7 @@ export class DrivingLessonEditorComponent implements OnInit {
   drivingLesson = input.required<DrivingLessons>()
   isPaid: boolean = false
   private alertService = inject(AlertServiceService)
+  errorMsg = ""
 
   ngOnInit(): void {
     this.otherService.getAllPaymentMethod().subscribe({
@@ -49,6 +50,12 @@ export class DrivingLessonEditorComponent implements OnInit {
   }
 
   sendSave() {
+    this.errorMsg = ""
+    if (this.drivingLessonForm.controls["startKm"] > this.drivingLessonForm.controls["endKm"]) {
+       this.errorMsg = "invalidRange"
+       return
+    }
+
     const body = {
       startKm: +this.drivingLessonForm.controls["startKm"].value,
       endKm: +this.drivingLessonForm.controls["endKm"].value,

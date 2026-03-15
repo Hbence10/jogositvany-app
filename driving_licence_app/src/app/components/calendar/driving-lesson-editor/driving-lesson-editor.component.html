@@ -34,11 +34,11 @@
               <div class="row">
                 <div class="col-lg-6 mb-3">
                   <label for="startKm">Km óra állása kezdéskor:</label>
-                  <input class="w-100" type="number" name="startKm" id="startKm" formControlName="startKm">
+                  <input class="w-100" type="number" name="startKm" id="startKm" formControlName="startKm" [class.error]="errorMsg == 'invalidRange'">
                 </div>
                 <div class="col-lg-6 mb-3">
                   <label for="endKm">Km óra állása végzéskor</label>
-                  <input class="w-100" type="number" name="endKm" id="endKm" formControlName="endKm">
+                  <input class="w-100" type="number" name="endKm" id="endKm" formControlName="endKm" [class.error]="errorMsg == 'invalidRange'">
                 </div>
               </div>
 
@@ -88,7 +88,7 @@
         <div class="row mb-3">
           <div class="col-lg-12 d-flex justify-content-center">
             <button class="eventButton mx-2" (click)="cancelDrivingLesson()" [disabled]="drivingLesson().isEnd || drivingLesson().isCancelled">Lemondás</button>
-            <button class="eventButton mx-2" (click)="sendSave()">Mentés</button>
+            <button class="eventButton mx-2" (click)="sendSave()" [disabled]="drivingLessonForm.invalid">Mentés</button>
           </div>
         </div>
       </div>
