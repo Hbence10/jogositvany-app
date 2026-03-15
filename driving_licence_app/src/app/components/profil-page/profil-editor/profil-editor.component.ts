@@ -42,7 +42,7 @@ export class ProfilEditorComponent implements OnInit {
   dayNames: string[] = ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek"]
   errorMsg: string = ""
   private alertService = inject(AlertServiceService)
-  invalidTimeCombinationIndex: number = 0;
+  invalidTimeCombinationIndex: number = -1;
 
   ngOnInit(): void {
     if (this.objectType() == "user") {

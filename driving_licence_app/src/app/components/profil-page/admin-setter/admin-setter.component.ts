@@ -13,13 +13,13 @@ export class AdminSetterComponent implements OnInit {
   schoolService = inject(SchoolServiceService)
   otherStuffService = inject(OtherStuffServiceService)
   close = output()
-  emailList: string[] = []
+  userList: {id: number, email: string, name: string}[] = []
   selectedEmail: string | null = null
 
   ngOnInit(): void {
-   this.otherStuffService.getAllEmail().subscribe({
+   this.otherStuffService.getAllUser().subscribe({
     next: response => {
-      this.emailList = response
+      this.userList = response
     }
    })
   }
