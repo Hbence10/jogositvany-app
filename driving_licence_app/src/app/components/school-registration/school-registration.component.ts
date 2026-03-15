@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SchoolServiceService } from '../../services/school-service.service';
-import { UsersService } from '../../services/users.service';
 import { AlertServiceService } from '../../services/alert-service.service';
+import { OtherStuffServiceService } from '../../services/other-stuff-service.service';
 
 @Component({
   selector: 'app-school-registration',
@@ -14,8 +14,8 @@ export class SchoolRegistrationComponent implements OnInit {
   close = output()
   schoolForm!: FormGroup
   schoolService = inject(SchoolServiceService)
-  userService = inject(UsersService)
-  userList: any[] = []
+  otherService = inject(OtherStuffServiceService)
+  userList: {id: number, email: string, name: string}[] = []
   private alertService = inject(AlertServiceService)
   varmegyek = ["Bács-Kiskun", "Baranya", "Békés", "Borsod-Abaúj-Zemplén", "Csongrád-Csanád", "Fejér", "Győr-Moson-Sopron", "Hajdú-Bihar", "Heves", "Jász-Nagykun-Szolnok", "Komárom-Esztergom", "Nógrád", "Pest", "Somogy", "Szabolcs-Szatmár-Bereg", "Tolna", "Vas", "Veszprém", "Zala"];
   errorMsg: string = ""
@@ -32,10 +32,8 @@ export class SchoolRegistrationComponent implements OnInit {
       ownerId: new FormControl("", [Validators.required])
     })
 
-    this.userService.getAllUserWithoutPaginator().subscribe({
-      next: response => {
-        this.userList = response
-      }
+    this.otherService.getAllUser().subscribe({
+      next: response => this.userList = response
     })
   }
 
