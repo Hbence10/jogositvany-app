@@ -40,7 +40,7 @@ export class OtherStuffServiceService {
     return this.http.get<Status[]>(`${this.baseUrl}/status`)
   }
 
-  getAllEmail(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/email`)
+  getAllUser(): Observable<{id: number, email: string, name: string}[]> {
+    return this.http.get<{id: number, email: string, name: string}[]>(`${this.baseUrl}/user`)
   }
 }
