@@ -30,6 +30,9 @@ export class UserListComponent implements OnInit {
   title: string = ""
   availablePages: number[] = []
   actualPage: number = 0;
+  showDeleteConfirm: boolean = false
+  deleteConfirmText: string = ""
+  selectedCard!: { id: number, name: string, imagePath: string, userId: number }
 
   ngOnInit(): void {
     let sub: Subscription
@@ -40,6 +43,11 @@ export class UserListComponent implements OnInit {
         this.changePage(0)
       }
     })
+  }
+
+  handleDelete(selectedCard: { id: number, name: string, imagePath: string, userId: number }) {
+    this.selectedCard = selectedCard
+    this.showDeleteConfirm = true
   }
 
   navigateToUserPage(selectedCard: { id: number, name: string, imagePath: string, userId: number }) {
@@ -60,11 +68,11 @@ export class UserListComponent implements OnInit {
     return rows
   }
 
-  deleteMember(selectedCard: { id: number, name: string, imagePath: string, userId: number }) {
-    let index = this.cardList.indexOf(this.cardList.find(card => card.id === selectedCard.id)!)
+  deleteMember() {
+    let index = this.cardList.indexOf(this.cardList.find(card => card.id === this.selectedCard.id)!)
 
     if (this.userType == "schoolStudent") {
-      this.studentService.deleteStudent(selectedCard.id).subscribe({
+      this.studentService.deleteStudent(this.selectedCard.id).subscribe({
         next: response => console.log(response),
         error: () => {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
@@ -76,7 +84,7 @@ export class UserListComponent implements OnInit {
         }
       })
     } else if (this.userType == "instructors") {
-      this.schoolService.kickOutInstructor(selectedCard.id).subscribe({
+      this.schoolService.kickOutInstructor(this.selectedCard.id).subscribe({
         next: response => console.log(response),
         error: () => {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
@@ -88,7 +96,7 @@ export class UserListComponent implements OnInit {
         }
       })
     } else if (this.userType == "instructorStudents") {
-      this.instructorService.kickoutStudent(selectedCard.id).subscribe({
+      this.instructorService.kickoutStudent(this.selectedCard.id).subscribe({
         next: response => console.log(response),
         error: () => {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
@@ -100,7 +108,7 @@ export class UserListComponent implements OnInit {
         }
       })
     } else if (this.userType == "users") {
-      this.userService.deleteUser(selectedCard.id).subscribe({
+      this.userService.deleteUser(this.selectedCard.id).subscribe({
         next: response => console.log(response),
         error: () => {
           this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
@@ -112,11 +120,13 @@ export class UserListComponent implements OnInit {
         }
       })
     }
+    this.showDeleteConfirm = false
   }
 
   changePage(pageNumber: number) {
     if (this.userType == "schoolStudent") {
       this.deleteText = "Diák kirugása"
+      this.deleteConfirmText = "Biztosan kirugod a diákot?"
       this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "students", pageNumber).subscribe({
         next: response => {
           this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
@@ -126,6 +136,7 @@ export class UserListComponent implements OnInit {
       this.title = "Diákjaink:"
     } else if (this.userType == "instructors") {
       this.deleteText = "Oktató kirugása"
+      this.deleteConfirmText = "Biztosan kirugod az oktatót?"
       this.schoolService.getMembersOfSchool(this.userService.loggedUser()?.schoolId!, "instructors", pageNumber).subscribe({
         next: response => {
           this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
@@ -135,6 +146,7 @@ export class UserListComponent implements OnInit {
       this.title = "Oktatóink:"
     } else if (this.userType == "instructorStudents") {
       this.deleteText = "Diák kirugása"
+      this.deleteConfirmText = "Biztosan kirugod a diákot?"
       this.instructorService.getStudents(this.userService.loggedUser()?.instructorId!, pageNumber).subscribe({
         next: response => {
           this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
@@ -143,7 +155,8 @@ export class UserListComponent implements OnInit {
       })
       this.title = "Diákjaim"
     } else if (this.userType === "users") {
-      this.deleteText = "Felhasználó törloése"
+      this.deleteText = "Felhasználó törlése"
+      this.deleteConfirmText = "Biztosan törlöd a felhasználót?"
       this.userService.getAllUser(pageNumber).subscribe({
         next: response => {
           this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)
@@ -153,6 +166,7 @@ export class UserListComponent implements OnInit {
       this.title = "Felhasználók:"
     } else if (this.userType === "school") {
       this.deleteText = "Iskola törloése"
+      this.deleteConfirmText = "Biztosan törlöd az iskolát?"
       this.schoolService.getAllSchool(0).subscribe({
         next: response => {
           this.availablePages = Array(+response.headers.get("pagenumber")!).fill(1)

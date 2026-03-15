@@ -56,3 +56,26 @@ select {
   border-radius: 3px;
   color: #DEE0EB;
 }
+
+#deleteContainer {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+#confirmContainer {
+  width: 650px;
+  height: 250px;
+  background-color: #626C99;
+  border-radius: 8px;
+}
+
+#confirmContainer button {
+  background-color: #22354f;
+  height: 50px;
+  width: 150px;
+}
