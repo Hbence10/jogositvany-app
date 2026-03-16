@@ -3,6 +3,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.School;
 import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
@@ -27,9 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.*;
 
 //37
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -66,12 +67,13 @@ public class SchoolControllerIT {
     @BeforeEach
     public void setup() {
         Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users owner2 = userRepository.save(new Users("testUser4", "registerStudent4", "test4@gmail.com", "06701121111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users testUser = userRepository.save(new Users("testUser2", "registerStudent2", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users testInstructor = userRepository.save(new Users("testUser2", "registerStudent2", "test3@gmail.com", "06701111113", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
 
+        schoolRepository.save(new School("schoolName2", "schoolTest2@gmail.com", "06706894711", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", owner2));
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", owner));
         testSchoolId = testSchool.getId();
-
 
         SchoolJoinRequest testRequest = schoolJoinRequestRepository.save(new SchoolJoinRequest(testUser, testSchool, drivingLicenseCategoryRepository.findById(1L).get()));
         testUser.setSchoolJoinRequestList(new ArrayList<>(Arrays.asList(testRequest)));
@@ -124,38 +126,89 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("Update existent school with existent datas")
+    @DisplayName("Update existent school with valid datas")
     public void updateExistentSchoolWithValidDatas() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testSchoolId + ""))))
+                .andExpect(jsonPath("$.name", Is.is("updateName")))
+                .andExpect(jsonPath("$.email", Is.is("update@gmail.com")))
+                .andExpect(jsonPath("$.phone", Is.is("06701234156")))
+                .andExpect(jsonPath("$.country", Is.is("updateCounty")))
+                .andExpect(jsonPath("$.town", Is.is("updateTown")))
+                .andExpect(jsonPath("$.address", Is.is("updateAddress")))
+                .andExpect(jsonPath("$.promoText", Is.is("updatePromoText")))
+        ;
     }
 
     @Test
     @DisplayName("Update none existent school.")
     public void updateNonExistentSchool() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + (testSchoolId + 1)).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().isNotFound());
+        ;
     }
 
     @Test
     @DisplayName("Update existent school with invalid phone")
     public void updateExistentSchoolWithInvalidPhone() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "update@gmail.com", "06121234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidPhone")));
+        ;
     }
 
     @Test
     @DisplayName("Update existent school with invalid email")
     public void updateExistentSchoolWithInvalidEmail() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "updategmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+        ;
     }
 
     @Test
     @DisplayName("Update existent school with duplicated name")
     public void updateExistentSchoolWithDuplicatedName() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("Gelencsér autósiskola", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicateName")));
+        ;
     }
 
     @Test
     @DisplayName("Update existent school with duplicated phone")
     public void updateExistentSchoolWithDuplicatedPhone() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "update@gmail.com", "06706894711", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicatePhone")));
+        ;
     }
 
     @Test
     @DisplayName("Update existent school with duplicated email")
     public void updateExistentSchoolWithDuplicatedEmail() throws Exception {
+        mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "schoolTest2@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicateEmail")));
+        ;
+    }
+
+    SchoolDto createSchoolDto(String schoolName, String email, String phoneNumber, String county, String town, String address, String promoText, Long ownerId) {
+        return new SchoolDto(schoolName, email, phoneNumber, county, town, address, promoText, ownerId);
     }
 
     //coverImg
@@ -174,6 +227,7 @@ public class SchoolControllerIT {
     public void updateExistentSchoolsCoverImgWithInvalidPhoto() throws Exception {
     }
 
+    //Opening Details:
     @Test
     @DisplayName("")
     public void updateOpeningDetailsOfExistentSchool() throws Exception {
@@ -189,10 +243,7 @@ public class SchoolControllerIT {
     public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {
     }
 
-    public JsonNode createRequestBodyForUpdate() {
-        return null;
-    }
-
+    //asdasd
     @Test
     @DisplayName("Get all join request of existent school")
     public void getAllJoinRequestOfExistentSchool() throws Exception {
@@ -239,14 +290,14 @@ public class SchoolControllerIT {
     public void searchSchoolsByExistentTown() throws Exception {
         mockMvc.perform(get(BASEURL + "/search?town=Nagykónyi"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
         ;
     }
 
     @Test
     @DisplayName("Search school by non registered town")
     public void searchSchoolByNonExistentTown() throws Exception {
-        mockMvc.perform(get(BASEURL + "/search?town=dasdasda"))
+        mockMvc.perform(get(BASEURL + "/search?town=NemLetezoVaros"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)))
         ;
