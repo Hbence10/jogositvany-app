@@ -80,7 +80,7 @@ public class UserControllerIT {
     @Test
     @DisplayName("Login with existent e-mail and bad password.")
     public void loginWithBadPassword() throws Exception {
-        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "test.Asd");
+        JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "ads14fa");
         mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound());
     }

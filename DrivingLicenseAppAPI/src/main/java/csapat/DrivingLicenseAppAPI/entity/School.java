@@ -39,17 +39,17 @@ public class School {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @NotNull
     @Size(max = 100)
     private String name;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     @NotNull
     @Size(max = 100)
     private String email;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     @NotNull
     @Size(max = 100)
     private String phone;

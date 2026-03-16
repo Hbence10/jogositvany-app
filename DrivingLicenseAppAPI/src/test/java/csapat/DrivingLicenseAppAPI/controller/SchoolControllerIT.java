@@ -243,7 +243,7 @@ public class SchoolControllerIT {
     public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {
     }
 
-    //asdasd
+    //Kerelmek:
     @Test
     @DisplayName("Get all join request of existent school")
     public void getAllJoinRequestOfExistentSchool() throws Exception {
@@ -259,6 +259,7 @@ public class SchoolControllerIT {
                 .andExpect(status().isNotFound());
     }
 
+    //Iskola torlese
     @Test
     @DisplayName("Delete existent user by id")
     public void deleteExistentSchool() throws Exception {
@@ -285,6 +286,7 @@ public class SchoolControllerIT {
         Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete);
     }
 
+    //Kereses
     @Test
     @DisplayName("Search school by registered town")
     public void searchSchoolsByExistentTown() throws Exception {
@@ -303,8 +305,9 @@ public class SchoolControllerIT {
         ;
     }
 
+    //Id alapjan lekeres
     @Test
-    @DisplayName("Get Existent school by id")
+    @DisplayName("Get existent school by id")
     public void getExistentSchoolById() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + testSchoolId))
                 .andExpect(status().isOk())
@@ -313,41 +316,93 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get none existent school by id.")
     public void getNonExistentSchoolById() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (testSchoolId + 1)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Create school with valid datas.")
     public void createSchoolWithValidDatas() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("updateName", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId());
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("")
-    public void createSchoolWithInvalidObject() throws Exception {
+    @DisplayName("Create school with non existent owner.")
+    public void createSchoolWithNonExistentOwner() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("updateName", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId() + 1);
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Create school with invalid email")
     public void createSchoolWithInvalidEmail() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("updateName", "updategmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId());
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidEmail")));
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Create school with invalid phone")
     public void createSchoolWithInvalidPhone() throws Exception {
-    }
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("updateName", "update@gmail.com", "06101234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId());
 
-    public JsonNode createRequestBodyForSchoolCreation() {
-        return null;
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidPhone")));
     }
 
     @Test
-    @DisplayName("")
-    public void createSchoolWithNonExistentTown() throws Exception {
+    @DisplayName("Create school with duplicated name")
+    public void createSchoolWithDuplicatedName() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("schoolName2", "updat213e@gmail.com", "06201244156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId() + 1);
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicateName")));
     }
 
+    @Test
+    @DisplayName("Create school with duplicated email")
+    public void createSchoolWithDuplicatedEmail() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("update312Name", "schoolTest2@gmail.com", "06201214156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId() + 1);
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicateEmail")));
+    }
+
+    @Test
+    @DisplayName("Create school with duplicated phone")
+    public void createSchoolWithDuplicatedPhone() throws Exception {
+        Users owner = userRepository.save(new Users("testUser1", "registerStudent1", "test10@gmail.com", "06702111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        SchoolDto newSchool = createSchoolDto("update312Name", "school2Test2@gmail.com", "06706894711", "updateCounty", "updateTown", "updateAddress", "updatePromoText", owner.getId() + 1);
+
+        mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$.statusText", Is.is("duplicatePhone")));
+    }
+
+    //
     @Test
     @DisplayName("")
     public void getAllStudentsOfExistentSchool() throws Exception {
@@ -380,8 +435,12 @@ public class SchoolControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Get all school")
     public void getAllSchool() throws Exception {
+        Long allSchoolSize = schoolRepository.countNotDeletedSchool(false);
+        mockMvc.perform(get(BASEURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(allSchoolSize + ""))));
     }
 }
 

@@ -227,7 +227,7 @@ public class SchoolController {
             )),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content)
     })
-    @GetMapping("")
+    @GetMapping
     private ResponseEntity<Object> getAllSchool(Pageable pageable) {
         return schoolService.getAllSchool(pageable);
     }
