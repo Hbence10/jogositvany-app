@@ -213,33 +213,28 @@ public class SchoolControllerIT {
 
     //coverImg
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school's cover image")
     public void updateExistentSchoolsCoverImgWithValidPhoto() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update non existent school's cover image")
     public void updateNonExistentSchoolsCoverImg() throws Exception {
-    }
-
-    @Test
-    @DisplayName("")
-    public void updateExistentSchoolsCoverImgWithInvalidPhoto() throws Exception {
     }
 
     //Opening Details:
     @Test
-    @DisplayName("")
+    @DisplayName("Update existent school's opening details")
     public void updateOpeningDetailsOfExistentSchool() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update non existent school's opening details")
     public void updateOpeningDetailsOfNonExistentSchool() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update opening details with invalid datas")
     public void updateOpeningDetailsOfExistentSchoolWithInvalidDateFormat() throws Exception {
     }
 

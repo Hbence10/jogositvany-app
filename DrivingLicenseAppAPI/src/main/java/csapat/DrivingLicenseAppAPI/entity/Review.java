@@ -87,4 +87,20 @@ public class Review {
         this.rating = rating;
         this.reviewAuthor = author;
     }
+
+    public Review(String text, Double rating, Boolean isAnonymous, Students author, Instructors aboutInstructor) {
+        this.text = text;
+        this.rating = rating;
+        this.isAnonymous = isAnonymous;
+        this.reviewAuthor = author;
+        this.aboutInstructor = aboutInstructor;
+    }
+
+    public Review(String text, Double rating, Boolean isAnonymous, Students author, School aboutSchool) {
+        this.text = text;
+        this.rating = rating;
+        this.isAnonymous = isAnonymous;
+        this.reviewAuthor = author;
+        this.aboutSchool = aboutSchool;
+    }
 }
