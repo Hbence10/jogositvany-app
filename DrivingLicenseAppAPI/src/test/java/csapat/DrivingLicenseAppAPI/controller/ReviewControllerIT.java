@@ -5,10 +5,7 @@ import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import org.hamcrest.core.Is;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,6 +45,7 @@ public class ReviewControllerIT {
     private Long authorId;
     private Long testInstructorId;
     private Long testSchoolId;
+    private Long testReviewId;
     private String BASEURL = "http://localhost:8080/review";
 
     @Autowired
@@ -72,45 +71,78 @@ public class ReviewControllerIT {
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
         Students testStudent = studentRepository.save(new Students(testAuthor, testSchool, drivingLicenseCategoryRepository.findById(1L).get()));
+        Review schoolTestReview = reviewRepository.save(new Review("testReviewText1", 2.0, false, testStudent, testSchool));
+        Review instructorTestReview = reviewRepository.save(new Review("testReviewText1", 2.0, false, testStudent, testInstructor));
 
         authorId = testStudent.getId();
         testInstructorId = testInstructor.getId();
         testSchoolId = testSchool.getId();
+        testReviewId = schoolTestReview.getId();
     }
 
     @Test
     @DisplayName("Get reviews about existent school")
     public void getReviewsAboutExistentSchool() throws Exception {
+        String url = BASEURL + "?about=school&aboutId=" + testSchoolId;
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Get reviews about existent instructor")
     public void getReviewsAboutExistentInstructor() throws Exception {
+        String url = BASEURL + "?about=instructor&aboutId=" + testInstructorId;
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Get reviews about non existent school")
     public void getReviewsAboutNonExistentSchool() throws Exception {
+        String url = BASEURL + "?about=school&aboutId=" + (testSchoolId + 1);
+        mockMvc.perform(get(url))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
     }
 
     @Test
     @DisplayName("Get reviews about non existent instructor")
     public void getReviewsAboutNonExistentInstructor() throws Exception {
+        String url = BASEURL + "?about=instructor&aboutId=" + (testInstructorId + 1);
+        mockMvc.perform(get(url))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Get reviews about non valid destination")
     public void getReviewsAboutInvalidObjectType() throws Exception {
+        String url = BASEURL + "?about=asdasa&aboutId=" + testSchoolId;
+        mockMvc.perform(get(url))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidAbout")));
     }
 
     @Test
     @DisplayName("Delete existent review")
     public void deleteExistentReview() throws Exception {
+        Long sizeBeforeDelete = reviewRepository.countNotDeletedReview(false);
+        mockMvc.perform(delete(BASEURL + "/" + testReviewId))
+                .andExpect(status().isOk());
+        Long sizeAfterDelete = reviewRepository.countNotDeletedReview(false);
+        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
     }
 
     @Test
     @DisplayName("Delete non existent review")
     public void deleteNonExistent() throws Exception {
+        Long sizeBeforeDelete = reviewRepository.countNotDeletedReview(false);
+        mockMvc.perform(delete(BASEURL + "/" + (testReviewId + 1)))
+                .andExpect(status().isNotFound());
+        Long sizeAfterDelete = reviewRepository.countNotDeletedReview(false);
+        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
@@ -145,7 +177,7 @@ public class ReviewControllerIT {
     @Test
     @DisplayName("Create review by non existent student.")
     public void createReviewByNonExistentStudent() throws Exception {
-        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId +1, 0L, testSchoolId);
+        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId + 1, 0L, testSchoolId);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("studentNotFound")));
@@ -154,7 +186,7 @@ public class ReviewControllerIT {
     @Test
     @DisplayName("Create review by existent student about non existent instructor")
     public void createReviewByExistentStudentAboutNonExistentInstructor() throws Exception {
-        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId , testInstructorId + 1, 0L);
+        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId, testInstructorId + 1, 0L);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("instructorNotFound")));
@@ -163,7 +195,7 @@ public class ReviewControllerIT {
     @Test
     @DisplayName("Create review by existent student about non existent school")
     public void createReviewByExistentStudentAboutNonExistentSchool() throws Exception {
-        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId , 0L, testSchoolId + 1);
+        NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId, 0L, testSchoolId + 1);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("schoolNotFound")));

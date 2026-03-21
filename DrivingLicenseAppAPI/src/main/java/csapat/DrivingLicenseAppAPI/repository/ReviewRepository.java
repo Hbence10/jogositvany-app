@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -18,4 +19,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Procedure(name = "deleteReview", procedureName = "deleteReview")
     void deleteReview(@Param("idIN") Long id);
+
+    @Query("select count(r) from Review r where r.isDeleted = ?1")
+    Long countNotDeletedReview(Boolean isDeleted);
 }

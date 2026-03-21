@@ -85,14 +85,14 @@ public class ReviewService {
                 if (about.equals("instructor")) {
                     Instructors searchedInstructor = instructorRepository.getInstructor(aboutId).orElse(null);
                     if (searchedInstructor == null) {
-                        return ResponseEntity.notFound().build();
+                        return ResponseEntity.status(404).body("instructorNotFound");
                     } else {
                         returnList = searchedInstructor.getReviewList();
                     }
                 } else if (about.equals("school")) {
                     School searchedSchool = schoolRepository.getSchool(aboutId).orElse(null);
                     if (searchedSchool == null) {
-                        return ResponseEntity.notFound().build();
+                        return ResponseEntity.status(404).body("schoolNotFound");
                     } else {
                         returnList = searchedSchool.getReviewList();
                     }
