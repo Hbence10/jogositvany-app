@@ -72,13 +72,15 @@ public class Review {
     @ManyToOne()
     @JoinColumn(name = "instructor_id")
     @Null
-    @JsonIgnoreProperties(value = {"instructorUser", "instructorSchool", "vehicle", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"}, allowSetters = true)
+//    @JsonIgnoreProperties(value = {"instructorUser", "instructorSchool", "vehicle", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"}, allowSetters = true)
+    @JsonIgnore
     private Instructors aboutInstructor;
 
     @ManyToOne()
     @JoinColumn(name = "school_id")
     @Null
-    @JsonIgnoreProperties(value = {"owner", "adminList", "instructorsList", "openingDetails", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"}, allowSetters = true)
+//    @JsonIgnoreProperties(value = {"owner", "adminList", "instructorsList", "openingDetails", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"}, allowSetters = true)
+    @JsonIgnore
     private School aboutSchool;
 
     //Constructorok

@@ -40,7 +40,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghívása parameter(ek) nélkül", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<Object> getReviews(@RequestParam("about") String about, @RequestParam("aboutId") Long aboutId) {
         return reviewService.getReviews(about, aboutId);
     }
@@ -60,7 +60,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "422", description = "Az endpoint meghivása hiányos requestBody-val", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba", content = @Content),
     })
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<Object> addReview(@RequestBody NewReview newReview) {
     return reviewService.addReview(newReview);
     }
