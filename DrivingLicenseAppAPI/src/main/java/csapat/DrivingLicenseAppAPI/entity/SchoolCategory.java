@@ -35,4 +35,10 @@ public class SchoolCategory {
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolCategory;
+
+    public SchoolCategory(Integer hourlyRate, DrivingLicenseCategory licenseCategory, School schoolCategory) {
+        this.hourlyRate = hourlyRate;
+        this.licenseCategory = licenseCategory;
+        this.schoolCategory = schoolCategory;
+    }
 }

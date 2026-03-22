@@ -39,22 +39,17 @@ public class RequestService {
 
             School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
             Users searchedUser = userRepository.getUser(userId).orElse(null);
+            DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
 
             if (searchedSchool == null || searchedSchool.getIsDeleted()) {
                 return ResponseEntity.status(404).body("schoolNotFound");
             } else if (searchedUser == null || searchedUser.getIsDeleted()) {
                 return ResponseEntity.status(404).body("userNotFound");
+            } else if (searchedCategory == null) {
+                return ResponseEntity.status(404).body("categoryNotFound");
             } else {
                 SchoolJoinRequest newSchoolJoinRequest;
                 if (searchedUser.getRole().getName().equals("ROLE_user")) {
-                    DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
-                    if (searchedCategory == null) {
-                    }
-//                    Boolean isSchoolNotContainsCategory = searchedSchool.getLicenseCategoryList().stream().filter(category -> category.getLicenseCategory().getId() == categoryId).toList().isEmpty();
-//                    if (isSchoolNotContainsCategory) {
-//                        return ResponseEntity.status(415).body("invalidCategory");
-//                    }
-
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
                 } else {
                     newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
