@@ -98,7 +98,6 @@ public class RequestController {
                     dateWithTimeFormat.parse((requestBody.get("endTime").asText())),
                     requestBody.get("studentId").asLong(),
                     requestBody.get("instructorId").asLong());
-
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

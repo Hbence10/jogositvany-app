@@ -6,6 +6,7 @@ import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -24,4 +25,7 @@ public interface DrivingLessonRequestRepository extends JpaRepository<DrivingLes
     void deleteDrivingLessonRequest(@Param("idIN") Long id);
 
     Page<DrivingLessonRequest> findBydLessonInstructorAndIsAcceptedAndIsDeleted(Instructors wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
+
+    @Query("select count(d) from DrivingLessonRequest d where d.isDeleted = ?1")
+    Long countNotDeletedDrivingLessonRequest(Boolean isDeleted);
 }

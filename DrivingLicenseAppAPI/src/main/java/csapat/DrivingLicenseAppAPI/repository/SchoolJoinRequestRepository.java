@@ -5,6 +5,7 @@ import csapat.DrivingLicenseAppAPI.entity.SchoolJoinRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -23,4 +24,7 @@ public interface SchoolJoinRequestRepository extends JpaRepository<SchoolJoinReq
     void deleteSchoolJoinRequest(@Param("idIN") Long id);
 
     Page<SchoolJoinRequest> findBySchoolJoinRequestSchoolAndIsAcceptedAndIsDeleted(School wantedInstructor, Boolean isAccepted, Boolean isDeleted, Pageable pageable);
+
+    @Query("select count(s) from SchoolJoinRequest s where s.isDeleted = ?1")
+    Long countNotDeletedSchoolJoinRequest(Boolean isDeleted);
 }
