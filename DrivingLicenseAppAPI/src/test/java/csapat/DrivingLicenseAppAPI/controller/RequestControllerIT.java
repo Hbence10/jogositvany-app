@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 //16db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -50,6 +51,7 @@ public class RequestControllerIT {
     Long studentId;
     Long schoolId;
     Long instructorId;
+    Long secondInstructorId;
     private final String BASEURL = "http://localhost:8080/request";
 
     @Autowired
@@ -69,6 +71,13 @@ public class RequestControllerIT {
 
     @BeforeEach
     public void setup() {
+        //masodlagos
+        Users secondInstructor = userRepository.save(new Users("testUser1", "registerStudent1", "test5@gmail.com", "06701111115", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users secondSchoolOwner = userRepository.save(new Users("testUser1", "registerStudent1", "tes6t@gmail.com", "06701111116", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        School secondTestSchool = schoolRepository.save(new School("schoolName2", "schoolTest2@gmail.com", "06706294711", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", secondSchoolOwner));
+        Instructors secondTestInstructor = instructorRepository.save(new Instructors(secondTestSchool, secondInstructor));
+
+        //elsodleges
         Users student = userRepository.save(new Users("testUser1", "registerStudent1", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users instructor = userRepository.save(new Users("testUser1", "registerStudent1", "test3@gmail.com", "06701111113", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users schoolOwner = userRepository.save(new Users("testUser1", "registerStudent1", "tes4t@gmail.com", "06701111114", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
@@ -87,6 +96,7 @@ public class RequestControllerIT {
         studentId = testStudent.getId();
         schoolId = testSchool.getId();
         instructorId = testInstructor.getId();
+        secondInstructorId = secondTestInstructor.getId();
     }
 
     @Test
@@ -104,7 +114,7 @@ public class RequestControllerIT {
     @DisplayName("Send schoolJoin request to non existent school")
     public void sendSchoolJoinRequestToNonExistentSchool() throws Exception {
         Long sizeBeforeSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId+1, userId, 1L);
+        JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId + 1, userId, 1L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("schoolNotFound")));
@@ -117,7 +127,7 @@ public class RequestControllerIT {
     @DisplayName("Send schoolJoin request with non existent user")
     public void sendSchoolJoinRequestWithNonExistentUser() throws Exception {
         Long sizeBeforeSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId, userId+1, 1L);
+        JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId, userId + 1, 1L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("userNotFound")));
@@ -163,25 +173,55 @@ public class RequestControllerIT {
     @Test
     @DisplayName("Send instructorJoin request with valid datas")
     public void sendInstructorJoinRequestWithValidDatas() throws Exception {
+        Long sizeBeforeSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(instructorId, studentId);
+        mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
+        Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        Assertions.assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send instructorJoin request to non existent instructor")
     public void sendInstructorJoinRequestToNonExistentInstructor() throws Exception {
+        Long sizeBeforeSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(instructorId + 1, studentId);
+        mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+        Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send instructorJoin request with non existent student")
     public void sendInstructorJoinRequestWithNonExistentStudent() throws Exception {
+        Long sizeBeforeSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(instructorId, studentId + 1);
+        mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("studentNotFound")));
+        Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send instructorJoin request with invalid instructor")
     public void sendInstructorJoinRequestWithInvalidInstructor() throws Exception {
+        Long sizeBeforeSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(secondInstructorId, studentId);
+        mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+        Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     private JsonNode createRequestBodyForSendingInstructorJoinRequest(Long instructorId, Long studentId) {
-        return null;
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("studentId", studentId);
+        ((ObjectNode) returnObject).put("instructorId", instructorId);
+        return returnObject;
     }
 
     @Test
