@@ -100,7 +100,7 @@ public class RequestController {
                     requestBody.get("instructorId").asLong());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(415).body("invalidDate");
         }
     }
 

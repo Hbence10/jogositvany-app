@@ -17,7 +17,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -227,39 +226,107 @@ public class RequestControllerIT {
     @Test
     @DisplayName("Send drivingLesson request with valid datas")
     public void sendDrivingLessonRequestWithValidDatas() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, instructorId);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request to non existent instructor")
     public void sendDrivingLessonRequestToNonExistentInstructor() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, instructorId + 1);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request with non existent student")
     public void sendDrivingLessonRequestWithNonExistentStudent() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId + 1, instructorId);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("studentNotFound")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request with invalid date (format)")
     public void sendDrivingLessonRequestWithInvalidDate() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026/06/02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, instructorId);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidDate")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request with invalid start & end time")
     public void sendDrivingLessonRequestWithInvalidStartEndTime() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 20:00:00", "2026-06-02 18:00:00", studentId, instructorId);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidDate")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request to instructor from other school")
     public void sendDrivingLessonRequestWithInstructorFromOtherSchool() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, secondInstructorId);
+
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request to other instructor from same school")
     public void sendDrivingLessonRequestWithOtherStudentsInstructor() throws Exception {
+        Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+//        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, secondInstructorId);
+//        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+//                .andExpect(status().is(415))
+//                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+
+        Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
+        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
-    private JsonNode createRequestBodyForDrivingLessonRequest(String msg, Date date, LocalDateTime startTime, LocalDateTime endTime, Long studentId, Long instructorId) {
-        return null;
+    private JsonNode createRequestBodyForDrivingLessonRequest(String msg, String date, String startTime, String endTime, Long studentId, Long instructorId) {
+        JsonNode returnObject = objectMapper.createObjectNode();
+        ((ObjectNode) returnObject).put("msg", msg);
+        ((ObjectNode) returnObject).put("date", date);
+        ((ObjectNode) returnObject).put("startTime", startTime);
+        ((ObjectNode) returnObject).put("endTime", endTime);
+        ((ObjectNode) returnObject).put("studentId", studentId);
+        ((ObjectNode) returnObject).put("instructorId", instructorId);
+        return returnObject;
     }
 }
