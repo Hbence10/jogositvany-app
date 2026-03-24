@@ -77,7 +77,7 @@ public class ReviewControllerIT {
         authorId = testStudent.getId();
         testInstructorId = testInstructor.getId();
         testSchoolId = testSchool.getId();
-        testReviewId = schoolTestReview.getId();
+        testReviewId = instructorTestReview.getId();
     }
 
     @Test

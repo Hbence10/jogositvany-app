@@ -2,11 +2,11 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
+import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import csapat.DrivingLicenseAppAPI.service.InstructorService;
-import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -176,8 +176,6 @@ public class InstructorController {
     }
 
     @Operation(summary = "Tanuló kirugása", description = "Tanuló kirugása")
-
-    @DeleteMapping("/kickout")
     @Parameter(name = "studentId", description = "A tanulóhoz tartozó id.", in = ParameterIn.QUERY)
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés", content = @Content),
@@ -186,6 +184,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content)
 
     })
+    @DeleteMapping("/kickout")
     private ResponseEntity<Object> kickOutStudent(@RequestParam("studentId") Long studentId) {
         return instructorService.kickoutStudent(studentId);
     }
