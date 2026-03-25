@@ -93,6 +93,13 @@ public class Students {
         this.selectedCategory = selectedCategory;
     }
 
+    public Students(Users studentUser, School studentSchool, DrivingLicenseCategory selectedCategory, Instructors instructors) {
+        this.studentUser = studentUser;
+        this.studentSchool = studentSchool;
+        this.selectedCategory = selectedCategory;
+        this.studentInstructor = instructors;
+    }
+
     public Students(Long id) {
         this.id = id;
     }

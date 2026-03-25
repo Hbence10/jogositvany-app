@@ -57,13 +57,13 @@ public class Vehicle {
     private Date deletedAt;
 
     //Kapcsolatok
-    @ManyToOne(cascade = {})
+    @ManyToOne
     @JoinColumn(name = "type_id")
     @JsonIgnoreProperties({"vehicleList"})
     @Null
     private VehicleType vehicleType;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne
     @JoinColumn(name = "fuel_type_id")
     @JsonIgnoreProperties({"vehicles"})
     @Null
@@ -76,5 +76,12 @@ public class Vehicle {
     public Vehicle(String licensePlate, String name) {
         this.licensePlate = licensePlate;
         this.name = name;
+    }
+
+    public Vehicle(String licensePlate, String name, VehicleType vehicleType, FuelType fuelType) {
+        this.licensePlate = licensePlate;
+        this.name = name;
+        this.vehicleType = vehicleType;
+        this.fuelType = fuelType;
     }
 }

@@ -100,4 +100,10 @@ public class Instructors {
         this.instructorSchool = instructorSchool;
         this.instructorUser = instructorUser;
     }
+
+    public Instructors(School instructorSchool, Users instructorUser, Vehicle vehicle) {
+        this.instructorSchool = instructorSchool;
+        this.instructorUser = instructorUser;
+        this.vehicle = vehicle;
+    }
 }
