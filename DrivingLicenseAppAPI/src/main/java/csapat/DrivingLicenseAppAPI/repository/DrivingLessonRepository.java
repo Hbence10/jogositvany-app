@@ -1,8 +1,6 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
-import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
-import csapat.DrivingLicenseAppAPI.entity.Students;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;

@@ -8,9 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,11 +21,11 @@ import java.util.List;
         @NamedStoredProcedureQuery(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory", resultClasses = DrivingLicenseCategory.class),
         @NamedStoredProcedureQuery(name = "getDrivingLicenseCategory", procedureName = "getDrivingLicenseCategory", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
-        },resultClasses = DrivingLicenseCategory.class),
+        }, resultClasses = DrivingLicenseCategory.class),
         @NamedStoredProcedureQuery(name = "deleteDrivingLicenseCategory", procedureName = "deleteDrivingLicenseCategory", parameters = {
                 @StoredProcedureParameter(name = "idIN", type = Long.class, mode = ParameterMode.IN)
         })
-        })
+})
 public class DrivingLicenseCategory {
 
     @Id

@@ -61,7 +61,7 @@ public class Students {
     @Null
     private Instructors studentInstructor;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"student"})
     private Users studentUser;
@@ -82,7 +82,7 @@ public class Students {
     @JsonIgnore
     private List<InstructorJoinRequest> instructorJoinRequestList;
 
-    @ManyToOne(cascade = {})
+    @ManyToOne
     @JoinColumn(name = "driving_license_category_id")
     @Null
     private DrivingLicenseCategory selectedCategory;

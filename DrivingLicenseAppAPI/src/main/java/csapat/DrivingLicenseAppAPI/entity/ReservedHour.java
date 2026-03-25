@@ -72,7 +72,7 @@ public class ReservedHour {
     @JsonIgnore
     private DrivingLessons drivingLessons;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "date_id")
     @JsonIgnoreProperties({"reservedHourList"})
     private ReservedDate reservedDate;

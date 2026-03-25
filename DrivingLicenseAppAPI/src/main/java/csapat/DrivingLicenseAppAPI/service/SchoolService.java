@@ -236,7 +236,7 @@ public class SchoolService {
         }
     }
 
-//    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    //    @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<JsonNode>> getSchoolBySearch(String town) {
         try {
             List<Long> searchedSchoolId = schoolRepository.getSchoolBySearch(town);

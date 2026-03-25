@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -90,25 +89,24 @@ public class DrivingLessons {
     private Date cancelledAt;
 
     //Kapcsolatok:
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "status_id")
     private Status drivingLessonStatus;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "hour_id")
-    @JsonIgnoreProperties({})
     private ReservedHour reservedHour;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "student_id")
     @JsonIgnore
     private Students dstudent;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "instructor_id")
     @JsonIgnore
     private Instructors dinstructor;

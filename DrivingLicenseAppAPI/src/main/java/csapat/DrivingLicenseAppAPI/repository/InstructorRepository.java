@@ -24,7 +24,7 @@ public interface InstructorRepository extends JpaRepository<Instructors, Long> {
     void deleteInstructor(@Param("idIN") Long id);
 
     @Procedure(name = "getInstructorBySearch", procedureName = "getInstructorBySearch")
-    List<Long> getInstructorBySearch(@Param("fuelTypeIdIN") Long fuelTypeId, @Param("schoolIdIN") Long schoolId,  @Param("categoryIdIN") Long categoryId);
+    List<Long> getInstructorBySearch(@Param("fuelTypeIdIN") Long fuelTypeId, @Param("schoolIdIN") Long schoolId, @Param("categoryIdIN") Long categoryId);
 
     @Query("select s from Instructors i JOIN i.students s where i.id = ?1 and s.isDeleted = false")
     Page<Students> getAllStudents(Long id, Pageable pageable);

@@ -76,11 +76,11 @@ public class DrivingLessonRequest {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Students dLessonRequestStudent;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "instructor_id")
     private Instructors dLessonInstructor;
 

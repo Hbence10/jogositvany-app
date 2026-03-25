@@ -56,17 +56,17 @@ public class SchoolJoinRequest {
     private Date deletedAt;
 
     //Kapcsolatok
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"instructor", "student", "adminSchool", "ownedSchool"})
     private Users schoolJoinRequestUser;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolJoinRequestSchool;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "driving_license_category_id")
     @JsonIgnore
     private DrivingLicenseCategory joinRequestCategory;

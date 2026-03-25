@@ -139,10 +139,9 @@ public class UserService {
                 userRepository.save(searchedUser);
                 System.out.println(vCode);
                 try {
-                    emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName() ,vCode);
+                    emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName(), vCode);
                 } catch (MessagingException mailException) {
                 }
-
 
 
                 return ResponseEntity.ok().build();

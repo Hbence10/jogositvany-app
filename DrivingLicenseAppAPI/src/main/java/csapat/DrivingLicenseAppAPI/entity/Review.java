@@ -64,19 +64,19 @@ public class Review {
     private Date deletedAt;
 
     //Kapcsolatok:
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "author_id")
     @JsonIgnoreProperties(value = {"studentSchool", "studentInstructor", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"}, allowSetters = true)
     private Students reviewAuthor;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "instructor_id")
     @Null
 //    @JsonIgnoreProperties(value = {"instructorUser", "instructorSchool", "vehicle", "students", "drivingLessonRequestList", "examRequestList", "instructorDrivingLessons", "instructorJoinRequestList"}, allowSetters = true)
     @JsonIgnore
     private Instructors aboutInstructor;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "school_id")
     @Null
 //    @JsonIgnoreProperties(value = {"owner", "adminList", "instructorsList", "openingDetails", "reviewList", "studentsList", "drivingLessonsType", "examRequestList", "schoolJoinRequestList"}, allowSetters = true)

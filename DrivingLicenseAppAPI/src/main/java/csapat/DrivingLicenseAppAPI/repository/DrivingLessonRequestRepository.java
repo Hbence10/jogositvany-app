@@ -1,7 +1,6 @@
 package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessonRequest;
-import csapat.DrivingLicenseAppAPI.entity.InstructorJoinRequest;
 import csapat.DrivingLicenseAppAPI.entity.Instructors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -107,7 +107,7 @@ public class Users {
     private String vCode;
 
     //Kapcsolatok:
-    @ManyToOne(cascade = {})
+    @ManyToOne
     @JoinColumn(name = "role_id")
     @JsonIgnoreProperties({"userList"})
     private Role role = new Role(1L, "ROLE_user");
@@ -120,12 +120,12 @@ public class Users {
     @JsonIgnoreProperties({"studentUser", "reviewList", "requestList", "drivingLessons", "examRequestList", "instructorJoinRequestList"})
     private Students student;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "school_admin_id")
     @Null
     private School adminSchool;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "education_id")
     @JsonIgnoreProperties({"userEducationList"})
     private Education userEducation;

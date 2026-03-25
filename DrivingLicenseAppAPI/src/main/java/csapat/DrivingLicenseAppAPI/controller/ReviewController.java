@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import csapat.DrivingLicenseAppAPI.entity.Review;
 import csapat.DrivingLicenseAppAPI.service.ReviewService;
@@ -11,7 +10,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +60,7 @@ public class ReviewController {
     })
     @PostMapping
     public ResponseEntity<Object> addReview(@RequestBody NewReview newReview) {
-    return reviewService.addReview(newReview);
+        return reviewService.addReview(newReview);
     }
 
     @Operation(summary = "Review törlése", description = "A keresett review-t kitörli")

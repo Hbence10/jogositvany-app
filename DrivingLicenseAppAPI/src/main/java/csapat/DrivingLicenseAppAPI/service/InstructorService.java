@@ -10,7 +10,6 @@ import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.hc.core5.http.MessageConstraintException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

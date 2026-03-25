@@ -2,12 +2,11 @@ package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.DrivingLessonUpdate;
+import csapat.DrivingLicenseAppAPI.dto.HourCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import csapat.DrivingLicenseAppAPI.dto.HourCard;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -64,7 +63,7 @@ public class DrivingLessonService {
             if (searchedDrivingLesson == null || searchedDrivingLesson.getIsCancelled()) {
                 return ResponseEntity.notFound().build();
             } else if (searchedDrivingLesson.getReservedHour().getReservedDate().getDate().before(new Date())) {
-              return ResponseEntity.status(415).body("invalidDate");
+                return ResponseEntity.status(415).body("invalidDate");
             } else {
                 reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
                 drivingLessonRepository.deleteDrivingLesson(drivingLessonId);

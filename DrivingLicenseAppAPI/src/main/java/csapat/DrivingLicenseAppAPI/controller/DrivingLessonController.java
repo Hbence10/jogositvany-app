@@ -1,11 +1,10 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.dto.DrivingLessonUpdate;
+import csapat.DrivingLicenseAppAPI.dto.HourCard;
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import csapat.DrivingLicenseAppAPI.entity.SchoolCategory;
 import csapat.DrivingLicenseAppAPI.service.DrivingLessonService;
-import csapat.DrivingLicenseAppAPI.dto.HourCard;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
