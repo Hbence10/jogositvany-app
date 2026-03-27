@@ -1,21 +1,26 @@
 package csapat.DrivingLicenseAppAPI.service;
 
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonRequestDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
+import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class RequestService {
@@ -32,91 +37,70 @@ public class RequestService {
 
     @PreAuthorize("(hasAnyRole('instructor', 'user') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> sendSchoolJoinRequest(Long schoolId, Long userId, Long categoryId) {
-        try {
-            if (schoolId == null || userId == null || categoryId == null) {
-                return ResponseEntity.status(422).build();
-            }
+        School searchedSchool = schoolRepository.getSchool(schoolId).orElseThrow(() -> new NotFoundException("schoolNotFound"));
+        Users searchedUser = userRepository.getUser(userId).orElseThrow(() -> new NotFoundException("userNotFound"));
+        DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElseThrow(() -> new NotFoundException("categoryNotFound"));
 
-            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-            Users searchedUser = userRepository.getUser(userId).orElse(null);
-            DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElse(null);
-
-            if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.status(404).body("schoolNotFound");
-            } else if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.status(404).body("userNotFound");
-            } else if (searchedCategory == null) {
-                return ResponseEntity.status(404).body("categoryNotFound");
-            } else {
-                SchoolJoinRequest newSchoolJoinRequest;
-                if (searchedUser.getRole().getName().equals("ROLE_user")) {
-                    newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
-                } else {
-                    newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
-                }
-
-                emailSender.sendEmailAboutSchoolJoinRequestToSchool(searchedSchool.getEmail(), newSchoolJoinRequest);
-                schoolJoinRequestRepository.save(newSchoolJoinRequest);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        SchoolJoinRequest newSchoolJoinRequest;
+        if (searchedUser.getRole().getName().equals("ROLE_user")) {
+            newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
+        } else {
+            newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool);
         }
+
+        try {
+            emailSender.sendEmailAboutSchoolJoinRequestToSchool(searchedSchool.getEmail(), newSchoolJoinRequest);
+        } catch (MessagingException e) {
+        }
+        schoolJoinRequestRepository.save(newSchoolJoinRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> sendInstructorJoinRequest(Long studentId, Long instructorId) {
-        try {
-            if (studentId == null || instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
+        Students searchedStudent = studentRepository.getStudent(studentId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("studentNotFound"));
 
-            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId()) {
-                return ResponseEntity.status(415).body("invalidInstructor");
-            } else {
-                InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
-                instructorJoinRequestRepository.save(instructorJoinRequest);
+        if (!Objects.equals(searchedStudent.getStudentSchool().getId(), searchedInstructor.getInstructorSchool().getId())) {
+            throw new InvalidDataException("invalidInstructor");
+        } else {
+            InstructorJoinRequest instructorJoinRequest = new InstructorJoinRequest(searchedStudent, searchedInstructor);
+            instructorJoinRequestRepository.save(instructorJoinRequest);
+            try {
                 emailSender.sendEmailAboutInstructorJoinRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), searchedInstructor.getInstructorUser().getFirstName() + " " + searchedInstructor.getInstructorUser().getLastName(), searchedStudent.getStudentUser().getFirstName() + " " + searchedStudent.getStudentUser().getLastName());
-                return ResponseEntity.ok().build();
+            } catch (MessagingException e) {
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.ok().build();
         }
+
     }
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
-    public ResponseEntity<Object> sendDrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Long studentId, Long instructorId) {
+    public ResponseEntity<Object> sendDrivingLessonRequest(DrivingLessonRequestDto newRequestDto) {
         try {
-            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
+            DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+            Students searchedStudent = studentRepository.getStudent(newRequestDto.studentId()).orElseThrow(() -> new NotFoundException("studentNotFound"));
+            Instructors searchedInstructor = instructorRepository.getInstructor(newRequestDto.instructorId()).orElseThrow(() -> new NotFoundException("instructorNotFound"));
 
-            if (searchedStudent == null) {
-                return ResponseEntity.status(404).body("studentNotFound");
-            } else if (searchedInstructor == null) {
-                return ResponseEntity.status(404).body("instructorNotFound");
-            } else if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() || searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()) {
-                return ResponseEntity.status(415).body("invalidInstructor");
-            } else if (date.before(new Date())) {
-                return ResponseEntity.status(415).body("invalidDate");
+
+            if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() || searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()) {
+                throw new InvalidDataException("invalidInstructor");
+            } else if (dateFormat.parse(newRequestDto.date()).before(new Date())) {
+                throw new InvalidDataException("invalidDate");
             } else {
-                DrivingLessonRequest newRequest = new DrivingLessonRequest(msg, date, startTime, endTime, searchedStudent, searchedInstructor);
+                DrivingLessonRequest newRequest = new DrivingLessonRequest(newRequestDto.msg(), dateFormat.parse(newRequestDto.date()), dateWithTimeFormat.parse(newRequestDto.startTime()), dateWithTimeFormat.parse(newRequestDto.endTime()), searchedStudent, searchedInstructor);
                 newRequest = drivingLessonRequestRepository.save(newRequest);
-                emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), newRequest);
+                try {
+                    emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), newRequest);
+                } catch (MessagingException e) {
+                }
                 return ResponseEntity.ok().build();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        } catch (ParseException e) {
+            throw new InvalidDataException("invalidDateFormat");
         }
+
     }
 }
 

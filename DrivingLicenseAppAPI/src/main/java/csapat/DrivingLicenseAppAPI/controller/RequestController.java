@@ -1,6 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonRequestDto;
 import csapat.DrivingLicenseAppAPI.service.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,10 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/request")
@@ -85,22 +82,8 @@ public class RequestController {
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
     @PostMapping("/drivingLesson")
-    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody JsonNode requestBody) {
-        DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
-
-        try {
-            return requestService.sendDrivingLessonRequest(
-                    requestBody.get("msg").asText(),
-                    dateFormat.parse((requestBody.get("date").asText())),
-                    dateWithTimeFormat.parse((requestBody.get("startTime").asText())),
-                    dateWithTimeFormat.parse((requestBody.get("endTime").asText())),
-                    requestBody.get("studentId").asLong(),
-                    requestBody.get("instructorId").asLong());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(415).body("invalidDate");
-        }
+    private ResponseEntity<Object> sendDrivingLessonRequest(@RequestBody DrivingLessonRequestDto requestBody) {
+        return requestService.sendDrivingLessonRequest(requestBody);
     }
 
 }

@@ -27,39 +27,19 @@ public class OtherStuffService {
     private final UserRepository userRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
-        try {
-            return ResponseEntity.ok().body(paymentMethodRepository.getAllPaymentMethod());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.ok().build();
-        }
+        return ResponseEntity.ok().body(paymentMethodRepository.getAllPaymentMethod());
     }
 
     public ResponseEntity<List<FuelType>> getAllFuelType() {
-        try {
-            return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.ok().body(fuelTypeRepository.getAllFuelType());
     }
 
     public ResponseEntity<List<Education>> getAllEducation() {
-        try {
-            return ResponseEntity.ok().body(educationRepository.getAllEducation());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.ok().body(educationRepository.getAllEducation());
     }
 
     public ResponseEntity<List<Status>> getAllStatus() {
-        try {
-            return ResponseEntity.ok().body(statusRepository.getAllStatus());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.ok().body(statusRepository.getAllStatus());
     }
 
     public ResponseEntity<List<String>> getAllTown() {
@@ -80,35 +60,15 @@ public class OtherStuffService {
     }
 
     public ResponseEntity<List<VehicleType>> getAllVehicleType() {
-        try {
-            return ResponseEntity.ok().body(vehicleTypeRepository.getAllVehicleType());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        return ResponseEntity.ok().body(vehicleTypeRepository.getAllVehicleType());
     }
 
     public ResponseEntity<List<UserCard>> getAllUser() {
-        try {
-            List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1L, "ROLE_user"), false);
-            List<UserCard> returnList = new ArrayList<>();
-            for (Users i : users) {
-                returnList.add(new UserCard(i.getId(), i.getEmail(), i.getFirstName() + " " + i.getLastName()));
-            }
-            return ResponseEntity.ok(returnList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        List<Users> users = userRepository.findByRoleAndIsDeleted(new Role(1L, "ROLE_user"), false);
+        List<UserCard> returnList = new ArrayList<>();
+        for (Users i : users) {
+            returnList.add(new UserCard(i.getId(), i.getEmail(), i.getFirstName() + " " + i.getLastName()));
         }
+        return ResponseEntity.ok(returnList);
     }
 }
-
-/*
- * HTTP STATUS KODOK:
- *   - 200: Sikeres muvelet
- *   - 404: Not Found
- *   - 409: Mar foglalt nev
- *   - 415: Unsupported Media Type --> Ha az adott adat invalid
- *   - 422: Hianyzo parameter/response body
- *   - 500: Internal Server Error
- * */

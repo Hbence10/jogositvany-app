@@ -4,9 +4,9 @@ import java.util.Date;
 
 public record DrivingLessonRequestDto(
         String msg,
-        Date date,
-        Date startTime,
-        Date endTime,
+        String date,
+        String startTime,
+        String endTime,
         Long studentId,
         Long instructorId
 ) {

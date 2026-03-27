@@ -9,6 +9,8 @@ import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.dto.UserUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
+import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
@@ -21,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSendException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,41 +49,25 @@ public class UserService {
     private final ObjectMapper objectMapper;
 
     public ResponseEntity<JsonNode> login(String email, String password) {
-        try {
-            if (email == null || password == null) {
-                return ResponseEntity.status(422).build();
-            }
-            Users loggedUser = userRepository.findByEmail(email.trim()).orElse(null);
-            if (loggedUser == null) {
-                return ResponseEntity.notFound().build();
-            }
-
-            boolean successFullLogin = passwordEncoder.matches(password.trim(), loggedUser.getPassword());
-            loggedUser.setLastLogin(new Date());
-            userRepository.save(loggedUser);
-
-            JsonNode homePageUser = createHomePageObject(loggedUser);
-            return ResponseEntity.ok(homePageUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        Users loggedUser = userRepository.findByEmail(email.trim()).orElseThrow(() -> new NotFoundException("userNotFound"));
+        boolean successFullLogin = passwordEncoder.matches(password.trim(), loggedUser.getPassword());
+        if (!successFullLogin) {
+            throw new NotFoundException("userNotFound");
         }
+        loggedUser.setLastLogin(new Date());
+        userRepository.save(loggedUser);
+        JsonNode homePageUser = createHomePageObject(loggedUser);
+        return ResponseEntity.ok(homePageUser);
     }
 
     public ResponseEntity<Object> register(Users newUser, String registerAs) {
-
-        if (newUser == null) {
-            return ResponseEntity.status(422).build();
-        }
 
         if (!registerAs.equals("student") && !registerAs.equals("instructor") && !registerAs.equals("user")) {
             return ResponseEntity.status(415).body("invalidParameter");
         }
 
-        Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElse(null);
-        if (searchedEducation == null) {
-            return ResponseEntity.status(404).body("educationNotFound");
-        } else if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")) {
+        Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElseThrow(() -> new NotFoundException("educationNotFound"));
+        if (!newUser.getGender().equals("male") && !newUser.getGender().equals("female") && !newUser.getGender().equals("other")) {
             return ResponseEntity.status(415).body("invalidGender");
         } else if (!ValidatorCollection.emailValidator(newUser.getEmail().trim())) {
             return ResponseEntity.status(415).body("invalidEmail");
@@ -120,237 +105,133 @@ public class UserService {
 
     }
 
-    //password reset
     public ResponseEntity<Object> getVerificationCode(String email) {
-        try {
-            if (email == null) {
-                return ResponseEntity.status(422).build();
+        Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("emailNotFound"));
+
+        if (!ValidatorCollection.emailValidator(email.trim())) {
+            throw new InvalidDataException("invalidEmail");
+        } else {
+            String vCode = generateVerificationCode();
+            searchedUser.setVCode(passwordEncoder.encode(vCode));
+            userRepository.save(searchedUser);
+            try {
+                emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName(), vCode);
+            } catch (MessagingException mailException) {
             }
 
-            Users searchedUser = userRepository.findByEmail(email).orElse(null);
-
-            if (!ValidatorCollection.emailValidator(email.trim())) {
-                return ResponseEntity.status(415).body("invalidEmail");
-            } else if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.status(404).body("emailNotFound");
-            } else {
-                String vCode = generateVerificationCode();
-                searchedUser.setVCode(passwordEncoder.encode(vCode));
-                userRepository.save(searchedUser);
-                System.out.println(vCode);
-                try {
-                    emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName(), vCode);
-                } catch (MessagingException mailException) {
-                }
-
-
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.ok().build();
         }
     }
 
     public ResponseEntity<Object> checkVerificationCode(String userVCode, String email) {
-        try {
-            if (userVCode == null || email == null) {
-                return ResponseEntity.status(422).build();
-            }
+        Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("userNotFound"));
 
-            Users searchedUser = userRepository.findByEmail(email).orElse(null);
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.status(404).body("userNotFound");
-            }
-
-            if (userVCode.length() != 10) {
-                return ResponseEntity.status(415).body("invalidVerificationCode");
-            } else {
-                JsonNode returnObject = objectMapper.createObjectNode();
-                ((ObjectNode) returnObject).put("success", passwordEncoder.matches(userVCode, searchedUser.getVCode()));
-                return ResponseEntity.ok().body(returnObject);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        if (userVCode.length() != 10) {
+            throw new InvalidDataException("invalidVerificationCode");
+        } else {
+            JsonNode returnObject = objectMapper.createObjectNode();
+            ((ObjectNode) returnObject).put("success", passwordEncoder.matches(userVCode, searchedUser.getVCode()));
+            return ResponseEntity.ok().body(returnObject);
         }
     }
 
     public ResponseEntity<Object> updatePassword(String email, String newPassword) {
-        try {
-            if (email == null || newPassword == null) {
-                return ResponseEntity.status(422).build();
-            }
 
-            if (!ValidatorCollection.emailValidator(email)) {
-                return ResponseEntity.status(415).body("invalidEmail");
+        if (!ValidatorCollection.emailValidator(email)) {
+            throw new InvalidDataException("invalidEmail");
+        }
+        Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("userNotFound"));
+        if (!ValidatorCollection.passwordValidator(newPassword)) {
+            throw new InvalidDataException("invalidPassword");
+        } else {
+            String hashedPassword = passwordEncoder.encode(newPassword);
+            searchedUser.setPassword(hashedPassword);
+            userRepository.save(searchedUser);
+            try {
+                emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail(), searchedUser.getFirstName() + " " + searchedUser.getLastName());
+            } catch (MessagingException e) {
             }
-
-            Users searchedUser = userRepository.findByEmail(email).orElse(null);
-
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.status(404).body("userNotFound");
-            }
-
-            if (!ValidatorCollection.passwordValidator(newPassword)) {
-                return ResponseEntity.status(415).body("invalidPassword");
-            } else {
-                String hashedPassword = passwordEncoder.encode(newPassword);
-                searchedUser.setPassword(hashedPassword);
-                userRepository.save(searchedUser);
-                try {
-                    emailSender.sendEmailAboutPasswordReset(searchedUser.getEmail(), searchedUser.getFirstName() + " " + searchedUser.getLastName());
-                } catch (MailSendException e) {
-                }
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.ok().build();
         }
     }
 
-    // update:
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateUser(Long id, UserUpdate updatedUser) {
         try {
-            if (id == null || updatedUser == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Users searchedUser = userRepository.getUser(id).orElse(null);
+            Users searchedUser = userRepository.getUser(id).orElseThrow(() -> new NotFoundException("userNotFound"));
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
 
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.status(404).body("userNotFound");
+            Education searchedEducation = educationRepository.getEducation(updatedUser.educationId()).orElseThrow(() -> new NotFoundException("educationNotFound"));
+            if (!ValidatorCollection.phoneValidator(updatedUser.phone().trim())) {
+                return ResponseEntity.status(415).body("invalidPhone");
+            } else if (!ValidatorCollection.emailValidator(updatedUser.email().trim())) {
+                return ResponseEntity.status(415).body("invalidEmail");
+            } else if (!updatedUser.gender().equals("male") && !updatedUser.gender().equals("female") && !updatedUser.gender().equals("other")) {
+                return ResponseEntity.status(415).body("invalidGender");
+            } else if (dateFormat.parse(updatedUser.birthDate()).after(new Date())) {
+                return ResponseEntity.status(415).body(Map.of("statusText", "invalidDate"));
             } else {
-                Education searchedEducation = educationRepository.getEducation(updatedUser.educationId()).orElse(null);
-                if (searchedEducation == null) {
-                    return ResponseEntity.status(404).body("educationNotFound");
-                } else if (!ValidatorCollection.phoneValidator(updatedUser.phone().trim())) {
-                    return ResponseEntity.status(415).body("invalidPhone");
-                } else if (!ValidatorCollection.emailValidator(updatedUser.email().trim())) {
-                    return ResponseEntity.status(415).body("invalidEmail");
-                } else if (!updatedUser.gender().equals("male") && !updatedUser.gender().equals("female") && !updatedUser.gender().equals("other")) {
-                    return ResponseEntity.status(415).body("invalidGender");
-                } else if (dateFormat.parse(updatedUser.birthDate()).after(new Date())) {
-                    return ResponseEntity.status(415).body(Map.of("statusText", "invalidDate"));
-                } else {
-                    searchedUser.setFirstName(updatedUser.firstName().trim());
-                    searchedUser.setLastName(updatedUser.lastName().trim());
-                    searchedUser.setEmail(updatedUser.email().trim());
-                    searchedUser.setPhone(updatedUser.phone().trim());
-                    searchedUser.setBirthDate(dateFormat.parse(updatedUser.birthDate()));
-                    searchedUser.setGender(updatedUser.gender());
-                    searchedUser.setUserEducation(searchedEducation);
-                    return ResponseEntity.ok(userRepository.save(searchedUser));
-                }
+                searchedUser.setFirstName(updatedUser.firstName().trim());
+                searchedUser.setLastName(updatedUser.lastName().trim());
+                searchedUser.setEmail(updatedUser.email().trim());
+                searchedUser.setPhone(updatedUser.phone().trim());
+                searchedUser.setBirthDate(dateFormat.parse(updatedUser.birthDate()));
+                searchedUser.setGender(updatedUser.gender());
+                searchedUser.setUserEducation(searchedEducation);
+                return ResponseEntity.ok(userRepository.save(searchedUser));
             }
+
         } catch (ParseException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            throw new InvalidDataException("invalidDateFormat");
         }
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updatePfp(Long id, MultipartFile pfpFile) {
+        Users searchedUser = userRepository.getUser(id).orElseThrow(() -> new NotFoundException("userNotFound"));
+        String filePath = "images/pfp" + File.separator + searchedUser.getId() + pfpFile.getOriginalFilename();
+
         try {
-            if (id == null || pfpFile == null) {
-                return ResponseEntity.status(422).build();
-            }
+            FileOutputStream fout = new FileOutputStream(filePath);
+            fout.write(pfpFile.getBytes());
+            fout.close();
 
-            Users searchedUser = userRepository.getUser(id).orElse(null);
-
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-
-                String filePath = "images/pfp" + File.separator + searchedUser.getId() + pfpFile.getOriginalFilename();
-
-                try {
-                    FileOutputStream fout = new FileOutputStream(filePath);
-                    fout.write(pfpFile.getBytes());
-                    fout.close();
-
-                    searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + pfpFile.getOriginalFilename());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return ResponseEntity.internalServerError().body("fileUploadingError");
-                }
-
-                return ResponseEntity.ok().body(userRepository.save(searchedUser));
-            }
+            searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + pfpFile.getOriginalFilename());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body("serverError");
+            return ResponseEntity.internalServerError().body("fileUploadingError");
         }
+        return ResponseEntity.ok().body(userRepository.save(searchedUser));
     }
 
-    // delete:
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<String> deleteUser(Long id) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Users searchedUser = userRepository.getUser(id).orElse(null);
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            userRepository.deleteUser(id);
-
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        Users searchedUser = userRepository.getUser(id).orElseThrow(() -> new NotFoundException("userNotFound"));
+        userRepository.deleteUser(id);
+        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getUserById(Long id, Boolean isLogin) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Users searchedUser = userRepository.findById(id).orElse(null);
-
-            if (searchedUser == null || searchedUser.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            if (isLogin) {
-                return ResponseEntity.ok().body(createHomePageObject(searchedUser));
-            } else {
-                return ResponseEntity.ok().body(searchedUser);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        Users searchedUser = userRepository.findById(id).orElseThrow(() -> new NotFoundException("userNotFound"));
+        if (isLogin) {
+            return ResponseEntity.ok().body(createHomePageObject(searchedUser));
+        } else {
+            return ResponseEntity.ok().body(searchedUser);
         }
     }
 
     @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getAllUser(Pageable pageable) {
-        try {
-            Page<Users> allUser = userRepository.findAll(pageable);
-            List<ProfileCard> returnList = new ArrayList<>();
+        Page<Users> allUser = userRepository.findAll(pageable);
+        List<ProfileCard> returnList = new ArrayList<>();
 
-            for (Users i : allUser) {
-                returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath(), i.getId()));
-            }
-
-            HttpHeaders header = new HttpHeaders();
-            header.add("PageNumber", allUser.getTotalPages() + "");
-            System.out.println("getAllUser");
-
-            return new ResponseEntity<>(returnList, header, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        for (Users i : allUser) {
+            returnList.add(new ProfileCard(i.getId(), i.getFirstName() + " " + i.getLastName(), i.getPfpPath(), i.getId()));
         }
+        HttpHeaders header = new HttpHeaders();
+        header.add("PageNumber", allUser.getTotalPages() + "");
+        return new ResponseEntity<>(returnList, header, HttpStatus.OK);
     }
 
     //Nem Endpoint:
@@ -472,13 +353,3 @@ public class UserService {
         return school;
     }
 }
-
-/*
- * HTTP STATUS KODOK:
- *   - 200: Sikeres muvelet
- *   - 404: Not Found
- *   - 409: Mar foglalt nev
- *   - 415: Unsupported Media Type --> Ha az adott adat invalid
- *   - 422: Hianyzo parameter/response body
- *   - 500: Internal Server Error
- * */

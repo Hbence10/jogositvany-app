@@ -7,10 +7,11 @@ import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
+import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +19,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Transactional(noRollbackFor = {DataIntegrityViolationException.class, ConstraintViolationException.class, SQLIntegrityConstraintViolationException.class, SQLException.class})
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class InstructorService {
@@ -43,108 +41,57 @@ public class InstructorService {
     private final ObjectMapper objectMapper;
     private final DrivingLessonRepository drivingLessonRepository;
     private final EmailSender emailSender;
-
-    //
     private final ReservedHourRepository reservedHourRepository;
     private final ReservedDateRepository reservedDateRepository;
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleRequest(Long requestId, String status) {
-        try {
-            if (requestId == null || status == null) {
-                return ResponseEntity.status(422).build();
-            }
+        InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElseThrow(() -> new NotFoundException("requestNotFound"));
 
-            InstructorJoinRequest searchedJoinRequest = instructorJoinRequestRepository.getInstructorJoinRequest(requestId).orElse(null);
+        if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
+            throw new InvalidDataException("invalidStatus");
+        } else {
+            if (status.trim().equals("accept")) {
+                Students student = searchedJoinRequest.getInstructorJoinRequestStudent();
+                student.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
 
-            if (searchedJoinRequest == null || searchedJoinRequest.getIsDeleted()) {
-                return ResponseEntity.status(404).body("requestNotFound");
-            } else if (!status.trim().equals("accept") && !status.trim().equals("refuse")) {
-                return ResponseEntity.status(415).body("invalidStatus");
+                studentRepository.save(student);
+                searchedJoinRequest.setIsAccepted(true);
             } else {
-                if (status.trim().equals("accept")) {
-                    Students student = searchedJoinRequest.getInstructorJoinRequestStudent();
-                    student.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
-
-                    studentRepository.save(student);
-                    searchedJoinRequest.setIsAccepted(true);
-                } else if (status.trim().equals("refuse")) {
-                    searchedJoinRequest.setIsAccepted(false);
-                }
-                searchedJoinRequest.setAcceptedAt(new Date());
-                try {
-                    emailSender.sendEmailAboutInstructorJoinRequestToStudent(searchedJoinRequest.getInstructorJoinRequestStudent().getStudentUser().getEmail(), searchedJoinRequest, status);
-                } catch (MessagingException e) {
-                }
-                return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
+                searchedJoinRequest.setIsAccepted(false);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            searchedJoinRequest.setAcceptedAt(new Date());
+            try {
+                emailSender.sendEmailAboutInstructorJoinRequestToStudent(searchedJoinRequest.getInstructorJoinRequestStudent().getStudentUser().getEmail(), searchedJoinRequest, status);
+            } catch (MessagingException e) {
+            }
+            return ResponseEntity.ok().body(instructorJoinRequestRepository.save(searchedJoinRequest));
         }
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<InstructorJoinRequest>> getAllJoinRequestByInstructor(Long id, Pageable pageable) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                Page<InstructorJoinRequest> returnList = instructorJoinRequestRepository.findByInstructorJoinRequestInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
-                return ResponseEntity.ok().body(returnList.toList());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        Instructors searchedInstructor = instructorRepository.getInstructor(id).orElseThrow(() -> new NotFoundException("instructorNotFound"));
+        Page<InstructorJoinRequest> returnList = instructorJoinRequestRepository.findByInstructorJoinRequestInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
+        return ResponseEntity.ok().body(returnList.toList());
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<List<DrivingLessonRequest>> getDrivingLessonRequestByInstructor(Long instructorId, Pageable pageable) {
-        try {
-            if (instructorId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                Page<DrivingLessonRequest> returnList = drivingLessonRequestRepository.findBydLessonInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
-                return ResponseEntity.ok().body(returnList.toList());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
+        Page<DrivingLessonRequest> returnList = drivingLessonRequestRepository.findBydLessonInstructorAndIsAcceptedAndIsDeleted(searchedInstructor, null, false, pageable);
+        return ResponseEntity.ok().body(returnList.toList());
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateInstructor(Long instructorId, InstructorUpdate updatedInstructor) {
-        if (instructorId == null || updatedInstructor == null) {
-            return ResponseEntity.status(422).build();
-        }
+        Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
+        Vehicle searchedVehicle = vehicleRepository.getVehicle(updatedInstructor.vehicleId()).orElseThrow(() -> new NotFoundException("vehicleNotFound"));
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(updatedInstructor.fuelTypeId()).orElseThrow(() -> new NotFoundException("fuelTypeNotFound"));
+        VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(updatedInstructor.vehicleTypeId()).orElseThrow(() -> new NotFoundException("vehicleTypeNotFound"));
 
-        Instructors searchedInstructors = instructorRepository.getInstructor(instructorId).orElse(null);
-        Vehicle searchedVehicle = vehicleRepository.getVehicle(updatedInstructor.vehicleId()).orElse(null);
-        FuelType searchedFuelType = fuelTypeRepository.getFuelType(updatedInstructor.fuelTypeId()).orElse(null);
-        VehicleType searchedVehicleType = vehicleTypeRepository.getVehicleType(updatedInstructor.vehicleTypeId()).orElse(null);
-
-        if (searchedInstructors == null || searchedInstructors.getIsDeleted()) {
-            return ResponseEntity.status(404).body("instructorNotFound");
-        } else if (searchedVehicle == null || searchedVehicle.getIsDeleted()) {
-            return ResponseEntity.status(404).body("vehicleNotFound");
-        } else if (searchedFuelType == null) {
-            return ResponseEntity.status(404).body("fuelTypeNotFound");
-        } else if (searchedVehicleType == null) {
-            return ResponseEntity.status(404).body("vehicleTypeNotFound");
-        } else if (updatedInstructor.licensePlate().length() != 7 && updatedInstructor.licensePlate().length() != 9) {
-            return ResponseEntity.status(415).build();
+        if (updatedInstructor.licensePlate().length() != 7 && updatedInstructor.licensePlate().length() != 9) {
+            throw new InvalidDataException("invalidLicensePlate");
         } else {
             searchedInstructors.setPromoText(updatedInstructor.promoText().trim());
             searchedVehicle.setLicensePlate(updatedInstructor.licensePlate());
@@ -158,155 +105,83 @@ public class InstructorService {
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleDrivingLessonRequest(Long requestId, String status) {
-        try {
-            if (requestId == null || status == null) {
-                return ResponseEntity.status(422).build();
-            } else {
-                DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElse(null);
-                if (searchedRequest == null || searchedRequest.getIsDeleted()) {
-                    return ResponseEntity.notFound().build();
-                } else if (searchedRequest.getDate().before(new Date())) {
-                    return ResponseEntity.status(415).body("invalidDate");
-                }
-
-                List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
-                if (!drivingLessonsAtThisTime.isEmpty()) {
-                    return ResponseEntity.status(400).body("reservedAppointment");
-                }
-
-                if (!status.equals("accept") && !status.equals("refuse")) {
-                    return ResponseEntity.status(415).build();
-                } else {
-                    if (status.equals("accept")) {
-                        ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
-                        ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
-                        drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.getStatus(1L).get()));
-                        searchedRequest.setIsAccepted(true);
-                    } else if (status.equals("refuse")) {
-                        searchedRequest.setIsAccepted(false);
-                    }
-                    searchedRequest.setAcceptedAt(new Date());
-                    drivingLessonRequestRepository.save(searchedRequest);
-
-                    try {
-                        emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
-                    } catch (MessagingException e) {
-                    }
-                    return ResponseEntity.ok().build();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElseThrow(() -> new NotFoundException("requestNotFound"));
+        if (searchedRequest.getDate().before(new Date())) {
+            return ResponseEntity.status(415).body("invalidDate");
         }
+
+        List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
+        if (!drivingLessonsAtThisTime.isEmpty()) {
+            return ResponseEntity.status(400).body("reservedAppointment");
+        }
+
+        if (!status.equals("accept") && !status.equals("refuse")) {
+            throw new InvalidDataException("invalidStatus");
+        } else {
+            if (status.equals("accept")) {
+                ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
+                ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
+                drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.getStatus(1L).get()));
+                searchedRequest.setIsAccepted(true);
+            } else {
+                searchedRequest.setIsAccepted(false);
+            }
+            searchedRequest.setAcceptedAt(new Date());
+            drivingLessonRequestRepository.save(searchedRequest);
+
+            try {
+                emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
+            } catch (MessagingException e) {
+            }
+            return ResponseEntity.ok().build();
+        }
+
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getInstructorsBySearch(Long fuelTypeId, Long schoolId, Long categoryId) {
-        try {
-            if (fuelTypeId == null || schoolId == null) {
-                return ResponseEntity.status(422).build();
+        FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElseThrow(() -> new NotFoundException("fuelTypeNotFound"));
+        School searchedSchool = schoolRepository.getSchool(schoolId).orElseThrow(() -> new NotFoundException("schoolNotFound"));
+
+        List<Long> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId, categoryId);
+        List<JsonNode> searchedInstructors = new ArrayList<>();
+
+        for (Long id : searchedInstructorsId) {
+            Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
+            if (searchedInstructor != null) {
+                JsonNode instructorNode = objectMapper.createObjectNode();
+                ((ObjectNode) instructorNode).put("id", searchedInstructor.getId());
+                ((ObjectNode) instructorNode).put("name", searchedInstructor.getInstructorUser().getFirstName() + " " + searchedInstructor.getInstructorUser().getLastName());
+                searchedInstructors.add(instructorNode);
             }
-
-            FuelType searchedFuelType = fuelTypeRepository.getFuelType(fuelTypeId).orElse(null);
-            School searchedSchool = schoolRepository.getSchool(schoolId).orElse(null);
-
-            if (searchedFuelType == null) {
-                return ResponseEntity.status(404).body("fuelTypeNotFound");
-            } else if (searchedSchool == null || searchedSchool.getIsDeleted()) {
-                return ResponseEntity.status(404).body("schoolNotFound");
-            } else {
-                List<Long> searchedInstructorsId = instructorRepository.getInstructorBySearch(fuelTypeId, schoolId, categoryId);
-                List<JsonNode> searchedInstructors = new ArrayList<>();
-
-                for (Long id : searchedInstructorsId) {
-                    Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-                    if (searchedInstructor != null) {
-                        JsonNode instructorNode = objectMapper.createObjectNode();
-                        ((ObjectNode) instructorNode).put("id", searchedInstructor.getId());
-                        ((ObjectNode) instructorNode).put("name", searchedInstructor.getInstructorUser().getFirstName() + " " + searchedInstructor.getInstructorUser().getLastName());
-                        searchedInstructors.add(instructorNode);
-                    }
-                }
-
-                return ResponseEntity.ok().body(searchedInstructors.stream().filter(Objects::nonNull).toList());
-            }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
         }
+
+        return ResponseEntity.ok().body(searchedInstructors.stream().filter(Objects::nonNull).toList());
     }
 
     @PreAuthorize("(isAuthenticated() and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Instructors> getInstructorById(Long id) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                return ResponseEntity.ok().body(searchedInstructor);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        Instructors searchedInstructor = instructorRepository.getInstructor(id).orElseThrow(() -> new NotFoundException("instructorNotFound"));
+        return ResponseEntity.ok().body(searchedInstructor);
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getStudentsByInstructor(Long id, Pageable pageable) {
-        try {
-            if (id == null) {
-                return ResponseEntity.status(422).build();
-            }
-            Instructors searchedInstructor = instructorRepository.getInstructor(id).orElse(null);
-            if (searchedInstructor == null || searchedInstructor.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            }
+        Instructors searchedInstructor = instructorRepository.getInstructor(id).orElseThrow(() -> new NotFoundException("instructorNotFound"));
 
-            List<ProfileCard> returnList = new ArrayList<>();
-            for (Students i : instructorRepository.getAllStudents(id, pageable).toList()) {
-                returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
-            }
-
-            return ResponseEntity.ok().body(returnList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+        List<ProfileCard> returnList = new ArrayList<>();
+        for (Students i : instructorRepository.getAllStudents(id, pageable).toList()) {
+            returnList.add(new ProfileCard(i.getId(), i.getStudentUser().getFirstName() + " " + i.getStudentUser().getLastName(), i.getStudentUser().getPfpPath(), i.getStudentUser().getId()));
         }
+
+        return ResponseEntity.ok().body(returnList);
     }
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> kickoutStudent(Long studentId) {
-        try {
-            if (studentId == null) {
-                return ResponseEntity.status(422).build();
-            }
-
-            Students searchedStudent = studentRepository.getStudent(studentId).orElse(null);
-            if (searchedStudent == null || searchedStudent.getIsDeleted()) {
-                return ResponseEntity.notFound().build();
-            } else {
-                searchedStudent.setStudentInstructor(null);
-                studentRepository.save(searchedStudent);
-                return ResponseEntity.ok().build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
-        }
+        Students searchedStudent = studentRepository.getStudent(studentId).orElseThrow(() -> new NotFoundException("studentNotFound"));
+        searchedStudent.setStudentInstructor(null);
+        studentRepository.save(searchedStudent);
+        return ResponseEntity.ok().build();
     }
 }
-
-/*
- * HTTP STATUS KODOK:
- *   - 200: Sikeres muvelet
- *   - 404: Not Found
- *   - 409: Mar foglalt nev
- *   - 415: Unsupported Media Type --> Ha az adott adat invalid
- *   - 422: Hianyzo parameter/response body
- *   - 500: Internal Server Error
- * */

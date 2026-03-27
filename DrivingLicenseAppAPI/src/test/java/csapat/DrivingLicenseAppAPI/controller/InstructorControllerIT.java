@@ -67,6 +67,7 @@ public class InstructorControllerIT {
     private Long studentId;
     private Long joinRequestId;
     private Long drivingLessonRequestId;
+    private String BASEURL = "http://localhost:8080/instructor";
 
     @BeforeEach
     public void setup() {
@@ -92,6 +93,8 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Accept existent join request")
     public void acceptExistentJoinRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "accept");
+//        mockMvc.perform()
     }
 
     @Test
