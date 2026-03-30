@@ -7,10 +7,7 @@ import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import org.hamcrest.core.Is;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,18 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.hasSize;
 
-//29db
+//30db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
@@ -74,6 +69,7 @@ public class InstructorControllerIT {
     private Long studentId;
     private Long joinRequestId;
     private Long drivingLessonRequestId;
+    private Long vehicleId;
     private String BASEURL = "http://localhost:8080/instructor";
 
     @BeforeEach
@@ -86,7 +82,8 @@ public class InstructorControllerIT {
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
         schoolRepository.save(testSchool);
 
-        Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
+        Vehicle testVehicle = vehicleRepository.save(new Vehicle("PHP-111", "testAuto", vehicleTypeRepository.findById(1L).get(), fuelTypeRepository.findById(1L).get()));
+        Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor, testVehicle));
         Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
         instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor, false));
         InstructorJoinRequest testInstructorJoinRequest = instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor));
@@ -96,13 +93,14 @@ public class InstructorControllerIT {
         drivingLessonRequestId = testDrivingLessonRequest.getId();
         studentId = testStudent.getId();
         joinRequestId = testInstructorJoinRequest.getId();
+        vehicleId = testVehicle.getId();
     }
 
     //Csatlakozási kérelmek
     @Test
     @DisplayName("Accept existent join request")
     public void acceptExistentJoinRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "accept");
+        JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId, "accept");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
     }
@@ -110,7 +108,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Refuse existent join request")
     public void refuseExistentJoinRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "refuse");
+        JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId, "refuse");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
     }
@@ -118,7 +116,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Handle non existent join request")
     public void handleNonExistentJoinRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId+1, "accept");
+        JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId + 1, "accept");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("requestNotFound")));
@@ -127,7 +125,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Handle existent request with invalid status")
     public void handleExistentRequestWithInvalidStatus() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "acceptrrasd");
+        JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId, "acceptrrasd");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
                 .andExpect(jsonPath("$", Is.is("invalidStatus")));
@@ -169,7 +167,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Accept an existent drivingLessonRequest")
     public void acceptExistentDrivingLessonRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "accept");
+        JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId, "accept");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
     }
@@ -177,7 +175,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Refuse an existent drivingLessonRequest")
     public void refuseExistentDrivingLessonRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "refuse");
+        JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId, "refuse");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
     }
@@ -185,7 +183,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Handle a non existent drivingLessonRequest")
     public void handleNonExistentDrivingLessonRequest() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId + 1, "accept");
+        JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId + 1, "accept");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("requestNotFound")));
@@ -194,7 +192,7 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Handle drivingLessonRequest with invalid status")
     public void handleDrivingLessonWithInvalidStatus() throws Exception {
-        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "acceptasdads");
+        JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId, "acceptasdads");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
                 .andExpect(jsonPath("$", Is.is("invalidStatus")));
@@ -211,31 +209,66 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Update existent instructor with valid datas")
     public void updateExistentInstructorWithValidData() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
+        MvcResult result = mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        Users updatedInstructor = objectMapper.readValue(result.getResponse().getContentAsString(), Users.class);
+        Assertions.assertEquals("testPromo", updatedInstructor.getInstructor().getPromoText(), "");
+        Assertions.assertEquals(vehicleId, updatedInstructor.getInstructor().getVehicle().getId(), "");
+        Assertions.assertEquals("testVehicleUpdate", updatedInstructor.getInstructor().getVehicle().getName(), "");
+        Assertions.assertEquals("PHP-121", updatedInstructor.getInstructor().getVehicle().getLicensePlate(), "");
+        Assertions.assertEquals(2L, updatedInstructor.getInstructor().getVehicle().getFuelType().getId(), "");
+        Assertions.assertEquals(2L, updatedInstructor.getInstructor().getVehicle().getVehicleType().getId(), "");
     }
 
     @Test
     @DisplayName("Update non existent instructor")
     public void updateNonExistentInstructor() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
+        mockMvc.perform(put(BASEURL + "/" + (instructorId + 1)).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Update non existent vehicle of instructor")
     public void updateNonExistentVehicleOfInstructor() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId+1, "testVehicleUpdate", "PHP-121", 2L, 2L);
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("vehicleNotFound")));
     }
 
     @Test
     @DisplayName("Update existent vehicle with non existent fuel type")
     public void updateExistentVehicleWithNonExistentFuelType() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 100L, 2L);
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("fuelTypeNotFound")));
     }
 
     @Test
     @DisplayName("Update existent vehicle with non existent vehicle type")
     public void updateExistentVehicleWithNonExistentVehicleType() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 100L);
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("vehicleTypeNotFound")));
     }
 
     @Test
     @DisplayName("Update existent vehicle with invalid license plate")
     public void updateExistentVehicleWithInvalidLicensePlate() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
+    }
+
+    @Test
+    @DisplayName("Update vehicle with registered license plate")
+    public void updateVehicleWithRegisteredLicensePlate() throws Exception {
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
     }
 
     private InstructorUpdate createRequestBodyForUpdate(String promoText, Long vehicleId, String vehicleName, String licensePlate, Long fuelTypeId, Long vehicleTypeId) {
