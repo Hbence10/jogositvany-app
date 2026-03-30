@@ -138,7 +138,7 @@ public class InstructorController {
             @ApiResponse(responseCode = "422", description = "Hiányzó parameter vagy requestBody", content = @Content),
             @ApiResponse(responseCode = "500", description = "A server okozta hiba.", content = @Content),
     })
-    @GetMapping("")
+    @GetMapping
     private ResponseEntity<Object> getInstructorsBySearch(@RequestParam(name = "fuelType", defaultValue = "1") Long fuelTypeId, @RequestParam("school") Long schoolId, @RequestParam("category") Long category) {
         return instructorService.getInstructorsBySearch(fuelTypeId, schoolId, category);
     }

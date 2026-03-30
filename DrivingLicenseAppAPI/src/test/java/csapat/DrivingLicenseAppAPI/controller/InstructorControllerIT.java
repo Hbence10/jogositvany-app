@@ -70,6 +70,7 @@ public class InstructorControllerIT {
     private Long joinRequestId;
     private Long drivingLessonRequestId;
     private Long vehicleId;
+    private Long schoolId;
     private String BASEURL = "http://localhost:8080/instructor";
 
     @BeforeEach
@@ -80,7 +81,8 @@ public class InstructorControllerIT {
         Users user = userRepository.save(new Users("testUser1", "registerStudent1", "test1@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
 
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
-        schoolRepository.save(testSchool);
+//        schoolRepository.save(testSchool);
+        schoolId = testSchool.getId();
 
         Vehicle testVehicle = vehicleRepository.save(new Vehicle("PHP-111", "testAuto", vehicleTypeRepository.findById(1L).get(), fuelTypeRepository.findById(1L).get()));
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor, testVehicle));
@@ -279,53 +281,87 @@ public class InstructorControllerIT {
     @Test
     @DisplayName("Search instructor with valid datas")
     public void searchInstructorWithValidDatas() throws Exception {
+        String url = BASEURL + "?category=1&fuelType=1&school=" + schoolId;
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Search instructor with non existent fuel type")
     public void searchInstructorWithNonExistentFuelType() throws Exception {
+        String url = BASEURL + "?category=1&fuelType=100&school=" + schoolId;
+        mockMvc.perform(get(url))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("fuelTypeNotFound")));
     }
 
     @Test
     @DisplayName("Search instructor with non existent school")
     public void searchInstructorWithNonExistentSchool() throws Exception {
+        String url = BASEURL + "?category=1&fuelType=1&school=" + (schoolId+1);
+        mockMvc.perform(get(url))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
     }
 
-    @Test
-    @DisplayName("Search instructor with non existent license category")
-    public void searchInstructorWithNonExistentLicenseCategory() throws Exception {
-    }
+//    @Test
+//    @DisplayName("Search instructor with non existent license category")
+//    public void searchInstructorWithNonExistentLicenseCategory() throws Exception {
+//        String url = BASEURL + "?category=1&fuelType=1&school=" + schoolId;
+//    }
 
     //Id alapján
     @Test
     @DisplayName("Get existent instructor by id")
     public void getExistentInstructorById() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + instructorId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(String.valueOf(instructorId)))));
     }
 
     @Test
     @DisplayName("Get non existent instructor by id")
     public void getNonExistentInstructorById() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (instructorId + 1)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Get students of existent instructor")
     public void getStudentsOfExistentInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + instructorId + "/students"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Get students of non existent instructor")
     public void getStudentsOfNonExistestInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/students"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     //diak kirugasa
     @Test
     @DisplayName("Kick out existent student")
     public void kickOutExistentStudent() throws Exception {
+        mockMvc.perform(delete(BASEURL+"/kickout?studentId="+studentId))
+                .andExpect(status().isOk());
+
+//        Ide meg lehetne majd tovabbi validaciot rakni
     }
 
     @Test
     @DisplayName("Kick out non existent student")
     public void kickOutNonExistentStudent() throws Exception {
+        mockMvc.perform(delete(BASEURL+"/kickout?studentId="+(studentId+1)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("studentNotFound")));
     }
 
     @Test
