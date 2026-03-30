@@ -35,4 +35,8 @@ public interface SchoolRepository extends JpaRepository<School, Long> {
 
     @Query("select count(s) from School s where s.isDeleted = ?1")
     Long countNotDeletedSchool(Boolean isDeleted);
+
+    Optional<School> findByEmail(String email);
+    Optional<School> findByPhone(String phone);
+    Optional<School> findByName(String name);
 }

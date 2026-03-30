@@ -72,4 +72,10 @@ public class InstructorJoinRequest {
         this.instructorJoinRequestStudent = instructorJoinRequestStudent;
         this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
     }
+
+    public InstructorJoinRequest(Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor, Boolean isAccepted) {
+        this.instructorJoinRequestStudent = instructorJoinRequestStudent;
+        this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
+        this.isAccepted = isAccepted;
+    }
 }

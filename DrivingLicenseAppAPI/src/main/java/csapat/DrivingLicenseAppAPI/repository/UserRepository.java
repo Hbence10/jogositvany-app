@@ -24,6 +24,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     void deleteUser(@Param("idIN") Long id);
 
     Optional<Users> findByEmail(String email);
+    Optional<Users> findByPhone(String phone);
 
     @Procedure(name = "setRoleOfUser", procedureName = "setRoleOfUser")
     void setRoleOfUser(@Param("userIdIN") Long userId, @Param("roleIdIN") Long roleId);

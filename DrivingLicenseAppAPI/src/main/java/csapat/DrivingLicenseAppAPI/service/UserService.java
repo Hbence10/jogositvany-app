@@ -11,6 +11,7 @@ import csapat.DrivingLicenseAppAPI.dto.UserUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
 import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
+import csapat.DrivingLicenseAppAPI.exception.UniqueErrorException;
 import csapat.DrivingLicenseAppAPI.repository.EducationRepository;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
@@ -64,6 +65,10 @@ public class UserService {
 
         if (!registerAs.equals("student") && !registerAs.equals("instructor") && !registerAs.equals("user")) {
             return ResponseEntity.status(415).body("invalidParameter");
+        } else if (userRepository.findByEmail(newUser.getEmail()).isPresent()) {
+            throw new UniqueErrorException("duplicateEmail");
+        } else if (userRepository.findByPhone(newUser.getPhone()).isPresent()) {
+            throw new UniqueErrorException("duplicatePhone");
         }
 
         Education searchedEducation = educationRepository.getEducation(newUser.getUserEducation().getId()).orElseThrow(() -> new NotFoundException("educationNotFound"));
@@ -106,11 +111,10 @@ public class UserService {
     }
 
     public ResponseEntity<Object> getVerificationCode(String email) {
-        Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("emailNotFound"));
-
         if (!ValidatorCollection.emailValidator(email.trim())) {
             throw new InvalidDataException("invalidEmail");
         } else {
+            Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("emailNotFound"));
             String vCode = generateVerificationCode();
             searchedUser.setVCode(passwordEncoder.encode(vCode));
             userRepository.save(searchedUser);
@@ -136,10 +140,10 @@ public class UserService {
     }
 
     public ResponseEntity<Object> updatePassword(String email, String newPassword) {
-
         if (!ValidatorCollection.emailValidator(email)) {
             throw new InvalidDataException("invalidEmail");
         }
+
         Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("userNotFound"));
         if (!ValidatorCollection.passwordValidator(newPassword)) {
             throw new InvalidDataException("invalidPassword");
@@ -160,6 +164,12 @@ public class UserService {
         try {
             Users searchedUser = userRepository.getUser(id).orElseThrow(() -> new NotFoundException("userNotFound"));
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+
+            if (!searchedUser.getEmail().equals(updatedUser.email()) && userRepository.findByEmail(updatedUser.email()).isPresent()) {
+                throw new UniqueErrorException("duplicateEmail");
+            } else if (!searchedUser.getPhone().equals(updatedUser.phone()) && userRepository.findByPhone(updatedUser.phone()).isPresent()) {
+                throw new UniqueErrorException("duplicatePhone");
+            }
 
             Education searchedEducation = educationRepository.getEducation(updatedUser.educationId()).orElseThrow(() -> new NotFoundException("educationNotFound"));
             if (!ValidatorCollection.phoneValidator(updatedUser.phone().trim())) {

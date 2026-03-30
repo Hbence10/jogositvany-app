@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.dto.InstructorUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,15 +14,21 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
 
 //29db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -81,10 +88,12 @@ public class InstructorControllerIT {
 
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
         Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
+        instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor, false));
         InstructorJoinRequest testInstructorJoinRequest = instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor));
-
+        DrivingLessonRequest testDrivingLessonRequest = drivingLessonRequestRepository.save(new DrivingLessonRequest("", new Date(), new Date(), new Date(), testStudent, testInstructor));
 
         instructorId = testInstructor.getId();
+        drivingLessonRequestId = testDrivingLessonRequest.getId();
         studentId = testStudent.getId();
         joinRequestId = testInstructorJoinRequest.getId();
     }
@@ -94,63 +103,101 @@ public class InstructorControllerIT {
     @DisplayName("Accept existent join request")
     public void acceptExistentJoinRequest() throws Exception {
         JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "accept");
-//        mockMvc.perform()
+        mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Refuse existent join request")
     public void refuseExistentJoinRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "refuse");
+        mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Handle non existent join request")
     public void handleNonExistentJoinRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId+1, "accept");
+        mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("requestNotFound")));
     }
 
     @Test
     @DisplayName("Handle existent request with invalid status")
     public void handleExistentRequestWithInvalidStatus() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(joinRequestId, "acceptrrasd");
+        mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidStatus")));
     }
 
     @Test
     @DisplayName("Get all join request of existent instructor")
     public void getAllJoinRequestByExistentInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + instructorId + "/joinRequest"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Get all join request of non-existent instructor")
     public void getAllJoinRequestByNonExistentInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/joinRequest"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     //Vezetési óra kérelmek
     @Test
     @DisplayName("Get all drivingLessonRequest of existent instructor")
     public void getAllDrivingLessonRequestByExistentInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + instructorId + "/drivingLessonRequest"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @DisplayName("Get all drivingLessonRequest of non-existent instructor")
     public void getAllDrivingLessonRequestByNonExistentInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/drivingLessonRequest"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Accept an existent drivingLessonRequest")
     public void acceptExistentDrivingLessonRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "accept");
+        mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Refuse an existent drivingLessonRequest")
     public void refuseExistentDrivingLessonRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "refuse");
+        mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Handle a non existent drivingLessonRequest")
     public void handleNonExistentDrivingLessonRequest() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId + 1, "accept");
+        mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("requestNotFound")));
     }
 
     @Test
     @DisplayName("Handle drivingLessonRequest with invalid status")
     public void handleDrivingLessonWithInvalidStatus() throws Exception {
+        JsonNode requestBody  = createRequestBodyForHandleRequest(drivingLessonRequestId, "acceptasdads");
+        mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidStatus")));
     }
 
     JsonNode createRequestBodyForHandleRequest(Long requestId, String status) {

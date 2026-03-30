@@ -9,6 +9,7 @@ import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
 import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
+import csapat.DrivingLicenseAppAPI.exception.UniqueErrorException;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import csapat.DrivingLicenseAppAPI.service.other.ValidatorCollection;
 import jakarta.mail.MessagingException;
@@ -98,7 +99,14 @@ public class SchoolService {
             throw new InvalidDataException("invalidEmail");
         } else if (!ValidatorCollection.phoneValidator(updatedSchool.phoneNumber().trim())) {
             throw new InvalidDataException("invalidPhone");
+        } else if (!searchedSchool.getEmail().equals(updatedSchool.email()) && schoolRepository.findByEmail(updatedSchool.email()).isPresent()) {
+            throw new UniqueErrorException("duplicateEmail");
+        } else if (!searchedSchool.getPhone().equals(updatedSchool.phoneNumber()) &&schoolRepository.findByPhone(updatedSchool.phoneNumber()).isPresent()){
+            throw new UniqueErrorException("duplicatePhone");
+        } else if (!searchedSchool.getName().equals(updatedSchool.schoolName()) &&schoolRepository.findByName(updatedSchool.schoolName()).isPresent()) {
+            throw new UniqueErrorException("duplicateName");
         }
+
         searchedSchool.setName(updatedSchool.schoolName().trim());
         searchedSchool.setEmail(updatedSchool.email().trim());
         searchedSchool.setPhone(updatedSchool.phoneNumber().trim());
@@ -187,6 +195,12 @@ public class SchoolService {
             throw new InvalidDataException("invalidEmail");
         } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
             throw new InvalidDataException("invalidPhone");
+        } else if (schoolRepository.findByEmail(addedSchool.email()).isPresent()) {
+            throw new UniqueErrorException("duplicateEmail");
+        } else if (schoolRepository.findByPhone(addedSchool.phoneNumber()).isPresent()){
+            throw new UniqueErrorException("duplicatePhone");
+        } else if (schoolRepository.findByName(addedSchool.schoolName()).isPresent()) {
+            throw new UniqueErrorException("duplicateName");
         } else {
             School newSchool = new School(addedSchool.schoolName(), addedSchool.email(), addedSchool.phoneNumber(), addedSchool.county(), addedSchool.town(), addedSchool.address(), addedSchool.promoText(), ownerUser);
             schoolRepository.save(newSchool);

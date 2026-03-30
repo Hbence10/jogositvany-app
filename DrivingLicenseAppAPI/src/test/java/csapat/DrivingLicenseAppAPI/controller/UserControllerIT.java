@@ -234,26 +234,26 @@ public class UserControllerIT {
     @DisplayName("Registration with registered e-mail.")
     public void registerWithDuplicatedEmail() throws Exception {
         Users newUser = new Users("registerStudent1", "registerStudent1", "test@gmail.com", "06707412356", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
-//        long usersSizeBeforeRegistration = userRepository.count();
+        long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$.statusText", Is.is("duplicateEmail")));
-//        long usersSizeAfterRegistration = userRepository.count();
-//        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+                .andExpect(jsonPath("$", Is.is("duplicateEmail")));
+        long usersSizeAfterRegistration = userRepository.count();
+        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
     @DisplayName("Registration with registered phone.")
     public void registerWithDuplicatedPhone() throws Exception {
         Users newUser = new Users("registerStudent1", "registerStudent1", "register@gmail.com", "06701111111", new Date(), "male", "test5.Asd", new Education(1L, "Általános Iskola"));
-//        long usersSizeBeforeRegistration = userRepository.count();
+        long usersSizeBeforeRegistration = userRepository.count();
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$.statusText", Is.is("duplicatePhone")));
-//        long usersSizeAfterRegistration = userRepository.count();
-//        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+                .andExpect(jsonPath("$", Is.is("duplicatePhone")));
+        long usersSizeAfterRegistration = userRepository.count();
+        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
