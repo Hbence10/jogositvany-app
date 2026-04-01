@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.repository;
 
 import csapat.DrivingLicenseAppAPI.entity.DrivingLessons;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -25,4 +26,7 @@ public interface DrivingLessonRepository extends JpaRepository<DrivingLessons, L
 
     @Procedure(name = "getDrivingLessonByStudentId", procedureName = "getDrivingLessonByStudentId")
     List<DrivingLessons> getDrivingLessonByStudentId(@Param("idIN") Long id);
+
+    @Query("select count(u) from Users u where u.isDeleted = ?1")
+    Long countNotCanceledDrivingLesson(Boolean isDeleted);
 }

@@ -118,4 +118,18 @@ public class DrivingLessons {
         this.dinstructor = dinstructor;
         this.drivingLessonStatus = status;
     }
+
+    public DrivingLessons(Integer startKm, Integer endKm, String location, String pickupPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Boolean isEnd, ReservedHour reservedHour, Students dstudent, Instructors dinstructor) {
+        this.startKm = startKm;
+        this.endKm = endKm;
+        this.location = location;
+        this.pickUpPlace = pickupPlace;
+        this.dropOffPlace = dropOffPlace;
+        this.lessonHourNumber = lessonHourNumber;
+        this.isPaid = isPaid;
+        this.isEnd = isEnd;
+        this.reservedHour = reservedHour;
+        this.dstudent = dstudent;
+        this.dinstructor = dinstructor;
+    }
 }

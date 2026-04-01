@@ -1,5 +1,8 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import csapat.DrivingLicenseAppAPI.entity.*;
+import csapat.DrivingLicenseAppAPI.repository.*;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,11 +10,18 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,18 +36,60 @@ public class DrivingLessonControllerIT {
 
     private final String BASEURL = "http://localhost:8080/drivingLesson";
 
-    @Autowired
     MockMvc mockMvc;
+    private final UserRepository userRepository;
+    private final SchoolRepository schoolRepository;
+    private final StudentRepository studentRepository;
+    private final InstructorRepository instructorRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final DrivingLessonRepository drivingLessonRepository;
+    private final ReservedHourRepository reservedHourRepository;
+    private final ReservedDateRepository reservedDateRepository;
+    private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
+
+    @Autowired
+    public DrivingLessonControllerIT(ReservedHourRepository reservedHourRepository, ReservedDateRepository reservedDateRepository, DrivingLessonRepository drivingLessonRepository, PasswordEncoder passwordEncoder, InstructorRepository instructorRepository, StudentRepository studentRepository, SchoolRepository schoolRepository, UserRepository userRepository, MockMvc mockMvc, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository) {
+        this.reservedHourRepository = reservedHourRepository;
+        this.reservedDateRepository = reservedDateRepository;
+        this.drivingLessonRepository = drivingLessonRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.instructorRepository = instructorRepository;
+        this.studentRepository = studentRepository;
+        this.schoolRepository = schoolRepository;
+        this.userRepository = userRepository;
+        this.mockMvc = mockMvc;
+        this.drivingLicenseCategoryRepository = drivingLicenseCategoryRepository;
+    }
+
+    Long studentId;
+    Long instructorId;
+    Long schoolId;
+    Long drivingLessonId;
 
     @BeforeEach
     public void setup() {
-        /*
-        * DrivingLesson
-        * Instructor + User
-        * Student + User
-        * School
-        * ReservedHour, ReservedDate
-        * */
+        Users student = userRepository.save(new Users("testUser1", "registerStudent1", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users instructor = userRepository.save(new Users("testUser1", "registerStudent1", "test3@gmail.com", "06701111113", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users schoolOwner = userRepository.save(new Users("testUser1", "registerStudent1", "tes4t@gmail.com", "06701111114", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+
+        School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
+        Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
+        Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
+
+        DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
+        ReservedHour testReservedHour;
+
+        try {
+            testReservedHour = reservedHourRepository.save(new ReservedHour(dateWithTimeFormat.parse("2026-04-01 15:00:00"), dateWithTimeFormat.parse("2026-04-01 17:00:00"), reservedDateRepository.save(new ReservedDate(new Date()))));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        DrivingLessons testDrivingLesson = drivingLessonRepository.save(new DrivingLessons(100, 150, "testLocation", "testPickupPlace", "testDropoffPlace", 23, false, false, testReservedHour, testStudent, testInstructor));
+        studentId = testStudent.getId();
+        instructorId = testInstructor.getId();
+        schoolId = testSchool.getId();
+        drivingLessonId = testDrivingLesson.getId();
     }
 
     @Test
@@ -58,8 +110,9 @@ public class DrivingLessonControllerIT {
     @Test
     @DisplayName("Cancel not existent driving lesson.")
     public void cancelNonExistentDrivingLesson() throws Exception {
-        mockMvc.perform(delete(BASEURL + "/cancel/421"))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(delete(BASEURL + "/cancel/" + (drivingLessonId + 1)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
     }
 
     @Test
@@ -114,7 +167,7 @@ public class DrivingLessonControllerIT {
     @Test
     @DisplayName("Get non existent driving lesson by id.")
     public void getNonExistentDrivingLessonById() throws Exception {
-        mockMvc.perform(get(BASEURL+"/32141"))
+        mockMvc.perform(get(BASEURL + "/32141"))
                 .andExpect(status().isNotFound());
     }
 
