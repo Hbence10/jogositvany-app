@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //41db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
@@ -446,17 +446,17 @@ public class UserControllerIT {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update profile picture of existent user with valid photo")
     public void updateExistentUserPfpWithValidPhoto() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update profile picture of non existent user")
     public void updateNoneExistentUsersPfp() throws Exception {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("Update profile picture of existent user with invalid photo")
     public void updateUsersPfpWithInvalidPhoto() throws Exception {
     }
 

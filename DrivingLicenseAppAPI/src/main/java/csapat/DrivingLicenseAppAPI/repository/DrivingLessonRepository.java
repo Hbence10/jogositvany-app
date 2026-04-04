@@ -27,6 +27,6 @@ public interface DrivingLessonRepository extends JpaRepository<DrivingLessons, L
     @Procedure(name = "getDrivingLessonByStudentId", procedureName = "getDrivingLessonByStudentId")
     List<DrivingLessons> getDrivingLessonByStudentId(@Param("idIN") Long id);
 
-    @Query("select count(u) from Users u where u.isDeleted = ?1")
-    Long countNotCanceledDrivingLesson(Boolean isDeleted);
+    @Query("select count(dl) from DrivingLesson dl where dl.isCancelled = ?1")
+    Long countNotCanceledDrivingLesson(Boolean isCancelled);
 }
