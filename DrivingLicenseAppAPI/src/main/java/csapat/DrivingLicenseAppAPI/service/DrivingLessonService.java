@@ -28,6 +28,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class DrivingLessonService {
 
+    private final InstructorRepository instructorRepository;
     private final DrivingLessonRepository drivingLessonRepository;
     private final ReservedHourRepository reservedHourRepository;
     private final SchoolRepository schoolRepository;
@@ -46,7 +47,7 @@ public class DrivingLessonService {
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> cancelDrivingLesson(Long drivingLessonId) {
         DrivingLessons searchedDrivingLesson = drivingLessonRepository.getDrivingLesson(drivingLessonId).orElseThrow(() -> new NotFoundException("drivingLessonNotFound"));
-        if (searchedDrivingLesson.getReservedHour().getReservedDate().getDate().before(new Date())) {
+        if (searchedDrivingLesson.getReservedHour().getReservedDate().getDate().after(new Date())) {
             throw new InvalidDataException("invalidDate");
         } else {
             reservedHourRepository.deleteReservedHour(searchedDrivingLesson.getReservedHour().getId());
@@ -67,7 +68,7 @@ public class DrivingLessonService {
 
         if (updatedLesson.startKm() >= updatedLesson.endKm()) {
             throw new InvalidDataException("invalidStartEndKm");
-        } else if (updatedLesson.lessonHourNumber() <= 0) {
+        } else if (updatedLesson.lessonHourNumber() <= 0 || updatedLesson.lessonHourNumber() <= searchedDrivingLesson.getLessonHourNumber()) {
             throw new InvalidDataException("invalidLessonHourNumber");
         } else {
             searchedDrivingLesson.setStartKm(updatedLesson.startKm());
@@ -85,6 +86,7 @@ public class DrivingLessonService {
 
     @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getReservedHoursByDate(Long instructorId, String wantedDate) {
+        instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
         List<Long> reservedHourIdList = reservedHourRepository.getReservedHourIdByDateAndInstructor(LocalDate.parse(wantedDate), instructorId);
         List<ReservedHour> reservedHours = reservedHourRepository.findAllById(reservedHourIdList);
 
@@ -105,7 +107,12 @@ public class DrivingLessonService {
     @PreAuthorize("(hasAnyRole('instructor', 'student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> getReservedHoursBetweenDates(Long instructorId, String start, String end) {
         try {
+            instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+            if (dateFormat.parse(start).after(dateFormat.parse(end))) {
+                throw new InvalidDataException("invalidDateRange");
+            }
+
             List<Long> idList = reservedHourRepository.getReservedHoursBetweenTwoDate(instructorId, dateFormat.parse(start), dateFormat.parse(end));
             List<ReservedHour> reservedHours = reservedHourRepository.findAllById(idList);
 

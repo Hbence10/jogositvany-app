@@ -119,7 +119,7 @@ public class DrivingLessons {
         this.drivingLessonStatus = status;
     }
 
-    public DrivingLessons(Integer startKm, Integer endKm, String location, String pickupPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Boolean isEnd, ReservedHour reservedHour, Students dstudent, Instructors dinstructor) {
+    public DrivingLessons(Integer startKm, Integer endKm, String location, String pickupPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Boolean isEnd, ReservedHour reservedHour, Students dstudent, Instructors dinstructor, Status status) {
         this.startKm = startKm;
         this.endKm = endKm;
         this.location = location;
@@ -131,5 +131,6 @@ public class DrivingLessons {
         this.reservedHour = reservedHour;
         this.dstudent = dstudent;
         this.dinstructor = dinstructor;
+        this.drivingLessonStatus = status;
     }
 }

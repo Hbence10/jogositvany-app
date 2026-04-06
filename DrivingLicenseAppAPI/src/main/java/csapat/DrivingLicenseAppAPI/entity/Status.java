@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,6 +44,11 @@ public class Status {
 
     //Constructorok:
     public Status(String name) {
+        this.name = name;
+    }
+
+    public Status(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 }

@@ -1,5 +1,7 @@
 package csapat.DrivingLicenseAppAPI.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import csapat.DrivingLicenseAppAPI.dto.DrivingLessonUpdate;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import org.hamcrest.core.Is;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -43,11 +46,13 @@ public class DrivingLessonControllerIT {
     private final ReservedHourRepository reservedHourRepository;
     private final ReservedDateRepository reservedDateRepository;
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
+    private final ObjectMapper mapper;
 
     @Autowired
-    public DrivingLessonControllerIT(ReservedDateRepository reservedDateRepository, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, ReservedHourRepository reservedHourRepository, DrivingLessonRepository drivingLessonRepository, PasswordEncoder passwordEncoder, InstructorRepository instructorRepository, StudentRepository studentRepository, SchoolRepository schoolRepository, UserRepository userRepository, MockMvc mockMvc) {
-        this.reservedDateRepository = reservedDateRepository;
+    public DrivingLessonControllerIT(DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, ObjectMapper mapper, ReservedDateRepository reservedDateRepository, ReservedHourRepository reservedHourRepository, DrivingLessonRepository drivingLessonRepository, PasswordEncoder passwordEncoder, InstructorRepository instructorRepository, StudentRepository studentRepository, SchoolRepository schoolRepository, UserRepository userRepository, MockMvc mockMvc) {
         this.drivingLicenseCategoryRepository = drivingLicenseCategoryRepository;
+        this.mapper = mapper;
+        this.reservedDateRepository = reservedDateRepository;
         this.reservedHourRepository = reservedHourRepository;
         this.drivingLessonRepository = drivingLessonRepository;
         this.passwordEncoder = passwordEncoder;
@@ -77,8 +82,8 @@ public class DrivingLessonControllerIT {
         ReservedHour testReservedHour;
 
         try {
-            testReservedHour = reservedHourRepository.save(new ReservedHour(dateWithTimeFormat.parse("2026-04-01 15:00:00"), dateWithTimeFormat.parse("2026-04-01 17:00:00"), reservedDateRepository.save(new ReservedDate(new Date()))));
-            DrivingLessons testDrivingLesson = drivingLessonRepository.save(new DrivingLessons(100, 150, "testLocation", "testPickupPlace", "testDropoffPlace", 23, false, false, testReservedHour, testStudent, testInstructor));
+            testReservedHour = reservedHourRepository.save(new ReservedHour(dateWithTimeFormat.parse("2026-02-01 15:00:00"), dateWithTimeFormat.parse("2026-04-01 17:00:00"), reservedDateRepository.save(new ReservedDate(new Date()))));
+            DrivingLessons testDrivingLesson = drivingLessonRepository.save(new DrivingLessons(100, 150, "testLocation", "testPickupPlace", "testDropoffPlace", 23, false, false, testReservedHour, testStudent, testInstructor, new Status(1l, "státusz_tipus1 ")));
             studentId = testStudent.getId();
             instructorId = testInstructor.getId();
             schoolId = testSchool.getId();
@@ -87,7 +92,7 @@ public class DrivingLessonControllerIT {
             throw new RuntimeException(e);
         }
     }
-
+    
     @Test
     @DisplayName("Get driving license categories of existent school.")
     public void getDrivingLicenseCategoriesOfExistentSchool() throws Exception {
@@ -96,63 +101,102 @@ public class DrivingLessonControllerIT {
     @Test
     @DisplayName("Get driving license categories of non existent school.")
     public void getDrivingLicenseCategoryOfNonExistentSchool() throws Exception {
+        mockMvc.perform(get(BASEURL + "/categories/school/" + (schoolId + 1)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
     }
 
     @Test
     @DisplayName("Cancel existent driving lesson.")
     public void cancelExistentDrivingLesson() throws Exception {
-        Long beforeCancelling = drivingLessonRepository.countNotCanceledDrivingLesson(false);
+        Long beforeCancelling = drivingLessonRepository.countByCancelling(true);
 
         mockMvc.perform(delete(BASEURL + "/cancel/" + drivingLessonId))
                 .andExpect(status().isOk());
 
-        Long afterCancelling = drivingLessonRepository.countNotCanceledDrivingLesson(false);
+        Long afterCancelling = drivingLessonRepository.countByCancelling(true);
         Assertions.assertEquals(beforeCancelling+1, afterCancelling, "");
     }
 
     @Test
     @DisplayName("Cancel not existent driving lesson.")
     public void cancelNonExistentDrivingLesson() throws Exception {
-        Long beforeCancelling = drivingLessonRepository.countNotCanceledDrivingLesson(false);
+        Long beforeCancelling = drivingLessonRepository.countByCancelling(true);
 
         mockMvc.perform(delete(BASEURL + "/cancel/" + (drivingLessonId + 1)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
 
-        Long afterCancelling = drivingLessonRepository.countNotCanceledDrivingLesson(false);
+        Long afterCancelling = drivingLessonRepository.countByCancelling(true);
         Assertions.assertEquals(beforeCancelling, afterCancelling, "");
     }
 
     @Test
     @DisplayName("Update existent driving lesson with valid datas.")
     public void updateExistentDrivingLessonWithValidDatas() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1l);
+        mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.startKm", Is.is(22)))
+                .andExpect(jsonPath("$.endKm", Is.is(44)))
+                .andExpect(jsonPath("$.location", Is.is("testUpdateLocation")))
+                .andExpect(jsonPath("$.pickUpPlace", Is.is("testUpdatePickup")))
+                .andExpect(jsonPath("$.dropOffPlace", Is.is("testDropOffPlace")))
+                .andExpect(jsonPath("$.lessonHourNumber", Is.is(321)))
+                .andExpect(jsonPath("$.isPaid", Is.is(true)));
     }
 
     @Test
     @DisplayName("Update non existent driving lesson.")
     public void updateNonExistentDrivingLesson() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1l);
+        mockMvc.perform(put(BASEURL+ "/" + (drivingLessonId+1)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
     }
 
     @Test
     @DisplayName("Update driving lesson with invalid start & end range. Start is greater than end.")
     public void updateDrivingLessonWithInvalidStartEndRange() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 14, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1l);
+        mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidStartEndKm")));
     }
 
     @Test
     @DisplayName("Update driving lesson with invalid lesson hour number. Lesson hour didn't grow.")
     public void updateDrivingLessonWithInvalidLessonHourNumber() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 23, true, 1l, 1l);
+        mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidLessonHourNumber")));
     }
 
     @Test
     @DisplayName("Update driving lesson with non-existent payment method.")
     public void updateDrivingLessonWithNonExistentPaymentMethod() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1321l);
+        mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("paymentMethodNotFound")));
     }
 
     @Test
     @DisplayName("Update driving lesson with non-existent status.")
     public void updateDrivingLessonWithNonExistentStatus() throws Exception {
+        DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1321l, 1l);
+        mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("statusNotFound")));
     }
 
+    public DrivingLessonUpdate createRequestBodyForDrivingLessonUpdate(Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Long statusId, Long paymentId){
+        return new DrivingLessonUpdate(startKm, endKm, location, pickUpPlace, dropOffPlace, lessonHourNumber, isPaid, statusId, paymentId);
+    }
+
+//Ez hianyzik
     @Test
     @DisplayName("Get reserved hours of existent user & with valid date format.")
     public void getReservedHourByValidDateAndInstructor() throws Exception {
@@ -161,18 +205,25 @@ public class DrivingLessonControllerIT {
     @Test
     @DisplayName("Get reserved hours of non-existent instructor.")
     public void getReservedHourByNonExistentInstructor() throws Exception {
-    }
-
-    @Test
-    public void getReservedHourByInvalidDateFormat() throws Exception {
+        mockMvc.perform(get(BASEURL + "/reservedHour?instructorId=" + (instructorId + 1) + "&date=2026-02-01" ))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Get Existent driving lesson by id.")
     public void getExistentDrivingLessonById() throws Exception {
-        mockMvc.perform(get(BASEURL + "/" + (drivingLessonId + 1)))
-                .andExpect(status().isOk());
-//                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
+        mockMvc.perform(get(BASEURL + "/" + drivingLessonId))
+                .andExpect(status().isOk())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.startKm", Is.is(100)))
+                .andExpect(jsonPath("$.endKm", Is.is(150)))
+                .andExpect(jsonPath("$.location", Is.is("testLocation")))
+                .andExpect(jsonPath("$.pickUpPlace", Is.is("testPickupPlace")))
+                .andExpect(jsonPath("$.dropOffPlace", Is.is("testDropoffPlace")))
+                .andExpect(jsonPath("$.lessonHourNumber", Is.is(23)))
+                .andExpect(jsonPath("$.isPaid", Is.is(false)));
     }
 
     @Test
@@ -183,27 +234,34 @@ public class DrivingLessonControllerIT {
                 .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
     }
 
+//    vissza
     @Test
     @DisplayName("Get reserved hours between two dates with valid datas.")
     public void getReservedHoursBetweenDatesWithValidDatas() throws Exception {
-
     }
 
     @Test
     @DisplayName("Get reserved hours between two dates of non existent instructor.")
     public void getNonExistentInstructorsReservedHoursBetweenTwoDates() throws Exception {
-
+        mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + (instructorId + 1) + "&startDate=2026-02-01&endDate=2026-02-06" ))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
     }
 
     @Test
     @DisplayName("Get reserved hours between two dates with invalid start & end range.")
     public void getReservedHoursBetweenTwoDatesWithInvalidStartEndRange() throws Exception {
+        mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + instructorId + "&startDate=2026-02-01&endDate=2026-01-06" ))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidDateRange")));
 
     }
 
     @Test
     @DisplayName("Get reserved hours between two dates with invalid date format")
     public void getReservedHoursBetweenTwoDatesWithInvalidDateFormat() throws Exception {
-
+        mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + instructorId + "&startDate=2026/02-01&endDate=2026-01-06" ))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidDateFormat")));
     }
 }
