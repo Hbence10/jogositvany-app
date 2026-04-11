@@ -94,6 +94,7 @@ public class SchoolService {
     @PreAuthorize("(hasAnyRole('school_admin', 'school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> updateSchool(Long schoolId, SchoolDto updatedSchool) {
         School searchedSchool = schoolRepository.getSchool(schoolId).orElseThrow(() -> new NotFoundException("schoolNotFound"));
+        System.out.println(schoolRepository.findByName(updatedSchool.schoolName()).isPresent());
 
         if (!ValidatorCollection.emailValidator(updatedSchool.email().trim())) {
             throw new InvalidDataException("invalidEmail");
@@ -103,7 +104,7 @@ public class SchoolService {
             throw new UniqueErrorException("duplicateEmail");
         } else if (!searchedSchool.getPhone().equals(updatedSchool.phoneNumber()) &&schoolRepository.findByPhone(updatedSchool.phoneNumber()).isPresent()){
             throw new UniqueErrorException("duplicatePhone");
-        } else if (!searchedSchool.getName().equals(updatedSchool.schoolName()) &&schoolRepository.findByName(updatedSchool.schoolName()).isPresent()) {
+        } else if (!searchedSchool.getName().equals(updatedSchool.schoolName()) && schoolRepository.findByName(updatedSchool.schoolName()).isPresent()) {
             throw new UniqueErrorException("duplicateName");
         }
 
@@ -191,6 +192,7 @@ public class SchoolService {
     @PreAuthorize("(hasRole('administrator') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> createSchool(SchoolDto addedSchool) {
         Users ownerUser = userRepository.getUser(addedSchool.ownerId()).orElseThrow(() -> new NotFoundException("userNotFound"));
+        System.out.println(schoolRepository.findByName(addedSchool.schoolName()).isPresent());
         if (!ValidatorCollection.emailValidator(addedSchool.email().trim())) {
             throw new InvalidDataException("invalidEmail");
         } else if (!ValidatorCollection.phoneValidator(addedSchool.phoneNumber().trim())) {
@@ -238,10 +240,17 @@ public class SchoolService {
     public ResponseEntity<Object> kickoutInstructor(Long instructorId) {
         Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
         searchedInstructor.setInstructorSchool(null);
-        for (Students i : searchedInstructor.getStudents()) {
+        List<Students> studentsList = searchedInstructor.getStudents();
+        if (searchedInstructor.getStudents() == null) {
+            studentsList = new ArrayList<Students>();
+        }
+
+        for (Students i : studentsList) {
             i.setStudentInstructor(null);
             studentRepository.save(i);
         }
+
+        searchedInstructor.setStudents(studentsList);
         instructorRepository.save(searchedInstructor);
         return ResponseEntity.ok().build();
     }
