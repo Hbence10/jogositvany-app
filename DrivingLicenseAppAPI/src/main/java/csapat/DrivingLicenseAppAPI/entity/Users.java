@@ -109,7 +109,6 @@ public class Users {
     //Kapcsolatok:
     @ManyToOne
     @JoinColumn(name = "role_id")
-    @JsonIgnoreProperties({"userList"})
     private Role role = new Role(1L, "ROLE_user");
 
     @OneToOne(mappedBy = "instructorUser")
@@ -122,7 +121,6 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "school_admin_id")
-    @Null
     private School adminSchool;
 
     @ManyToOne

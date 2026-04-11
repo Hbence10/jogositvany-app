@@ -7,12 +7,16 @@ import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
+import io.jsonwebtoken.lang.Assert;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.*;
+import org.junit.platform.commons.support.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -448,16 +452,19 @@ public class UserControllerIT {
     @Test
     @DisplayName("Update profile picture of existent user with valid photo")
     public void updateExistentUserPfpWithValidPhoto() throws Exception {
+//        ClassPathResource resource = new ClassPathResource("testPfp.jpg");
+//        Assertions.assertNotNull(resource);
+//        MockMultipartFile testPfp = new MockMultipartFile("file", resource.getFilename(), MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
+//        mockMvc.perform(multipart(BASE_URL + "/pfp/" + testUserId).file(testPfp))
+//                .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Update profile picture of non existent user")
     public void updateNoneExistentUsersPfp() throws Exception {
-    }
-
-    @Test
-    @DisplayName("Update profile picture of existent user with invalid photo")
-    public void updateUsersPfpWithInvalidPhoto() throws Exception {
+//        mockMvc.perform(patch(BASE_URL+"/pfp/" + (testUserId + 1)))
+//                .andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$", Is.is("userNotFound")));
     }
 
     public JsonNode createRequestBodyForUpdate(String firstName, String lastName, String email, String phone, String birthDate, String gender, Integer educationId) {

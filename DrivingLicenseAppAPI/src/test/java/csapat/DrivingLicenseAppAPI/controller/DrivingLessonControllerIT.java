@@ -92,7 +92,7 @@ public class DrivingLessonControllerIT {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Test
     @DisplayName("Get driving license categories of existent school.")
     public void getDrivingLicenseCategoriesOfExistentSchool() throws Exception {

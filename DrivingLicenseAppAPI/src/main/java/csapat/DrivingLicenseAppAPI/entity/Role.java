@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.List;
 
 @Entity
 @Table(name = "role")
@@ -34,12 +32,6 @@ public class Role {
     @NotNull
     @Size(max = 100)
     private String name;
-
-
-    //Kapcsolatok:
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Users> userList;
 
     //Constructorok
     public Role(String name) {

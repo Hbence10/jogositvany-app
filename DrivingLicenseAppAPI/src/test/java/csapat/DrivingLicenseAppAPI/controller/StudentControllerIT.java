@@ -20,6 +20,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -65,12 +66,15 @@ public class StudentControllerIT {
     @Test
     @DisplayName("Get lessons' details of existent student.")
     public void getLessonDetailsOfExistentStudent() throws Exception {
+        mockMvc.perform(get(BASEURL + "/lessonDetails/" + testId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
-    @DisplayName("Get lessons' details of existent student.")
+    @DisplayName("Get lessons' details of non existent student.")
     public void getLessonDetailsOfNonExistentStudent() throws Exception {
-        mockMvc.perform(get(BASEURL + "/lessonDetails/" + 21314))
+        mockMvc.perform(get(BASEURL + "/lessonDetails/" + (testId + 1)))
                 .andExpect(status().isNotFound());
     }
 
@@ -81,17 +85,17 @@ public class StudentControllerIT {
         mockMvc.perform(delete(BASEURL + "/" + testId))
                 .andExpect(status().isOk());
         Long sizeAfterDelete = studentRepository.countNotDeletedStudents(false);
-        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
+        assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
     }
 
     @Test
     @DisplayName("Delete non-existent student by id.")
     public void deleteNonExistentStudent() throws Exception {
         Long sizeBeforeDelete = studentRepository.countNotDeletedStudents(false);
-        mockMvc.perform(delete(BASEURL + "/" + 21314))
+        mockMvc.perform(delete(BASEURL + "/" + (testId + 1)))
                 .andExpect(status().isNotFound());
         Long sizeAfterDelete = studentRepository.countNotDeletedStudents(false);
-        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
+        assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
@@ -106,7 +110,7 @@ public class StudentControllerIT {
     @Test
     @DisplayName("Get non-existent student by id.")
     public void getNonExistentStudentById() throws Exception {
-        mockMvc.perform(get(BASEURL + "/" + 21314))
+        mockMvc.perform(get(BASEURL + "/" + (testId + 1)))
                 .andExpect(status().isNotFound());
     }
 }
