@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.eclipse.sisu.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -121,6 +122,7 @@ public class Users {
 
     @ManyToOne
     @JoinColumn(name = "school_admin_id")
+    @Nullable
     private School adminSchool;
 
     @ManyToOne

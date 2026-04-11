@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import csapat.DrivingLicenseAppAPI.dto.NewReview;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
-import org.hamcrest.core.Is;
+import org.hamcrest.core.Is.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,12 +16,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //13
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -71,13 +74,15 @@ public class ReviewControllerIT {
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706894719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
         Students testStudent = studentRepository.save(new Students(testAuthor, testSchool, drivingLicenseCategoryRepository.findById(1L).get()));
-        Review schoolTestReview = reviewRepository.save(new Review("testReviewText1", 2.0, false, testStudent, testSchool));
         Review instructorTestReview = reviewRepository.save(new Review("testReviewText1", 2.0, false, testStudent, testInstructor));
+        Review schoolTestReview = reviewRepository.save(new Review("testReviewText1", 2.0, false, testStudent, testSchool));
+        testInstructor.setReviewList(new ArrayList<Review>(Arrays.asList(instructorTestReview)));
+        testSchool.setReviewList(new ArrayList<Review>(Arrays.asList(schoolTestReview)));
 
         authorId = testStudent.getId();
         testInstructorId = testInstructor.getId();
         testSchoolId = testSchool.getId();
-        testReviewId = instructorTestReview.getId();
+        testReviewId = schoolTestReview.getId();
     }
 
     @Test
@@ -86,6 +91,7 @@ public class ReviewControllerIT {
         String url = BASEURL + "?about=school&aboutId=" + testSchoolId;
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
@@ -95,6 +101,7 @@ public class ReviewControllerIT {
         String url = BASEURL + "?about=instructor&aboutId=" + testInstructorId;
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 
@@ -104,7 +111,7 @@ public class ReviewControllerIT {
         String url = BASEURL + "?about=school&aboutId=" + (testSchoolId + 1);
         mockMvc.perform(get(url))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
+                .andExpect(jsonPath("$", is("schoolNotFound")));
     }
 
     @Test
@@ -113,7 +120,7 @@ public class ReviewControllerIT {
         String url = BASEURL + "?about=instructor&aboutId=" + (testInstructorId + 1);
         mockMvc.perform(get(url))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -122,7 +129,7 @@ public class ReviewControllerIT {
         String url = BASEURL + "?about=asdasa&aboutId=" + testSchoolId;
         mockMvc.perform(get(url))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidAbout")));
+                .andExpect(jsonPath("$", is("invalidAbout")));
     }
 
     @Test
@@ -132,7 +139,7 @@ public class ReviewControllerIT {
         mockMvc.perform(delete(BASEURL + "/" + testReviewId))
                 .andExpect(status().isOk());
         Long sizeAfterDelete = reviewRepository.countNotDeletedReview(false);
-        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
+        assertEquals(sizeBeforeDelete, sizeAfterDelete + 1, "");
     }
 
     @Test
@@ -142,7 +149,7 @@ public class ReviewControllerIT {
         mockMvc.perform(delete(BASEURL + "/" + (testReviewId + 1)))
                 .andExpect(status().isNotFound());
         Long sizeAfterDelete = reviewRepository.countNotDeletedReview(false);
-        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
+        assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
@@ -151,8 +158,8 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 2.0, authorId, testInstructorId, 0L);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text", Is.is("testReviewText")))
-                .andExpect(jsonPath("$.rating", Is.is(2.0)));
+                .andExpect(jsonPath("$.text", is("testReviewText")))
+                .andExpect(jsonPath("$.rating", is(2.0)));
     }
 
     @Test
@@ -161,8 +168,8 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 2.0, authorId, 0L, testSchoolId);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text", Is.is("testReviewText")))
-                .andExpect(jsonPath("$.rating", Is.is(2.0)));
+                .andExpect(jsonPath("$.text", is("testReviewText")))
+                .andExpect(jsonPath("$.rating", is(2.0)));
     }
 
     @Test
@@ -171,7 +178,7 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 7.0, authorId, 0L, testSchoolId);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidRating")));
+                .andExpect(jsonPath("$", is("invalidRating")));
     }
 
     @Test
@@ -180,7 +187,7 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId + 1, 0L, testSchoolId);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("studentNotFound")));
+                .andExpect(jsonPath("$", is("studentNotFound")));
     }
 
     @Test
@@ -189,7 +196,7 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId, testInstructorId + 1, 0L);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -198,7 +205,7 @@ public class ReviewControllerIT {
         NewReview newReview = createRequestBodyForReviewCreation("testReviewText", 4.0, authorId, 0L, testSchoolId + 1);
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newReview)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
+                .andExpect(jsonPath("$", is("schoolNotFound")));
     }
 
     public NewReview createRequestBodyForReviewCreation(String reviewText, Double rating, Long studentId, Long instructorId, Long schoolId) {

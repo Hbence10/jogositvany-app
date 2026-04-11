@@ -310,10 +310,10 @@ public class RequestControllerIT {
     @DisplayName("Send drivingLesson request to other instructor from same school")
     public void sendDrivingLessonRequestWithOtherStudentsInstructor() throws Exception {
         Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-//        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, secondInstructorId);
-//        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-//                .andExpect(status().is(415))
-//                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, secondInstructorId);
+        mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
         Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");

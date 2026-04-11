@@ -68,7 +68,7 @@ public class ReviewService {
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> deleteReview(Long id) {
-        Review searchedReview = reviewRepository.getReview(id).orElseThrow(() -> new NotFoundException("reviewNotFound"));
+        Review searchedReview = reviewRepository.findById(id).orElseThrow(() -> new NotFoundException("reviewNotFound"));
         reviewRepository.deleteReview(id);
         return ResponseEntity.ok().build();
     }
