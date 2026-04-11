@@ -24,6 +24,8 @@ import java.util.Date;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.is;
 
 //16db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -45,6 +47,7 @@ public class RequestControllerIT {
     private final SchoolJoinRequestRepository schoolJoinRequestRepository;
     private final InstructorJoinRequestRepository instructorJoinRequestRepository;
     private final DrivingLessonRequestRepository drivingLessonRequestRepository;
+    private final SchoolCategoryRepository schoolCategoryRepository;
 
     Long userId;
     Long studentId;
@@ -54,7 +57,7 @@ public class RequestControllerIT {
     private final String BASEURL = "http://localhost:8080/request";
 
     @Autowired
-    public RequestControllerIT(InstructorJoinRequestRepository instructorJoinRequestRepository, DrivingLessonRequestRepository drivingLessonRequestRepository, SchoolJoinRequestRepository schoolJoinRequestRepository, ObjectMapper objectMapper, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, PasswordEncoder passwordEncoder, SchoolRepository schoolRepository, InstructorRepository instructorRepository, StudentRepository studentRepository, UserRepository userRepository, MockMvc mockMvc) {
+    public RequestControllerIT(SchoolCategoryRepository schoolCategoryRepository, InstructorJoinRequestRepository instructorJoinRequestRepository, DrivingLessonRequestRepository drivingLessonRequestRepository, SchoolJoinRequestRepository schoolJoinRequestRepository, ObjectMapper objectMapper, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, PasswordEncoder passwordEncoder, SchoolRepository schoolRepository, InstructorRepository instructorRepository, StudentRepository studentRepository, UserRepository userRepository, MockMvc mockMvc) {
         this.instructorJoinRequestRepository = instructorJoinRequestRepository;
         this.drivingLessonRequestRepository = drivingLessonRequestRepository;
         this.schoolJoinRequestRepository = schoolJoinRequestRepository;
@@ -66,6 +69,7 @@ public class RequestControllerIT {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.mockMvc = mockMvc;
+        this.schoolCategoryRepository = schoolCategoryRepository;
     }
 
     @BeforeEach
@@ -84,12 +88,12 @@ public class RequestControllerIT {
 
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
         testSchool.setLicenseCategoryList(new ArrayList<>(Arrays.asList(
-                new SchoolCategory(0, drivingLicenseCategoryRepository.findById(1L).get(), testSchool)
+                schoolCategoryRepository.save(new SchoolCategory(0, drivingLicenseCategoryRepository.findById(1L).get(), testSchool))
         )));
         schoolRepository.save(testSchool);
 
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
-        Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get()));
+        Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
 
         userId = user.getId();
         studentId = testStudent.getId();
@@ -106,7 +110,7 @@ public class RequestControllerIT {
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
         Long sizeAfterSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
     }
 
     @Test
@@ -116,10 +120,10 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId + 1, userId, 1L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
+                .andExpect(jsonPath("$", is("schoolNotFound")));
 
         Long sizeAfterSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -129,10 +133,10 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId, userId + 1, 1L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("userNotFound")));
+                .andExpect(jsonPath("$", is("userNotFound")));
 
         Long sizeAfterSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -142,10 +146,10 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId, userId, 3123L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("categoryNotFound")));
+                .andExpect(jsonPath("$", is("categoryNotFound")));
 
         Long sizeAfterSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -154,11 +158,11 @@ public class RequestControllerIT {
         Long sizeBeforeSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
         JsonNode requestBody = createRequestBodyForSendingSchoolJoinRequest(schoolId, userId, 3L);
         mockMvc.perform(post(BASEURL + "/school").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("invalidCategory")));
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", is("invalidCategory")));
 
         Long sizeAfterSending = schoolJoinRequestRepository.countNotDeletedSchoolJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     private JsonNode createRequestBodyForSendingSchoolJoinRequest(Long schoolId, Long userId, Long categoryId) {
@@ -177,7 +181,7 @@ public class RequestControllerIT {
         mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk());
         Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
     }
 
     @Test
@@ -187,9 +191,9 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(instructorId + 1, studentId);
         mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
         Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -199,9 +203,9 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(instructorId, studentId + 1);
         mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("studentNotFound")));
+                .andExpect(jsonPath("$", is("studentNotFound")));
         Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -211,9 +215,9 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForSendingInstructorJoinRequest(secondInstructorId, studentId);
         mockMvc.perform(post(BASEURL + "/instructor").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+                .andExpect(jsonPath("$", is("invalidInstructor")));
         Long sizeAfterSending = instructorJoinRequestRepository.countNotDeletedInstructorJoinRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     private JsonNode createRequestBodyForSendingInstructorJoinRequest(Long instructorId, Long studentId) {
@@ -233,7 +237,7 @@ public class RequestControllerIT {
                 .andExpect(status().isOk());
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending + 1, sizeAfterSending, "");
     }
 
     @Test
@@ -244,10 +248,10 @@ public class RequestControllerIT {
 
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -258,24 +262,24 @@ public class RequestControllerIT {
 
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("studentNotFound")));
+                .andExpect(jsonPath("$", is("studentNotFound")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
     @DisplayName("Send drivingLesson request with invalid date (format)")
     public void sendDrivingLessonRequestWithInvalidDate() throws Exception {
         Long sizeBeforeSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026/06/02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, instructorId);
+        JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "02-08-2026", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, instructorId);
 
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidDate")));
+                .andExpect(jsonPath("$", is("invalidDate")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -286,10 +290,10 @@ public class RequestControllerIT {
 
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidDate")));
+                .andExpect(jsonPath("$", is("invalidDate")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -300,10 +304,10 @@ public class RequestControllerIT {
 
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+                .andExpect(jsonPath("$", is("invalidInstructor")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     @Test
@@ -313,10 +317,10 @@ public class RequestControllerIT {
         JsonNode requestBody = createRequestBodyForDrivingLessonRequest("msgTest", "2026-06-02", "2026-06-02 16:00:00", "2026-06-02 18:00:00", studentId, secondInstructorId);
         mockMvc.perform(post(BASEURL + "/drivingLesson").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidInstructor")));
+                .andExpect(jsonPath("$", is("invalidInstructor")));
 
         Long sizeAfterSending = drivingLessonRequestRepository.countNotDeletedDrivingLessonRequest(false);
-        Assertions.assertEquals(sizeBeforeSending, sizeAfterSending, "");
+        assertEquals(sizeBeforeSending, sizeAfterSending, "");
     }
 
     private JsonNode createRequestBodyForDrivingLessonRequest(String msg, String date, String startTime, String endTime, Long studentId, Long instructorId) {

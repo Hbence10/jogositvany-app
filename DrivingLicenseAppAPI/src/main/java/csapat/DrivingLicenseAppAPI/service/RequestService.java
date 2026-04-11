@@ -5,6 +5,7 @@ import csapat.DrivingLicenseAppAPI.dto.DrivingLessonRequestDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
 import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
+import csapat.DrivingLicenseAppAPI.exception.UniqueErrorException;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -41,6 +44,13 @@ public class RequestService {
         Users searchedUser = userRepository.getUser(userId).orElseThrow(() -> new NotFoundException("userNotFound"));
         DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(categoryId).orElseThrow(() -> new NotFoundException("categoryNotFound"));
 
+        System.out.println(searchedSchool.getLicenseCategoryList().get(0).getId());
+
+        List<DrivingLicenseCategory> categories = searchedCategory.getLicenseCategory().stream().map(SchoolCategory::getLicenseCategory).toList();
+        if (categories.stream().filter(c -> c.getId() == categoryId).toList().isEmpty()) {
+            throw new InvalidDataException("invalidCategory");
+        }
+
         SchoolJoinRequest newSchoolJoinRequest;
         if (searchedUser.getRole().getName().equals("ROLE_user")) {
             newSchoolJoinRequest = new SchoolJoinRequest(searchedUser, searchedSchool, searchedCategory);
@@ -58,8 +68,8 @@ public class RequestService {
 
     @PreAuthorize("(hasRole('student') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> sendInstructorJoinRequest(Long studentId, Long instructorId) {
-        Students searchedStudent = studentRepository.getStudent(studentId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
-        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("studentNotFound"));
+        Students searchedStudent = studentRepository.getStudent(studentId).orElseThrow(() -> new NotFoundException("studentNotFound"));
+        Instructors searchedInstructor = instructorRepository.getInstructor(instructorId).orElseThrow(() -> new NotFoundException("instructorNotFound"));
 
         if (!Objects.equals(searchedStudent.getStudentSchool().getId(), searchedInstructor.getInstructorSchool().getId())) {
             throw new InvalidDataException("invalidInstructor");
@@ -83,10 +93,12 @@ public class RequestService {
             Students searchedStudent = studentRepository.getStudent(newRequestDto.studentId()).orElseThrow(() -> new NotFoundException("studentNotFound"));
             Instructors searchedInstructor = instructorRepository.getInstructor(newRequestDto.instructorId()).orElseThrow(() -> new NotFoundException("instructorNotFound"));
 
+            Date startTime = dateWithTimeFormat.parse(newRequestDto.startTime());
+            Date endTime = dateWithTimeFormat.parse(newRequestDto.endTime());
 
             if (searchedStudent.getStudentSchool().getId() != searchedInstructor.getInstructorSchool().getId() || searchedStudent.getStudentInstructor().getId() != searchedInstructor.getId()) {
                 throw new InvalidDataException("invalidInstructor");
-            } else if (dateFormat.parse(newRequestDto.date()).before(new Date())) {
+            } else if (dateFormat.parse(newRequestDto.date()).before(new Date()) || endTime.before(startTime)) {
                 throw new InvalidDataException("invalidDate");
             } else {
                 DrivingLessonRequest newRequest = new DrivingLessonRequest(newRequestDto.msg(), dateFormat.parse(newRequestDto.date()), dateWithTimeFormat.parse(newRequestDto.startTime()), dateWithTimeFormat.parse(newRequestDto.endTime()), searchedStudent, searchedInstructor);
