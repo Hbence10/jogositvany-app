@@ -7,16 +7,14 @@ import csapat.DrivingLicenseAppAPI.entity.Education;
 import csapat.DrivingLicenseAppAPI.entity.Users;
 import csapat.DrivingLicenseAppAPI.repository.InstructorRepository;
 import csapat.DrivingLicenseAppAPI.repository.UserRepository;
-import io.jsonwebtoken.lang.Assert;
-import org.hamcrest.core.Is;
-import org.junit.jupiter.api.*;
-import org.junit.platform.commons.support.Resource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -27,10 +25,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//41db
+//38db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
@@ -70,7 +71,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId + ""))));
+                .andExpect(jsonPath("$.id", is(Integer.valueOf(testUserId + ""))));
     }
 
     @Test
@@ -78,7 +79,8 @@ public class UserControllerIT {
     public void loginWithNonExistentEmail() throws Exception {
         JsonNode requestBody = createLoginBody("bzhalmaii@gmail.com", "test5.Asd");
         mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", is("userNotFound")));
     }
 
     @Test
@@ -86,7 +88,8 @@ public class UserControllerIT {
     public void loginWithBadPassword() throws Exception {
         JsonNode requestBody = createLoginBody("bzhalmai@gmail.com", "ads14fa");
         mockMvc.perform(post(BASE_URL + "/login").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$", is("userNotFound")));
     }
 
     public JsonNode createLoginBody(String email, String password) {
@@ -106,7 +109,7 @@ public class UserControllerIT {
                 .andExpect(status().isOk());
 
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration + 1, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration + 1, usersSizeAfterRegistration, "");
 
     }
 
@@ -123,8 +126,8 @@ public class UserControllerIT {
         long usersSizeAfterRegistration = userRepository.count();
         long instructorsSizeAfterRegistration = instructorRepository.count();
 
-        Assertions.assertEquals(usersSizeBeforeRegistration + 1, usersSizeAfterRegistration, "");
-        Assertions.assertEquals(instructorsSizeBeforeRegistration + 1, instructorsSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration + 1, usersSizeAfterRegistration, "");
+        assertEquals(instructorsSizeBeforeRegistration + 1, instructorsSizeAfterRegistration, "");
     }
 
     @Test
@@ -135,9 +138,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/admin").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidParameter")));
+                .andExpect(jsonPath("$", is("invalidParameter")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -148,9 +151,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidObject")));
+                .andExpect(jsonPath("$", is("invalidObject")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -161,9 +164,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidGender")));
+                .andExpect(jsonPath("$", is("invalidGender")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -174,9 +177,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+                .andExpect(jsonPath("$", is("invalidEmail")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
 
     }
 
@@ -188,9 +191,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidPhone")));
+                .andExpect(jsonPath("$", is("invalidPhone")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -201,9 +204,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidPassword")));
+                .andExpect(jsonPath("$", is("invalidPassword")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -215,9 +218,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$.statusText", Is.is("invalidDate")));
+                .andExpect(jsonPath("$.statusText", is("invalidDate")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -229,9 +232,9 @@ public class UserControllerIT {
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("educationNotFound")));
+                .andExpect(jsonPath("$", is("educationNotFound")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -242,9 +245,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", Is.is("duplicateEmail")));
+                .andExpect(jsonPath("$", is("duplicateEmail")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -255,9 +258,9 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", Is.is("duplicatePhone")));
+                .andExpect(jsonPath("$", is("duplicatePhone")));
         long usersSizeAfterRegistration = userRepository.count();
-        Assertions.assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
+        assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
 
     @Test
@@ -273,7 +276,7 @@ public class UserControllerIT {
         mockMvc.perform(get(BASE_URL + "/getVerificationCode?email={wantedEmail}", "testmail.com"))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+                .andExpect(jsonPath("$", is("invalidEmail")));
     }
 
     @Test
@@ -282,7 +285,7 @@ public class UserControllerIT {
         mockMvc.perform(get(BASE_URL + "/getVerificationCode?email={wantedEmail}", "passwordReset@gmail.com"))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("emailNotFound")));
+                .andExpect(jsonPath("$", is("emailNotFound")));
     }
 
     @Test
@@ -291,7 +294,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForVCodeCheck("test@gmail.com", "aaaaaaaaaa");
         mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success", Is.is(true)));
+                .andExpect(jsonPath("$.success", is(true)));
 
     }
 
@@ -301,7 +304,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForVCodeCheck("test@gmail.com", "aaaaaaaaa1");
         mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success", Is.is(false)));
+                .andExpect(jsonPath("$.success", is(false)));
     }
 
     @Test
@@ -311,7 +314,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidVerificationCode")));
+                .andExpect(jsonPath("$", is("invalidVerificationCode")));
     }
 
     @Test
@@ -321,7 +324,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/checkVerificationCode").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("userNotFound")));
+                .andExpect(jsonPath("$", is("userNotFound")));
     }
 
     public JsonNode createRequestBodyForVCodeCheck(String email, String vCode) {
@@ -346,7 +349,7 @@ public class UserControllerIT {
         mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("userNotFound")));
+                .andExpect(jsonPath("$", is("userNotFound")));
     }
 
     @Test
@@ -356,7 +359,7 @@ public class UserControllerIT {
         mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidPassword")));
+                .andExpect(jsonPath("$", is("invalidPassword")));
     }
 
     @Test
@@ -366,7 +369,7 @@ public class UserControllerIT {
         mockMvc.perform(patch(BASE_URL + "/passwordReset").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+                .andExpect(jsonPath("$", is("invalidEmail")));
     }
 
     public JsonNode createRequestBodyForPasswordReset(String email, String newPassword) {
@@ -383,14 +386,14 @@ public class UserControllerIT {
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId + ""))))
-                .andExpect(jsonPath("$.firstName", Is.is("testUserUpdate1")))
-                .andExpect(jsonPath("$.lastName", Is.is("registerStudent1")))
-                .andExpect(jsonPath("$.email", Is.is("test@gmail.com")))
-                .andExpect(jsonPath("$.phone", Is.is("06701111111")))
-                .andExpect(jsonPath("$.birthDate", Is.is("2022-08-01T22:00:00.000+00:00")))
-                .andExpect(jsonPath("$.gender", Is.is("male")))
-                .andExpect(jsonPath("$.userEducation.id", Is.is(1)));
+                .andExpect(jsonPath("$.id", is(Integer.valueOf(testUserId + ""))))
+                .andExpect(jsonPath("$.firstName", is("testUserUpdate1")))
+                .andExpect(jsonPath("$.lastName", is("registerStudent1")))
+                .andExpect(jsonPath("$.email", is("test@gmail.com")))
+                .andExpect(jsonPath("$.phone", is("06701111111")))
+                .andExpect(jsonPath("$.birthDate", is("2022-08-01T22:00:00.000+00:00")))
+                .andExpect(jsonPath("$.gender", is("male")))
+                .andExpect(jsonPath("$.userEducation.id", is(1)));
     }
 
     @Test
@@ -400,7 +403,7 @@ public class UserControllerIT {
         mockMvc.perform(put(BASE_URL + "/" + 78978564).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("userNotFound")));
+                .andExpect(jsonPath("$", is("userNotFound")));
     }
 
     @Test
@@ -409,7 +412,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@gmail.com", "06701111111", "2022-08-02", "non-binary", 1);
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidGender")));
+                .andExpect(jsonPath("$", is("invalidGender")));
     }
 
     @Test
@@ -418,7 +421,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "testmail.com", "06701111111", "2022-08-02", "male", 1);
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidEmail")));
+                .andExpect(jsonPath("$", is("invalidEmail")));
     }
 
     @Test
@@ -427,7 +430,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06351111111", "2022-08-02", "male", 1);
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidPhone")));
+                .andExpect(jsonPath("$", is("invalidPhone")));
     }
 
     @Test
@@ -436,7 +439,7 @@ public class UserControllerIT {
         JsonNode requestBody = createRequestBodyForUpdate("testUserUpdate1", "registerStudent1", "test@mail.com", "06701111111", "2029-08-02", "male", 1);
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$.statusText", Is.is("invalidDate")));
+                .andExpect(jsonPath("$.statusText", is("invalidDate")));
     }
 
     @Test
@@ -446,25 +449,7 @@ public class UserControllerIT {
         mockMvc.perform(put(BASE_URL + "/" + testUserId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404))
-                .andExpect(jsonPath("$", Is.is("educationNotFound")));
-    }
-
-    @Test
-    @DisplayName("Update profile picture of existent user with valid photo")
-    public void updateExistentUserPfpWithValidPhoto() throws Exception {
-//        ClassPathResource resource = new ClassPathResource("testPfp.jpg");
-//        Assertions.assertNotNull(resource);
-//        MockMultipartFile testPfp = new MockMultipartFile("file", resource.getFilename(), MediaType.MULTIPART_FORM_DATA_VALUE, resource.getInputStream());
-//        mockMvc.perform(multipart(BASE_URL + "/pfp/" + testUserId).file(testPfp))
-//                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("Update profile picture of non existent user")
-    public void updateNoneExistentUsersPfp() throws Exception {
-//        mockMvc.perform(patch(BASE_URL+"/pfp/" + (testUserId + 1)))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$", Is.is("userNotFound")));
+                .andExpect(jsonPath("$", is("educationNotFound")));
     }
 
     public JsonNode createRequestBodyForUpdate(String firstName, String lastName, String email, String phone, String birthDate, String gender, Integer educationId) {
@@ -486,7 +471,7 @@ public class UserControllerIT {
         mockMvc.perform(delete(BASE_URL + "/" + testUserId))
                 .andExpect(status().isOk());
         Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
-        Assertions.assertEquals(sizeBeforeDelete - 1, sizeAfterDelete, "");
+        assertEquals(sizeBeforeDelete - 1, sizeAfterDelete, "");
     }
 
     @Test
@@ -497,7 +482,7 @@ public class UserControllerIT {
                 .andExpect(status().isNotFound())
                 .andExpect(status().is(404));
         Long sizeAfterDelete = userRepository.countNotDeletedUsers(false);
-        Assertions.assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
+        assertEquals(sizeBeforeDelete, sizeAfterDelete, "");
     }
 
     @Test
@@ -514,16 +499,16 @@ public class UserControllerIT {
         mockMvc.perform(get(BASE_URL + "/" + testUserId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(testUserId+""))));
+                .andExpect(jsonPath("$.id", is(Integer.valueOf(testUserId + ""))));
     }
 
     @Test
     public void getAllUser() throws Exception {
-//        long sizeOfAllUser = userRepository.countNotDeletedUsers(false);
-//        mockMvc.perform(get(BASE_URL))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$", Matchers.hasSize(Integer.valueOf(sizeOfAllUser + ""))));
+        long sizeOfAllUser = userRepository.countNotDeletedUsers(false);
+        mockMvc.perform(get(BASE_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(20))));
     }
 
 
