@@ -15,4 +15,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
 
     @Procedure(name = "getVehicle", procedureName = "getVehicle")
     Optional<Vehicle> getVehicle(@Param("idIN") Long id);
+
+    Optional<Vehicle> findByLicensePlateAndIsDeleted(String licensePlate, Boolean isDeleted);
 }

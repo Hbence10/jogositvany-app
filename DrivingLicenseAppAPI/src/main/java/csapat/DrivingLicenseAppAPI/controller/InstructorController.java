@@ -122,7 +122,7 @@ public class InstructorController {
     })
     @PostMapping("/handleDrivingLessonRequest")
     private ResponseEntity<Object> handleDrivingLessonRequest(@RequestBody JsonNode requestBody) {
-        return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asLong(), requestBody.get("5").asText());
+        return instructorService.handleDrivingLessonRequest(requestBody.get("requestId").asLong(), requestBody.get("status").asText());
     }
 
     @Operation(summary = "Oktatók keresése", description = "")

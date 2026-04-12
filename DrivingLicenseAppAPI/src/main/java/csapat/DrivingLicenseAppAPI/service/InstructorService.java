@@ -9,6 +9,7 @@ import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
 import csapat.DrivingLicenseAppAPI.exception.NotFoundException;
+import csapat.DrivingLicenseAppAPI.exception.UniqueErrorException;
 import csapat.DrivingLicenseAppAPI.repository.*;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class InstructorService {
     private final EmailSender emailSender;
     private final ReservedHourRepository reservedHourRepository;
     private final ReservedDateRepository reservedDateRepository;
+    private final UserRepository userRepository;
 
     @PreAuthorize("(hasRole('instructor') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> handleRequest(Long requestId, String status) {
@@ -92,6 +94,8 @@ public class InstructorService {
 
         if (updatedInstructor.licensePlate().length() != 7 && updatedInstructor.licensePlate().length() != 9) {
             throw new InvalidDataException("invalidLicensePlate");
+        } if (!searchedVehicle.getLicensePlate().equals(updatedInstructor.licensePlate()) && vehicleRepository.findByLicensePlateAndIsDeleted(updatedInstructor.licensePlate(), false).isPresent()){
+            throw new UniqueErrorException("registeredLicensePlate");
         } else {
             searchedInstructors.setPromoText(updatedInstructor.promoText().trim());
             searchedVehicle.setLicensePlate(updatedInstructor.licensePlate());
@@ -99,7 +103,12 @@ public class InstructorService {
             searchedVehicle.setFuelType(searchedFuelType);
             searchedVehicle.setVehicleType(searchedVehicleType);
             searchedInstructors.setVehicle(vehicleRepository.save(searchedVehicle));
-            return ResponseEntity.ok().body(instructorRepository.save(searchedInstructors).getInstructorUser());
+
+            Instructors updated = instructorRepository.save(searchedInstructors);
+            Users user = updated.getInstructorUser();
+            user.setInstructor(updated);
+
+            return ResponseEntity.ok().body(userRepository.save(user));
         }
     }
 
@@ -132,6 +141,7 @@ public class InstructorService {
             try {
                 emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
             } catch (MessagingException e) {
+                return ResponseEntity.ok().build();
             }
             return ResponseEntity.ok().build();
         }

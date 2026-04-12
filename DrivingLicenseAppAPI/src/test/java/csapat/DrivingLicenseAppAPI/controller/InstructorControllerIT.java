@@ -19,13 +19,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//30db
+//28db
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(locations = "classpath:test-application.properties")
 @ActiveProfiles("test")
@@ -78,21 +83,32 @@ public class InstructorControllerIT {
         Users student = userRepository.save(new Users("testUser1", "registerStudent1", "test2@gmail.com", "06701111112", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users instructor = userRepository.save(new Users("testUser1", "registerStudent1", "test3@gmail.com", "06701111113", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
         Users schoolOwner = userRepository.save(new Users("testUser1", "registerStudent1", "tes4t@gmail.com", "06701111114", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
-        Users user = userRepository.save(new Users("testUser1", "registerStudent1", "test1@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+        Users secondInstructor = userRepository.save(new Users("testUser1", "registerStudent1", "test1@gmail.com", "06701111111", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
+
 
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
-//        schoolRepository.save(testSchool);
         schoolId = testSchool.getId();
 
+        Vehicle secondtestVehicle = vehicleRepository.save(new Vehicle("PHP-112", "testAuto", vehicleTypeRepository.findById(1L).get(), fuelTypeRepository.findById(1L).get()));
         Vehicle testVehicle = vehicleRepository.save(new Vehicle("PHP-111", "testAuto", vehicleTypeRepository.findById(1L).get(), fuelTypeRepository.findById(1L).get()));
+
+        instructorRepository.save(new Instructors(testSchool, secondInstructor, secondtestVehicle));
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor, testVehicle));
+
         Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
         instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor, false));
         InstructorJoinRequest testInstructorJoinRequest = instructorJoinRequestRepository.save(new InstructorJoinRequest(testStudent, testInstructor));
-        DrivingLessonRequest testDrivingLessonRequest = drivingLessonRequestRepository.save(new DrivingLessonRequest("", new Date(), new Date(), new Date(), testStudent, testInstructor));
+
+        DateFormat dateWithTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.GERMAN);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN);
+       try {
+           DrivingLessonRequest testDrivingLessonRequest = drivingLessonRequestRepository.save(new DrivingLessonRequest("", dateFormat.parse("2026-08-02"), dateWithTimeFormat.parse("2026-08-02 15:00:00"), dateWithTimeFormat.parse("2026-08-02 17:00:00"), testStudent, testInstructor));
+           drivingLessonRequestId = testDrivingLessonRequest.getId();
+       } catch (Exception e) {
+           throw new RuntimeException();
+       }
 
         instructorId = testInstructor.getId();
-        drivingLessonRequestId = testDrivingLessonRequest.getId();
         studentId = testStudent.getId();
         joinRequestId = testInstructorJoinRequest.getId();
         vehicleId = testVehicle.getId();
@@ -121,7 +137,7 @@ public class InstructorControllerIT {
         JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId + 1, "accept");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("requestNotFound")));
+                .andExpect(jsonPath("$", is("requestNotFound")));
     }
 
     @Test
@@ -130,7 +146,7 @@ public class InstructorControllerIT {
         JsonNode requestBody = createRequestBodyForHandleRequest(joinRequestId, "acceptrrasd");
         mockMvc.perform(post(BASEURL + "/handleJoinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidStatus")));
+                .andExpect(jsonPath("$", is("invalidStatus")));
     }
 
     @Test
@@ -146,7 +162,7 @@ public class InstructorControllerIT {
     public void getAllJoinRequestByNonExistentInstructor() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/joinRequest"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     //Vezetési óra kérelmek
@@ -163,7 +179,7 @@ public class InstructorControllerIT {
     public void getAllDrivingLessonRequestByNonExistentInstructor() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/drivingLessonRequest"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -188,7 +204,7 @@ public class InstructorControllerIT {
         JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId + 1, "accept");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("requestNotFound")));
+                .andExpect(jsonPath("$", is("requestNotFound")));
     }
 
     @Test
@@ -197,7 +213,7 @@ public class InstructorControllerIT {
         JsonNode requestBody = createRequestBodyForHandleRequest(drivingLessonRequestId, "acceptasdads");
         mockMvc.perform(post(BASEURL + "/handleDrivingLessonRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidStatus")));
+                .andExpect(jsonPath("$", is("invalidStatus")));
     }
 
     JsonNode createRequestBodyForHandleRequest(Long requestId, String status) {
@@ -212,17 +228,15 @@ public class InstructorControllerIT {
     @DisplayName("Update existent instructor with valid datas")
     public void updateExistentInstructorWithValidData() throws Exception {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
-        MvcResult result = mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-        Users updatedInstructor = objectMapper.readValue(result.getResponse().getContentAsString(), Users.class);
-        Assertions.assertEquals("testPromo", updatedInstructor.getInstructor().getPromoText(), "");
-        Assertions.assertEquals(vehicleId, updatedInstructor.getInstructor().getVehicle().getId(), "");
-        Assertions.assertEquals("testVehicleUpdate", updatedInstructor.getInstructor().getVehicle().getName(), "");
-        Assertions.assertEquals("PHP-121", updatedInstructor.getInstructor().getVehicle().getLicensePlate(), "");
-        Assertions.assertEquals(2L, updatedInstructor.getInstructor().getVehicle().getFuelType().getId(), "");
-        Assertions.assertEquals(2L, updatedInstructor.getInstructor().getVehicle().getVehicleType().getId(), "");
+                .andExpect(jsonPath("$.instructor.promoText", is("testPromo")))
+                .andExpect(jsonPath("$.instructor.vehicle.id", is(Integer.valueOf(vehicleId + ""))))
+                .andExpect(jsonPath("$.instructor.vehicle.name", is("testVehicleUpdate")))
+                .andExpect(jsonPath("$.instructor.vehicle.licensePlate", is("PHP-121")))
+                .andExpect(jsonPath("$.instructor.vehicle.fuelType.id", is(2)))
+                .andExpect(jsonPath("$.instructor.vehicle.vehicleType.id", is(2)));
     }
 
     @Test
@@ -231,7 +245,7 @@ public class InstructorControllerIT {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
         mockMvc.perform(put(BASEURL + "/" + (instructorId + 1)).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -240,7 +254,7 @@ public class InstructorControllerIT {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId+1, "testVehicleUpdate", "PHP-121", 2L, 2L);
         mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("vehicleNotFound")));
+                .andExpect(jsonPath("$", is("vehicleNotFound")));
     }
 
     @Test
@@ -249,7 +263,7 @@ public class InstructorControllerIT {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 100L, 2L);
         mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("fuelTypeNotFound")));
+                .andExpect(jsonPath("$", is("fuelTypeNotFound")));
     }
 
     @Test
@@ -258,19 +272,25 @@ public class InstructorControllerIT {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 100L);
         mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("vehicleTypeNotFound")));
+                .andExpect(jsonPath("$", is("vehicleTypeNotFound")));
     }
 
     @Test
     @DisplayName("Update existent vehicle with invalid license plate")
     public void updateExistentVehicleWithInvalidLicensePlate() throws Exception {
-        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-4121", 2L, 2L);
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(415))
+                .andExpect(jsonPath("$", is("invalidLicensePlate")));
     }
 
     @Test
     @DisplayName("Update vehicle with registered license plate")
     public void updateVehicleWithRegisteredLicensePlate() throws Exception {
-        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-121", 2L, 2L);
+        InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-112", 2L, 2L);
+        mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().is(409))
+                .andExpect(jsonPath("$", is("registeredLicensePlate")));
     }
 
     private InstructorUpdate createRequestBodyForUpdate(String promoText, Long vehicleId, String vehicleName, String licensePlate, Long fuelTypeId, Long vehicleTypeId) {
@@ -285,7 +305,7 @@ public class InstructorControllerIT {
         mockMvc.perform(get(url))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
@@ -294,7 +314,7 @@ public class InstructorControllerIT {
         String url = BASEURL + "?category=1&fuelType=100&school=" + schoolId;
         mockMvc.perform(get(url))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("fuelTypeNotFound")));
+                .andExpect(jsonPath("$", is("fuelTypeNotFound")));
     }
 
     @Test
@@ -303,14 +323,8 @@ public class InstructorControllerIT {
         String url = BASEURL + "?category=1&fuelType=1&school=" + (schoolId+1);
         mockMvc.perform(get(url))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
+                .andExpect(jsonPath("$", is("schoolNotFound")));
     }
-
-//    @Test
-//    @DisplayName("Search instructor with non existent license category")
-//    public void searchInstructorWithNonExistentLicenseCategory() throws Exception {
-//        String url = BASEURL + "?category=1&fuelType=1&school=" + schoolId;
-//    }
 
     //Id alapján
     @Test
@@ -319,7 +333,7 @@ public class InstructorControllerIT {
         mockMvc.perform(get(BASEURL + "/" + instructorId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", Is.is(Integer.valueOf(String.valueOf(instructorId)))));
+                .andExpect(jsonPath("$.id", is(Integer.valueOf(String.valueOf(instructorId)))));
     }
 
     @Test
@@ -327,7 +341,7 @@ public class InstructorControllerIT {
     public void getNonExistentInstructorById() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (instructorId + 1)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -343,7 +357,7 @@ public class InstructorControllerIT {
     public void getStudentsOfNonExistestInstructor() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (instructorId + 1) + "/students"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     //diak kirugasa
@@ -352,8 +366,6 @@ public class InstructorControllerIT {
     public void kickOutExistentStudent() throws Exception {
         mockMvc.perform(delete(BASEURL+"/kickout?studentId="+studentId))
                 .andExpect(status().isOk());
-
-//        Ide meg lehetne majd tovabbi validaciot rakni
     }
 
     @Test
@@ -361,11 +373,6 @@ public class InstructorControllerIT {
     public void kickOutNonExistentStudent() throws Exception {
         mockMvc.perform(delete(BASEURL+"/kickout?studentId="+(studentId+1)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("studentNotFound")));
-    }
-
-    @Test
-    @DisplayName("Kick out invalid student")
-    public void kickOutInvalidStudent() throws Exception {
+                .andExpect(jsonPath("$", is("studentNotFound")));
     }
 }

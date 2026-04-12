@@ -83,5 +83,6 @@ public class Vehicle {
         this.name = name;
         this.vehicleType = vehicleType;
         this.fuelType = fuelType;
+        this.isDeleted = false;
     }
 }
