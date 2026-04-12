@@ -18,10 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,9 +51,10 @@ public class DrivingLessonControllerIT {
     private final ReservedDateRepository reservedDateRepository;
     private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
     private final ObjectMapper mapper;
+    private final SchoolCategoryRepository schoolCategoryRepository;
 
     @Autowired
-    public DrivingLessonControllerIT(DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, ObjectMapper mapper, ReservedDateRepository reservedDateRepository, ReservedHourRepository reservedHourRepository, DrivingLessonRepository drivingLessonRepository, PasswordEncoder passwordEncoder, InstructorRepository instructorRepository, StudentRepository studentRepository, SchoolRepository schoolRepository, UserRepository userRepository, MockMvc mockMvc) {
+    public DrivingLessonControllerIT(SchoolCategoryRepository schoolCategoryRepository, DrivingLicenseCategoryRepository drivingLicenseCategoryRepository, ObjectMapper mapper, ReservedDateRepository reservedDateRepository, ReservedHourRepository reservedHourRepository, DrivingLessonRepository drivingLessonRepository, PasswordEncoder passwordEncoder, InstructorRepository instructorRepository, StudentRepository studentRepository, SchoolRepository schoolRepository, UserRepository userRepository, MockMvc mockMvc) {
         this.drivingLicenseCategoryRepository = drivingLicenseCategoryRepository;
         this.mapper = mapper;
         this.reservedDateRepository = reservedDateRepository;
@@ -61,6 +66,7 @@ public class DrivingLessonControllerIT {
         this.schoolRepository = schoolRepository;
         this.userRepository = userRepository;
         this.mockMvc = mockMvc;
+        this.schoolCategoryRepository = schoolCategoryRepository;
     }
 
     Long studentId;
@@ -75,6 +81,10 @@ public class DrivingLessonControllerIT {
         Users schoolOwner = userRepository.save(new Users("testUser1", "registerStudent1", "tes4t@gmail.com", "06701111114", new Date(), "male", passwordEncoder.encode("test5.Asd"), new Education(1L, "Általános Iskola"), passwordEncoder.encode("aaaaaaaaaa")));
 
         School testSchool = schoolRepository.save(new School("schoolName", "schoolTest@gmail.com", "06706294719", "Tolna", "Nagykónyi", "sfafsafasf", "afsfassaf", schoolOwner));
+        testSchool.setLicenseCategoryList(new ArrayList<>(Arrays.asList(
+                schoolCategoryRepository.save(new SchoolCategory(0, drivingLicenseCategoryRepository.findById(1L).get(), testSchool))
+        )));
+        schoolRepository.save(testSchool);
         Instructors testInstructor = instructorRepository.save(new Instructors(testSchool, instructor));
         Students testStudent = studentRepository.save(new Students(student, testSchool, drivingLicenseCategoryRepository.findById(1L).get(), testInstructor));
 
@@ -96,6 +106,9 @@ public class DrivingLessonControllerIT {
     @Test
     @DisplayName("Get driving license categories of existent school.")
     public void getDrivingLicenseCategoriesOfExistentSchool() throws Exception {
+        mockMvc.perform(get(BASEURL + "/categories/school/" + schoolId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -103,7 +116,7 @@ public class DrivingLessonControllerIT {
     public void getDrivingLicenseCategoryOfNonExistentSchool() throws Exception {
         mockMvc.perform(get(BASEURL + "/categories/school/" + (schoolId + 1)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("schoolNotFound")));
+                .andExpect(jsonPath("$", is("schoolNotFound")));
     }
 
     @Test
@@ -115,7 +128,7 @@ public class DrivingLessonControllerIT {
                 .andExpect(status().isOk());
 
         Long afterCancelling = drivingLessonRepository.countByCancelling(true);
-        Assertions.assertEquals(beforeCancelling+1, afterCancelling, "");
+        assertEquals(beforeCancelling+1, afterCancelling, "");
     }
 
     @Test
@@ -125,10 +138,10 @@ public class DrivingLessonControllerIT {
 
         mockMvc.perform(delete(BASEURL + "/cancel/" + (drivingLessonId + 1)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
+                .andExpect(jsonPath("$", is("drivingLessonNotFound")));
 
         Long afterCancelling = drivingLessonRepository.countByCancelling(true);
-        Assertions.assertEquals(beforeCancelling, afterCancelling, "");
+        assertEquals(beforeCancelling, afterCancelling, "");
     }
 
     @Test
@@ -138,13 +151,13 @@ public class DrivingLessonControllerIT {
         mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.startKm", Is.is(22)))
-                .andExpect(jsonPath("$.endKm", Is.is(44)))
-                .andExpect(jsonPath("$.location", Is.is("testUpdateLocation")))
-                .andExpect(jsonPath("$.pickUpPlace", Is.is("testUpdatePickup")))
-                .andExpect(jsonPath("$.dropOffPlace", Is.is("testDropOffPlace")))
-                .andExpect(jsonPath("$.lessonHourNumber", Is.is(321)))
-                .andExpect(jsonPath("$.isPaid", Is.is(true)));
+                .andExpect(jsonPath("$.startKm", is(22)))
+                .andExpect(jsonPath("$.endKm", is(44)))
+                .andExpect(jsonPath("$.location", is("testUpdateLocation")))
+                .andExpect(jsonPath("$.pickUpPlace", is("testUpdatePickup")))
+                .andExpect(jsonPath("$.dropOffPlace", is("testDropOffPlace")))
+                .andExpect(jsonPath("$.lessonHourNumber", is(321)))
+                .andExpect(jsonPath("$.isPaid", is(true)));
     }
 
     @Test
@@ -153,7 +166,7 @@ public class DrivingLessonControllerIT {
         DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1l);
         mockMvc.perform(put(BASEURL+ "/" + (drivingLessonId+1)).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
+                .andExpect(jsonPath("$", is("drivingLessonNotFound")));
     }
 
     @Test
@@ -162,7 +175,7 @@ public class DrivingLessonControllerIT {
         DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 14, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1l);
         mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidStartEndKm")));
+                .andExpect(jsonPath("$", is("invalidStartEndKm")));
     }
 
     @Test
@@ -171,7 +184,7 @@ public class DrivingLessonControllerIT {
         DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 23, true, 1l, 1l);
         mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidLessonHourNumber")));
+                .andExpect(jsonPath("$", is("invalidLessonHourNumber")));
     }
 
     @Test
@@ -180,7 +193,7 @@ public class DrivingLessonControllerIT {
         DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1l, 1321l);
         mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("paymentMethodNotFound")));
+                .andExpect(jsonPath("$", is("paymentMethodNotFound")));
     }
 
     @Test
@@ -189,17 +202,19 @@ public class DrivingLessonControllerIT {
         DrivingLessonUpdate requestBody = createRequestBodyForDrivingLessonUpdate(22, 44, "testUpdateLocation", "testUpdatePickup", "testDropOffPlace", 321, true, 1321l, 1l);
         mockMvc.perform(put(BASEURL+ "/" + drivingLessonId).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(requestBody)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("statusNotFound")));
+                .andExpect(jsonPath("$", is("statusNotFound")));
     }
 
     public DrivingLessonUpdate createRequestBodyForDrivingLessonUpdate(Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Long statusId, Long paymentId){
         return new DrivingLessonUpdate(startKm, endKm, location, pickUpPlace, dropOffPlace, lessonHourNumber, isPaid, statusId, paymentId);
     }
 
-//Ez hianyzik
     @Test
     @DisplayName("Get reserved hours of existent user & with valid date format.")
     public void getReservedHourByValidDateAndInstructor() throws Exception {
+        mockMvc.perform(get(BASEURL + "/reservedHour?instructorId=" + instructorId + "&date=2026-02-01" ))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -207,7 +222,7 @@ public class DrivingLessonControllerIT {
     public void getReservedHourByNonExistentInstructor() throws Exception {
         mockMvc.perform(get(BASEURL + "/reservedHour?instructorId=" + (instructorId + 1) + "&date=2026-02-01" ))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -217,13 +232,13 @@ public class DrivingLessonControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.startKm", Is.is(100)))
-                .andExpect(jsonPath("$.endKm", Is.is(150)))
-                .andExpect(jsonPath("$.location", Is.is("testLocation")))
-                .andExpect(jsonPath("$.pickUpPlace", Is.is("testPickupPlace")))
-                .andExpect(jsonPath("$.dropOffPlace", Is.is("testDropoffPlace")))
-                .andExpect(jsonPath("$.lessonHourNumber", Is.is(23)))
-                .andExpect(jsonPath("$.isPaid", Is.is(false)));
+                .andExpect(jsonPath("$.startKm", is(100)))
+                .andExpect(jsonPath("$.endKm", is(150)))
+                .andExpect(jsonPath("$.location", is("testLocation")))
+                .andExpect(jsonPath("$.pickUpPlace", is("testPickupPlace")))
+                .andExpect(jsonPath("$.dropOffPlace", is("testDropoffPlace")))
+                .andExpect(jsonPath("$.lessonHourNumber", is(23)))
+                .andExpect(jsonPath("$.isPaid", is(false)));
     }
 
     @Test
@@ -231,13 +246,15 @@ public class DrivingLessonControllerIT {
     public void getNonExistentDrivingLessonById() throws Exception {
         mockMvc.perform(get(BASEURL + "/" + (drivingLessonId + 1)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("drivingLessonNotFound")));
+                .andExpect(jsonPath("$", is("drivingLessonNotFound")));
     }
 
-//    vissza
     @Test
     @DisplayName("Get reserved hours between two dates with valid datas.")
     public void getReservedHoursBetweenDatesWithValidDatas() throws Exception {
+        mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + instructorId + "&startDate=2026-01-01&endDate=2026-02-06" ))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -245,7 +262,7 @@ public class DrivingLessonControllerIT {
     public void getNonExistentInstructorsReservedHoursBetweenTwoDates() throws Exception {
         mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + (instructorId + 1) + "&startDate=2026-02-01&endDate=2026-02-06" ))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$", Is.is("instructorNotFound")));
+                .andExpect(jsonPath("$", is("instructorNotFound")));
     }
 
     @Test
@@ -253,7 +270,7 @@ public class DrivingLessonControllerIT {
     public void getReservedHoursBetweenTwoDatesWithInvalidStartEndRange() throws Exception {
         mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + instructorId + "&startDate=2026-02-01&endDate=2026-01-06" ))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidDateRange")));
+                .andExpect(jsonPath("$", is("invalidDateRange")));
 
     }
 
@@ -262,6 +279,6 @@ public class DrivingLessonControllerIT {
     public void getReservedHoursBetweenTwoDatesWithInvalidDateFormat() throws Exception {
         mockMvc.perform(get(BASEURL + "/reservedHours?instructorId=" + instructorId + "&startDate=2026/02-01&endDate=2026-01-06" ))
                 .andExpect(status().is(415))
-                .andExpect(jsonPath("$", Is.is("invalidDateFormat")));
+                .andExpect(jsonPath("$", is("invalidDateFormat")));
     }
 }
