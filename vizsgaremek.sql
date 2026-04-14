@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Már 02. 10:04
+-- Létrehozás ideje: 2026. Ápr 13. 19:03
 -- Kiszolgáló verziója: 5.7.24
--- PHP verzió: 8.1.0
+-- PHP verzió: 8.3.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `vizsgaremek_11.0`
+-- Adatbázis: `vizsgaremek3`
 --
 
 DELIMITER $$
@@ -79,6 +79,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteStudent` (IN `idIN` INT)   BEGIN
     UPDATE `student` SET `is_deleted`= 1 ,`deleted_at`= CURRENT_TIMESTAMP() WHERE `student`.`id` = idIN;
+    
+    UPDATE `user` SET `role_id`= 1 WHERE id = (SELECT s.user_id FROM student s WHERE s.id = idIN );
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `idIN` INT)   BEGIN
@@ -212,6 +214,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonBetweenHour` (IN `d
     ;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonByStudentId` (IN `idIN` INT)   BEGIN
+	SELECT * FROM driving_lesson
+    WHERE
+    driving_lesson.student_id = idIN
+    AND 
+    driving_lesson.is_cancelled = 0;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLessonInstructor` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_lesson_instructor` WHERE
     `driving_lesson_instructor`.id = idIN;
@@ -232,7 +242,7 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getDrivingLicenseCategory` (IN `idIN` INT)   BEGIN
 	SELECT*FROM `driving_license_category` WHERE
-    `driving_license_category`.`id` = idIN AND `driving_license_category`.`is_deleted` = 0;
+    `driving_license_category`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getEducation` (IN `idIN` INT)   BEGIN
@@ -260,18 +270,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getInstructorBySearch` (IN `fuelTyp
     v.id = i.vehicle_id
     INNER JOIN fuel_type ft ON 
     ft.id = v.fuel_type_id
-    
-    INNER JOIN instructor_category ic ON
-    ic.instructor_id = i.id 
-    INNER JOIN driving_license_category dlc ON 
-    dlc.id = ic.driving_license_category_id
-    
     WHERE 
     ft.id = fuelTypeIdIN
     AND 
     i.school_id = schoolIdIN
-    AND 
-    dlc.id = categoryIdIN
+   
     ;
 END$$
 
@@ -317,6 +320,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getReservedHoursBetweenTwoDate` (IN
     WHERE 
     dl.instructor_id = instructorIdIN
     AND
+    dl.is_cancelled = 0
+    AND
     rd.date BETWEEN startDateIN AND endDateIN
     ORDER BY rh.start_time;
 END$$
@@ -326,7 +331,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getReview` (IN `idIN` INT)   BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getRole` (IN `idIN` INT)   BEGIN
-	SELECT*FROM `role` WHERE `role`.`id` = idIN AND `role`.`is_deleted` = 0;
+	SELECT*FROM `role` WHERE `role`.`id` = idIN;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getSchool` (IN `idIN` INT)   BEGIN
@@ -410,40 +415,41 @@ CREATE TABLE `driving_lesson` (
 --
 
 INSERT INTO `driving_lesson` (`id`, `start_km`, `end_km`, `location`, `pick_up_place`, `drop_off_place`, `lesson_hour_number`, `is_paid`, `payment_method_id`, `hour_id`, `status_id`, `instructor_id`, `student_id`, `is_end`, `is_cancelled`, `cancelled_at`) VALUES
-(1, 214, 4235, 'asfsafsaf', NULL, NULL, 2341, 0, 2, 6, 1, 52, 11, 0, 1, '2026-02-14 20:01:42'),
-(3, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 8, 1, 52, 8, 0, 0, NULL),
-(5, 37338, 37382, 'Szekszárd', 'Dombóvár', 'Szekszárd', 4, 0, 3, 7, 1, 19, 10, 0, 0, NULL),
-(6, 0, 20, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 12, 1, 18, 18, 0, 0, NULL),
-(7, 20, 60, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 3, 13, 1, 18, 18, 0, 0, NULL),
-(8, 50, 72, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 14, 1, 18, 18, 0, 0, NULL),
-(9, 72, 141, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 1, 15, 1, 18, 18, 0, 0, NULL),
-(10, 141, 169, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 0, 2, 16, 1, 18, 18, 0, 0, NULL),
-(11, 170, 203, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 0, 2, 17, 1, 18, 18, 0, 0, NULL),
-(12, 204, 256, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 3, 18, 1, 18, 18, 0, 0, NULL),
-(13, 257, 289, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 1, 19, 1, 18, 18, 0, 0, NULL),
-(14, 290, 348, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 2, 20, 1, 18, 18, 0, 0, NULL),
-(15, 349, 391, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 21, 1, 18, 18, 0, 0, NULL),
-(16, 392, 423, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 22, 1, 18, 18, 0, 0, NULL),
-(17, 423, 484, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 23, 1, 18, 18, 0, 0, NULL),
-(18, 485, 509, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 24, 1, 18, 18, 0, 0, NULL),
-(19, 510, 546, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 25, 1, 18, 18, 0, 0, NULL),
-(20, 547, 587, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 26, 1, 18, 18, 0, 0, NULL),
-(21, 588, 610, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 27, 1, 18, 18, 0, 0, NULL),
-(22, 611, 654, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 28, 1, 18, 18, 0, 0, NULL),
-(23, 655, 695, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 29, 1, 18, 18, 0, 0, NULL),
-(24, 696, 733, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 30, 1, 18, 18, 0, 0, NULL),
-(25, 734, 768, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 31, 1, 18, 18, 0, 0, NULL),
-(26, 767, 800, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 32, 1, 18, 18, 0, 0, NULL),
-(27, 801, 837, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 33, 1, 18, 18, 0, 0, NULL),
-(28, 838, 870, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 3, 34, 1, 18, 18, 0, 0, NULL),
-(29, 871, 898, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 35, 1, 18, 18, 0, 0, NULL),
-(30, 899, 924, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 36, 1, 18, 18, 0, 0, NULL),
-(31, 925, 952, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 37, 1, 18, 18, 0, 0, NULL),
-(37, 953, 987, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 38, 1, 18, 18, 0, 0, NULL),
-(38, 988, 1017, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 39, 1, 18, 18, 0, 0, NULL),
-(39, 1018, 1052, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 40, 1, 18, 18, 0, 0, NULL),
-(40, 1053, 1086, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 3, 41, 1, 18, 18, 0, 0, NULL),
-(41, 1087, 1105, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 42, 1, 18, 18, 0, 0, NULL);
+(1, 214, 4235, 'asfsafsaf', NULL, NULL, 2341, 0, 2, 6, 1, 52, 24, 0, 1, '2026-02-14 20:01:42'),
+(7, 20, 60, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 3, 13, 1, 18, 24, 0, 1, '2026-04-11 13:12:33'),
+(8, 50, 72, 'Dombóvár', 'Dombóvár', 'Dombóvár', NULL, 0, 2, 14, 1, 18, 24, 0, 0, NULL),
+(9, 72, 141, 'Kaposvár', 'Kaposvár', 'Kaposvár', NULL, 0, 1, 15, 1, 18, 24, 0, 0, NULL),
+(10, 141, 169, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 1, 2, 16, 1, 18, 24, 0, 0, NULL),
+(11, 170, 203, 'Dombovar', 'Dombovar', 'Dombovar', NULL, 1, 2, 17, 1, 18, 24, 0, 0, NULL),
+(12, 204, 256, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 3, 18, 1, 18, 24, 0, 0, NULL),
+(13, 257, 289, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 0, 1, 19, 1, 18, 24, 0, 0, NULL),
+(14, 290, 348, 'Kaposvar', 'Kaposvar', 'Kaposvar', NULL, 1, 2, 20, 1, 18, 24, 0, 0, NULL),
+(15, 349, 391, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 21, 1, 18, 24, 0, 0, NULL),
+(16, 392, 423, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 22, 1, 18, 24, 0, 0, NULL),
+(17, 423, 484, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 23, 1, 18, 24, 1, 0, NULL),
+(18, 485, 509, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 24, 1, 18, 24, 1, 0, NULL),
+(19, 510, 546, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 25, 1, 18, 24, 0, 0, NULL),
+(20, 547, 587, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 3, 26, 1, 18, 24, 0, 0, NULL),
+(21, 588, 610, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 1, 27, 1, 18, 24, 0, 0, NULL),
+(22, 611, 654, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 28, 1, 18, 24, 0, 0, NULL),
+(23, 655, 695, 'Budapest', 'Budapest', 'Budapest', NULL, 0, 2, 29, 1, 18, 24, 0, 0, NULL),
+(24, 696, 733, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 30, 1, 18, 24, 0, 0, NULL),
+(25, 734, 768, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 31, 1, 18, 24, 0, 0, NULL),
+(26, 767, 800, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 32, 1, 18, 24, 0, 0, NULL),
+(27, 801, 837, 'Debrecen', 'Debrecen', 'Debrecen', NULL, 0, 2, 33, 1, 18, 24, 0, 0, NULL),
+(28, 838, 870, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 3, 34, 1, 18, 24, 0, 0, NULL),
+(29, 871, 898, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 35, 1, 18, 24, 0, 0, NULL),
+(30, 899, 924, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, NULL, 36, 1, 18, 24, 0, 0, NULL),
+(31, 925, 952, 'Székesfehérvár', 'Székesfehérvár', 'Székesfehérvár', NULL, 0, 2, 37, 1, 18, 24, 0, 0, NULL),
+(37, 953, 987, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 38, 1, 18, 24, 0, 0, NULL),
+(38, 988, 1017, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 39, 1, 18, 24, 0, 0, NULL),
+(39, 1018, 1052, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 1, 40, 1, 18, 24, 0, 0, NULL),
+(40, 1053, 1086, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 3, 41, 1, 18, 24, 0, 0, NULL),
+(41, 1087, 1105, 'Szeged', 'Szeged', 'Szeged', NULL, 0, 2, 42, 1, 18, 24, 0, 0, NULL),
+(42, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 43, 1, 55, 28, 0, 1, '2026-03-01 15:38:15'),
+(43, 21, 412, 'asf', 'gsdgds', 'gsdgsdg', 32, 1, 2, 44, 1, 55, 28, 0, 0, NULL),
+(44, 23, 4125, 'asfasf', 'afsfasf', 'afsfa', 24, 1, 1, 45, 2, 55, 28, 0, 0, NULL),
+(45, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, 46, 1, 55, 31, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -473,7 +479,14 @@ CREATE TABLE `driving_lesson_request` (
 INSERT INTO `driving_lesson_request` (`id`, `student_id`, `instructor_id`, `msg`, `date`, `start_time`, `end_time`, `sent_at`, `is_accepted`, `accepted_at`, `is_deleted`, `deleted_at`) VALUES
 (1, 10, 4, '', '2026-01-21', '11:45:00', '13:47:00', '2026-01-21 11:45:44', NULL, NULL, 0, NULL),
 (2, 10, 4, 'asdasd', '2026-01-22', '15:05:00', '18:08:00', '2026-01-25 14:05:01', NULL, NULL, 0, NULL),
-(3, 24, 52, '', '2026-02-10', '12:20:00', '15:23:00', '2026-02-10 21:22:58', 1, '2026-02-10 21:33:25', 0, NULL);
+(3, 24, 52, '', '2026-02-10', '12:20:00', '15:23:00', '2026-02-10 21:22:58', 1, '2026-02-10 21:33:25', 0, NULL),
+(4, 25, 53, 'asdasd', '2026-02-24', '14:42:00', '17:45:00', '2026-02-21 13:41:05', 1, '2026-02-21 15:46:29', 0, NULL),
+(5, 28, 55, '', '2026-03-03', '15:36:00', '16:36:00', '2026-03-01 15:37:00', 1, '2026-03-01 15:37:58', 0, NULL),
+(6, 28, 55, '', '2026-03-05', '11:00:00', '13:00:00', '2026-03-03 19:08:12', 1, '2026-03-03 19:09:04', 0, NULL),
+(7, 28, 55, '', '2026-03-04', '11:00:00', '13:00:00', '2026-03-03 19:09:44', 1, '2026-03-03 19:10:14', 0, NULL),
+(8, 28, 55, '', '2026-03-04', '11:00:00', '13:00:00', '2026-03-03 19:11:29', NULL, NULL, 0, NULL),
+(9, 30, 55, '', '2026-03-05', '09:00:00', '11:00:00', '2026-03-04 09:17:32', NULL, NULL, 0, NULL),
+(10, 31, 55, '', '2026-03-05', '15:00:00', '17:00:00', '2026-03-04 11:13:14', 1, '2026-03-04 11:13:47', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -599,7 +612,7 @@ INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_i
 (21, 48, 8, NULL, NULL, 0, NULL),
 (25, 49, NULL, 'a', 6, 0, NULL),
 (28, 50, 9, 'a', 4, 0, NULL),
-(29, 51, 9, 'a', NULL, 0, NULL),
+(29, 51, NULL, 'a', NULL, 0, NULL),
 (30, 52, 9, 'a', 5, 0, NULL),
 (31, 53, 9, 'a', 7, 0, NULL),
 (32, 54, 9, 'a', 12, 0, NULL),
@@ -615,27 +628,9 @@ INSERT INTO `instructor` (`id`, `user_id`, `school_id`, `promo_text`, `vehicle_i
 (43, 65, 10, NULL, NULL, 0, NULL),
 (44, 67, 2, NULL, NULL, 0, NULL),
 (51, 76, 9, NULL, 27, 0, NULL),
-(52, 82, 9, 'InstructorUpdateafsasfdsalkgajfdgsklgjfdalkjgflkd;asjgadfl;kjhgao\'gmak;ognalk;fdngal;fdnglkdafgadgfgfdagafdgfdaagdfgadf', 32, 0, NULL);
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `instructor_category`
---
-
-CREATE TABLE `instructor_category` (
-  `id` int(11) NOT NULL,
-  `driving_license_category_id` int(11) NOT NULL,
-  `instructor_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- A tábla adatainak kiíratása `instructor_category`
---
-
-INSERT INTO `instructor_category` (`id`, `driving_license_category_id`, `instructor_id`) VALUES
-(1, 6, 28),
-(2, 6, 52);
+(52, 85, NULL, 'InstructorUpdateafsasfdsalkgajfdgsklgjfdalkjgflkd;asjgadfl;kjhgao\'gmak;ognalk;fdngal;fdnglkdafgadgfgfdagafdgfdaagdfgadf', 32, 0, NULL),
+(53, 89, 9, 'null', 33, 0, NULL),
+(55, 82, 9, 'Jobb ma egy hell yeah mint holnap egy hell nah. ASD Update', 34, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -663,8 +658,15 @@ INSERT INTO `instructor_join_request` (`id`, `student_id`, `instructor_id`, `is_
 (3, 23, 30, 0, NULL, '2026-01-04 12:20:05', 0, NULL),
 (4, 24, 28, 0, NULL, '2026-01-24 17:45:49', 0, NULL),
 (5, 24, 52, 1, '2026-01-25 11:28:05', '2026-01-24 18:04:10', 0, NULL),
-(6, 24, 52, NULL, NULL, '2026-01-25 11:07:31', 0, NULL),
-(7, 24, 52, NULL, NULL, '2026-01-25 11:09:38', 0, NULL);
+(6, 24, 52, 0, '2026-02-16 19:52:36', '2026-01-25 11:07:31', 0, NULL),
+(7, 24, 52, 1, '2026-02-16 19:52:38', '2026-01-25 11:09:38', 0, NULL),
+(8, 25, 53, 0, '2026-02-21 10:37:02', '2026-02-21 10:36:29', 0, NULL),
+(9, 25, 53, 1, '2026-02-21 10:37:04', '2026-02-21 10:36:48', 0, NULL),
+(10, 28, 55, 1, '2026-03-01 14:55:27', '2026-03-01 14:04:28', 0, NULL),
+(11, 28, 55, 0, '2026-03-01 14:55:13', '2026-03-01 14:47:43', 0, NULL),
+(12, 29, 55, 1, '2026-03-03 22:17:50', '2026-03-03 22:17:22', 0, NULL),
+(13, 30, 55, 1, '2026-03-04 09:13:57', '2026-03-04 09:12:44', 0, NULL),
+(14, 31, 55, 1, '2026-03-04 11:12:40', '2026-03-04 11:12:17', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -689,9 +691,9 @@ CREATE TABLE `opening_detail` (
 
 INSERT INTO `opening_detail` (`id`, `opening_time`, `close_time`, `day`, `is_closed`, `school_id`, `is_deleted`, `deleted_at`) VALUES
 (1, '12:00:00', '17:00:00', 'Hétfő', 0, 9, 0, NULL),
-(2, '08:00:00', '17:00:00', 'Kedd', 1, 9, 0, NULL),
+(2, '08:00:00', '17:00:00', 'Kedd', 0, 9, 0, NULL),
 (3, '14:00:00', '17:00:00', 'Szerda', 0, 9, 0, NULL),
-(4, '08:00:00', '17:00:00', 'Csütörtök', 0, 9, 0, NULL),
+(4, '10:00:00', '17:00:00', 'Csütörtök', 0, 9, 0, NULL),
 (5, '08:00:00', '17:00:00', 'Péntek', 0, 9, 0, NULL);
 
 -- --------------------------------------------------------
@@ -819,7 +821,11 @@ INSERT INTO `reserved_hour` (`id`, `date_id`, `start_time`, `end_time`, `is_dele
 (39, 41, '12:00:00', '14:00:00', 0, NULL),
 (40, 42, '12:00:00', '14:00:00', 0, NULL),
 (41, 43, '12:00:00', '14:00:00', 0, NULL),
-(42, 44, '12:00:00', '14:00:00', 0, NULL);
+(42, 44, '12:00:00', '14:00:00', 0, NULL),
+(43, 23, '15:36:00', '16:36:00', 1, '2026-03-01 15:38:15'),
+(44, 25, '11:00:00', '13:00:00', 0, NULL),
+(45, 24, '11:00:00', '13:00:00', 0, NULL),
+(46, 25, '15:00:00', '17:00:00', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -862,7 +868,10 @@ INSERT INTO `review` (`id`, `author_id`, `text`, `created_at`, `rating`, `is_ano
 (18, 6, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', '2025-12-26 13:25:48', 4, 0, NULL, 9, 0, NULL),
 (19, 6, 'testReview', '2025-12-26 13:25:49', 4, 0, NULL, 9, 0, NULL),
 (20, 21, 'afs', '2025-12-27 10:50:56', 1.5, 0, 28, NULL, 0, NULL),
-(21, 21, 'asfasf', '2025-12-27 10:51:53', 1.5, 0, 28, NULL, 0, NULL);
+(21, 21, 'asfasf', '2025-12-27 10:51:53', 1.5, 0, 28, NULL, 0, NULL),
+(22, 25, '', '2026-02-21 12:22:03', 0, 0, NULL, 9, 0, NULL),
+(23, 25, 'fasfasfsaf', '2026-02-21 13:03:00', 4, 0, NULL, 9, 0, NULL),
+(24, 25, 'asfsaffsafasfsafssaf', '2026-02-21 15:10:05', 3, 0, 53, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -872,22 +881,20 @@ INSERT INTO `review` (`id`, `author_id`, `text`, `created_at`, `rating`, `is_ano
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- A tábla adatainak kiíratása `role`
 --
 
-INSERT INTO `role` (`id`, `name`, `is_deleted`, `deleted_at`) VALUES
-(1, 'ROLE_user', 0, NULL),
-(2, 'ROLE_student', 0, NULL),
-(3, 'ROLE_instructor', 0, NULL),
-(4, 'ROLE_school_admin', 0, NULL),
-(5, 'ROLE_administrator', 0, NULL),
-(6, 'ROLE_school_owner', 0, NULL);
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'ROLE_user'),
+(2, 'ROLE_student'),
+(3, 'ROLE_instructor'),
+(4, 'ROLE_school_admin'),
+(5, 'ROLE_administrator'),
+(6, 'ROLE_school_owner');
 
 -- --------------------------------------------------------
 
@@ -915,14 +922,18 @@ CREATE TABLE `school` (
 --
 
 INSERT INTO `school` (`id`, `name`, `email`, `phone`, `country`, `town`, `address`, `promo_text`, `banner_img_path`, `owner_id`, `is_deleted`, `deleted_at`) VALUES
-(2, 'AutosIskola1', 'iskola@gmail.com', 'a1', 'Tolna', 'Dombóvár', 'Cim', 'a', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 6, 0, NULL),
-(3, 'Iskola2', 'iskola2@gmail.com', 'a2', 'Orszag', 'Varos', 'Cim', 'promo', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 12, 0, NULL),
-(6, 'school1', 'school1@gmail.com', '0000001', 'Baranya', 'Pécs', 'address1', 'a', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 25, 0, NULL),
-(7, 'school2', 'school2@gmail.com', '0000002', 'Somogy', 'Kaposvár', 'address2', 'a', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 26, 0, NULL),
-(8, 'school3', 'school3@gmail.com', '0000003', 'Fejér', 'Székesfehérvár', 'address3', 'a', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 27, 0, NULL),
-(9, 'school4Update23', 'school42@gmail.com', '06706285232', 'Buda', 'Budapest', 'address4', 'updateTest', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 28, 0, NULL),
-(10, 'school5', 'school5@gmail.com', '0000005', 'Zala', 'Zalaegerszeg', 'address5', 'a', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 29, 0, NULL),
-(12, 'postTest', 'postTest@gmail.com', '06706285231', 'Bács-Kiskun', 'asf', 'asfasf', '', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 18, 0, NULL);
+(2, 'AutosIskola1', 'iskola@gmail.com', 'a1', 'Tolna', 'Dombóvár', 'Cim', 'a', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 6, 0, NULL),
+(3, 'Iskola2', 'iskola2@gmail.com', 'a2', 'Orszag', 'Varos', 'Cim', 'promo', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 12, 0, NULL),
+(6, 'school1', 'school1@gmail.com', '0000001', 'Baranya', 'Pécs', 'address1', 'a', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 25, 0, NULL),
+(7, 'school2', 'school2@gmail.com', '0000002', 'Somogy', 'Kaposvár', 'address2', 'a', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 26, 0, NULL),
+(8, 'school3', 'school3@gmail.com', '0000003', 'Fejér', 'Székesfehérvár', 'address3', 'a', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 27, 0, NULL),
+(9, 'Gelencsér autósiskola', 'sulisdolgok8@gmail.com', '06706285232', 'Tolna', 'Dombóvár', 'Gyöngyvirág krt. 29', 'Ez egy bemutatkozó szöveg', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 28, 0, NULL),
+(10, 'school5', 'school5@gmail.com', '0000005', 'Zala', 'Zalaegerszeg', 'address5', 'a', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 29, 0, NULL),
+(12, 'postTest', 'postTest@gmail.com', '06706285231', 'Bács-Kiskun', 'asf', 'asfasf', '', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 18, 0, NULL),
+(14, 'postasffa', 'afsasf@gmail.com', '06706285223', 'Borsod-Abaúj-Zemplén', 'dasdasdas', 'dasdsadsadas', 'asfasffasfafas', 'http://localhost:8080/coverImg/defaultCoverImg.jpg', 20, 0, NULL),
+(16, 'jlkjk', 'asdsa@gmail.com', '06706285230', 'Szabolcs-Szatmár-Bereg', 'hjkvk', 'huihasf', 'jkbj', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 6, 0, NULL),
+(17, 'asdasdasd', 'asd@gmail.com', '06706287898', 'Vas', 'afsfsa', 'asdsad', 'asdasd', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 76, 0, NULL),
+(19, 'asdasdasdas', 'asd231421@gmail.com', '06701459632', 'Vas', 'adssafasf', 'asdas', 'asddasdas', 'http://localhost:8080/coverImages/defaultCoverImg.jpg', 84, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -976,7 +987,19 @@ INSERT INTO `school_join_request` (`id`, `user_id`, `school_id`, `driving_licens
 (24, 77, 9, 1, NULL, NULL, '2026-01-04 12:11:38', 1, '2026-01-03 23:00:00'),
 (25, 79, 9, 6, 1, '2026-01-24 15:25:53', '2026-01-24 13:35:21', 0, NULL),
 (26, 79, 9, 2, NULL, NULL, '2026-01-24 13:48:11', 1, '2026-01-23 23:00:00'),
-(27, 82, 9, NULL, 1, '2026-01-24 18:02:22', '2026-01-24 18:00:10', 0, NULL);
+(27, 82, 9, NULL, 1, '2026-01-24 18:02:22', '2026-01-24 18:00:10', 0, NULL),
+(29, 88, 9, 2, 1, '2026-02-20 20:40:20', '2026-02-20 19:45:44', 0, NULL),
+(30, 88, 9, 4, 0, '2026-02-20 20:40:18', '2026-02-20 19:47:06', 1, '2026-02-20 20:40:20'),
+(31, 89, 9, NULL, 1, '2026-02-21 10:35:53', '2026-02-21 10:34:40', 0, NULL),
+(32, 127, 9, 6, 1, '2026-03-01 13:44:28', '2026-03-01 08:51:58', 1, '2026-03-01 13:57:35'),
+(33, 127, 9, 2, NULL, NULL, '2026-03-01 13:37:59', 1, '2026-03-01 13:57:35'),
+(34, 127, 9, 2, 1, '2026-03-01 13:52:29', '2026-03-01 13:51:54', 1, '2026-03-01 13:57:35'),
+(35, 127, 9, 2, 1, '2026-03-01 13:57:35', '2026-03-01 13:55:25', 0, NULL),
+(36, 127, 9, 3, NULL, NULL, '2026-03-01 13:57:07', 1, '2026-03-01 13:57:35'),
+(37, 129, 9, 2, 1, '2026-03-03 22:16:53', '2026-03-03 22:16:18', 0, NULL),
+(38, 131, 9, 3, 0, '2026-03-04 09:10:56', '2026-03-04 09:08:01', 1, '2026-03-04 09:11:46'),
+(39, 131, 9, 6, 1, '2026-03-04 09:11:46', '2026-03-04 09:08:39', 0, NULL),
+(40, 132, 9, 6, 1, '2026-03-04 11:11:57', '2026-03-04 11:11:17', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1042,7 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `driving_license_category_id`, `is_deleted`, `deleted_at`) VALUES
 (6, 9, 1, 3, 1, 1, '2026-01-23 23:00:00'),
-(7, 9, NULL, 4, 1, 0, NULL),
+(7, 9, NULL, 4, 1, 1, '2026-04-11 13:13:02'),
 (8, 9, 1, 5, 1, 0, NULL),
 (10, 9, 4, 16, 1, 0, NULL),
 (11, 9, 4, 17, 1, 0, NULL),
@@ -1032,7 +1055,12 @@ INSERT INTO `student` (`id`, `school_id`, `instructor_id`, `user_id`, `driving_l
 (18, 9, 4, 24, 1, 0, NULL),
 (21, 9, 28, 66, 1, 0, NULL),
 (23, 9, NULL, 77, 1, 1, '2026-01-10 23:00:00'),
-(24, 9, 52, 79, 6, 0, NULL);
+(24, 9, NULL, 79, 6, 0, NULL),
+(25, 9, 53, 88, 2, 0, NULL),
+(28, 9, NULL, 127, 2, 0, NULL),
+(29, 9, NULL, 129, 2, 0, NULL),
+(30, 9, 55, 131, 6, 0, NULL),
+(31, 9, 55, 132, 6, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1065,14 +1093,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_date`, `gender`, `password`, `role_id`, `pfp_path`, `created_at`, `last_login`, `is_deleted`, `deleted_at`, `school_admin_id`, `education_id`, `verification_code`) VALUES
-(1, 'OktatóUpdate', 'Oktató', 'bzhalmai@gmail.com', '06201237896', '2026-01-07', 'female', '$argon2id$v=19$m=4096,t=3,p=1$nAQGgilwbzzfKE6bG4jHvA$wBKw/+85i3rIUr6F3R1hc+YUkwbYC97kLrJAWXUTdHA', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:06:32', '2026-02-06 20:35:07', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$S6Ro7QeN1h2kwlX/xCafug$ip5IdwjPkYk+XgpgUrF4OdVRhUQG1K1dh5GlnF6G+nM'),
-(2, 'oldalAdmin', 'oldalAdmin', 'oldalAdmin@gmail.com', 'a2', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 5, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:06:59', '2026-02-15 13:36:43', 0, NULL, NULL, 1, NULL),
+(1, 'OktatóUpdate', 'Oktató', 'bzhalmai8@gmail.com', '06201237896', '2026-01-07', 'female', '$argon2id$v=19$m=4096,t=3,p=1$nAQGgilwbzzfKE6bG4jHvA$wBKw/+85i3rIUr6F3R1hc+YUkwbYC97kLrJAWXUTdHA', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:06:32', '2026-02-06 20:35:07', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$S6Ro7QeN1h2kwlX/xCafug$ip5IdwjPkYk+XgpgUrF4OdVRhUQG1K1dh5GlnF6G+nM'),
+(2, 'oldalAdmin', 'oldalAdmin', 'oldalAdmin@gmail.com', '06709851296', '2006-07-29', 'female', '$argon2id$v=19$m=4096,t=3,p=1$+WjzrV34REmyXMe1hy67fA$ojzrAMHfylnhyr+CKoiwZ+pTcQcH8TvPpg8DRUNxDy4', 5, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:06:59', '2026-03-15 09:02:18', 0, NULL, NULL, 1, NULL),
 (3, 'Tanuló1', 'Tanuló1', 'bzhalmai1@gmail.com', 'a3', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$Ge1f7T03hPx/S3j/tdh84A$01K36tva/4k4sKm1eoP5ZKtNZrmtS1NdFdh+nMiQq0E', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:07:04', '2026-02-08 06:45:54', 0, NULL, NULL, 1, NULL),
-(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a4', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:07:09', '2025-12-22 15:26:44', 0, NULL, NULL, 1, NULL),
+(4, 'Tanuló3', 'Tanuló3', 'bzhalmai3@gmail.com', 'a4', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$TdL1gVgPWH4C8oKzxE4TaQ$nQr1p93ykcnP+7CRcFwG8FyVJt1hzrbwxVotLJ4Qxxw', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:07:09', '2025-12-22 15:26:44', 0, NULL, NULL, 1, NULL),
 (5, 'Tanuló4', 'Tanuló4', 'bzhalmai6@gmail.com', 'a5', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$mzu/1vpdf0pCkDW81qN4CQ$8JJGV9sLLOaEuf/jnViXHeuUZMFx/zj2oQX4Wl4IP48', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:07:34', NULL, 0, NULL, NULL, 1, NULL),
 (6, 'IskolaTulaj', 'IskolaTulaj', 'bzhalmai4@gmail.com', 'a6', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$D5apy2+dI2lTQW+iK60vGQ$Ta80iOeSgC1bwP9wdH7xbqycZdyBmOwASimmuwDbQYE', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:09:21', NULL, 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$vWdeJh0+xk6RF8Zf5hFdsg$fKGJULQkh8f1KHbxGpDN28LREGDCCCGXptx+iZr7oRE'),
 (7, 'IskolaAdmin1', 'IskolaAdmin1', 'bzhalmai5@gmail.com', 'a7', '2006-08-02', 'a', '$argon2id$v=19$m=4096,t=3,p=1$avUr4wjwXvQc6te+mz5EOw$pqOy1ddkcoOL7LBdtvL56aTT48zQdbSVOrGdOKZ2+V8', 4, 'http://localhost:8080/pfp/defaultPfp.png', '2025-10-07 14:09:52', '2026-01-04 12:12:01', 1, '2026-01-20 23:00:00', 2, 1, NULL),
-(11, 'iskolaAdmin91', 'iskolaAdmin91', 'iskolaAdmin9@gmail.com', '06706285231', '2025-12-31', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 4, 'http://localhost:8080/pfp/defaultPfp.png', '2025-11-16 10:34:22', '2026-02-15 16:52:21', 0, NULL, 9, 1, NULL),
+(11, 'iskolaAdmin91', 'iskolaAdmin91', 'iskolaAdmin9@gmail.com', '06706285231', '2025-12-31', 'male', '$argon2id$v=19$m=4096,t=3,p=1$kpyONb+WCWLVH+spf5fIRA$fnT08hEmmWtCSjv+pZuNJd3bDTho0MuqOqQTBidyqSM', 4, 'http://localhost:8080/pfp/11modern-xiao-pfp-pointing-8mu0tsf5r81s03ny.jpg', '2025-11-16 10:34:22', '2026-03-12 18:46:21', 0, NULL, 9, 1, NULL),
 (12, 'Iskolatulaj2', 'Iskolatulaj2', 'iskolatulaj2@gmail.com', 'a8', '2000-01-01', 'Gender', 'jelszo', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-04 09:47:44', NULL, 0, NULL, NULL, 1, NULL),
 (13, 'oktato2', 'oktato2', 'oktato2@gmail.com', 'a9', '2000-01-01', 'gender', 'password', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-08 09:11:32', NULL, 0, NULL, NULL, 8, NULL),
 (14, 'oktato3', 'oktato3', 'oktato3@gmail.com', 'a10', '1990-01-01', 'a', 'jelszo', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-08 09:13:34', NULL, 0, NULL, NULL, 8, NULL),
@@ -1089,7 +1117,7 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (25, 'school_owner_1.0', 'school_owner_1.0', 'school_owner_1.0@gmal.com', '706281000', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$eyihnAPfbrWH2++pG3vhvg$0islaCsSneYg760RiYSKRvyvpzhMk6qtz5YOf2KJwmk', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:00', NULL, 0, NULL, NULL, 1, NULL),
 (26, 'school_owner_1.1', 'school_owner_1.1', 'school_owner_1.1@gmal.com', '706281001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$q49PUdh9mVdHQ10dS0gwug$5sWmV6WdQ4QdJZfdY7ftKt/U/E32ZZiCSTnl5w1QAbM', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:11', NULL, 0, NULL, NULL, 1, NULL),
 (27, 'school_owner_1.2', 'school_owner_1.2', 'school_owner_1.2@gmal.com', '706281002', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$rw1ESsDASrKfCfMv5q/O4g$JfJSd1OGyFD1+juOXiUQ6kx4R4bxBFG0zuK2O88GRaM', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:19', NULL, 0, NULL, NULL, 1, NULL),
-(28, 'school_owner_1.3', 'school_owner_1.3', 'school_owner_1.3@gmal.com', '706281003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oVs/UOVqKhPOin5TGV4CzQ$ui34Co11aj9RQNYCwAN5P63OBSnqKczVQhOUZcXLeUc', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:26', NULL, 0, NULL, NULL, 1, NULL),
+(28, 'school_owner_1.3', 'school_owner_1.3', 'school_owner_1.3@gmal.com', '706281003', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$oVs/UOVqKhPOin5TGV4CzQ$ui34Co11aj9RQNYCwAN5P63OBSnqKczVQhOUZcXLeUc', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:26', '2026-03-12 18:45:32', 0, NULL, NULL, 1, NULL),
 (29, 'school_owner_1.4', 'school_owner_1.4', 'school_owner_1.4@gmal.com', '706281004', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$u8Nbb09YOOHU07nA6lPQww$A6YUMs+Hwn8qq9HQxngXRaI4coBZJteh0CkwJhZ9TbI', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-16 12:18:34', NULL, 0, NULL, NULL, 1, NULL),
 (30, 'instructor1.0', 'instructor1.0', 'instructor1.0@gmal.com', '706280000', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$PNNmcm12ivaGlCwbjbYTnA$5oY7o5jGSKDDLxckZxr/Sn3H1+qQPWbKGkN0d7N7iy8', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-17 08:56:01', NULL, 0, NULL, NULL, 1, NULL),
 (31, 'instructor1.1', 'instructor1.1', 'instructor1.1@gmal.com', '706280001', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Ru550cH183s3csg47XMpLQ$5zRDQERCeGJV5T1t70Cwci+W54D26yzSaSfKOwe4ieM', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-17 08:56:10', NULL, 0, NULL, NULL, 1, NULL),
@@ -1128,16 +1156,20 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `email`, `phone`, `birth_da
 (65, 'instructor4.4', 'instructor4.4', 'instructor4.4@gmal.com', '706280034', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$xn9XxHG4QYbh1+FpmUW7Yw$LrKeNC4AjzPYMklvkBBIqbqyp0hl1eI+lIwgtctY8tM', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-17 09:02:04', NULL, 0, NULL, NULL, 1, NULL),
 (66, 'requestTest1', 'requestTest1', 'requestTest1@gmail.com', '206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$AEwlPFrowj7P4whzwTVuGg$cmS5rok7Vxb46QEZm5ugAJ5W1PKdouPvP2D0Uxz0nHo', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-18 09:25:03', '2026-01-03 15:15:29', 0, NULL, NULL, 1, NULL),
 (67, 'requestTest2', 'requestTest2', 'requestTest2@gmail.com', '306285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$AFzVTJa9FOGUTNk2RnIzhQ$rWlqgw+gy7w+vZN4n2T4ak5Q7QOh+qwO93vJBPqxVQs', 3, 'http://localhost:8080/pfp/defaultPfp.png', '2025-12-18 09:25:12', NULL, 0, NULL, NULL, 1, NULL),
-(74, 'asd', 'asd', 'asd@gmail.com', '701211818', '2000-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$M5FShDGEtajN78Lm9o7EmA$Ml0A9qVA8Xgo0PKkZjAZH8qM8MdF7rUnFGV5tAiz+6M', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-03 21:05:07', NULL, 0, NULL, NULL, 1, NULL),
+(74, 'asd', 'asd', 'asd@gmail.com', '701211818', '2000-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$M5FShDGEtajN78Lm9o7EmA$Ml0A9qVA8Xgo0PKkZjAZH8qM8MdF7rUnFGV5tAiz+6M', 4, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-03 21:05:07', NULL, 0, NULL, 9, 1, NULL),
 (76, 'asd', 'asd', 'asd142a@gmail.com', '701234895', '2026-01-17', 'male', '$argon2id$v=19$m=4096,t=3,p=1$S2bbwCQOpjQhLgLLMiGNxA$EEh9Xi0ASWJC7DrjzBUI5rJIkBtJv6iKR8LxdTY3KkY', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-03 21:11:36', NULL, 0, NULL, NULL, 1, NULL),
 (77, 'ujfiok', 'ujfiok', 'ujfiok@gmail.com', '701239876', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$+xrSIWHFjt7dHsZaZbFC6w$XP76wE2Zhmr1+UBuN8h9SY9jCyH4xld9ZVePLq/oAR8', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-04 12:10:53', '2026-01-04 12:22:53', 0, NULL, NULL, 4, NULL),
-(79, 'testStudent', 'testStudent', 'testStudent@gmail.com', '06706285232', '2006-08-02', 'female', '$argon2id$v=19$m=4096,t=3,p=1$ZICovAjj+Yx50ms242b+JQ$qzk5hYu643qh6QOPWjLPONL4dAmOTkAYGxkHbRXBIkw', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-24 13:17:17', '2026-02-14 12:21:54', 0, NULL, NULL, 1, NULL),
-(82, 'testInstructor', 'testInstructor', 'testInstructor@gmail.com', '06707777777', '2006-07-26', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Cpjd4QZMmvNgpirTx1g/Sw$g4ZzzQCLikuNUQXbsgXqyA9C+EkRuuQ5OONrQtCYxQg', 3, 'http://localhost:8080/pfp/82464575951_1052396213349316_1062152384838969430_n.jpg', '2026-01-24 13:21:24', '2026-02-15 16:48:07', 0, NULL, NULL, 2, NULL),
-(84, 'asdasf', 'asfasffas', 'bzhalmai412@gmail.com', '06206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jUCm62psGg5S6EsT5pyd0Q$HZJeoJ9TmoTr74wo6Iq1dZ56HvFzLmwZCvsiNRxBSNw', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-10 18:57:45', '2026-02-10 20:54:04', 0, NULL, NULL, 2, NULL),
-(85, 'instructor4.5', 'instructor4.5', 'instructor4.5@gmal.com', '706280035', '2006-08-02', 'male', 'asd', 3, 'asd', '2026-03-02 09:58:32', NULL, 0, NULL, NULL, 5, NULL),
-(86, 'school_owner_1.5', 'school_owner_1.5', 'school_owner_1.5@gmail.com', '706281005', '2006-08-02', 'male', 'asd', 6, 'asd', '2026-03-02 10:01:51', NULL, 0, NULL, NULL, 6, NULL),
-(87, 'diak2.0', 'diak2.0', 'diak2.0@gmail.com', '706285110', '2006-08-02', 'male', 'asd', 2, 'asd', '2026-03-02 10:03:53', NULL, 0, NULL, NULL, 1, NULL),
-(88, 'diak2.1', 'diak2.1', 'diak2.1@gmail.com', '706285111', '2006-08-02', 'male', 'asd', 2, 'asd', '2026-03-02 10:03:53', NULL, 0, NULL, NULL, 1, NULL);
+(79, 'testStudent', 'testStudent', 'testStudent@gmail.com', '06706285232', '2006-08-02', 'female', '$argon2id$v=19$m=4096,t=3,p=1$ZICovAjj+Yx50ms242b+JQ$qzk5hYu643qh6QOPWjLPONL4dAmOTkAYGxkHbRXBIkw', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-01-24 13:17:17', '2026-03-12 18:28:26', 0, NULL, NULL, 1, NULL),
+(82, 'Könyves', 'Kálmán', 'bzhalmai@gmail.com', '06707777777', '2006-07-18', 'male', '$argon2id$v=19$m=4096,t=3,p=1$L5jBHqXoHZ2wRvzgFwmMsg$Nrji8qiQinEAQSs7S3Vkulr6xGNjryAUhrSsCShVjvU', 3, 'http://localhost:8080/pfp/82464575951_1052396213349316_1062152384838969430_n.jpg', '2026-01-24 13:21:24', '2026-03-12 18:54:56', 0, NULL, NULL, 2, NULL),
+(84, 'asdasf', 'asfasffas', 'bzhalmai412@gmail.com', '06206285232', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$jUCm62psGg5S6EsT5pyd0Q$HZJeoJ9TmoTr74wo6Iq1dZ56HvFzLmwZCvsiNRxBSNw', 6, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-10 18:57:45', '2026-02-10 20:54:04', 0, NULL, NULL, 2, NULL),
+(85, 'alertTest', 'alertTest', 'alertTest@gmail.com', '06702596895', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$nZyXTz5OjEjDJtKoBMS7Zw$0/I6q/xOQ466ArzsCI7bm/Supb0hlEQ6xTIzObVs30k', 4, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-16 19:41:54', NULL, 0, NULL, 9, 2, NULL),
+(86, 'testStudent2', 'testStudent2', 'testStudent2@gmail.com', '06704567891', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$Gi/j8gbWgPqvtYNkhTtKhA$iEj5BcAUpbiouqLzYiBH1P3tHhtlH46mx+smjMqSA2s', 1, 'http://localhost:8080/pfp/defaultPfp.png', '2026-02-18 08:50:57', '2026-02-18 08:52:04', 0, NULL, NULL, 2, NULL),
+(88, 'frontendTestStudent', 'frontendTestStudent', 'frontendTestStudent@gmail.com', '06207896351', '2006-08-01', 'female', '$argon2id$v=19$m=4096,t=3,p=1$cG5ozFcITlKTtBs5PjlPWQ$XUwINjhXRHVPcIHvrrREbhbqtILhAMYIz54qgs/avMg', 2, 'http://localhost:8080/pfp/88464639745_1052396210015983_856568762032357262_n.jpg', '2026-02-20 19:19:58', '2026-02-24 10:56:14', 0, NULL, NULL, 2, NULL),
+(89, 'frontendTestInstructor', 'frontendTestInstructor', 'frontendTestInstructor@gmail.com', '06209865421', '2026-02-08', 'male', '$argon2id$v=19$m=4096,t=3,p=1$cG5ozFcITlKTtBs5PjlPWQ$XUwINjhXRHVPcIHvrrREbhbqtILhAMYIz54qgs/avMg', 3, 'http://localhost:8080/pfp/89993e554a86f273996741c87c740725e6.jpg', '2026-02-20 19:22:48', '2026-02-23 18:03:36', 0, NULL, NULL, 6, NULL),
+(127, 'Halmai', 'Bence', 'halmaid.21d@acsjszki.hu', '06708525698', '2026-02-25', 'male', '$argon2id$v=19$m=4096,t=3,p=1$L5jBHqXoHZ2wRvzgFwmMsg$Nrji8qiQinEAQSs7S3Vkulr6xGNjryAUhrSsCShVjvU', 2, 'http://localhost:8080/pfp/defaultPfp.png', '2026-03-01 07:38:31', '2026-03-03 19:11:00', 0, NULL, NULL, 1, '$argon2id$v=19$m=4096,t=3,p=1$o7/dvLIJobOohmzXvfOMsQ$gCSe1j3PDvCdnaONSNB2xATV/w5hV24PNfMZ1NE0vPY'),
+(129, 'asf', 'fsaf', 'fasfsavza@gmail.com', '06706285239', '2005-05-23', 'male', '$argon2id$v=19$m=4096,t=3,p=1$H5gaI+qdiGvRhHp4p34CZA$Bk4SAVu9gzE6xow51jnUGttfiFDW9MJNMNBdxfQonGE', 2, 'http://localhost:8080/pfp/129447967748_3693121130927173_5022295557712709818_n.jpg', '2026-03-03 22:15:38', '2026-03-03 22:17:07', 0, NULL, NULL, 4, NULL),
+(131, 'Halmai', 'Bence', 'halmaiqb.21d@acsjszki.hu', '06706285230', '2006-08-02', 'male', '$argon2id$v=19$m=4096,t=3,p=1$C9P51Pqjyh/eUuEd1zOb4Q$dDigARxUP5zP6tk875WWPjtF4LL/kSUS4OMU+1v2KC0', 2, 'http://localhost:8080/pfp/131cool-anime-girl-pfp-hu-tao-6cjtrrhyvr2g24ik.jpg', '2026-03-04 09:03:54', '2026-03-04 09:16:38', 0, NULL, NULL, 2, NULL),
+(132, 'Halmai', 'Bennce', 'halmaib.21d@acsjszki.hu', '06702345678', '2026-02-23', 'female', '$argon2id$v=19$m=4096,t=3,p=1$0iELwVhCW1cFkYCYtVAG1g$R6sWRBrydm6uH8MerS5hIHj2hpcCUxYODQbs6RZDJkY', 2, 'http://localhost:8080/pfp/1328f79950c90290ac5dd6a8c02c542c119.jpg', '2026-03-04 11:10:19', '2026-03-04 11:12:57', 0, NULL, NULL, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -1178,7 +1210,9 @@ INSERT INTO `vehicle` (`id`, `license_plate`, `name`, `type_id`, `fuel_type_id`,
 (29, 'plate2', 'vehicle_name2', 4, 1, 0, NULL),
 (30, 'plate3', 'vehicle_name3', 5, 2, 0, NULL),
 (31, NULL, NULL, NULL, 1, 0, NULL),
-(32, 'AAA-001', 'vehicleNameUpdate', 1, 1, 0, NULL);
+(32, 'AAA-001', 'vehicleNameUpdate', 1, 1, 0, NULL),
+(33, 'ABC-123', 'Jarmu Teszy', 1, 2, 0, NULL),
+(34, 'AQE-123', 'fasfasfasf Update', 1, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1255,14 +1289,6 @@ ALTER TABLE `instructor`
   ADD KEY `vehicle` (`vehicle_id`);
 
 --
--- A tábla indexei `instructor_category`
---
-ALTER TABLE `instructor_category`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `instructor` (`instructor_id`),
-  ADD KEY `category_id` (`driving_license_category_id`);
-
---
 -- A tábla indexei `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
@@ -1318,6 +1344,7 @@ ALTER TABLE `school`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `phone` (`phone`),
+  ADD UNIQUE KEY `name` (`name`),
   ADD KEY `admin` (`owner_id`);
 
 --
@@ -1387,13 +1414,13 @@ ALTER TABLE `vehicle_type`
 -- AUTO_INCREMENT a táblához `driving_lesson`
 --
 ALTER TABLE `driving_lesson`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT a táblához `driving_lesson_request`
 --
 ALTER TABLE `driving_lesson_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
 
 --
 -- AUTO_INCREMENT a táblához `driving_license_category`
@@ -1417,19 +1444,13 @@ ALTER TABLE `fuel_type`
 -- AUTO_INCREMENT a táblához `instructor`
 --
 ALTER TABLE `instructor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
-
---
--- AUTO_INCREMENT a táblához `instructor_category`
---
-ALTER TABLE `instructor_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1051;
 
 --
 -- AUTO_INCREMENT a táblához `instructor_join_request`
 --
 ALTER TABLE `instructor_join_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=684;
 
 --
 -- AUTO_INCREMENT a táblához `opening_detail`
@@ -1447,19 +1468,19 @@ ALTER TABLE `payment_method`
 -- AUTO_INCREMENT a táblához `reserved_date`
 --
 ALTER TABLE `reserved_date`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT a táblához `reserved_hour`
 --
 ALTER TABLE `reserved_hour`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 
 --
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=153;
 
 --
 -- AUTO_INCREMENT a táblához `role`
@@ -1471,19 +1492,19 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT a táblához `school`
 --
 ALTER TABLE `school`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1065;
 
 --
 -- AUTO_INCREMENT a táblához `school_category`
 --
 ALTER TABLE `school_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT a táblához `school_join_request`
 --
 ALTER TABLE `school_join_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT a táblához `status`
@@ -1495,19 +1516,19 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT a táblához `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=715;
 
 --
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3438;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=602;
 
 --
 -- AUTO_INCREMENT a táblához `vehicle_type`
@@ -1543,13 +1564,6 @@ ALTER TABLE `instructor`
   ADD CONSTRAINT `asd` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `school` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`),
   ADD CONSTRAINT `vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`);
-
---
--- Megkötések a táblához `instructor_category`
---
-ALTER TABLE `instructor_category`
-  ADD CONSTRAINT `category_id` FOREIGN KEY (`driving_license_category_id`) REFERENCES `driving_license_category` (`id`),
-  ADD CONSTRAINT `instructor` FOREIGN KEY (`instructor_id`) REFERENCES `instructor` (`id`);
 
 --
 -- Megkötések a táblához `instructor_join_request`
