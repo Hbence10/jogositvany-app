@@ -16,7 +16,7 @@ import { StudentService } from '../../services/student.service';
   selector: 'app-homepage',
   imports: [MatDatepickerModule, RouterModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent, CommonModule, HourPipe],
   templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.css',
+  styleUrl: './homepage.component.scss',
 })
 export class HomepageComponent implements OnInit {
   userService = inject(UsersService);

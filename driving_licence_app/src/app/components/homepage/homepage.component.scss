@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 #littleCard {
   background-color: #22354F;
   border-radius: 12px;
@@ -68,7 +70,7 @@
   background-color: #636da1;
   padding: 25px;
   border-radius: 16px;
-  color: white;
+  color: #434a6b;
 }
 
 input[type="range"] {
@@ -212,4 +214,27 @@ app-school-registration {
   border: none;
   border-radius: 8px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+* {
+  @include mat.datepicker-overrides(( 
+      calendar-body-label-text-color: #DEE0EB,
+      calendar-container-background-color: #22354f,
+      calendar-container-text-color: #DEE0EB ,
+      toggle-icon-color: #DEE0EB,
+      toggle-active-state-icon-color: #DEE0EB,
+      calendar-navigation-button-icon-color: #DEE0EB,
+      calendar-header-text-color: #DEE0EB,
+      calendar-header-divider-color: #DEE0EB,
+      calendar-date-today-selected-state-outline-color: #DEE0EB,
+      calendar-date-today-outline-color: #DEE0EB,
+      calendar-date-text-color: #DEE0EB,
+      calendar-date-selected-state-text-color: #22354f,
+      calendar-date-selected-state-background-color: #DEE0EB,
+      calendar-date-preview-state-outline-color: #DEE0EB,
+    ));
+}
+
+.calendar {
+  background-color: #22354F;
 }
