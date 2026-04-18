@@ -101,15 +101,15 @@
 
             <div id="promoDiv" class="p-3">
               <p>Bemutatkozás:</p>
-              <p>{{selectedSchool?.promoText}}</p>
+              <p>{{ selectedType == "school" ? selectedSchool?.promoText : selectedInstructor?.promoText}}</p>
             </div>
             <div class="infoParagraph px-3 my-3">
               <span>Telefonszám:</span>
-              <span>{{selectedSchool?.phone}}</span>
+              <span>{{ selectedType == "school" ? selectedSchool?.phone: selectedInstructor?.instructorUser?.phone}}</span>
             </div>
             <div class="infoParagraph px-3 my-3">
               <span>E-mail:</span>
-              <span>{{selectedSchool?.email}}</span>
+              <span>{{ selectedType == "school" ? selectedSchool?.email : selectedInstructor?.instructorUser?.email}}</span>
             </div>
           </div>
         </div>

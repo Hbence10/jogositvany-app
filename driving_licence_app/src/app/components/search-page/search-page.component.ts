@@ -16,136 +16,182 @@ import { AlertServiceService } from '../../services/alert-service.service';
   selector: 'app-search-page',
   imports: [CommonModule, FormsModule],
   templateUrl: './search-page.component.html',
-  styleUrl: './search-page.component.css'
+  styleUrl: './search-page.component.css',
 })
 export class SearchPageComponent implements OnInit {
-  private otherStuffService = inject(OtherStuffServiceService)
-  private schoolService = inject(SchoolServiceService)
-  private instructorService = inject(InstructorServiceService)
-  private route = inject(ActivatedRoute)
-  private router = inject(Router)
-  userService = inject(UsersService)
-  private requestService = inject(RequestService)
+  private otherStuffService = inject(OtherStuffServiceService);
+  private schoolService = inject(SchoolServiceService);
+  private instructorService = inject(InstructorServiceService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  userService = inject(UsersService);
+  private requestService = inject(RequestService);
 
-  fuelTypeList: FuelType[] = []
-  townList: string[] = []
-  selectedFuelType!: FuelType
-  selectedType: string = ""
-  selectedTown: string = "Budapest"
-  selectedSchool: School | null = null
-  filteredTownList: string[] = []
-  schoolList: { id: number, name: string }[] = []
-  filteredSchoolList: { id: number, name: string }[] = []
+  fuelTypeList: FuelType[] = [];
+  townList: string[] = [];
+  selectedFuelType!: FuelType;
+  selectedType: string = '';
+  selectedTown: string = 'Dombóvár';
+  selectedSchool: School | null = null;
+  filteredTownList: string[] = [];
+  schoolList: { id: number; name: string }[] = [];
+  filteredSchoolList: { id: number; name: string }[] = [];
   selectedFuelTypeId: number = 1;
-  selectedInstructor: Instructors | null = null
-  instructorList: { id: number, name: string }[] = []
-  filteredInstructorList: { id: number, name: string }[] = []
-  selectedCategoryId: number = 1
-  private alertService = inject(AlertServiceService)
+  selectedInstructor: Instructors | null = null;
+  instructorList: { id: number; name: string }[] = [];
+  filteredInstructorList: { id: number; name: string }[] = [];
+  selectedCategoryId: number = 1;
+  private alertService = inject(AlertServiceService);
 
   ngOnInit(): void {
-    this.selectedSchool = null
-    this.selectedInstructor = null
-    this.selectedFuelTypeId = 1
+    this.selectedSchool = null;
+    this.selectedInstructor = null;
+    this.selectedFuelTypeId = 1;
 
     this.route.params.subscribe({
-      next: param => {
-        this.selectedType = param["type"]
-        if (this.selectedType == "instructor") {
+      next: (param) => {
+        this.selectedType = param['type'];
+        if (this.selectedType == 'instructor') {
           this.otherStuffService.getAllFuelType().subscribe({
-            next: responseList => this.fuelTypeList = responseList,
+            next: (responseList) => (this.fuelTypeList = responseList),
             complete: () => {
-                this.getInstructorBySearch()
-            }
-          })
-        } else if (this.selectedType == "school") {
+              this.getInstructorBySearch(true);
+            },
+          });
+        } else if (this.selectedType == 'school') {
           this.otherStuffService.getAllTown().subscribe({
-            next: response => this.townList = response,
+            next: (response) => (this.townList = response),
             complete: () => {
-              this.filteredTownList = this.townList
-              this.getSchoolByTown()
-            }
-          })
+              this.filteredTownList = this.townList;
+              this.selectedTown = "Dombóvár";
+              this.getSchoolByTown();
+            },
+          });
         }
-      }
-    })
+      },
+    });
   }
 
   getSchoolByTown() {
     this.schoolService.getSchoolsBySearch(this.selectedTown).subscribe({
-      next: response => this.schoolList = response,
+      next: (response) => (this.schoolList = response),
       complete: () => {
-        this.filteredSchoolList = this.schoolList
-        this.getSchoolById(this.filteredSchoolList[0].id)
-      }
-    })
+        console.log(this.schoolList)
+        this.filteredSchoolList = this.schoolList;
+        this.getSchoolById(this.filteredSchoolList[0].id);
+      },
+    });
   }
 
-  getInstructorBySearch() {
-    this.instructorService.getInstructorBySearch(this.userService.loggedUser()?.school?.id!, this.selectedFuelTypeId, this.userService.loggedUser()?.categoryId!).subscribe({
-      next: response => {
-        this.instructorList = response
-        console.log(response)
-      },
-      complete: () => this.filteredInstructorList = this.instructorList
-    })
+  getInstructorBySearch(opening: boolean = false) {
+    this.instructorService
+      .getInstructorBySearch(
+        this.userService.loggedUser()?.school?.id!,
+        this.selectedFuelTypeId,
+        this.userService.loggedUser()?.categoryId!,
+      )
+      .subscribe({
+        next: (response) => {
+          this.instructorList = response;
+          console.log(response);
+        },
+        complete: () => {
+          this.filteredInstructorList = this.instructorList;
+          if (opening) {
+            this.getInstructorById(this.filteredInstructorList[0].id!);
+          }
+        },
+      });
   }
 
   navigateToProfilePage() {
     if (this.selectedSchool == null) {
-      this.router.navigate(["profil/user", this.selectedInstructor?.instructorUser.id])
+      this.router.navigate([
+        'profil/user',
+        this.selectedInstructor?.instructorUser.id,
+      ]);
     } else {
-      this.router.navigate(["profil/school", this.selectedSchool.id])
+      this.router.navigate(['profil/school', this.selectedSchool.id]);
     }
   }
 
   getInstructorById(id: number) {
     this.instructorService.getInstructorById(id).subscribe({
-      next: response => this.selectedInstructor = response
-    })
+      next: (response) => (this.selectedInstructor = response),
+    });
   }
 
   filterInstructor(searchedName: string) {
-    this.filteredInstructorList = this.instructorList.filter(instructor =>
-      instructor.name.replaceAll(" ", "").toLowerCase().substring(0, searchedName.length) === searchedName.replaceAll(" ", "").toLowerCase().trim()
-    )
+    this.filteredInstructorList = this.instructorList.filter(
+      (instructor) =>
+        instructor.name
+          .replaceAll(' ', '')
+          .toLowerCase()
+          .substring(0, searchedName.length) ===
+        searchedName.replaceAll(' ', '').toLowerCase().trim(),
+    );
   }
 
   filterTown() {
-    this.filteredTownList = this.townList.filter(town => town.toLowerCase().substring(0, this.selectedTown.trim().length) == this.selectedTown.trim().toLowerCase())
+    this.filteredTownList = this.townList.filter(
+      (town) =>
+        town.toLowerCase().substring(0, this.selectedTown.trim().length) ==
+        this.selectedTown.trim().toLowerCase(),
+    );
   }
 
   filterSchoolName(searchedName: string) {
-    this.filteredSchoolList = this.schoolList.filter(school => school.name.toLowerCase().trim().substring(0, searchedName.length) === searchedName.trim().toLowerCase())
+    this.filteredSchoolList = this.schoolList.filter(
+      (school) =>
+        school.name.toLowerCase().trim().substring(0, searchedName.length) ===
+        searchedName.trim().toLowerCase(),
+    );
   }
 
   getSchoolById(id: number) {
     this.schoolService.getSchoolById(id).subscribe({
-      next: response => this.selectedSchool = response,
-    })
+      next: (response) => (this.selectedSchool = response),
+    });
   }
 
   sendJoinRequest() {
-    if (this.selectedType == "instructor") {
-      this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()?.studentId!, this.selectedInstructor?.id!).subscribe({
-        error: error => {
-          console.log(error)
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-        },
-        complete: () => {
-          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
-        }
-      })
-    } else if (this.selectedType == "school") {
-      this.requestService.sendSchoolJoinRequest(this.selectedSchool?.id!, this.userService.loggedUser()?.id!, this.selectedCategoryId!).subscribe({
-        error: error => {
-          console.log(error)
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-        },
-        complete: () => {
-          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
-        }
-      })
+    if (this.selectedType == 'instructor') {
+      this.requestService
+        .sendInstructorJoinRequest(
+          this.userService.loggedUser()?.studentId!,
+          this.selectedInstructor?.id!,
+        )
+        .subscribe({
+          error: (error) => {
+            console.log(error);
+            this.alertService.setAlert(
+              'Hiba történt. Próbáld meg újra később!',
+              'error',
+            );
+          },
+          complete: () => {
+            this.alertService.setAlert('Sikeres kérelem küldés!', 'success');
+          },
+        });
+    } else if (this.selectedType == 'school') {
+      this.requestService
+        .sendSchoolJoinRequest(
+          this.selectedSchool?.id!,
+          this.userService.loggedUser()?.id!,
+          this.selectedCategoryId!,
+        )
+        .subscribe({
+          error: (error) => {
+            console.log(error);
+            this.alertService.setAlert(
+              'Hiba történt. Próbáld meg újra később!',
+              'error',
+            );
+          },
+          complete: () => {
+            this.alertService.setAlert('Sikeres kérelem küldés!', 'success');
+          },
+        });
     }
   }
 }
