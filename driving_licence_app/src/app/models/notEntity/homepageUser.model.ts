@@ -11,7 +11,7 @@ export class HomePageUser {
     public role: Role,
     public studentId?: number,
     public school?: School,
-    public instructor?: {id:number, firstName:string, lastName: string, pfpPath:string},
+    public instructor?: {id:number, firstName:string, lastName: string, pfpPath:string, email: string},
     public instructorId?: number,
     public schoolId?: number,
     public vehicle?: {name: string, type: string, licensePlate: string},
