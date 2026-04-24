@@ -318,7 +318,7 @@
                     } @else {
                       <div class="h-100 d-flex flex-column justify-content-center align-items-center">
                         <h1 class="text-center mainFont">{{userService.loggedUser()?.school?.name}}</h1>
-                        <button (click)="navigateToProfilPage('school', userService.loggedUser()?.school?.id!)">Adatok megnézése</button>
+                        <button class="w-75" id="schoolDataBtn" (click)="navigateToProfilPage('school', userService.loggedUser()?.school?.id!)">Adatok megnézése</button>
                       </div>
                     }
                   </div>

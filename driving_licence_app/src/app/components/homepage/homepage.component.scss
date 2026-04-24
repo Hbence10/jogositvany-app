@@ -217,7 +217,7 @@ app-school-registration {
 }
 
 * {
-  @include mat.datepicker-overrides(( 
+  @include mat.datepicker-overrides((
       calendar-body-label-text-color: #DEE0EB,
       calendar-container-background-color: #22354f,
       calendar-container-text-color: #DEE0EB ,
@@ -237,4 +237,15 @@ app-school-registration {
 
 .calendar {
   background-color: #22354F;
+}
+
+#schoolDataBtn {
+   text-align: center;
+  height: 50px;
+  padding: 10px;
+  color: #DEE0EB;
+  background-color: #626C99;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
