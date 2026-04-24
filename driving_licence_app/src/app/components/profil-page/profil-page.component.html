@@ -61,7 +61,7 @@
               </button>
               </a>
               @if ((type() == "school" && (userService.loggedUser()?.role?.name == "ROLE_user" ||userService.loggedUser()?.role?.name == "ROLE_instructor") ||type() == "user" && userService.loggedUser()?.role?.name == "ROLE_student" && userService.loggedUser()?.instructor == null)){
-                <button id="signButton" (click)="sendJoinRequest()" [disabled]="type() == 'school' && selectedCategory == null && userService.loggedUser()?.role?.name == 'ROLE_user'">Jelentkezés</button>
+                <button class="eventButton text-white mt-3" id="signButton" (click)="sendJoinRequest()" [disabled]="type() == 'school' && selectedCategory == null && userService.loggedUser()?.role?.name == 'ROLE_user'">Jelentkezés</button>
                 @if (userService.loggedUser()?.role?.name == "ROLE_user") {
                   <select #categorySelect (change)="selectedCategory = +categorySelect.value">
                     @for (category of searchedSchool?.licenseCategoryList; track $index) {

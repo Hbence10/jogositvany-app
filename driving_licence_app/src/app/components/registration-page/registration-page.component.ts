@@ -114,7 +114,7 @@ export class RegistrationPageComponent implements OnInit {
     this.usersService.registration(newUser, this.registrationForm.controls["registerAs"].value).subscribe({
       next: response => console.log(response),
       error: error => {
-        console.log(error.error.statusText)
+        console.log(error)
         if (error.error.statusText === "duplicateEmail") {
           this.errorMsg = "duplicateEmail"
           this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")

@@ -48,8 +48,8 @@ export class ReviewListComponent implements OnInit {
       rating: newReview.rating,
       isAnonymous: newReview.isAnonymous,
       studentId: this.userService.loggedUser()?.studentId!,
-      instructorId: this.reviewType() == "Oktató" ? this.aboutObject().id : null,
-      schoolId: this.reviewType() == "Iskola" ? this.aboutObject().id : null
+      instructorId: this.reviewType() == "Oktató" ? this.aboutObject().id : 0,
+      schoolId: this.reviewType() == "Iskola" ? this.aboutObject().id : 0
     }).subscribe({
       next: response => {
         this.reviewList.push(response)

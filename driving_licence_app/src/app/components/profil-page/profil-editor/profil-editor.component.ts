@@ -116,10 +116,10 @@ export class ProfilEditorComponent implements OnInit {
           this.update.emit(response)
         },
         error: (error) => {
-          if (error.error.statusText === "duplicateEmail") {
+          if (error.error?.statusText === "duplicateEmail") {
             this.errorMsg = "duplicateEmail"
             this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
-          } else if (error.error.statusText === "duplicatePhone") {
+          } else if (error.error?.statusText === "duplicatePhone") {
             this.errorMsg = "duplicatePhone"
             this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
           } else {
@@ -136,13 +136,13 @@ export class ProfilEditorComponent implements OnInit {
         this.alertService.setAlert("Sikeres frissités", "success")
         this.update.emit(response)
       }, error: (error) => {
-        if (error.error.statusText === "duplicateEmail") {
+        if (error.error?.statusText === "duplicateEmail") {
           this.errorMsg = "duplicateEmail"
           this.alertService.setAlert("Ezzel az e-mail címmel már regisztráltak!", "error")
-        } else if (error.error.statusText === "duplicatePhone") {
+        } else if (error.error?.statusText === "duplicatePhone") {
           this.errorMsg = "duplicatePhone"
           this.alertService.setAlert("Ezzel a telefonszámmal már regisztráltak!", "error")
-        } else if (error.error.statusText === "invalidDate") {
+        } else if (error.error?.statusText === "invalidDate") {
           this.errorMsg = "invalidDate"
           this.alertService.setAlert("A jővőben nem születhettél!", "error")
         } else {

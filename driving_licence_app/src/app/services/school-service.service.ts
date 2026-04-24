@@ -28,8 +28,8 @@ export class SchoolServiceService {
     return this.http.get<any>(`${this.baseUrl}/${id}/joinRequests?page=${pageNumber}&size=10`, {observe: "response"})
   }
 
-  updateSchool(schoolId: number, name: string, email: string, phone: string, country: string, town: string, address: string, promoText: string): Observable<School> {
-    return this.http.put<School>(`${this.baseUrl}/${schoolId}`, {schoolName: name, email: email, phoneNumber:phone, country: country, town: town, address:address, promoText: promoText})
+  updateSchool(schoolId: number, name: string, email: string, phone: string, county: string, town: string, address: string, promoText: string): Observable<School> {
+    return this.http.put<School>(`${this.baseUrl}/${schoolId}`, {schoolName: name, email: email, phoneNumber:phone, county: county, town: town, address:address, promoText: promoText})
   }
 
   updateOpeningDetails(schoolId: number, updatedOpeningDetails: OpeningDetails[]): Observable<School> {
