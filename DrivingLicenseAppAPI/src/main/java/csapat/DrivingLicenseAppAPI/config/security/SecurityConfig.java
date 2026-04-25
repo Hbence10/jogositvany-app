@@ -31,7 +31,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class  SecurityConfig {
 
     private final JWTGeneratorFilter jwtGeneratorFilter;
     private final JWTValidatorFilter jwtValidatorFilter;
@@ -83,6 +83,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/review").hasRole("student")
                         .requestMatchers("/review/*").hasRole("student")
                         //SchoolController:
+                        .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.POST, "/school/*/joinRequest").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.PUT, "/school/*").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers("/school/*/coverImg").hasAnyRole("school_admin", "school_owner")
@@ -92,14 +93,13 @@ public class SecurityConfig {
                         .requestMatchers("/school/search").permitAll()
                         .requestMatchers(HttpMethod.POST, "/school").hasRole("administrator")
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
-                        .requestMatchers("/school/kickout").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
                         .requestMatchers("/school/admin").hasRole("school_owner")
                         .requestMatchers(HttpMethod.GET, "/school/*").authenticated()
 
                         //StudentController:
                         .requestMatchers("/students/lessonDetails/*").hasRole("student")
-                        .requestMatchers(HttpMethod.DELETE, "/students/*").hasRole("administrator")
+                        .requestMatchers(HttpMethod.DELETE, "/students/*").hasAnyRole("administrator", "school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/students/*").permitAll()
                         .requestMatchers("/students/*/history").hasRole("student")
 

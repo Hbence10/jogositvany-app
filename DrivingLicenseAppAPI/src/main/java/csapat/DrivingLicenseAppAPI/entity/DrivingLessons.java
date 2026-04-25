@@ -117,6 +117,7 @@ public class DrivingLessons {
         this.dstudent = dstudent;
         this.dinstructor = dinstructor;
         this.drivingLessonStatus = status;
+        this.lessonHourNumber = 0;
     }
 
     public DrivingLessons(Integer startKm, Integer endKm, String location, String pickupPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Boolean isEnd, ReservedHour reservedHour, Students dstudent, Instructors dinstructor, Status status) {

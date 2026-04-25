@@ -186,7 +186,7 @@ public class SchoolControllerIT {
         mockMvc.perform(put(BASEURL + "/" + testSchoolId).contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createSchoolDto("schoolName2", "update@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicateName")));
+                .andExpect(jsonPath("$.statusText", is("duplicateName")));
         ;
     }
 
@@ -197,7 +197,7 @@ public class SchoolControllerIT {
                         .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "update@gmail.com", "06706894711", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicatePhone")));
+                .andExpect(jsonPath("$.statusText", is("duplicatePhone")));
         ;
     }
 
@@ -208,7 +208,7 @@ public class SchoolControllerIT {
                         .content(objectMapper.writeValueAsString(createSchoolDto("updateName", "schoolTest2@gmail.com", "06701234156", "updateCounty", "updateTown", "updateAddress", "updatePromoText", null))))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicateEmail")));
+                .andExpect(jsonPath("$.statusText", is("duplicateEmail")));
         ;
     }
 
@@ -344,7 +344,7 @@ public class SchoolControllerIT {
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicateName")));
+                .andExpect(jsonPath("$.statusText", is("duplicateName")));
     }
 
     @Test
@@ -356,7 +356,7 @@ public class SchoolControllerIT {
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicateEmail")));
+                .andExpect(jsonPath("$.statusText", is("duplicateEmail")));
     }
 
     @Test
@@ -368,7 +368,7 @@ public class SchoolControllerIT {
         mockMvc.perform(post(BASEURL).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newSchool)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicatePhone")));
+                .andExpect(jsonPath("$.statusText", is("duplicatePhone")));
     }
 
     //

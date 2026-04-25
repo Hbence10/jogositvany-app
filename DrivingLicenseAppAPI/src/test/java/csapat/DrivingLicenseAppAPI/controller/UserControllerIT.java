@@ -245,7 +245,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicateEmail")));
+                .andExpect(jsonPath("$.statusText", is("duplicateEmail")));
         long usersSizeAfterRegistration = userRepository.count();
         assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }
@@ -258,7 +258,7 @@ public class UserControllerIT {
         mockMvc.perform(post(BASE_URL + "/register/student").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newUser)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("duplicatePhone")));
+                .andExpect(jsonPath("$.statusText", is("duplicatePhone")));
         long usersSizeAfterRegistration = userRepository.count();
         assertEquals(usersSizeBeforeRegistration, usersSizeAfterRegistration, "");
     }

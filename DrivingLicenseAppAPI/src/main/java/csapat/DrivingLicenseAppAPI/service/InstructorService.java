@@ -116,7 +116,9 @@ public class InstructorService {
     public ResponseEntity<Object> handleDrivingLessonRequest(Long requestId, String status) {
         DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElseThrow(() -> new NotFoundException("requestNotFound"));
         if (searchedRequest.getDate().before(new Date())) {
-            return ResponseEntity.status(415).body("invalidDate");
+//            return ResponseEntity.status(415).body("invalidDate");
+            searchedRequest.setIsAccepted(false);
+            return ResponseEntity.ok().build();
         }
 
         List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());

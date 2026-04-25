@@ -290,7 +290,7 @@ public class InstructorControllerIT {
         InstructorUpdate requestBody = createRequestBodyForUpdate("testPromo", vehicleId, "testVehicleUpdate", "PHP-112", 2L, 2L);
         mockMvc.perform(put(BASEURL + "/" + instructorId).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(requestBody)))
                 .andExpect(status().is(409))
-                .andExpect(jsonPath("$", is("registeredLicensePlate")));
+                .andExpect(jsonPath("$.statusText", is("registeredLicensePlate")));
     }
 
     private InstructorUpdate createRequestBodyForUpdate(String promoText, Long vehicleId, String vehicleName, String licensePlate, Long fuelTypeId, Long vehicleTypeId) {

@@ -4,12 +4,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(UniqueErrorException.class)
     public ResponseEntity<Object> handleUniqueError(UniqueErrorException ex) {
-        return ResponseEntity.status(409).body(ex.getMessage());
+        return ResponseEntity.status(409).body(Map.of("statusText", ex.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)

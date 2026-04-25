@@ -281,6 +281,7 @@ public class UserService {
                 ((ObjectNode) instructor).put("firstName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getFirstName());
                 ((ObjectNode) instructor).put("lastName", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getLastName());
                 ((ObjectNode) instructor).put("pfpPath", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getPfpPath());
+                ((ObjectNode) instructor).put("email", loggedUser.getStudent().getStudentInstructor().getInstructorUser().getEmail());
 
                 JsonNode vehicle = objectMapper.createObjectNode();
                 ((ObjectNode) vehicle).put("id", loggedUser.getStudent().getStudentInstructor().getVehicle().getId());
@@ -314,16 +315,23 @@ public class UserService {
             ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
 
         } else if (loggedUser.getRole().getName().equals("ROLE_school_admin") || loggedUser.getRole().getName().equals("ROLE_school_owner")) {
-            School school = loggedUser.getAdminSchool();
+            School school;
+            if (loggedUser.getRole().getName().equals("ROLE_school_admin")) {
+                school = loggedUser.getAdminSchool();
+            } else {
+                school = loggedUser.getOwnedSchool();
+            }
             ArrayList<JsonNode> studentDetails = new ArrayList<>();
 
-            for (Students student : school.getStudentsList()) {
-                JsonNode studentNode = objectMapper.createObjectNode();
-                ((ObjectNode) studentNode).put("id", student.getStudentUser().getId());
-                ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
-                ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
-                studentDetails.add(studentNode);
-            }
+
+                for (Students student : school.getStudentsList()) {
+                    JsonNode studentNode = objectMapper.createObjectNode();
+                    ((ObjectNode) studentNode).put("id", student.getStudentUser().getId());
+                    ((ObjectNode) studentNode).put("firstName", student.getStudentUser().getFirstName());
+                    ((ObjectNode) studentNode).put("lastName", student.getStudentUser().getLastName());
+                    studentDetails.add(studentNode);
+                }
+
 
             ArrayList<JsonNode> instructorDetails = new ArrayList<>();
             for (Instructors instructors : school.getInstructorsList()) {
@@ -334,7 +342,7 @@ public class UserService {
                 instructorDetails.add(instructorNode);
             }
             ((ObjectNode) returnObject).put("schoolId", loggedUser.getRole().getName().equals("ROLE_school_admin") ? loggedUser.getAdminSchool().getId() : loggedUser.getOwnedSchool().getId());
-            ((ObjectNode) returnObject).put("school", createSchoolJson(loggedUser.getAdminSchool()));
+            ((ObjectNode) returnObject).put("school", createSchoolJson(school));
             ArrayNode studentNode = objectMapper.valueToTree(studentDetails);
             ((ObjectNode) returnObject).putArray("students").addAll(studentNode);
             ArrayNode instructorNode = objectMapper.valueToTree(instructorDetails);
