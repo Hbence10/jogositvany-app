@@ -308,4 +308,9 @@ export class ProfilPageComponent implements OnInit {
       });
     }
   }
+
+  logout() {
+    this.alertService.setAlert("Sikeresen kijelentkeztél!", "success")
+    this.userService.logout()
+  }
 }
