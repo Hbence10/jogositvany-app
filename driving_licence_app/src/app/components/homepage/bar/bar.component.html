@@ -1,0 +1,13 @@
+<div
+  class="progress"
+  [class.normalBg]="!isTooMuch"
+  [class.toMuchBg]="isTooMuch"
+>
+  <div
+    class="bar"
+    [class.worked]="!isTooMuch"
+    [class.extra]="isTooMuch"
+    id="worked"
+    [style]="{ width: `${filledPlace}%` }"
+  ></div>
+</div>

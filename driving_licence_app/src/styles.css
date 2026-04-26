@@ -60,6 +60,11 @@ body {
   background: #22354f;
 }
 
+*::placeholder {
+  color: white;
+  opacity: 1;
+}
+
 .success {
   background-color: #8BFF8E !important;
   border: 2px solid #008C05 !important;

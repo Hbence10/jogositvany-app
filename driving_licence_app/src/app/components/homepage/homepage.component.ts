@@ -11,10 +11,11 @@ import { ProfilCardComponent } from '../profil-card/profil-card.component';
 import { SchoolRegistrationComponent } from '../school-registration/school-registration.component';
 import { HourPipe } from '../../pipe/HourPipe';
 import { StudentService } from '../../services/student.service';
+import { BarComponent } from './bar/bar.component';
 
 @Component({
   selector: 'app-homepage',
-  imports: [MatDatepickerModule, RouterModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent, CommonModule, HourPipe],
+  imports: [MatDatepickerModule, RouterModule, ProfilCardComponent, MatCardModule, SchoolRegistrationComponent, CommonModule, HourPipe, BarComponent],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
 })

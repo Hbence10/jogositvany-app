@@ -23,6 +23,4 @@ export class User {
     public pfpPath: string = '',
     public role?: Role
   ) {}
-
-
 }
