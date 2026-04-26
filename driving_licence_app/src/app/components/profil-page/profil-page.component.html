@@ -1,27 +1,29 @@
 <div id="mainDiv" class="container-fluid mainFont" style="min-height: 100vh">
   <div class="row my-4">
     <div class="col-lg-12 d-flex justify-content-lg-end justify-content-center">
-      @if (searchedUser?.id === userService.loggedUser()?.id || (searchedSchool?.id === userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name === "ROLE_school_owner")) {
-        <button (click)="showDeleteConfirmation = true" class="editorButton mx-2">
-          <i class="material-icons">delete</i>
-        </button>
-      }
       @if ((searchedSchool?.id === userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name === "ROLE_school_owner")) {
-        <button (click)="showAdminSetter = true" class="editorButton mx-2">
+        <button (click)="showAdminSetter = true" class="editorButton mx-2 d-flex justify-content-center align-items-center">
           <span class="material-symbols-outlined">account_circle</span>
         </button>
       }
-
       @if(type() == "school") {
-        <button class="editorButton mx-2" (click)="showPriceList = true">
+        <button class="editorButton mx-2 d-flex justify-content-center align-items-center" (click)="showPriceList = true">
           <i class="material-icons">info</i>
         </button>
       }
       @if (searchedUser?.id === userService.loggedUser()?.id || searchedSchool?.id === userService.loggedUser()?.schoolId) {
-        <button (click)="showEditor = true" class="editorButton mx-2">
+        <button (click)="showEditor = true" class="editorButton mx-2 d-flex justify-content-center align-items-center">
           <i class="material-icons">edit</i>
         </button>
       }
+      @if (searchedUser?.id === userService.loggedUser()?.id || (searchedSchool?.id === userService.loggedUser()?.schoolId && userService.loggedUser()?.role?.name === "ROLE_school_owner")) {
+        <button (click)="showDeleteConfirmation = true" class="editorButton mx-2 d-flex justify-content-center align-items-center" id="deleteButton">
+          <i class="material-icons">delete</i>
+        </button>
+      }
+      <button class="editorButton mx-2 d-lg-none d-flex justify-content-center align-items-center">
+        <i class="material-icons">logout</i>
+      </button>
     </div>
   </div>
 

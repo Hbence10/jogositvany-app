@@ -46,9 +46,6 @@
           @if (userService.loggedUser()?.role?.name == "ROLE_administrator"){
             <li (click)="navigate('/users/users')" class="text-center my-3">Felhasználók</li>
           }
-          @if (userService.loggedUser() != null) {
-            <li class="text-center text-danger" (click)="logout()">Kijelentkezés</li>
-          }
         </ul>
       </div>
     </div>

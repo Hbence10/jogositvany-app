@@ -80,9 +80,9 @@
     }
   </div>
 
-  <div id="login" class="d-flex justify-content-center align-items-center">
+  <div id="login" class="d-flex justify-content-center align-items-center w-100 h-100">
     <div class="d-flex justify-content-center align-items-center">
-      <img src="assets/icons/kijeletkezés.svg" alt="" />
+      <mat-icon class="navIcons d-flex justify-content-center align-items-center" fontIcon="logout"></mat-icon>
     </div>
     @if(userService.loggedUser() == null){
     <a routerLink="login">Bejelentkezése</a>

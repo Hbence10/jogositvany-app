@@ -16,7 +16,7 @@
 
 #navbar .navItem {
   margin: 15px 0px;
-  transition: width 0.5s ease, height 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 #navbar:hover {
@@ -112,16 +112,6 @@
   transition: width 0.5s ease, height 0.5s ease;
 }
 
-.login {
-  float: bottom;
-  transition: width 0.5s ease;
-}
-
-#login img {
-  width: 60px;
-  height: 60px;
-  transition: width 0.5s ease;
-}
 
 .navIconContainer {
   width: 40px;
@@ -184,12 +174,24 @@ img {
 }
 
 #navbar #login {
+  background-color: #FF2222;
+  color: #801111;
+  max-width: 60px;
+  max-height: 60px;
+  border-radius: 10px;
   margin: 0px 0px 30px 15px;
   transition: width 0.5s ease, height 0.5s ease;
+  overflow: hidden;
+}
+
+#navbar #login a {
+  color: #801111;
 }
 
 #navbar:hover #login {
   margin: 0px 0px 30px 15px;
+  max-width: 300px;
+  max-height: 60px;
   transition: width 0.5s ease, height 0.5s ease;
 }
 

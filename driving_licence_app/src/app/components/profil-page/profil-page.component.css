@@ -80,7 +80,7 @@
   height: 60px;
   border-radius: 5px;
   border: none;
-  background-color: #636da1;
+  background-color: #22354F;
   color: #dee0eb;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -259,4 +259,22 @@ app-admin-setter {
   background-color: #626C99;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+#deleteButton {
+  background-color: #FF2222;
+  color: #801111;
+}
+
+@media screen and (max-width: 991px) {
+  .editorButton {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+  }
+
+  .d-lg-none.editorButton {
+    background-color: #22354F;
+    color: #FF2222;
+  }
 }
