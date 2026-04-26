@@ -17,202 +17,295 @@ import { HourPipe } from '../../pipe/HourPipe';
 import { AlertServiceService } from '../../services/alert-service.service';
 import { AdminSetterComponent } from './admin-setter/admin-setter.component';
 import { StudentService } from '../../services/student.service';
+import { BarComponent } from '../homepage/bar/bar.component';
 
 @Component({
   selector: 'app-profil-page',
-  imports: [MatIconModule, CommonModule, ProfilEditorComponent, ProfilCardComponent, ReviewListComponent, PriceListComponent, HourPipe, AdminSetterComponent],
+  imports: [
+    MatIconModule,
+    CommonModule,
+    ProfilEditorComponent,
+    ProfilCardComponent,
+    ReviewListComponent,
+    PriceListComponent,
+    HourPipe,
+    AdminSetterComponent,
+    BarComponent,
+  ],
   templateUrl: './profil-page.component.html',
-  styleUrl: './profil-page.component.css'
+  styleUrl: './profil-page.component.css',
 })
 export class ProfilPageComponent implements OnInit {
-  private route = inject(ActivatedRoute)
-  userService = inject(UsersService)
-  private schoolService = inject(SchoolServiceService)
-  private studentService = inject(StudentService)
-  private requestService = inject(RequestService)
-  private alertService = inject(AlertServiceService)
-  private router = inject(Router)
+  private route = inject(ActivatedRoute);
+  userService = inject(UsersService);
+  private schoolService = inject(SchoolServiceService);
+  private studentService = inject(StudentService);
+  private requestService = inject(RequestService);
+  private alertService = inject(AlertServiceService);
+  private router = inject(Router);
 
-  searchedUser: User | null = null
-  searchedSchool: School | null = null
-  instructorDetails: Instructors | null = null
-  type = signal("")
-  roleName!: string
-  errorMsg: string = ""
-  selectedId!: number
-  showEditor: boolean = false
-  showReviews: boolean = false
-  showDeleteConfirmation: boolean = false
-  showPriceList: boolean = false
-  selectedCategory: number | null = null
+  searchedUser: User | null = null;
+  searchedSchool: School | null = null;
+  instructorDetails: Instructors | null = null;
+  type = signal('');
+  roleName!: string;
+  errorMsg: string = '';
+  selectedId!: number;
+  showEditor: boolean = false;
+  showReviews: boolean = false;
+  showDeleteConfirmation: boolean = false;
+  showPriceList: boolean = false;
+  selectedCategory: number | null = null;
   showAdminSetter: boolean = false;
-  drivingLessons: {date: string, startHour: string, endHour: string, town: string, km: number}[] = []
+  drivingLessons: {
+    date: string;
+    startHour: string;
+    endHour: string;
+    town: string;
+    km: number;
+  }[] = [];
+  lessonDetails!: {
+    paidLesson: number;
+    drivenLesson: number;
+    totalLessonNumber: number;
+  };
 
   ngOnInit(): void {
     this.route.params.subscribe({
+      next: (parameters) => {
+        this.errorMsg = '';
+        this.searchedSchool = null;
+        this.searchedUser = null;
+        this.type.set(parameters['type']);
 
-      next: parameters => {
-        this.errorMsg = ""
-        this.searchedSchool = null
-        this.searchedUser = null
-        this.type.set(parameters["type"])
-
-        this.selectedId = parameters["id"]
-        if (this.type() == "user") {
+        this.selectedId = parameters['id'];
+        if (this.type() == 'user') {
           this.userService.getUserById(this.selectedId).subscribe({
-            next: response => this.searchedUser = response,
-            error: error => {
+            next: (response) => (this.searchedUser = response),
+            error: (error) => {
               if (error.status == 404) {
-                this.errorMsg = "notFound"
+                this.errorMsg = 'notFound';
               } else if (error.status == 500) {
-                this.errorMsg = "serverError"
+                this.errorMsg = 'serverError';
               }
             },
             complete: () => {
-              if (this.searchedUser?.role?.name == "ROLE_student") {
-                this.roleName = "Tanuló"
+              if (this.searchedUser?.role?.name == 'ROLE_student') {
+                this.roleName = 'Tanuló';
                 if (this.searchedUser.id == this.userService.loggedUser()?.id) {
-                  this.studentService.getDrivingHistory(this.userService.loggedUser()?.studentId!).subscribe({
-                    next: response => {
-                      this.drivingLessons = response
-                    }
-                  })
-                }
 
-              } else if (this.searchedUser?.role?.name == "ROLE_instructor") {
-                this.roleName = "Oktató",
-                  this.instructorDetails = this.searchedUser.instructor!
+                  this.studentService
+                    .getDrivingHistory(
+                      this.userService.loggedUser()?.studentId!,
+                    )
+                    .subscribe({
+                      next: (response) => {
+                        console.log(response)
+                        this.drivingLessons = response;
+                      },
+                    });
+
+                  this.studentService
+                    .getLessonDetailsForHomePage(
+                      this.userService.loggedUser()?.studentId!,
+                    )
+                    .subscribe({
+                      next: (response) => {
+                        this.lessonDetails = response;
+                      },
+                    });
+                }
+              } else if (this.searchedUser?.role?.name == 'ROLE_instructor') {
+                ((this.roleName = 'Oktató'),
+                  (this.instructorDetails = this.searchedUser.instructor!));
               }
-            }
-          })
-        } else if (this.type() == "school") {
-          this.schoolService.getSchoolById(this.selectedId).subscribe({
-            next: response => {
-              console.log(response)
-              this.searchedSchool = response
             },
-            error: error => {
+          });
+        } else if (this.type() == 'school') {
+          this.schoolService.getSchoolById(this.selectedId).subscribe({
+            next: (response) => {
+              console.log(response);
+              this.searchedSchool = response;
+            },
+            error: (error) => {
               if (error.status == 404) {
-                this.errorMsg = "notFound"
+                this.errorMsg = 'notFound';
               } else if (error.status == 500) {
-                this.errorMsg = "serverError"
+                this.errorMsg = 'serverError';
               }
             },
             complete: () => {
-              this.roleName = "Iskola"
-            }
-          })
+              this.roleName = 'Iskola';
+            },
+          });
         }
-      }
-    })
+      },
+    });
   }
 
   changeImages(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      const formData = new FormData()
-      formData.append("image", file)
-      if (this.type() == "user") {
+      const formData = new FormData();
+      formData.append('image', file);
+      if (this.type() == 'user') {
         this.userService.changePfp(this.searchedUser?.id!, formData).subscribe({
-          next: response => {
-            this.searchedUser = response
-            this.userService.loggedUser()!.pfpPath = this.searchedUser.pfpPath
-          }, error: () => {
-            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-          }, complete: () => {
-            this.alertService.setAlert("Profilképe sikeresen frissült!", "success")
-          }
-        })
-      } else if (this.type() == "school") {
-        this.schoolService.changeBannerImg(this.searchedSchool?.id!, formData).subscribe({
-          next: response => { this.searchedSchool = response },
+          next: (response) => {
+            this.searchedUser = response;
+            this.userService.loggedUser()!.pfpPath = this.searchedUser.pfpPath;
+          },
           error: () => {
-            this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-          }, complete: () => {
-            this.alertService.setAlert("Boritóképe sikeresen frissült!", "success")
-          }
-        })
+            this.alertService.setAlert(
+              'Hiba történt. Próbáld meg újra később!',
+              'error',
+            );
+          },
+          complete: () => {
+            this.alertService.setAlert(
+              'Profilképe sikeresen frissült!',
+              'success',
+            );
+          },
+        });
+      } else if (this.type() == 'school') {
+        this.schoolService
+          .changeBannerImg(this.searchedSchool?.id!, formData)
+          .subscribe({
+            next: (response) => {
+              this.searchedSchool = response;
+            },
+            error: () => {
+              this.alertService.setAlert(
+                'Hiba történt. Próbáld meg újra később!',
+                'error',
+              );
+            },
+            complete: () => {
+              this.alertService.setAlert(
+                'Boritóképe sikeresen frissült!',
+                'success',
+              );
+            },
+          });
       }
     }
   }
 
   sendJoinRequest() {
-    if (this.type() == "user") {
-      this.requestService.sendInstructorJoinRequest(this.userService.loggedUser()!.studentId!, this.searchedUser!.instructor!.id).subscribe({
-        error: error => {
-          console.log(error)
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-        },
-        complete: () => {
-          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
-        }
-      })
-    } else if (this.type() == "school") {
-      this.requestService.sendSchoolJoinRequest(this.searchedSchool!.id, this.userService.loggedUser()!.id, this.selectedCategory!).subscribe({
-        error: error => {
-          console.log(error)
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
-        },
-        complete: () => {
-          this.alertService.setAlert("Sikeres kérelem küldés!", "success")
-        }
-      })
+    if (this.type() == 'user') {
+      this.requestService
+        .sendInstructorJoinRequest(
+          this.userService.loggedUser()!.studentId!,
+          this.searchedUser!.instructor!.id,
+        )
+        .subscribe({
+          error: (error) => {
+            console.log(error);
+            this.alertService.setAlert(
+              'Hiba történt. Próbáld meg újra később!',
+              'error',
+            );
+          },
+          complete: () => {
+            this.alertService.setAlert('Sikeres kérelem küldés!', 'success');
+          },
+        });
+    } else if (this.type() == 'school') {
+      this.requestService
+        .sendSchoolJoinRequest(
+          this.searchedSchool!.id,
+          this.userService.loggedUser()!.id,
+          this.selectedCategory!,
+        )
+        .subscribe({
+          error: (error) => {
+            console.log(error);
+            this.alertService.setAlert(
+              'Hiba történt. Próbáld meg újra később!',
+              'error',
+            );
+          },
+          complete: () => {
+            this.alertService.setAlert('Sikeres kérelem küldés!', 'success');
+          },
+        });
     }
   }
 
   deleteProfile() {
-    if (this.type() == "user") {
+    if (this.type() == 'user') {
       this.userService.deleteUser(this.searchedUser?.id!).subscribe({
-        next: response => console.log(response),
+        next: (response) => console.log(response),
         error: () => {
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          this.alertService.setAlert(
+            'Hiba történt. Próbáld meg újra később!',
+            'error',
+          );
         },
         complete: () => {
-          this.showDeleteConfirmation = false
+          this.showDeleteConfirmation = false;
           //logout logika
-          this.alertService.setAlert("Fiókodat sikeresen törölted", "success")
-        }
-      })
-    } else if (this.type() == "school") {
+          this.alertService.setAlert('Fiókodat sikeresen törölted', 'success');
+        },
+      });
+    } else if (this.type() == 'school') {
       this.schoolService.deleteSchool(this.searchedSchool?.id!).subscribe({
-        next: response => console.log(response),
+        next: (response) => console.log(response),
         error: () => {
-          this.alertService.setAlert("Hiba történt. Próbáld meg újra később!", "error")
+          this.alertService.setAlert(
+            'Hiba történt. Próbáld meg újra később!',
+            'error',
+          );
         },
         complete: () => {
-          this.showDeleteConfirmation = false
-          this.alertService.setAlert("Az iskolát sikeresen törölted", "success")
-        }
-      })
+          this.showDeleteConfirmation = false;
+          this.alertService.setAlert(
+            'Az iskolát sikeresen törölted',
+            'success',
+          );
+        },
+      });
     }
   }
 
   getInstructorRows(): ProfileCard[][] {
-    const rows: ProfileCard[][] = []
+    const rows: ProfileCard[][] = [];
     if (this.searchedSchool != null) {
-      for (let i: number = 0; i < this.searchedSchool!.instructorsList?.length; i++) {
-        const row: ProfileCard[] = []
+      for (
+        let i: number = 0;
+        i < this.searchedSchool!.instructorsList?.length;
+        i++
+      ) {
+        const row: ProfileCard[] = [];
         for (let j: number = i; j < i + 2; j++) {
           if (this.searchedSchool!.instructorsList[j] != undefined) {
-            row.push(new ProfileCard(this.searchedSchool!.instructorsList[j].instructorUser.id!, this.searchedSchool!.instructorsList[j].instructorUser.firstName!, this.searchedSchool!.instructorsList[j].instructorUser.lastName!))
+            row.push(
+              new ProfileCard(
+                this.searchedSchool!.instructorsList[j].instructorUser.id!,
+                this.searchedSchool!.instructorsList[j].instructorUser
+                  .firstName!,
+                this.searchedSchool!.instructorsList[j].instructorUser
+                  .lastName!,
+              ),
+            );
           }
         }
-        rows.push(row)
+        rows.push(row);
       }
     }
-    return rows
+    return rows;
   }
 
   setChanges() {
-    this.showEditor = false
-    if (this.type() == "user") {
+    this.showEditor = false;
+    if (this.type() == 'user') {
       this.userService.getUserById(this.selectedId).subscribe({
-        next: response => this.searchedUser = response
-      })
+        next: (response) => (this.searchedUser = response),
+      });
     } else {
       this.schoolService.getSchoolById(this.selectedId).subscribe({
-        next: response => this.searchedSchool = response
-      })
+        next: (response) => (this.searchedSchool = response),
+      });
     }
   }
 }

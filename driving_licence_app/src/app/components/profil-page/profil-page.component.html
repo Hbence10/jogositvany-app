@@ -153,7 +153,7 @@
 
                         <div class="w-100">
                           <div id="progressBar" class="w-100 p-4">
-                            <input id="bar" type="range" min="0" max="30" value="9" disabled/>
+                             <app-bar class="w-100" [property1]="lessonDetails.drivenLesson" [required]="30" />
                             <div class="d-flex flex-md-row flex-column justify-content-lg-start justify-content-center align-items-center">
                               <div class="lesson-info-item lesson-info-driven me-4">
                                 Vezetett órák: <span>9</span>
@@ -162,11 +162,11 @@
                                 Plusz órák: <span>0</span>
                               </div>
                               <div class="mx-3 lesson-info-item lesson-info-required d-lg-none d-block">
-                              Kötelező órák: <span>21</span>
+                              Kötelező órák: <span>30</span>
                             </div>
                             </div>
                             <div class="lesson-info-item lesson-info-required d-lg-block d-none">
-                              Kötelező órák: <span>21</span>
+                              Kötelező órák: <span>30</span>
                             </div>
                           </div>
 
@@ -174,9 +174,11 @@
                             <div id="historyContainer" class="p-3">
                               @for (drivingLesson of drivingLessons; track $index) {
                                 <div class="drivingLessonCard px-3 py-2 mb-3">
-                                  <p class="text-lg-start text-center m-0">{{drivingLesson.date}} {{drivingLesson.startHour}}-{{drivingLesson.endHour}}</p>
+                                  <p class="text-lg-start text-center m-0">{{drivingLesson.date | date: "YYYY-MM-dd"}} {{drivingLesson.startHour.slice(0, 5)}}-{{drivingLesson.endHour.slice(0, 5)}}</p>
                                   <p class="text-lg-start text-center m-0">{{drivingLesson.town}} - {{drivingLesson.km}} km</p>
                                 </div>
+                              } @empty {
+                                <h2 class="text-center">Még nem vezettél egy órát sem...</h2>
                               }
                             </div>
                           </div>
