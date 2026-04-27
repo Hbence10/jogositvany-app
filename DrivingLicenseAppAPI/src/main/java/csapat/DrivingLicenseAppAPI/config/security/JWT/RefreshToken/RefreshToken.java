@@ -5,7 +5,6 @@ import lombok.*;
 import java.time.Instant;
 
 
-@NoArgsConstructor
 public class RefreshToken {
 
     private Long id;
