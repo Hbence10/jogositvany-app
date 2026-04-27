@@ -2,6 +2,14 @@
   width: 425px;
 }
 
+#dayName{
+  font-size: 18px;
+}
+
+#dayNum{
+  font-size: 30px;
+}
+
 .lessonBox {
   height: 700px;
   margin: 0px;

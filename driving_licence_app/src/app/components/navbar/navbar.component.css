@@ -83,6 +83,7 @@
   border-radius: 20px;
   background-color: #434a6b;
   transition: all 0.7s;
+  overflow: hidden;
 }
 
 #navbar:hover .profil:hover {
@@ -107,6 +108,7 @@
   border-radius: 20px;
   overflow: hidden;
 }
+
 img {
   width: 100%;
   height: 100%;
@@ -142,6 +144,7 @@ img {
   margin: 0px 0px 30px 15px;
   transition: all 0.7s;
   overflow: hidden;
+  cursor: pointer;
 }
 
 #login:hover {

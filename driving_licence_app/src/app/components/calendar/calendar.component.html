@@ -22,7 +22,8 @@
         <div class="container-fluid mx-3 d-flex flex-column">
           <div class="row align-items-center text-center days">
             <div class="col-lg-12">
-              <p>{{ day.name }}</p>
+              <p id="dayNum">{{ datesOfWeek()[$index] | date: "dd" }}</p>
+              <p id="dayName">{{ day.name }}</p>
             </div>
           </div>
           @if (userService.loggedUser()?.role?.name == "ROLE_student") {
