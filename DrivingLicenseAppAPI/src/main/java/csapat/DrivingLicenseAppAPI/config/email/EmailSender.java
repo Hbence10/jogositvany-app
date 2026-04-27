@@ -80,8 +80,8 @@ public class EmailSender {
         helper.setTo(toEmail);
 
         Map<String, Object> emailObject = new HashMap<>();
-        emailObject.put("instructorName", request.getDLessonInstructor().getInstructorUser().getFirstName() + " " + request.getDLessonInstructor().getInstructorUser().getLastName());
-        emailObject.put("studentName", request.getDLessonRequestStudent().getStudentUser().getFirstName() + " " +  request.getDLessonRequestStudent().getStudentUser().getLastName());
+        emailObject.put("instructorName", request.getdLessonInstructor().getInstructorUser().getFirstName() + " " + request.getdLessonInstructor().getInstructorUser().getLastName());
+        emailObject.put("studentName", request.getdLessonRequestStudent().getStudentUser().getFirstName() + " " +  request.getdLessonRequestStudent().getStudentUser().getLastName());
         emailObject.put("date", request.getDate());
         emailObject.put("startHour", request.getStartTime());
         emailObject.put("endHour", request.getEndTime());
@@ -98,7 +98,7 @@ public class EmailSender {
         helper.setTo(toEmail);
 
         Map<String, Object> emailObject = new HashMap<>();
-        emailObject.put("studentName", request.getDLessonRequestStudent().getStudentUser().getFirstName() + " " + request.getDLessonRequestStudent().getStudentUser().getLastName());
+        emailObject.put("studentName", request.getdLessonRequestStudent().getStudentUser().getFirstName() + " " + request.getdLessonRequestStudent().getStudentUser().getLastName());
         emailObject.put("answer", answer);
         emailObject.put("sentAt", request.getSentAt());
 

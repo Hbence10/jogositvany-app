@@ -60,7 +60,7 @@ public class JwtUtilsService {
                 if (!refreshToken.getExpiredDate().isBefore(Instant.now())) {
 
                     Users loggedUser = userRepository.findByEmail(refreshToken.getEmail()).orElse(null);
-                    if (loggedUser != null && !loggedUser.getIsDeleted()) {
+                    if (loggedUser != null && !loggedUser.getDeleted()) {
                         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(loggedUser.getRole().getName()));
                         String newJwt = createJwtToken(new User(loggedUser.getEmail(), loggedUser.getPassword(), authorities));
                         return newJwt;
