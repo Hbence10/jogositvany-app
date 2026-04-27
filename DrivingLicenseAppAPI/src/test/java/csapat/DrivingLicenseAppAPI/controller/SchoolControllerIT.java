@@ -95,7 +95,7 @@ public class SchoolControllerIT {
         mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("accept"))))
                 .andExpect(status().isOk());
 
-        Assertions.assertEquals(true, schoolJoinRequestRepository.findById(testJoinRequestId).get().getIsAccepted(), "It should be accepted");
+        Assertions.assertEquals(true, schoolJoinRequestRepository.findById(testJoinRequestId).get().getAccepted(), "It should be accepted");
     }
 
     @Test
@@ -104,7 +104,7 @@ public class SchoolControllerIT {
         mockMvc.perform(post(BASEURL + "/" + testJoinRequestId + "/joinRequest").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(createBodyForJoinRequestHandling("refuse"))))
                 .andExpect(status().isOk());
 
-        Assertions.assertEquals(false, schoolJoinRequestRepository.findById(testJoinRequestId).get().getIsAccepted(), "It should be refused");
+        Assertions.assertEquals(false, schoolJoinRequestRepository.findById(testJoinRequestId).get().getAccepted(), "It should be refused");
     }
 
     @Test
