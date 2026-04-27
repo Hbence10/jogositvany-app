@@ -41,4 +41,36 @@ public class SchoolCategory {
         this.licenseCategory = licenseCategory;
         this.schoolCategory = schoolCategory;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public void setHourlyRate(Integer hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public DrivingLicenseCategory getLicenseCategory() {
+        return licenseCategory;
+    }
+
+    public void setLicenseCategory(DrivingLicenseCategory licenseCategory) {
+        this.licenseCategory = licenseCategory;
+    }
+
+    public School getSchoolCategory() {
+        return schoolCategory;
+    }
+
+    public void setSchoolCategory(School schoolCategory) {
+        this.schoolCategory = schoolCategory;
+    }
 }

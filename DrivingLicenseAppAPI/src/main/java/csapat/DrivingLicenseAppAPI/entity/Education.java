@@ -48,4 +48,28 @@ public class Education {
         this.id = id;
         this.name = name;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Users> getUserEducationList() {
+        return userEducationList;
+    }
+
+    public void setUserEducationList(List<Users> userEducationList) {
+        this.userEducationList = userEducationList;
+    }
 }

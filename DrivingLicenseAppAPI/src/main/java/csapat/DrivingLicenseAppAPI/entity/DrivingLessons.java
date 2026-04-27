@@ -134,4 +134,132 @@ public class DrivingLessons {
         this.dinstructor = dinstructor;
         this.drivingLessonStatus = status;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Integer getStartKm() {
+        return startKm;
+    }
+
+    public void setStartKm(Integer startKm) {
+        this.startKm = startKm;
+    }
+
+    public Integer getEndKm() {
+        return endKm;
+    }
+
+    public void setEndKm(Integer endKm) {
+        this.endKm = endKm;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getPickUpPlace() {
+        return pickUpPlace;
+    }
+
+    public void setPickUpPlace(String pickUpPlace) {
+        this.pickUpPlace = pickUpPlace;
+    }
+
+    public String getDropOffPlace() {
+        return dropOffPlace;
+    }
+
+    public void setDropOffPlace(String dropOffPlace) {
+        this.dropOffPlace = dropOffPlace;
+    }
+
+    public Integer getLessonHourNumber() {
+        return lessonHourNumber;
+    }
+
+    public void setLessonHourNumber(Integer lessonHourNumber) {
+        this.lessonHourNumber = lessonHourNumber;
+    }
+
+    public Boolean getPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(Boolean paid) {
+        isPaid = paid;
+    }
+
+    public Boolean getEnd() {
+        return isEnd;
+    }
+
+    public void setEnd(Boolean end) {
+        isEnd = end;
+    }
+
+    public Boolean getCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    public Date getCancelledAt() {
+        return cancelledAt;
+    }
+
+    public void setCancelledAt(Date cancelledAt) {
+        this.cancelledAt = cancelledAt;
+    }
+
+    public Status getDrivingLessonStatus() {
+        return drivingLessonStatus;
+    }
+
+    public void setDrivingLessonStatus(Status drivingLessonStatus) {
+        this.drivingLessonStatus = drivingLessonStatus;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public ReservedHour getReservedHour() {
+        return reservedHour;
+    }
+
+    public void setReservedHour(ReservedHour reservedHour) {
+        this.reservedHour = reservedHour;
+    }
+
+    public Students getDstudent() {
+        return dstudent;
+    }
+
+    public void setDstudent(Students dstudent) {
+        this.dstudent = dstudent;
+    }
+
+    public Instructors getDinstructor() {
+        return dinstructor;
+    }
+
+    public void setDinstructor(Instructors dinstructor) {
+        this.dinstructor = dinstructor;
+    }
 }

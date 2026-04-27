@@ -105,4 +105,84 @@ public class Review {
         this.reviewAuthor = author;
         this.aboutSchool = aboutSchool;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
+    }
+
+    public Boolean getAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setAnonymous(Boolean anonymous) {
+        isAnonymous = anonymous;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Students getReviewAuthor() {
+        return reviewAuthor;
+    }
+
+    public void setReviewAuthor(Students reviewAuthor) {
+        this.reviewAuthor = reviewAuthor;
+    }
+
+    public Instructors getAboutInstructor() {
+        return aboutInstructor;
+    }
+
+    public void setAboutInstructor(Instructors aboutInstructor) {
+        this.aboutInstructor = aboutInstructor;
+    }
+
+    public School getAboutSchool() {
+        return aboutSchool;
+    }
+
+    public void setAboutSchool(School aboutSchool) {
+        this.aboutSchool = aboutSchool;
+    }
 }

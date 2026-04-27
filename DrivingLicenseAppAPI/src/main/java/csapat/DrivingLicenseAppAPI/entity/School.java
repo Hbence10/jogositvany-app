@@ -142,4 +142,156 @@ public class School {
         this.owner = owner;
         this.bannerImgPath = "http://localhost:8080/coverImages/defaultCoverImg.jpg";
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPromoText() {
+        return promoText;
+    }
+
+    public void setPromoText(String promoText) {
+        this.promoText = promoText;
+    }
+
+    public String getBannerImgPath() {
+        return bannerImgPath;
+    }
+
+    public void setBannerImgPath(String bannerImgPath) {
+        this.bannerImgPath = bannerImgPath;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Users getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Users owner) {
+        this.owner = owner;
+    }
+
+    public List<Users> getAdminList() {
+        return adminList;
+    }
+
+    public void setAdminList(List<Users> adminList) {
+        this.adminList = adminList;
+    }
+
+    public List<Instructors> getInstructorsList() {
+        return instructorsList;
+    }
+
+    public void setInstructorsList(List<Instructors> instructorsList) {
+        this.instructorsList = instructorsList;
+    }
+
+    public List<OpeningDetails> getOpeningDetails() {
+        return openingDetails;
+    }
+
+    public void setOpeningDetails(List<OpeningDetails> openingDetails) {
+        this.openingDetails = openingDetails;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<Students> getStudentsList() {
+        return studentsList;
+    }
+
+    public void setStudentsList(List<Students> studentsList) {
+        this.studentsList = studentsList;
+    }
+
+    public List<SchoolJoinRequest> getSchoolJoinRequestList() {
+        return schoolJoinRequestList;
+    }
+
+    public void setSchoolJoinRequestList(List<SchoolJoinRequest> schoolJoinRequestList) {
+        this.schoolJoinRequestList = schoolJoinRequestList;
+    }
+
+    public List<SchoolCategory> getLicenseCategoryList() {
+        return licenseCategoryList;
+    }
+
+    public void setLicenseCategoryList(List<SchoolCategory> licenseCategoryList) {
+        this.licenseCategoryList = licenseCategoryList;
+    }
 }

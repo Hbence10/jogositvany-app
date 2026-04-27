@@ -106,4 +106,100 @@ public class Instructors {
         this.instructorUser = instructorUser;
         this.vehicle = vehicle;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPromoText() {
+        return promoText;
+    }
+
+    public void setPromoText(String promoText) {
+        this.promoText = promoText;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Users getInstructorUser() {
+        return instructorUser;
+    }
+
+    public void setInstructorUser(Users instructorUser) {
+        this.instructorUser = instructorUser;
+    }
+
+    public School getInstructorSchool() {
+        return instructorSchool;
+    }
+
+    public void setInstructorSchool(School instructorSchool) {
+        this.instructorSchool = instructorSchool;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<Students> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Students> students) {
+        this.students = students;
+    }
+
+    public List<DrivingLessonRequest> getDrivingLessonRequestList() {
+        return drivingLessonRequestList;
+    }
+
+    public void setDrivingLessonRequestList(List<DrivingLessonRequest> drivingLessonRequestList) {
+        this.drivingLessonRequestList = drivingLessonRequestList;
+    }
+
+    public List<DrivingLessons> getInstructorDrivingLessons() {
+        return instructorDrivingLessons;
+    }
+
+    public void setInstructorDrivingLessons(List<DrivingLessons> instructorDrivingLessons) {
+        this.instructorDrivingLessons = instructorDrivingLessons;
+    }
+
+    public List<InstructorJoinRequest> getInstructorJoinRequestList() {
+        return instructorJoinRequestList;
+    }
+
+    public void setInstructorJoinRequestList(List<InstructorJoinRequest> instructorJoinRequestList) {
+        this.instructorJoinRequestList = instructorJoinRequestList;
+    }
 }

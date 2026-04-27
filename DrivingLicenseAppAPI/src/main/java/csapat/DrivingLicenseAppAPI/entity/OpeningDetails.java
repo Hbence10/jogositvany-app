@@ -68,4 +68,68 @@ public class OpeningDetails {
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolOpeningDetail;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(Date openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public Date getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(Date closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public Boolean getClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(Boolean closed) {
+        isClosed = closed;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public School getSchoolOpeningDetail() {
+        return schoolOpeningDetail;
+    }
+
+    public void setSchoolOpeningDetail(School schoolOpeningDetail) {
+        this.schoolOpeningDetail = schoolOpeningDetail;
+    }
 }

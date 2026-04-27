@@ -69,4 +69,60 @@ public class DrivingLicenseCategory {
         this.name = name;
         this.minAge = minAge;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge;
+    }
+
+    public List<SchoolJoinRequest> getSchoolJoinRequestList() {
+        return schoolJoinRequestList;
+    }
+
+    public void setSchoolJoinRequestList(List<SchoolJoinRequest> schoolJoinRequestList) {
+        this.schoolJoinRequestList = schoolJoinRequestList;
+    }
+
+    public List<School> getSchoolList() {
+        return schoolList;
+    }
+
+    public void setSchoolList(List<School> schoolList) {
+        this.schoolList = schoolList;
+    }
+
+    public List<Students> getStudentsList() {
+        return studentsList;
+    }
+
+    public void setStudentsList(List<Students> studentsList) {
+        this.studentsList = studentsList;
+    }
+
+    public List<SchoolCategory> getLicenseCategory() {
+        return licenseCategory;
+    }
+
+    public void setLicenseCategory(List<SchoolCategory> licenseCategory) {
+        this.licenseCategory = licenseCategory;
+    }
 }

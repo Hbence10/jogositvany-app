@@ -197,4 +197,172 @@ public class Users {
         this.userEducation = userEducation;
         this.vCode = vCode;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPfpPath() {
+        return pfpPath;
+    }
+
+    public void setPfpPath(String pfpPath) {
+        this.pfpPath = pfpPath;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getvCode() {
+        return vCode;
+    }
+
+    public void setvCode(String vCode) {
+        this.vCode = vCode;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Instructors getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructors instructor) {
+        this.instructor = instructor;
+    }
+
+    public Students getStudent() {
+        return student;
+    }
+
+    public void setStudent(Students student) {
+        this.student = student;
+    }
+
+    public School getAdminSchool() {
+        return adminSchool;
+    }
+
+    public void setAdminSchool(School adminSchool) {
+        this.adminSchool = adminSchool;
+    }
+
+    public Education getUserEducation() {
+        return userEducation;
+    }
+
+    public void setUserEducation(Education userEducation) {
+        this.userEducation = userEducation;
+    }
+
+    public List<SchoolJoinRequest> getSchoolJoinRequestList() {
+        return schoolJoinRequestList;
+    }
+
+    public void setSchoolJoinRequestList(List<SchoolJoinRequest> schoolJoinRequestList) {
+        this.schoolJoinRequestList = schoolJoinRequestList;
+    }
+
+    public School getOwnedSchool() {
+        return ownedSchool;
+    }
+
+    public void setOwnedSchool(School ownedSchool) {
+        this.ownedSchool = ownedSchool;
+    }
 }

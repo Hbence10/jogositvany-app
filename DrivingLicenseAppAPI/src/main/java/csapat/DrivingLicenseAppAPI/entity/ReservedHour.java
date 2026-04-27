@@ -88,4 +88,60 @@ public class ReservedHour {
         this.endTime = endTime;
         this.reservedDate = reservedDate;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public DrivingLessons getDrivingLessons() {
+        return drivingLessons;
+    }
+
+    public void setDrivingLessons(DrivingLessons drivingLessons) {
+        this.drivingLessons = drivingLessons;
+    }
+
+    public ReservedDate getReservedDate() {
+        return reservedDate;
+    }
+
+    public void setReservedDate(ReservedDate reservedDate) {
+        this.reservedDate = reservedDate;
+    }
 }

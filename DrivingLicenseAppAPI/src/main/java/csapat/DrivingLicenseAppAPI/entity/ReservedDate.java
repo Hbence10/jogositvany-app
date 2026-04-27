@@ -63,4 +63,52 @@ public class ReservedDate {
     public ReservedDate(Date date) {
         this.date = date;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Boolean getFull() {
+        return isFull;
+    }
+
+    public void setFull(Boolean full) {
+        isFull = full;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public List<ReservedHour> getReservedHourList() {
+        return reservedHourList;
+    }
+
+    public void setReservedHourList(List<ReservedHour> reservedHourList) {
+        this.reservedHourList = reservedHourList;
+    }
 }
