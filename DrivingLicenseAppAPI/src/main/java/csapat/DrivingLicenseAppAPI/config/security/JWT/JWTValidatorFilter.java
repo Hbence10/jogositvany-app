@@ -1,13 +1,11 @@
 package csapat.DrivingLicenseAppAPI.config.security.JWT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import csapat.DrivingLicenseAppAPI.config.security.JWT.RefreshToken.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,12 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -63,7 +57,7 @@ public class JWTValidatorFilter extends OncePerRequestFilter {
                 "/users/register/student",
                 "/users/register/instructor",
                 "/users/login",
-                "/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education",
+                "/category", "/vehicleType", "/town", "/status", "/paymentMethod", "/fuelType", "/education",
                 "/users/getVerificationCode", "/users/checkVerificationCode", "/users/passwordReset"
         ));
 

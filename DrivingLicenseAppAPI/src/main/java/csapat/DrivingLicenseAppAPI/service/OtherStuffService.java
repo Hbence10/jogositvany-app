@@ -25,6 +25,7 @@ public class OtherStuffService {
     private final StatusRepository statusRepository;
     private final VehicleTypeRepository vehicleTypeRepository;
     private final UserRepository userRepository;
+    private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
 
     public ResponseEntity<List<PaymentMethod>> getAllPaymentMethod() {
         return ResponseEntity.ok().body(paymentMethodRepository.getAllPaymentMethod());
@@ -70,5 +71,9 @@ public class OtherStuffService {
             returnList.add(new UserCard(i.getId(), i.getEmail(), i.getFirstName() + " " + i.getLastName()));
         }
         return ResponseEntity.ok(returnList);
+    }
+
+    public ResponseEntity<List<DrivingLicenseCategory>> getAllCategories() {
+        return ResponseEntity.ok().body(drivingLicenseCategoryRepository.findAll());
     }
 }

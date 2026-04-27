@@ -299,6 +299,7 @@ public class SchoolService {
     @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
     public ResponseEntity<Object> deleteCategory(Long id) {
         SchoolCategory searchedCategory = schoolCategoryRepository.findById(id).orElseThrow(() -> new NotFoundException("categoryNotFound"));
+        System.out.println(searchedCategory.getId());
         schoolCategoryRepository.delete(searchedCategory);
         return ResponseEntity.ok().build();
     }

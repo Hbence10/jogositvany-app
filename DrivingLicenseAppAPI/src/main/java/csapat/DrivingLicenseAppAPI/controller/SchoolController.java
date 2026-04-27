@@ -260,7 +260,7 @@ public class SchoolController {
     }
 
     @DeleteMapping("/category/{id}")
-    private ResponseEntity<Object> addCategory(@PathVariable Long id) {
+    private ResponseEntity<Object> deleteCategory(@PathVariable Long id) {
         return schoolService.deleteCategory(id);
     }
 
