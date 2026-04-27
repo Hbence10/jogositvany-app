@@ -1,5 +1,4 @@
-# Build stage
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:24-jdk AS build
 WORKDIR /app
 
 COPY pom.xml .
@@ -11,8 +10,7 @@ RUN ./mvnw dependency:go-offline
 COPY src src
 RUN ./mvnw clean package -DskipTests
 
-# Runtime stage
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:24-jre
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
