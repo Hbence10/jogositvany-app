@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "driving_license_category")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLicenseCategory", procedureName = "getAllDrivingLicenseCategory", resultClasses = DrivingLicenseCategory.class),
@@ -42,9 +41,7 @@ public class DrivingLicenseCategory {
     private Integer minAge;
 
     //Kapcsolatok:
-    @OneToMany(mappedBy = "joinRequestCategory", fetch = FetchType.LAZY
-
-    )
+    @OneToMany(mappedBy = "joinRequestCategory", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<SchoolJoinRequest> schoolJoinRequestList;
 
@@ -66,6 +63,19 @@ public class DrivingLicenseCategory {
     public DrivingLicenseCategory(String name, int minAge) {
         this.name = name;
         this.minAge = minAge;
+    }
+
+    public DrivingLicenseCategory(Long id, String name, Integer minAge, List<SchoolJoinRequest> schoolJoinRequestList, List<School> schoolList, List<Students> studentsList, List<SchoolCategory> licenseCategory) {
+        this.id = id;
+        this.name = name;
+        this.minAge = minAge;
+        this.schoolJoinRequestList = schoolJoinRequestList;
+        this.schoolList = schoolList;
+        this.studentsList = studentsList;
+        this.licenseCategory = licenseCategory;
+    }
+
+    public DrivingLicenseCategory() {
     }
 
     public Long getId() {

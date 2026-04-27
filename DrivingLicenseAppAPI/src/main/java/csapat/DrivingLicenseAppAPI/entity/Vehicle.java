@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Table(name = "vehicle")
 @Entity
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllVehicle", procedureName = "getAllVehicle", resultClasses = Vehicle.class),
@@ -82,6 +81,20 @@ public class Vehicle {
         this.vehicleType = vehicleType;
         this.fuelType = fuelType;
         this.isDeleted = false;
+    }
+
+    public Vehicle(Long id, String licensePlate, String name, Boolean isDeleted, Date deletedAt, VehicleType vehicleType, FuelType fuelType, Instructors instructor) {
+        this.id = id;
+        this.licensePlate = licensePlate;
+        this.name = name;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.vehicleType = vehicleType;
+        this.fuelType = fuelType;
+        this.instructor = instructor;
+    }
+
+    public Vehicle() {
     }
 
     public Long getId() {

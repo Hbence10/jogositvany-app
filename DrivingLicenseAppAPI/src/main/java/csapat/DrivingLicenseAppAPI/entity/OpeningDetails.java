@@ -14,7 +14,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "opening_detail")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllOpeningDetail", procedureName = "getAllOpeningDetail", resultClasses = OpeningDetails.class),
@@ -66,6 +65,20 @@ public class OpeningDetails {
     @JoinColumn(name = "school_id")
     @JsonIgnore
     private School schoolOpeningDetail;
+
+    public OpeningDetails(Long id, Date openingTime, Date closeTime, String day, Boolean isClosed, Boolean isDeleted, Date deletedAt, School schoolOpeningDetail) {
+        this.id = id;
+        this.openingTime = openingTime;
+        this.closeTime = closeTime;
+        this.day = day;
+        this.isClosed = isClosed;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.schoolOpeningDetail = schoolOpeningDetail;
+    }
+
+    public OpeningDetails() {
+    }
 
     public Long getId() {
         return id;

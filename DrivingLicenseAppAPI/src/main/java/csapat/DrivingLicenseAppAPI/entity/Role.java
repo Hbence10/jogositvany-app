@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "role")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllRole", procedureName = "getAllRole", resultClasses = Role.class),
@@ -39,6 +38,9 @@ public class Role {
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Role() {
     }
 
     public Long getId() {

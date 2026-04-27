@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "payment_method")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllPaymentMethod", procedureName = "getAllPaymentMethod", resultClasses = PaymentMethod.class),
@@ -42,6 +41,15 @@ public class PaymentMethod {
     public PaymentMethod(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public PaymentMethod(Long id, String name, List<DrivingLessons> drivingLessonsList) {
+        this.id = id;
+        this.name = name;
+        this.drivingLessonsList = drivingLessonsList;
+    }
+
+    public PaymentMethod() {
     }
 
     public Long getId() {

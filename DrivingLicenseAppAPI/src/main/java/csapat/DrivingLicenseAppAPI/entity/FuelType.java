@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "fuel_type")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllFuelType", procedureName = "getAllFuelType", resultClasses = FuelType.class),
@@ -41,6 +40,15 @@ public class FuelType {
     //Constructorok:
     public FuelType(String name) {
         this.name = name;
+    }
+
+    public FuelType(Long id, String name, List<Vehicle> vehicles) {
+        this.id = id;
+        this.name = name;
+        this.vehicles = vehicles;
+    }
+
+    public FuelType() {
     }
 
     public Long getId() {

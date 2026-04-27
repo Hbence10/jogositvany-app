@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "driving_lesson_request")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLessonRequest", procedureName = "getAllDrivingLessonRequest", resultClasses = DrivingLessonRequest.class),
@@ -81,6 +80,9 @@ public class DrivingLessonRequest {
     @ManyToOne
     @JoinColumn(name = "instructor_id")
     private Instructors dLessonInstructor;
+
+    public DrivingLessonRequest() {
+    }
 
     public DrivingLessonRequest(String msg, Date date, Date startTime, Date endTime, Students dLessonRequestStudent, Instructors dLessonInstructor) {
         this.msg = msg;

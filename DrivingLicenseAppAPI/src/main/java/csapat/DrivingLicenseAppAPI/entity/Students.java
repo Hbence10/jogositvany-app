@@ -15,7 +15,6 @@ import java.util.List;
 
 @Table(name = "student")
 @Entity
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getStudentByUserId", procedureName = "getStudentByUserId", parameters = {
@@ -96,6 +95,23 @@ public class Students {
         this.studentSchool = studentSchool;
         this.selectedCategory = selectedCategory;
         this.studentInstructor = instructors;
+    }
+
+    public Students(Long id, Boolean isDeleted, Date deletedAt, School studentSchool, Instructors studentInstructor, Users studentUser, List<Review> reviewList, List<DrivingLessonRequest> requestList, List<DrivingLessons> drivingLessons, List<InstructorJoinRequest> instructorJoinRequestList, DrivingLicenseCategory selectedCategory) {
+        this.id = id;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.studentSchool = studentSchool;
+        this.studentInstructor = studentInstructor;
+        this.studentUser = studentUser;
+        this.reviewList = reviewList;
+        this.requestList = requestList;
+        this.drivingLessons = drivingLessons;
+        this.instructorJoinRequestList = instructorJoinRequestList;
+        this.selectedCategory = selectedCategory;
+    }
+
+    public Students() {
     }
 
     public Students(Long id) {

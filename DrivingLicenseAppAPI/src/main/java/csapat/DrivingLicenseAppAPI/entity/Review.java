@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "review")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllReview", procedureName = "getAllReview", resultClasses = Review.class),
@@ -102,6 +101,22 @@ public class Review {
         this.isAnonymous = isAnonymous;
         this.reviewAuthor = author;
         this.aboutSchool = aboutSchool;
+    }
+
+    public Review(Long id, String text, LocalDate createdAt, Double rating, Boolean isAnonymous, Boolean isDeleted, Date deletedAt, Students reviewAuthor, Instructors aboutInstructor, School aboutSchool) {
+        this.id = id;
+        this.text = text;
+        this.createdAt = createdAt;
+        this.rating = rating;
+        this.isAnonymous = isAnonymous;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.reviewAuthor = reviewAuthor;
+        this.aboutInstructor = aboutInstructor;
+        this.aboutSchool = aboutSchool;
+    }
+
+    public Review() {
     }
 
     public Long getId() {

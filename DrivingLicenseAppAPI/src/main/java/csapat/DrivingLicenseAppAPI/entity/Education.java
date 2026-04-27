@@ -2,9 +2,7 @@ package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
@@ -13,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "education")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllEducation", procedureName = "getAllEducation", resultClasses = Education.class),
@@ -45,6 +42,15 @@ public class Education {
     public Education(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Education() {
+    }
+
+    public Education(Long id, String name, List<Users> userEducationList) {
+        this.id = id;
+        this.name = name;
+        this.userEducationList = userEducationList;
     }
 
     public Long getId() {

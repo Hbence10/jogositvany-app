@@ -34,7 +34,6 @@ import java.util.List;
                 @StoredProcedureParameter(name = "roleIdIN", type = Long.class, mode = ParameterMode.IN)}
         )
 })
-@NoArgsConstructor
 @ToString
 public class Users {
     @Id
@@ -194,6 +193,33 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
         this.vCode = vCode;
+    }
+
+    public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath, Date createdAt, Date lastLogin, Boolean isDeleted, Date deletedAt, String vCode, Role role, Instructors instructor, Students student, School adminSchool, Education userEducation, List<SchoolJoinRequest> schoolJoinRequestList, School ownedSchool) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.password = password;
+        this.pfpPath = pfpPath;
+        this.createdAt = createdAt;
+        this.lastLogin = lastLogin;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.vCode = vCode;
+        this.role = role;
+        this.instructor = instructor;
+        this.student = student;
+        this.adminSchool = adminSchool;
+        this.userEducation = userEducation;
+        this.schoolJoinRequestList = schoolJoinRequestList;
+        this.ownedSchool = ownedSchool;
+    }
+
+    public Users() {
     }
 
     public Long getId() {

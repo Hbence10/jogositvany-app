@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "school_join_request")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllSchoolJoinRequest", procedureName = "getAllSchoolJoinRequest", resultClasses = SchoolJoinRequest.class),
@@ -78,6 +77,21 @@ public class SchoolJoinRequest {
     public SchoolJoinRequest(Users user, School school) {
         this.schoolJoinRequestUser = user;
         this.schoolJoinRequestSchool = school;
+    }
+
+    public SchoolJoinRequest(Long id, Boolean isAccepted, Date acceptedAt, Date sentAt, Boolean isDeleted, Date deletedAt, Users schoolJoinRequestUser, School schoolJoinRequestSchool, DrivingLicenseCategory joinRequestCategory) {
+        this.id = id;
+        this.isAccepted = isAccepted;
+        this.acceptedAt = acceptedAt;
+        this.sentAt = sentAt;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.schoolJoinRequestUser = schoolJoinRequestUser;
+        this.schoolJoinRequestSchool = schoolJoinRequestSchool;
+        this.joinRequestCategory = joinRequestCategory;
+    }
+
+    public SchoolJoinRequest() {
     }
 
     public Long getId() {

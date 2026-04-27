@@ -15,7 +15,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "reserved_hour")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllReservedHour", procedureName = "getAllReservedHour", resultClasses = ReservedHour.class),
@@ -85,6 +84,19 @@ public class ReservedHour {
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservedDate = reservedDate;
+    }
+
+    public ReservedHour(Long id, Date startTime, Date endTime, Boolean isDeleted, Date deletedAt, DrivingLessons drivingLessons, ReservedDate reservedDate) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.drivingLessons = drivingLessons;
+        this.reservedDate = reservedDate;
+    }
+
+    public ReservedHour() {
     }
 
     public Long getId() {

@@ -13,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "status")
-@NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllStatus", procedureName = "getAllStatus", resultClasses = Status.class),
         @NamedStoredProcedureQuery(name = "getStatus", procedureName = "getStatus", parameters = {
@@ -48,6 +47,15 @@ public class Status {
     public Status(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Status(Long id, String name, List<DrivingLessons> drivingLessonsList) {
+        this.id = id;
+        this.name = name;
+        this.drivingLessonsList = drivingLessonsList;
+    }
+
+    public Status() {
     }
 
     public Long getId() {

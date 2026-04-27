@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "school_category")
-@NoArgsConstructor
 @ToString
 public class SchoolCategory {
 
@@ -38,6 +37,16 @@ public class SchoolCategory {
         this.hourlyRate = hourlyRate;
         this.licenseCategory = licenseCategory;
         this.schoolCategory = schoolCategory;
+    }
+
+    public SchoolCategory(Long id, Integer hourlyRate, DrivingLicenseCategory licenseCategory, School schoolCategory) {
+        this.id = id;
+        this.hourlyRate = hourlyRate;
+        this.licenseCategory = licenseCategory;
+        this.schoolCategory = schoolCategory;
+    }
+
+    public SchoolCategory() {
     }
 
     public Long getId() {

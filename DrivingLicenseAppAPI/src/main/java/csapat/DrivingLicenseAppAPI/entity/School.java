@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "school")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllSchool", procedureName = "getAllSchool", resultClasses = School.class),
@@ -139,6 +138,31 @@ public class School {
         this.promoText = promoText;
         this.owner = owner;
         this.bannerImgPath = "http://localhost:8080/coverImages/defaultCoverImg.jpg";
+    }
+
+    public School(Long id, String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath, Boolean isDeleted, Date deletedAt, Users owner, List<Users> adminList, List<Instructors> instructorsList, List<OpeningDetails> openingDetails, List<Review> reviewList, List<Students> studentsList, List<SchoolJoinRequest> schoolJoinRequestList, List<SchoolCategory> licenseCategoryList) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.country = country;
+        this.town = town;
+        this.address = address;
+        this.promoText = promoText;
+        this.bannerImgPath = bannerImgPath;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.owner = owner;
+        this.adminList = adminList;
+        this.instructorsList = instructorsList;
+        this.openingDetails = openingDetails;
+        this.reviewList = reviewList;
+        this.studentsList = studentsList;
+        this.schoolJoinRequestList = schoolJoinRequestList;
+        this.licenseCategoryList = licenseCategoryList;
+    }
+
+    public School() {
     }
 
     public Long getId() {

@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "reserved_date")
-@NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllReservedDate", procedureName = "getAllReservedDate", resultClasses = ReservedDate.class),
@@ -60,6 +59,18 @@ public class ReservedDate {
     //Constructorok:
     public ReservedDate(Date date) {
         this.date = date;
+    }
+
+    public ReservedDate(Long id, Date date, Boolean isFull, Boolean isDeleted, Date deletedAt, List<ReservedHour> reservedHourList) {
+        this.id = id;
+        this.date = date;
+        this.isFull = isFull;
+        this.isDeleted = isDeleted;
+        this.deletedAt = deletedAt;
+        this.reservedHourList = reservedHourList;
+    }
+
+    public ReservedDate() {
     }
 
     public Long getId() {

@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "driving_lesson")
-@NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllDrivingLesson", procedureName = "getAllDrivingLesson", resultClasses = DrivingLessons.class),
         @NamedStoredProcedureQuery(name = "getDrivingLesson", procedureName = "getDrivingLesson", parameters = {
@@ -131,6 +130,28 @@ public class DrivingLessons {
         this.dstudent = dstudent;
         this.dinstructor = dinstructor;
         this.drivingLessonStatus = status;
+    }
+
+    public DrivingLessons() {
+    }
+
+    public DrivingLessons(Long id, Integer startKm, Integer endKm, String location, String pickUpPlace, String dropOffPlace, Integer lessonHourNumber, Boolean isPaid, Boolean isEnd, Boolean isCancelled, Date cancelledAt, Status drivingLessonStatus, PaymentMethod paymentMethod, ReservedHour reservedHour, Students dstudent, Instructors dinstructor) {
+        this.id = id;
+        this.startKm = startKm;
+        this.endKm = endKm;
+        this.location = location;
+        this.pickUpPlace = pickUpPlace;
+        this.dropOffPlace = dropOffPlace;
+        this.lessonHourNumber = lessonHourNumber;
+        this.isPaid = isPaid;
+        this.isEnd = isEnd;
+        this.isCancelled = isCancelled;
+        this.cancelledAt = cancelledAt;
+        this.drivingLessonStatus = drivingLessonStatus;
+        this.paymentMethod = paymentMethod;
+        this.reservedHour = reservedHour;
+        this.dstudent = dstudent;
+        this.dinstructor = dinstructor;
     }
 
     public Long getId() {
