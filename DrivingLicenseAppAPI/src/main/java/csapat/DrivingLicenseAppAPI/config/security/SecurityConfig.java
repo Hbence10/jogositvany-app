@@ -95,6 +95,7 @@ public class  SecurityConfig {
                         .requestMatchers("/school/users").hasAnyRole("school_admin", "school_owner")
                         .requestMatchers(HttpMethod.GET, "/school").hasRole("administrator")
                         .requestMatchers("/school/admin").hasRole("school_owner")
+                        .requestMatchers("/school/category", "/school/cateogry/*").hasRole("school_owner")
                         .requestMatchers(HttpMethod.GET, "/school/*").authenticated()
 
                         //StudentController:

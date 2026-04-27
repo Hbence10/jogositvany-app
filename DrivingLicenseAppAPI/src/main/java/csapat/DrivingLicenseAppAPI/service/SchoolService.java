@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import csapat.DrivingLicenseAppAPI.config.email.EmailSender;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
+import csapat.DrivingLicenseAppAPI.dto.SchoolCategoryDto;
 import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.exception.InvalidDataException;
@@ -42,6 +43,8 @@ public class SchoolService {
     private final StudentRepository studentRepository;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
+    private final DrivingLicenseCategoryRepository drivingLicenseCategoryRepository;
+    private final SchoolCategoryRepository schoolCategoryRepository;
     private final ObjectMapper objectMapper;
     private final EmailSender emailSender;
     private final ArrayList<String> dayNames = new ArrayList<String>(Arrays.asList("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"));
@@ -283,5 +286,27 @@ public class SchoolService {
         userRepository.save(searchedUser);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    public ResponseEntity<Object> addCategory(SchoolCategoryDto newCategory) {
+        School searchedSchool = schoolRepository.getSchool(newCategory.schoolId()).orElseThrow(() -> new NotFoundException("schoolNotFound"));
+        DrivingLicenseCategory searchedCategory = drivingLicenseCategoryRepository.getDrivingLicenseCategory(newCategory.categoryId()).orElseThrow(() -> new NotFoundException("categoryNotFound"));
+
+        return ResponseEntity.ok().body(schoolCategoryRepository.save(new SchoolCategory(newCategory.price(), searchedCategory, searchedSchool)));
+    }
+
+    @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    public ResponseEntity<Object> deleteCategory(Long id) {
+        SchoolCategory searchedCategory = schoolCategoryRepository.findById(id).orElseThrow(() -> new NotFoundException("categoryNotFound"));
+        schoolCategoryRepository.delete(searchedCategory);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("(hasRole('school_owner') and @environment.acceptsProfiles('prod')) or @environment.acceptsProfiles('test') or @environment.acceptsProfiles('dev')")
+    public ResponseEntity<Object> updatePriceOfCategory(Long categoryId, Integer price) {
+        SchoolCategory searchedCategory = schoolCategoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundException("categoryNotFound"));
+        searchedCategory.setHourlyRate(price);
+        return ResponseEntity.ok().body(schoolCategoryRepository.save(searchedCategory));
     }
 }

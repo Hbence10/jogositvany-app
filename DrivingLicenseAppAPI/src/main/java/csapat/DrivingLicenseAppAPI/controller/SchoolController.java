@@ -2,6 +2,7 @@ package csapat.DrivingLicenseAppAPI.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import csapat.DrivingLicenseAppAPI.dto.ProfileCard;
+import csapat.DrivingLicenseAppAPI.dto.SchoolCategoryDto;
 import csapat.DrivingLicenseAppAPI.dto.SchoolDto;
 import csapat.DrivingLicenseAppAPI.entity.OpeningDetails;
 import csapat.DrivingLicenseAppAPI.entity.School;
@@ -249,5 +250,22 @@ public class SchoolController {
     @PatchMapping("/admin")
     private ResponseEntity<Object> setAdmin(@RequestBody JsonNode requestBody) {
         return schoolService.setAdmin(requestBody.get("email").asText(), requestBody.get("schoolId").asLong());
+    }
+
+
+    //kategoriak
+    @PostMapping("/category")
+    private ResponseEntity<Object> addCategory(@RequestBody SchoolCategoryDto newCategory) {
+        return schoolService.addCategory(newCategory);
+    }
+
+    @DeleteMapping("/category/{id}")
+    private ResponseEntity<Object> addCategory(@PathVariable Long id) {
+        return schoolService.deleteCategory(id);
+    }
+
+    @PutMapping("/category/{id}")
+    private ResponseEntity<Object> updatePriceOfCategory(@PathVariable Long id, @RequestBody JsonNode requestBody) {
+        return schoolService.updatePriceOfCategory(id, requestBody.get("price").asInt());
     }
 }
