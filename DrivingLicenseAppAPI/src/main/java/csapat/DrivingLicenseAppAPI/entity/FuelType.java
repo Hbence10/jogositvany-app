@@ -13,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "fuel_type")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

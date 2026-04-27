@@ -13,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "status")
-@Getter
-@Setter
 @NoArgsConstructor
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(name = "getAllStatus", procedureName = "getAllStatus", resultClasses = Status.class),

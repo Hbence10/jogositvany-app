@@ -58,9 +58,9 @@ public class InstructorService {
                 student.setStudentInstructor(searchedJoinRequest.getInstructorJoinRequestInstructor());
 
                 studentRepository.save(student);
-                searchedJoinRequest.setIsAccepted(true);
+                searchedJoinRequest.setAccepted(true);
             } else {
-                searchedJoinRequest.setIsAccepted(false);
+                searchedJoinRequest.setAccepted(false);
             }
             searchedJoinRequest.setAcceptedAt(new Date());
             try {
@@ -117,11 +117,11 @@ public class InstructorService {
         DrivingLessonRequest searchedRequest = drivingLessonRequestRepository.getDrivingLessonRequest(requestId).orElseThrow(() -> new NotFoundException("requestNotFound"));
         if (searchedRequest.getDate().before(new Date())) {
 //            return ResponseEntity.status(415).body("invalidDate");
-            searchedRequest.setIsAccepted(false);
+            searchedRequest.setAccepted(false);
             return ResponseEntity.ok().build();
         }
 
-        List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getDLessonInstructor().getId());
+        List<Long> drivingLessonsAtThisTime = drivingLessonRepository.getDrivingLessonBetweenHour(searchedRequest.getDate(), searchedRequest.getStartTime(), searchedRequest.getEndTime(), searchedRequest.getdLessonInstructor().getId());
         if (!drivingLessonsAtThisTime.isEmpty()) {
             return ResponseEntity.status(400).body("reservedAppointment");
         }
@@ -132,16 +132,16 @@ public class InstructorService {
             if (status.equals("accept")) {
                 ReservedDate reservedDate = reservedDateRepository.save(reservedDateRepository.findByDate(searchedRequest.getDate()).orElse(new ReservedDate(searchedRequest.getDate())));
                 ReservedHour reservedHour = reservedHourRepository.save(new ReservedHour(searchedRequest.getStartTime(), searchedRequest.getEndTime(), reservedDate));
-                drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getDLessonRequestStudent(), searchedRequest.getDLessonInstructor(), statusRepository.getStatus(1L).get()));
-                searchedRequest.setIsAccepted(true);
+                drivingLessonRepository.save(new DrivingLessons(reservedHour, searchedRequest.getdLessonRequestStudent(), searchedRequest.getdLessonInstructor(), statusRepository.getStatus(1L).get()));
+                searchedRequest.setAccepted(true);
             } else {
-                searchedRequest.setIsAccepted(false);
+                searchedRequest.setAccepted(false);
             }
             searchedRequest.setAcceptedAt(new Date());
             drivingLessonRequestRepository.save(searchedRequest);
 
             try {
-                emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getDLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
+                emailSender.sendEmailAboutDrivingLessonRequestToStudent(searchedRequest.getdLessonRequestStudent().getStudentUser().getEmail(), searchedRequest, status);
             } catch (MessagingException e) {
                 return ResponseEntity.ok().build();
             }

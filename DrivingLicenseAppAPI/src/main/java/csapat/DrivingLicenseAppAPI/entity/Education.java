@@ -13,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "education")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

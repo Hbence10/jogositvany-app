@@ -15,8 +15,6 @@ import java.util.Date;
 
 @Table(name = "vehicle")
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

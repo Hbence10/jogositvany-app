@@ -15,8 +15,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "reserved_hour")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

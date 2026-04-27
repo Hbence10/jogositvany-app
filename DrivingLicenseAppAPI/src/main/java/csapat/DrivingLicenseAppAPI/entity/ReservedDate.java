@@ -14,8 +14,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "reserved_date")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

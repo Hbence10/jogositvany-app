@@ -77,7 +77,7 @@ public class DrivingLessonService {
             searchedDrivingLesson.setPickUpPlace(updatedLesson.pickUpPlace());
             searchedDrivingLesson.setDropOffPlace(updatedLesson.dropOffPlace());
             searchedDrivingLesson.setLessonHourNumber(updatedLesson.lessonHourNumber());
-            searchedDrivingLesson.setIsPaid(updatedLesson.isPaid());
+            searchedDrivingLesson.setPaid(updatedLesson.isPaid());
             searchedDrivingLesson.setPaymentMethod(searchedPayment);
             searchedDrivingLesson.setDrivingLessonStatus(searchedStatus);
             return ResponseEntity.ok().body(drivingLessonRepository.save(searchedDrivingLesson));

@@ -12,8 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "vehicle_type")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

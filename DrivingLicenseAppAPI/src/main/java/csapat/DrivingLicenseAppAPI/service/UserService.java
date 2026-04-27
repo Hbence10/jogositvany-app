@@ -116,7 +116,7 @@ public class UserService {
         } else {
             Users searchedUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("emailNotFound"));
             String vCode = generateVerificationCode();
-            searchedUser.setVCode(passwordEncoder.encode(vCode));
+            searchedUser.setvCode(passwordEncoder.encode(vCode));
             userRepository.save(searchedUser);
             try {
                 emailSender.sendVerificationCodeEmail(email, searchedUser.getFirstName() + " " + searchedUser.getLastName(), vCode);
@@ -134,7 +134,7 @@ public class UserService {
             throw new InvalidDataException("invalidVerificationCode");
         } else {
             JsonNode returnObject = objectMapper.createObjectNode();
-            ((ObjectNode) returnObject).put("success", passwordEncoder.matches(userVCode, searchedUser.getVCode()));
+            ((ObjectNode) returnObject).put("success", passwordEncoder.matches(userVCode, searchedUser.getvCode()));
             return ResponseEntity.ok().body(returnObject);
         }
     }

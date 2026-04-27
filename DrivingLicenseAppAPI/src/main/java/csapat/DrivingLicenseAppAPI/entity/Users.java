@@ -34,8 +34,6 @@ import java.util.List;
                 @StoredProcedureParameter(name = "roleIdIN", type = Long.class, mode = ParameterMode.IN)}
         )
 })
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 public class Users {

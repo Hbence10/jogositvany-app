@@ -13,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "driving_license_category")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

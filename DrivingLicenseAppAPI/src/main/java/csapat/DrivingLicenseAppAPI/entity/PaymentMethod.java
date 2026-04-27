@@ -13,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "payment_method")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

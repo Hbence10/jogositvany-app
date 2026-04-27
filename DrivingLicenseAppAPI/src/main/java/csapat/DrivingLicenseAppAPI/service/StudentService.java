@@ -32,8 +32,8 @@ public class StudentService {
             drivingLessons = new ArrayList<DrivingLessons>();
         }
 
-        responseBody.put("paidLesson", drivingLessons.stream().filter(DrivingLessons::getIsPaid).toList().size());
-        responseBody.put("drivenLesson", drivingLessons.stream().filter(DrivingLessons::getIsEnd).toList().size());
+        responseBody.put("paidLesson", drivingLessons.stream().filter(DrivingLessons::getPaid).toList().size());
+        responseBody.put("drivenLesson", drivingLessons.stream().filter(DrivingLessons::getEnd).toList().size());
         responseBody.put("totalLessonNumber", drivingLessons.size());
         return ResponseEntity.ok().body(responseBody);
     }

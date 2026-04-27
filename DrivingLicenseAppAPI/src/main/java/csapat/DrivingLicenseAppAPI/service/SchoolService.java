@@ -65,7 +65,7 @@ public class SchoolService {
 
                     for (SchoolJoinRequest i : searchedSchoolJoinRequest.getSchoolJoinRequestUser().getSchoolJoinRequestList()) {
                         if (i.getId() != searchedSchoolJoinRequest.getId()) {
-                            i.setIsDeleted(true);
+                            i.setDeleted(true);
                             i.setDeletedAt(new Date());
                             schoolJoinRequestRepository.save(i);
                         }
@@ -75,13 +75,13 @@ public class SchoolService {
                     senderInstructor.setInstructorSchool(searchedSchoolJoinRequest.getSchoolJoinRequestSchool());
                     instructorRepository.save(senderInstructor);
                 }
-                searchedSchoolJoinRequest.setIsAccepted(true);
+                searchedSchoolJoinRequest.setAccepted(true);
                 Users senderUser = searchedSchoolJoinRequest.getSchoolJoinRequestUser();
                 for (int i = 0; i < senderUser.getSchoolJoinRequestList().size(); i++) {
                     schoolJoinRequestRepository.deleteSchoolJoinRequest(senderUser.getSchoolJoinRequestList().get(i).getId());
                 }
             } else {
-                searchedSchoolJoinRequest.setIsAccepted(false);
+                searchedSchoolJoinRequest.setAccepted(false);
             }
             searchedSchoolJoinRequest.setAcceptedAt(new Date());
             schoolJoinRequestRepository.save(searchedSchoolJoinRequest);

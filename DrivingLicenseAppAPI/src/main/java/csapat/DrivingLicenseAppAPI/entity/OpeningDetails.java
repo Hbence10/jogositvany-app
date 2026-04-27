@@ -14,8 +14,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "opening_detail")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

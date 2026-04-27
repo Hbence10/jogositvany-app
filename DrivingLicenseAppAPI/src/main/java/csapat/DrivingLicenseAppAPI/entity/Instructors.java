@@ -15,8 +15,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "instructor")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

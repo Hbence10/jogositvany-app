@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "school_category")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 public class SchoolCategory {

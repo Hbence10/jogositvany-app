@@ -13,8 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "driving_lesson_request")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

@@ -15,8 +15,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "review")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

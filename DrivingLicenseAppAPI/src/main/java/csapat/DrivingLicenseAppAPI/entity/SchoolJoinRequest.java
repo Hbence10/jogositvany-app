@@ -13,8 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "school_join_request")
-@Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @NamedStoredProcedureQueries({

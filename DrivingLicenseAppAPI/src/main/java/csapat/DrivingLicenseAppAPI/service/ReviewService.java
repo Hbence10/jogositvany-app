@@ -45,7 +45,7 @@ public class ReviewService {
             School searchedSchool = schoolRepository.getSchool(newReviewDto.schoolId()).orElseThrow(() -> new NotFoundException("schoolNotFound"));
             newReview.setAboutSchool(searchedSchool);
         }
-        newReview.setIsAnonymous(newReviewDto.isAnonymous());
+        newReview.setAnonymous(newReviewDto.isAnonymous());
         return ResponseEntity.ok().body(reviewRepository.save(newReview));
     }
 
