@@ -1,22 +1,22 @@
-# Importing JDK and copying required files
-FROM openjdk:25-ea-jdk AS build
+# Build stage
+FROM openjdk:21-jdk AS build
 WORKDIR /app
+
 COPY pom.xml .
-COPY src src
-
-# Copy Maven wrapper
-COPY mvnw .
 COPY .mvn .mvn
+COPY mvnw .
+RUN chmod +x mvnw
+RUN ./mvnw dependency:go-offline
 
-# Set execution permission for the Maven wrapper
-RUN chmod +x ./mvnw
+COPY src src
 RUN ./mvnw clean package -DskipTests
 
-# Stage 2: Create the final Docker image using OpenJDK 19
-FROM openjdk:25-ea-jdk
+# Runtime stage
+FROM openjdk:21-jdk-slim
+WORKDIR /app
 VOLUME /tmp
 
-# Copy the JAR from the build stage
 COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
 EXPOSE 8080
