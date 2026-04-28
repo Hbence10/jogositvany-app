@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OpeningDetails } from '../models/opening-details.model';
 import { School } from '../models/school.model';
+import { SchoolCategory } from '../models/schoolCategory.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +63,14 @@ export class SchoolServiceService {
 
   setAdmin(email: string, schoolId: number) {
     return this.http.patch(`${this.baseUrl}/admin`, {email: email, schoolId: schoolId})
+  }
+
+  //
+  addCategory(requestBody: {categoryId: number, schoolId: number, price: number}): Observable<SchoolCategory> {
+    return this.http.post<SchoolCategory>(`${this.baseUrl}/category`, requestBody)
+  }
+
+  deleteCategory(id: number) {
+    return this.http.delete(`${this.baseUrl}/category/${id}`)
   }
 }

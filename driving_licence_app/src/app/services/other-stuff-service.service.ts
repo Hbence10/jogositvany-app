@@ -6,6 +6,7 @@ import { FuelType } from '../models/fuel-type.model';
 import { PaymentMethod } from '../models/payment-method.model';
 import { Status } from '../models/status.model';
 import { VehicleType } from '../models/vehicle-type.model';
+import { DrivingLicenseCategory } from '../models/driving-license.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,5 +43,9 @@ export class OtherStuffServiceService {
 
   getAllUser(): Observable<{id: number, email: string, name: string}[]> {
     return this.http.get<{id: number, email: string, name: string}[]>(`${this.baseUrl}/user`)
+  }
+
+  getAllCategory(): Observable<DrivingLicenseCategory[]> {
+    return this.http.get<DrivingLicenseCategory[]>(`${this.baseUrl}/category`)
   }
 }
