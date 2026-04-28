@@ -35,7 +35,7 @@ public class JWTGeneratorFilter extends OncePerRequestFilter {
             UserDetails principal = (UserDetails) givenAuthentication.getPrincipal();
             String jwt = jwtService.createJwtToken((UserDetails) givenAuthentication.getPrincipal());
             System.out.println(jwt);
-            response.setHeader("Bearer ", jwt);
+            response.setHeader("Authorization", "Bearer " + jwt);
             response.setHeader("refreshToken", generateRefreshToken(principal.getUsername()));
         }
 
