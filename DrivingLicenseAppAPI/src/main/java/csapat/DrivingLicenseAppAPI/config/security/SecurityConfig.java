@@ -4,6 +4,7 @@ import csapat.DrivingLicenseAppAPI.config.security.JWT.JWTGeneratorFilter;
 import csapat.DrivingLicenseAppAPI.config.security.JWT.JWTValidatorFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -37,6 +38,9 @@ public class  SecurityConfig {
     private final JWTValidatorFilter jwtValidatorFilter;
     private final UserSetter userSetter;
 
+    @Value("${allowed.url}")
+    private String allowedURL;
+
     @Profile("prod")
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,7 +50,7 @@ public class  SecurityConfig {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));        //A tamogatott origineket adjuk meg
+                        config.setAllowedOrigins(Collections.singletonList(allowedURL));        //A tamogatott origineket adjuk meg
                         config.setAllowedMethods(Collections.singletonList("*"));                            //A tamogatott http verbeket adjuk meg
                         config.setAllowCredentials(true);                                                    //A cookiekat fogadjuk
                         config.setAllowedHeaders(List.of("*"));                            //A http headerek adjuk meg
