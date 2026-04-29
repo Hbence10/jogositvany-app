@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class RequestService {
   private http = inject(HttpClient)
-  baseUrl = "http://localhost:8080/request"
+  baseUrl = "http://jogositvany-app.onrender.com/request"
 
   constructor() { }
 

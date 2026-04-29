@@ -10,7 +10,7 @@ import { HourCard } from '../models/notEntity/hourCard.model';
 })
 export class DrivingLessonService {
   private http = inject(HttpClient)
-  baseUrl = "http://localhost:8080/drivingLesson"
+  baseUrl = "http://jogositvany-app.onrender.com/drivingLesson"
 
   getDrivingLicenseCategoriesBySchool(schoolId: number): Observable<SchoolCategory[]> {
     return this.http.get<SchoolCategory[]>(`${this.baseUrl}/categories/school/${schoolId}`)

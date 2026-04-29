@@ -8,7 +8,7 @@ import { Review } from '../models/review.model';
 })
 export class ReviewService {
   private http = inject(HttpClient)
-  baseUrl = "http://localhost:8080/review"
+  baseUrl = "http://jogositvany-app.onrender.com/review"
 
   getReviews(about: "school" | "instructor", aboutId: number): Observable<Review[]> {
     return this.http.get<Review[]>(`${this.baseUrl}?about=${about}&aboutId=${aboutId}`)

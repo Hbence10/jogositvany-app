@@ -8,7 +8,7 @@ import { Students } from '../models/students.model';
 })
 export class StudentService {
   private http = inject(HttpClient)
-  private baseUrl = "http://localhost:8080/students"
+  private baseUrl = "http://jogositvany-app.onrender.com/students"
 
   constructor() { }
 

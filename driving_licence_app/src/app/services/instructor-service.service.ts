@@ -9,7 +9,7 @@ import { Instructors } from '../models/instructors.model';
 })
 export class InstructorServiceService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/instructor';
+  private baseUrl = 'http://jogositvany-app.onrender.com/instructor';
 
   constructor() { }
 

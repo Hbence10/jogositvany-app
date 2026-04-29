@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class UsersService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/users';
+  private baseUrl = 'http://jogositvany-app.onrender.com/users';
   private router = inject(Router);
   private cookieService = inject(CookieService)
   loggedUser = signal<null | HomePageUser>(null)

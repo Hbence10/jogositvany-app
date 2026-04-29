@@ -13,7 +13,7 @@ import { DrivingLicenseCategory } from '../models/driving-license.model';
 })
 export class OtherStuffServiceService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080'
+  private baseUrl = 'http://jogositvany-app.onrender.com'
 
   constructor() { }
 
