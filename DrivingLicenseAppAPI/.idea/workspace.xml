@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b73eb7a0-8b54-4450-8468-8a872a71e17b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/csapat/DrivingLicenseAppAPI/entity/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/csapat/DrivingLicenseAppAPI/entity/Users.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/csapat/DrivingLicenseAppAPI/controller/OtherStuffControllerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/csapat/DrivingLicenseAppAPI/controller/OtherStuffControllerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/test-application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/test-application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/HalmaiBence/Desktop/vizsga/jogositvany-app-backend/DrivingLicenseAppAPI" value="3CJbvNtLkN01tCoqyEMj7nwcYUd" />
+    </persistenceIdMap>
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="174" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="Dockerfile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Hbence10&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Hbence10/jogositvany-app.git&quot;,
+    &quot;accountId&quot;: &quot;00c75925-01aa-4940-b5f7-f705ee98fc9b&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3CJbvNtLkN01tCoqyEMj7nwcYUd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DrivingLicenseAppApiApplication.executor": "Run",
+    "Docker.Dockerfile.executor": "Run",
+    "JUnit.DrivingLessonControllerIT.executor": "Run",
+    "JUnit.InstructorControllerIT.executor": "Run",
+    "JUnit.InstructorControllerIT.updateVehicleWithRegisteredLicensePlate.executor": "Run",
+    "JUnit.OtherStuffControllerIT.executor": "Run",
+    "JUnit.RequestControllerIT.executor": "Run",
+    "JUnit.ReviewControllerIT.executor": "Run",
+    "JUnit.SchoolControllerIT.executor": "Run",
+    "JUnit.StudentControllerIT.executor": "Run",
+    "JUnit.UserControllerIT.executor": "Run",
+    "JUnit.UserControllerIT.loginWithExistentUsersDetails.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.DrivingLicenseAppApiApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "#26 on backend",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "0d570cb2-96df-43cc-80da-7f777e6d0afe",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.InstructorControllerIT">
+    <configuration name="InstructorControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DrivingLicenseAppAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="csapat.DrivingLicenseAppAPI.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="csapat.DrivingLicenseAppAPI.controller" />
+      <option name="MAIN_CLASS_NAME" value="csapat.DrivingLicenseAppAPI.controller.InstructorControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OtherStuffControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DrivingLicenseAppAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="csapat.DrivingLicenseAppAPI.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="csapat.DrivingLicenseAppAPI.controller" />
+      <option name="MAIN_CLASS_NAME" value="csapat.DrivingLicenseAppAPI.controller.OtherStuffControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RequestControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DrivingLicenseAppAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="csapat.DrivingLicenseAppAPI.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="csapat.DrivingLicenseAppAPI.controller" />
+      <option name="MAIN_CLASS_NAME" value="csapat.DrivingLicenseAppAPI.controller.RequestControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReviewControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DrivingLicenseAppAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="csapat.DrivingLicenseAppAPI.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="csapat.DrivingLicenseAppAPI.controller" />
+      <option name="MAIN_CLASS_NAME" value="csapat.DrivingLicenseAppAPI.controller.ReviewControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SchoolControllerIT" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DrivingLicenseAppAPI" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="csapat.DrivingLicenseAppAPI.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="csapat.DrivingLicenseAppAPI.controller" />
+      <option name="MAIN_CLASS_NAME" value="csapat.DrivingLicenseAppAPI.controller.SchoolControllerIT" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DrivingLicenseAppApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" activateToolWindowBeforeRun="false" nameIsGenerated="true">
+      <envs>
+        <env name="JWT_EXPIRED" value="7200000" />
+        <env name="JWT_ISSUER" value="FelutonTeam" />
+        <env name="JWT_SECRET" value="7962b93e42dc48322bd35c9beee405381ef5598eb2e93f40d09ff2d12499b98a" />
+        <env name="MYSQL_PASSWORD" value="root" />
+        <env name="MYSQL_USERNAME" value="root" />
+        <env name="EMAIL_USERNAME" value="ffeluton@gmail.com" />
+        <env name="EMAIL_PASSWORD" value="puwssrabggsywyly" />
+      </envs>
+      <option name="INCLUDE_PROVIDED_SCOPE" value="false" />
+      <module name="DrivingLicenseAppAPI" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="csapat.DrivingLicenseAppAPI.DrivingLicenseAppApiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.OtherStuffControllerIT" />
+      <item itemvalue="JUnit.RequestControllerIT" />
+      <item itemvalue="JUnit.ReviewControllerIT" />
+      <item itemvalue="JUnit.SchoolControllerIT" />
+      <item itemvalue="JUnit.InstructorControllerIT" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.InstructorControllerIT" />
+        <item itemvalue="JUnit.OtherStuffControllerIT" />
+        <item itemvalue="JUnit.RequestControllerIT" />
+        <item itemvalue="JUnit.ReviewControllerIT" />
+        <item itemvalue="JUnit.SchoolControllerIT" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b73eb7a0-8b54-4450-8468-8a872a71e17b" name="Changes" comment="" />
+      <created>1776106851427</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776106851427</updated>
+      <workItem from="1776106853455" duration="656000" />
+      <workItem from="1776186333353" duration="3876000" />
+      <workItem from="1776192789926" duration="782000" />
+      <workItem from="1776201624740" duration="148000" />
+      <workItem from="1776235253200" duration="86000" />
+      <workItem from="1776410452559" duration="142000" />
+      <workItem from="1776410629211" duration="725000" />
+      <workItem from="1776596070346" duration="1170000" />
+      <workItem from="1776597280928" duration="1510000" />
+      <workItem from="1776599602668" duration="867000" />
+      <workItem from="1776604944100" duration="664000" />
+      <workItem from="1776605654332" duration="221000" />
+      <workItem from="1776612214106" duration="7000" />
+      <workItem from="1776623052796" duration="524000" />
+      <workItem from="1776712685560" duration="364000" />
+      <workItem from="1776798313808" duration="1391000" />
+      <workItem from="1776854804050" duration="9000" />
+      <workItem from="1776866344148" duration="731000" />
+      <workItem from="1776886595149" duration="3773000" />
+      <workItem from="1776941928649" duration="22000" />
+      <workItem from="1776975646835" duration="499000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
