@@ -3,7 +3,6 @@ Egy a jogosítvány szerzését megkönnyebítő web applikáció
 
 ## Linkek:
 - [Design Terv](https://www.figma.com/design/b9d6rQakhvAwx3cm5sOsMG/Projekt-diz%C3%A1jn---prototipus?node-id=697-5870&t=MMW73wOnxljxTgEP-1)
-- [Tesztnapló]()
 - [API dokumentáció (szükséges elindítani a backend projektet)](http://localhost:8080/swagger-ui/index.html#/)
 
 ## Csapattagok:
@@ -11,5 +10,9 @@ Egy a jogosítvány szerzését megkönnyebítő web applikáció
 - Magyar Barnabás (Adatbázis)
 - Halmai Bence Ádám (Backend Fejlesztő, Project Manager)
 
-## Adatbázis terv:
-!["Adatbázis terv"](./documents/adatbázis%20terv.png)
+## Tesztek futtatása
+Az API-ra irt integrációs tesztek futtatásához az IntelliJ kódszerkesztő használatát ajánjuk. 
+
+A szerkesztőt [ezen](https://www.jetbrains.com/idea/download/?section=windows) a linken lehet letölteni.
+
+A testclassok indithatóak az szerkesztőn belül, és igy látjuk mindegyik testclass eredményeit.
