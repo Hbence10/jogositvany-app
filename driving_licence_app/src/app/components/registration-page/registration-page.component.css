@@ -63,3 +63,13 @@ option:disabled {
 .ng-invalid:not(form).ng-touched:not(form)::placeholder, .error::placeholder {
   color: rgb(226, 34, 34) !important;
 }
+
+@media screen and (max-width: 1050px) {
+  #secondContainer {
+    width: 100%;
+  }
+
+  #register-button {
+    width: 90%;
+  }
+}

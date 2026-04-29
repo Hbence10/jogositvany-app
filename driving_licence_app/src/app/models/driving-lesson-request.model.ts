@@ -8,7 +8,7 @@ export class DrivingLessonRequest {
     public msg: string,
     public startTime: Date,
     public endTime: Date,
-    public dlessonRequestStudent: Students,
+    public dLessonRequestStudent: Students,
     public dLessonInstructor: Instructors,
     public sentAt: Date = new Date(),
     public isAccepted: boolean | null = null,

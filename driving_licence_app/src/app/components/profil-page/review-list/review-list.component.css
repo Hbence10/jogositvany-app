@@ -22,6 +22,7 @@ app-review-writer {
 @media screen and (max-width: 1460px) {
   #secondContainer {
     width: 90%;
+    height: 700px;
   }
 }
 

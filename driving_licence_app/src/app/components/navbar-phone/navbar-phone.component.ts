@@ -21,6 +21,7 @@ export class NavbarPhoneComponent {
     } else {
       this.router.navigate(["request", "school"])
     }
+    this.isOpened = false;
   }
   navigateToStudents() {
     if (this.userService.loggedUser()?.role.name == "ROLE_instructor") {
@@ -28,16 +29,19 @@ export class NavbarPhoneComponent {
     } else {
       this.router.navigate(["users", "schoolStudent"])
     }
+    this.isOpened = false;
   }
 
   logout() {
     this.alertService.setAlert("Sikeresen kijelentkeztél!", "success")
     this.userService.logout()
+    this.isOpened = false;
   }
 
   navigate(routerPath: string) {
     this.isOpened = false
     this.router.navigate([routerPath])
+    this.isOpened = false;
   }
 
   userNavigation() {
@@ -46,5 +50,6 @@ export class NavbarPhoneComponent {
     } else {
       this.router.navigate([`profil/user/${this.userService.loggedUser()?.id}`])
     }
+    this.isOpened = false;
   }
 }

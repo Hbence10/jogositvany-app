@@ -42,6 +42,7 @@ input::placeholder, textarea::placeholder {
 @media screen and (max-width: 860px) {
   #secondContainer {
     width: 90%;
+    height: 700px;
   }
 }
 

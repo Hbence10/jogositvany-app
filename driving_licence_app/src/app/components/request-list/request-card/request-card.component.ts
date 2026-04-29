@@ -1,9 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component, input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { DrivingLessonRequest } from '../../../models/driving-lesson-request.model';
-import { ExamRequest } from '../../../models/exam-request.model';
 import { InstructorJoinRequest } from '../../../models/instructor-join-request.model';
 import { SchoolJoinRequest } from '../../../models/school-join-request.model';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-request-card',
@@ -24,18 +23,18 @@ export class RequestCardComponent implements OnChanges {
     if (this.requestType() == "drivingLesson") {
       const drivingRequest = this.requestDetail() as DrivingLessonRequest
       console.log(drivingRequest)
-      console.log(drivingRequest.dlessonRequestStudent)
+      console.log(drivingRequest.dLessonRequestStudent)
       this.lines = [
-        `${drivingRequest?.dlessonRequestStudent?.studentUser.firstName} ${drivingRequest.dlessonRequestStudent.studentUser.lastName}`,
+        `${drivingRequest?.dLessonRequestStudent?.studentUser.firstName} ${drivingRequest.dLessonRequestStudent.studentUser.lastName}`,
         `Vezetni szeretne ekkor: ${this.convertDate(drivingRequest.date)} ${this.convertHour(drivingRequest.startTime+"")} - ${this.convertHour(drivingRequest.endTime + "")}`,
         `Küldte ekkor: ${this.convertDate(drivingRequest.sentAt)}`
       ]
-      this.pfpPath = drivingRequest.dlessonRequestStudent.studentUser.pfpPath
+      this.pfpPath = drivingRequest.dLessonRequestStudent.studentUser.pfpPath
     } else if (this.requestType() == "instructorJoin") {
       const instructorRequest = this.requestDetail() as InstructorJoinRequest
       this.lines = [
         `${instructorRequest.instructorJoinRequestStudent.studentUser.firstName} ${instructorRequest.instructorJoinRequestStudent.studentUser.lastName}`,
-        `Nálad szeretne tanulni`,
+        `Nálad szeretne tanulni,`,
         `Küldte ekkor: ${this.convertDate(instructorRequest.sentAt)}`
       ]
       this.pfpPath = instructorRequest.instructorJoinRequestStudent.studentUser.pfpPath

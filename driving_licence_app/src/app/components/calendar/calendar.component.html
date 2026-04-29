@@ -1,4 +1,4 @@
-<div class="container-fluid mainFont" style="height: 100vh">
+<div class="container-fluid mainFont" style="min-height: 100vh">
   <div class="row d-lg-flex d-none">
     <div class="col-lg-12 d-flex justify-content-start">
       <input
@@ -108,14 +108,14 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12 lessonBox px-5">
-            <div
+          <div class="col-lg-12 lessonBox px-5 mb-4">
+            @if (userService.loggedUser()?.role?.name == "ROLE_student"){<div
               (click)="sendRequestInPhone()"
               class="request mt-5 mb-3"
               style="width: 100%; border-radius: 8px; height: 75px"
             >
               <p class="text-center">Kérelem küldése</p>
-            </div>
+            </div>}
             @for (reservedHour of reservedHoursOfSingleDate; track $index) {
               <div
                 style="cursor: pointer"

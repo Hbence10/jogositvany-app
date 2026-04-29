@@ -1,13 +1,13 @@
 <div class="container-fluid d-flex flex-column justify-content-between" style="min-height: 100vh;">
   <div class="row my-4">
     <div class="col-lg-12">
-      <div>
-        <button [class.selectedButton]="requestType == 'schoolJoin' || requestType == 'instructorJoin'" class="requestTypeButton mx-2 mb-3" (click)="requestType = ownerType == 'school' ? 'schoolJoin' : 'instructorJoin'; changeRequestList(0)">Csatlakozás</button>
+      <div class="d-flex justify-content-lg-start justify-content-center align-items-center">
+        <button [class.selectedButton]="requestType == 'schoolJoin' || requestType == 'instructorJoin'" class="requestTypeButton mx-2" (click)="requestType = ownerType == 'school' ? 'schoolJoin' : 'instructorJoin'; changeRequestList(0)">Csatlakozás</button>
         @if (ownerType == "instructor") {
           <button [class.selectedButton]="requestType == 'drivingLesson'" class="requestTypeButton mx-2" (click)="requestType = 'drivingLesson'; changeRequestList(0)">{{ownerType == 'instructor' ? "Óra kérelmek" : "Óra kérelmek"}}</button>
         }
       </div>
-      <h1 class="text-lg-start text-center mainFont">
+      <h1 class="text-lg-start text-center mainFont mt-3">
         @if (requestType == "schoolJoin" || requestType == "instructorJoin") {
           Csatlakozási kérelmek
         } @else {

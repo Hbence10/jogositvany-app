@@ -9,11 +9,15 @@ export function CookieSetterInterceptor(req: HttpRequest<unknown>, next: HttpHan
   return next(req).pipe(
     tap((event) => {
       if (event.type === HttpEventType.Response) {
-        const jwtToken: string | null = event.headers.get("bearer")
+        console.log(event)
+
+        const jwtToken: string | null = event.headers.get("authorization")
         const refreshToken: string | null = event.headers.get("refreshToken")
 
+        console.log(jwtToken)
+
         if (jwtToken != null && refreshToken != null) {
-          cookieService.set("jwt", jwtToken)
+          cookieService.set("jwt", jwtToken.slice(6))
           cookieService.set("refreshToken", refreshToken)
         }
       }
