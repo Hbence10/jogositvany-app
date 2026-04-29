@@ -2,12 +2,13 @@ package csapat.DrivingLicenseAppAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.eclipse.sisu.Nullable;
+//import org.eclipse.sisu.Nullable;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -145,6 +146,7 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
         this.role = role;
+        this.createdAt = new Date();
     }
 
     public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
@@ -156,6 +158,7 @@ public class Users {
         this.gender = gender;
         this.password = password;
         this.userEducation = userEducation;
+        this.createdAt = new Date();
     }
 
     public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation) {
@@ -168,6 +171,7 @@ public class Users {
         this.gender = gender;
         this.password = password;
         this.userEducation = userEducation;
+        this.createdAt = new Date();
     }
 
     public Users(String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, String vCode) {
@@ -180,6 +184,7 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
         this.vCode = vCode;
+        this.createdAt = new Date();
     }
 
     public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, Education userEducation, String vCode) {
@@ -193,6 +198,7 @@ public class Users {
         this.password = password;
         this.userEducation = userEducation;
         this.vCode = vCode;
+        this.createdAt = new Date();
     }
 
     public Users(Long id, String firstName, String lastName, String email, String phone, Date birthDate, String gender, String password, String pfpPath, Date createdAt, Date lastLogin, Boolean isDeleted, Date deletedAt, String vCode, Role role, Instructors instructor, Students student, School adminSchool, Education userEducation, List<SchoolJoinRequest> schoolJoinRequestList, School ownedSchool) {
@@ -217,6 +223,7 @@ public class Users {
         this.userEducation = userEducation;
         this.schoolJoinRequestList = schoolJoinRequestList;
         this.ownedSchool = ownedSchool;
+        this.createdAt = new Date();
     }
 
     public Users() {

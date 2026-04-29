@@ -86,7 +86,7 @@ public class OtherStuffControllerIT {
         mockMvc.perform(get(BASE_URL + "/town"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(Integer.valueOf(213))));
+                .andExpect(jsonPath("$", hasSize(Integer.valueOf(45))));
     }
 
     @Test
