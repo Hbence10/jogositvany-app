@@ -1,6 +1,8 @@
 # Fél utón
 Egy a jogosítvány szerzését megkönnyebítő web applikáció
 
+A weboldal [ezen](https://feluton.netlify.app/home) a linken érhető el.
+
 ## Linkek:
 - [Design Terv](https://www.figma.com/design/b9d6rQakhvAwx3cm5sOsMG/Projekt-diz%C3%A1jn---prototipus?node-id=697-5870&t=MMW73wOnxljxTgEP-1)
 - [API dokumentáció (szükséges elindítani a backend projektet)](http://localhost:8080/swagger-ui/index.html#/)
