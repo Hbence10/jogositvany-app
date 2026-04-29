@@ -94,6 +94,7 @@ public class UserService {
             }
 
             newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
+            newUser.setCreatedAt(new Date());
 
             newUser = userRepository.save(newUser);
 

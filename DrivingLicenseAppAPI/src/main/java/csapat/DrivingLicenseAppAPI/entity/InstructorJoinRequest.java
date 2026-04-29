@@ -68,12 +68,14 @@ public class InstructorJoinRequest {
     public InstructorJoinRequest(Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor) {
         this.instructorJoinRequestStudent = instructorJoinRequestStudent;
         this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
+        this.sentAt = new Date();
     }
 
     public InstructorJoinRequest(Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor, Boolean isAccepted) {
         this.instructorJoinRequestStudent = instructorJoinRequestStudent;
         this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
         this.isAccepted = isAccepted;
+        this.sentAt = new Date();
     }
 
     public InstructorJoinRequest(Long id, Boolean isAccepted, Date acceptedAt, Date sentAt, Boolean isDeleted, Date deletedAt, Students instructorJoinRequestStudent, Instructors instructorJoinRequestInstructor) {
@@ -85,6 +87,7 @@ public class InstructorJoinRequest {
         this.deletedAt = deletedAt;
         this.instructorJoinRequestStudent = instructorJoinRequestStudent;
         this.instructorJoinRequestInstructor = instructorJoinRequestInstructor;
+        this.sentAt = new Date();
     }
 
     public InstructorJoinRequest() {

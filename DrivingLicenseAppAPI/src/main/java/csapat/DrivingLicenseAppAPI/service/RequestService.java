@@ -102,6 +102,7 @@ public class RequestService {
                 throw new InvalidDataException("invalidDate");
             } else {
                 DrivingLessonRequest newRequest = new DrivingLessonRequest(newRequestDto.msg(), dateFormat.parse(newRequestDto.date()), dateWithTimeFormat.parse(newRequestDto.startTime()), dateWithTimeFormat.parse(newRequestDto.endTime()), searchedStudent, searchedInstructor);
+
                 newRequest = drivingLessonRequestRepository.save(newRequest);
                 try {
                     emailSender.sendEmailAboutDrivingLessonRequestToInstructor(searchedInstructor.getInstructorUser().getEmail(), newRequest);

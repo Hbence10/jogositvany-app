@@ -91,6 +91,7 @@ public class DrivingLessonRequest {
         this.endTime = endTime;
         this.dLessonRequestStudent = dLessonRequestStudent;
         this.dLessonInstructor = dLessonInstructor;
+        this.sentAt = new Date();
     }
 
     public Long getId() {
