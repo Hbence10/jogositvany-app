@@ -72,11 +72,13 @@ public class SchoolJoinRequest {
         this.schoolJoinRequestUser = user;
         this.schoolJoinRequestSchool = school;
         this.joinRequestCategory = joinRequestCategory;
+        this.sentAt = new Date();
     }
 
     public SchoolJoinRequest(Users user, School school) {
         this.schoolJoinRequestUser = user;
         this.schoolJoinRequestSchool = school;
+        this.sentAt = new Date();
     }
 
     public SchoolJoinRequest(Long id, Boolean isAccepted, Date acceptedAt, Date sentAt, Boolean isDeleted, Date deletedAt, Users schoolJoinRequestUser, School schoolJoinRequestSchool, DrivingLicenseCategory joinRequestCategory) {
@@ -89,6 +91,7 @@ public class SchoolJoinRequest {
         this.schoolJoinRequestUser = schoolJoinRequestUser;
         this.schoolJoinRequestSchool = schoolJoinRequestSchool;
         this.joinRequestCategory = joinRequestCategory;
+        this.sentAt = new Date();
     }
 
     public SchoolJoinRequest() {
