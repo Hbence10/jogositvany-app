@@ -85,6 +85,7 @@ public class Review {
         this.text = text;
         this.rating = rating;
         this.reviewAuthor = author;
+        this.createdAt = LocalDate.now();
     }
 
     public Review(String text, Double rating, Boolean isAnonymous, Students author, Instructors aboutInstructor) {
@@ -93,6 +94,7 @@ public class Review {
         this.isAnonymous = isAnonymous;
         this.reviewAuthor = author;
         this.aboutInstructor = aboutInstructor;
+        this.createdAt = LocalDate.now();
     }
 
     public Review(String text, Double rating, Boolean isAnonymous, Students author, School aboutSchool) {
@@ -101,6 +103,7 @@ public class Review {
         this.isAnonymous = isAnonymous;
         this.reviewAuthor = author;
         this.aboutSchool = aboutSchool;
+        this.createdAt = LocalDate.now();
     }
 
     public Review(Long id, String text, LocalDate createdAt, Double rating, Boolean isAnonymous, Boolean isDeleted, Date deletedAt, Students reviewAuthor, Instructors aboutInstructor, School aboutSchool) {
@@ -114,6 +117,7 @@ public class Review {
         this.reviewAuthor = reviewAuthor;
         this.aboutInstructor = aboutInstructor;
         this.aboutSchool = aboutSchool;
+        this.createdAt = LocalDate.now();
     }
 
     public Review() {
