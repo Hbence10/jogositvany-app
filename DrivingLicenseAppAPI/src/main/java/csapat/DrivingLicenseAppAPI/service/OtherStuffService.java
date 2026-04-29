@@ -1,6 +1,5 @@
 package csapat.DrivingLicenseAppAPI.service;
 
-import com.opencsv.CSVReader;
 import csapat.DrivingLicenseAppAPI.dto.UserCard;
 import csapat.DrivingLicenseAppAPI.entity.*;
 import csapat.DrivingLicenseAppAPI.repository.*;
@@ -9,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Transactional
@@ -44,20 +42,8 @@ public class OtherStuffService {
     }
 
     public ResponseEntity<List<String>> getAllTown() {
-        try {
-            FileReader fileReader = new FileReader(new File("src/main/java/csapat/DrivingLicenseAppAPI/service/other/townList.csv"));
-            CSVReader reader = new CSVReader(fileReader);
-
-            List<String[]> allRecords = reader.readAll();
-            List<String> townName = new ArrayList<String>();
-            for (int i = 1; i < allRecords.size(); i++) {
-                townName.add(allRecords.get(i)[0]);
-            }
-
-            return ResponseEntity.ok().body(townName);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        List<String> townName = new ArrayList<String>(Arrays.asList("Abony", "Abaújszántó", "Ajka", "Albertirsa", "Baja", "Balassagyarmat", "Balatonalmádi", "Balatonboglár", "Balatonfüred", "Békés", "Békéscsaba", "Berettyóújfalu", "Bicske", "Bonyhád", "Budapest", "Cegléd", "Celldömölk", "Csorna", "Debrecen", "Dombóvár", "Dunaújváros", "Eger", "Érd", "Esztergom", "Győr", "Gyula", "Hódmezővásárhely", "Jászberény", "Kaposvár", "Kecskemét", "Komárom", "Miskolc", "Mohács", "Nagykanizsa", "Nyíregyháza", "Orosháza", "Paks", "Pécs", "Szeged", "Székesfehérvár", "Szolnok", "Szombathely", "Tatabánya", "Veszprém", "Zalaegerszeg"));
+        return ResponseEntity.ok().body(townName);
     }
 
     public ResponseEntity<List<VehicleType>> getAllVehicleType() {
