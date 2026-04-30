@@ -93,7 +93,7 @@ public class UserService {
                 System.out.println("Email error");
             }
 
-            newUser.setPfpPath("http://localhost:8080/pfp/defaultPfp.png");
+            newUser.setPfpPath("https://jogositvany-app.onrender.com/pfp/defaultPfp.png");
             newUser.setCreatedAt(new Date());
 
             newUser = userRepository.save(newUser);
@@ -207,7 +207,7 @@ public class UserService {
             fout.write(pfpFile.getBytes());
             fout.close();
 
-            searchedUser.setPfpPath("http://localhost:8080/pfp/" + searchedUser.getId() + pfpFile.getOriginalFilename());
+            searchedUser.setPfpPath("https://jogositvany-app.onrender.com/pfp/" + searchedUser.getId() + pfpFile.getOriginalFilename());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("fileUploadingError");

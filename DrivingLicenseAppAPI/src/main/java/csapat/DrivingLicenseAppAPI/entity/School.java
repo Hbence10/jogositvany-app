@@ -137,7 +137,7 @@ public class School {
         this.address = address;
         this.promoText = promoText;
         this.owner = owner;
-        this.bannerImgPath = "http://localhost:8080/coverImages/defaultCoverImg.jpg";
+        this.bannerImgPath = "https://jogositvany-app.onrender.com/coverImages/defaultCoverImg.jpg";
     }
 
     public School(Long id, String name, String email, String phone, String country, String town, String address, String promoText, String bannerImgPath, Boolean isDeleted, Date deletedAt, Users owner, List<Users> adminList, List<Instructors> instructorsList, List<OpeningDetails> openingDetails, List<Review> reviewList, List<Students> studentsList, List<SchoolJoinRequest> schoolJoinRequestList, List<SchoolCategory> licenseCategoryList) {

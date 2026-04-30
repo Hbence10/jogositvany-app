@@ -130,7 +130,7 @@ public class SchoolService {
             FileOutputStream fout = new FileOutputStream(filePath);
             fout.write(bannerImg.getBytes());
             fout.close();
-            searchedSchool.setBannerImgPath("http://localhost:8080/coverImages/" + searchedSchool.getId() + bannerImg.getOriginalFilename());
+            searchedSchool.setBannerImgPath("https://jogositvany-app.onrender.com/coverImages/" + searchedSchool.getId() + bannerImg.getOriginalFilename());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("fileUploadingError");
         }
