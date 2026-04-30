@@ -13,9 +13,22 @@ A weboldal [ezen](https://feluton.netlify.app/home) a linken érhető el.
 - Magyar Barnabás (Adatbázis)
 - Halmai Bence Ádám (Backend Fejlesztő, Project Manager)
 
-## Tesztek futtatása
+## Tesztek futtatása:
 Az API-ra irt integrációs tesztek futtatásához az IntelliJ kódszerkesztő használatát ajánjuk. 
 
 A szerkesztőt [ezen](https://www.jetbrains.com/idea/download/?section=windows) a linken lehet letölteni.
 
 A testclassok indithatóak az szerkesztőn belül, és igy látjuk mindegyik testclass eredményeit.
+
+## Teszt fiókok:
+Az alábbi fiókok előre regisztráltak, ezek a fiókok tökéletesen használhatóak az oldal teszteléséhez.
+A **felhasználó** és **diák** jogosultsághoz, ajánljuk, hogy készitsenek maguk fiókokat.
+
+A fiókok adatai:
+
+| E-mail cim | jelszó | jogosultság |
+|:--------|:-------:|-------:|
+|oldalAdmin@gmail.com|test5.Asd|Oldal Adminisztrátor|
+|iskolaAdmin9@gmail.com|test5.Asd|Iskola Adminisztrátor|
+|sulisdolgok8@gmail.com|test5.Asd|Iskola Tulaj|
+|bzhalmai@gmail.com|test5.Asd|Oktató|
