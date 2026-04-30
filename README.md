@@ -22,6 +22,7 @@ A testclassok indithatóak az szerkesztőn belül, és igy látjuk mindegyik tes
 
 ## Teszt fiókok:
 Az alábbi fiókok előre regisztráltak, ezek a fiókok tökéletesen használhatóak az oldal teszteléséhez.
+
 A **felhasználó** és **diák** jogosultsághoz, ajánljuk, hogy készitsenek maguk fiókokat.
 
 A fiókok adatai:
