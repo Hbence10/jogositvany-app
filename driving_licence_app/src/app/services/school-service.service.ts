@@ -10,7 +10,7 @@ import { SchoolCategory } from '../models/schoolCategory.model';
 })
 export class SchoolServiceService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://jogositvany-app.onrender.com/school';
+  private baseUrl = 'https://jogositvany-app.onrender.com/school';
 
   constructor() { }
 

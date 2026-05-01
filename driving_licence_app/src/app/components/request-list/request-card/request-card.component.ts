@@ -34,7 +34,7 @@ export class RequestCardComponent implements OnChanges {
       const instructorRequest = this.requestDetail() as InstructorJoinRequest
       this.lines = [
         `${instructorRequest.instructorJoinRequestStudent.studentUser.firstName} ${instructorRequest.instructorJoinRequestStudent.studentUser.lastName}`,
-        `Nálad szeretne tanulni,`,
+        `Nálad szeretne tanulni`,
         `Küldte ekkor: ${this.convertDate(instructorRequest.sentAt)}`
       ]
       this.pfpPath = instructorRequest.instructorJoinRequestStudent.studentUser.pfpPath

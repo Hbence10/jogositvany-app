@@ -21,9 +21,9 @@
             <div class="col-lg-12">
               <form
                 [formGroup]="form"
-                class="d-flex align-items-center justify-content-center"
+                class="d-flex flex-lg-row flex-column align-items-center justify-content-center"
               >
-                <select formControlName="category" class="mx-2">
+                <select formControlName="category" class="my-2 w-100">
                   <option [value]="null" selected disabled>
                     Kategória hozzáadása
                   </option>
@@ -36,9 +36,9 @@
                   placeholder="Óradíj"
                   formControlName="price"
                   style="width: 100px"
-                  class="mx-2"
+                  class="my-2 w-100"
                 />
-                <button type="button" (click)="addCategory()" class="mx-2" id="saveButton" [disabled]="form.invalid">
+                <button type="button" (click)="addCategory()" class="my-2 w-100" id="saveButton" [disabled]="form.invalid">
                   Mentés
                 </button>
               </form>

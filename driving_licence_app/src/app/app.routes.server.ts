@@ -8,17 +8,7 @@ export const serverRoutes: ServerRoute[] = [
       return [
         { type: "instructor" },
         { type: "school" }
-      ]
-    },
-  },
-  {
-    path: 'request/:owner',
-    renderMode: RenderMode.Prerender,
-    async getPrerenderParams() {
-      return [
-        { type: "instructor" },
-        { type: "school" }
-      ]
+      ];
     },
   },
   {
@@ -26,9 +16,31 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
       return [
-        { type: "user", id: '1' },
-        { type: "school", id: '1' }
-      ]
+        { type: "user", id: "1" },
+        { type: "school", id: "1" }
+      ];
+    },
+  },
+  {
+    path: 'request/:owner',
+    renderMode: RenderMode.Prerender,
+    async getPrerenderParams() {
+      return [
+        { owner: "school" },
+        { owner: "instructor" }
+      ];
+    },
+  },
+  {
+    path: 'users/:userType',
+    renderMode: RenderMode.Prerender,
+    async getPrerenderParams() {
+      return [
+        { userType: "schoolStudent" },
+        { userType: "instructors" },
+        { userType: "instructorStudents" },
+        { userType: "users" }
+      ];
     },
   },
 

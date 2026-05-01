@@ -232,6 +232,16 @@ app-admin-setter {
   }
 }
 
+@media screen and (max-width: 500px) {
+  .uData  {
+    font-size: 11px;
+  }
+
+  .lesson-info-item {
+    font-size: 20px !important;
+  }
+}
+
 .instructorInfoBox {
   background-color: #626C99 !important;
   border-radius: 12px;

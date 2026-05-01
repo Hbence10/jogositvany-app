@@ -108,7 +108,7 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-12 lessonBox px-5 mb-4">
+          <div class="col-lg-12 lessonBox px-5 py-3 mb-4">
             @if (userService.loggedUser()?.role?.name == "ROLE_student"){<div
               (click)="sendRequestInPhone()"
               class="request mt-5 mb-3"
