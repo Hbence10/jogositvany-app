@@ -8,6 +8,7 @@ A weboldal [ezen](https://feluton.netlify.app/home) a linken érhető el.
 - [API dokumentáció](https://jogositvany-app.onrender.com/swagger-ui/index.html#/)
 - [Weboldal](https://feluton.netlify.app/home)
 - [Projekt dokumentáció](https://github.com/Hbence10/jogositvany-app/blob/Documentation/documents/Dokumentáció.pdf)
+- [Prezentáció](https://docs.google.com/presentation/d/1_J09wBSgI3_MlbhssVwRRgm-FJiceYQZcJOa08arU54/edit?usp=sharing)
 
 ## Csapattagok:
 - **Biró Szabolcs Benjámin** (Frontend fejlesztő, Designer)
